@@ -1,0 +1,1329 @@
+@charset 'UTF-8';
+@import url('http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700,900');
+@import url('font-awesome.min.css');
+
+/*
+	Escape Velocity by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+*/
+
+/*********************************************************************************/
+/* Basic                                                                         */
+/*********************************************************************************/
+
+	body, input, textarea, select, button, .label
+	{
+		font-family: 'Source Sans Pro', sans-serif;
+		font-weight: 400;
+		color: #919499;
+	}
+
+		body.is-loading *
+		{
+			-moz-transition: none !important;
+			-webkit-transition: none !important;
+			-o-transition: none !important;
+			-ms-transition: none !important;
+			transition: none !important;
+			-moz-animation: none !important;
+			-webkit-animation: none !important;
+			-o-animation: none !important;
+			-ms-animation: none !important;
+			animation: none !important;
+		}
+
+	h1,h2,h3,h4,h5,h6
+	{
+		font-weight: 700;
+		color: #484d55;
+		padding: 0 0 0 1em !important;
+	}
+	
+	h1 a, h2 a, h3 a, h4 a, h5 a, h6 a
+	{
+		color: inherit;
+		text-decoration: none;
+	}
+
+	a
+	{
+		text-decoration: underline;
+		color: #717479;
+		-moz-transition: color .25s ease-in-out;
+		-webkit-transition: color .25s ease-in-out;
+		-o-transition: color .25s ease-in-out;
+		-ms-transition: color .25s ease-in-out;
+		transition: color .25s ease-in-out;
+	}
+	
+		a:hover
+		{
+			text-decoration: none;
+		}
+
+	strong, b
+	{
+		font-weight: 700;
+		color: #484d55;
+	}
+	
+	blockquote
+	{
+		border-left: solid 0.5em #ddd;
+		padding: 1em 0 1em 2em;
+		font-style: italic;
+	}
+	
+	em, i
+	{
+		font-style: italic;
+	}
+	
+	hr
+	{
+		border: 0;
+		border-top: solid 1px #ddd;
+	}
+	
+	sub
+	{
+		position: relative;
+		top: 0.5em;
+		font-size: 0.8em;
+	}
+	
+	sup
+	{
+		position: relative;
+		top: -0.5em;
+		font-size: 0.8em;
+	}
+	
+	.nobr
+	{
+		white-space: nowrap;
+	}
+
+	br.clear
+	{
+		clear: both;
+	}
+	
+	p, ul, ol, dl, table, blockquote, form
+	{
+		margin-bottom: 2em;
+	}
+	
+	/* Table */
+		table {
+		  font-family: arial, sans-serif;
+		  border-collapse: collapse;
+		  width: 100%;
+		  font-size: 10pt;
+		}
+		
+		.scores{
+			width: 100px !important;
+			margin: 0 auto;
+			table-layout: auto;
+			border-collapse: collapse;
+		}
+		
+		tr {
+		    width: 80%;
+		}
+
+		th {
+			border: 1px solid black;
+			text-align: left;
+			padding: 0 8px;		  
+			background-color: #984806;
+			color: white;
+			font-weight: bold;
+			white-space: nowrap;
+		}
+		
+		td {
+		  border: 1px solid black;
+		  text-align: left;
+		  padding: 0 8px;
+		  color: black;
+		  white-space: nowrap;
+		}
+		
+		table
+		{
+			width: 100%;
+		}
+		
+			table.default
+			{
+				width: 100%;
+			}
+			
+				table.default tbody tr:nth-child(2n+2)
+				{
+					background: #f4f4f4;
+				}
+				
+				table.default td
+				{
+					padding: 0.5em 1em 0.5em 1em;
+				}
+				
+				table.default th
+				{
+					text-align: left;
+					font-weight: 400;
+					padding: 0.5em 1em 0.5em 1em;
+				}
+			
+				table.default thead
+				{
+					background: #484d55;
+					color: #fff;
+				}
+				
+				table.default tfoot
+				{
+					background: #eee;
+				}
+				
+				table.default tbody
+				{
+				}
+
+	/* Form */
+
+		form
+		{
+			margin: 0em;
+		} 
+		
+		.idents{
+			width: 30px;
+			border-radius: 0.35em;
+			border: 0;
+			background: #eee;
+			min-width: 20px;
+		}
+		
+		.label {	
+				-webkit-appearance: none;
+				display: block;
+				border: solid;
+				border-width:1px;
+				box-shadow: inset 0px 0px 1px 0px #a0a1a7;
+				border-radius: 0.35em;
+				width: 100%;
+				padding: 0.75em 1em 0.75em 1em;
+				-moz-transition: all .25s ease-in-out;
+				-webkit-transition: all .25s ease-in-out;
+				-o-transition: all .25s ease-in-out;
+				-ms-transition: all .25s ease-in-out;
+				transition: all .25s ease-in-out;
+		}
+		.safe { /* Green */
+			background-color: #4CAF50 !important; 
+			color: white !important; 
+		} 
+		.info {box-shadow: inset 0px 0px 5px 0px #a0a1a7 !important;} /* bigger shadow */
+		.warning {background-color: #ff9800;} /* Orange */
+		.danger { /* Red */ 
+			background-color: #f44336 !important; 
+			color: white !important; 
+		} 
+		.other {background-color: #e7e7e7;} /* Gray */ 
+		
+			form label
+			{
+				display: block;
+				font-weight: 700;
+				color: #484d55;
+			}
+		
+			form input[type="text"],
+			form input[type="number"],
+			form input[type="datetime-local"],
+			form input[type="email"],
+			form input[type="password"],
+			form select,
+			form textarea
+			{
+				-webkit-appearance: none;
+				display: block;
+				border: 0;
+				background: #eee;
+				box-shadow: inset 0px 0px 1px 0px #a0a1a7;
+				border-radius: 0.35em;
+				width: 100%;
+				padding: 0.75em 1em 0.75em 1em;
+				-moz-transition: all .25s ease-in-out;
+				-webkit-transition: all .25s ease-in-out;
+				-o-transition: all .25s ease-in-out;
+				-ms-transition: all .25s ease-in-out;
+				transition: all .25s ease-in-out;
+			}
+
+			form input[type="text"],
+			form input[type="number"],
+			form input[type="datetime-local"],
+			form input[type="email"],
+			form input[type="password"],
+			form select
+			{
+				line-height: 1em;
+			}
+			
+			form textarea
+			{
+				min-height: 10em;
+			}
+
+				form input[type="text"]:focus,
+				form input[type="number"]:focus,
+				form input[type="datetime-local"]:focus,
+				form input[type="email"]:focus,
+				form input[type="password"]:focus,
+				form select:focus,
+				form textarea:focus
+				{
+					background: #f8f8f8;
+				}
+				
+				form .formerize-placeholder
+				{
+					color: #555 !important;
+					font-style: italic;
+				}
+
+				form ::-webkit-input-placeholder
+				{
+					color: #555 !important;
+					font-style: italic;
+					line-height: 1.35em;
+				}
+
+				form :-moz-placeholder
+				{
+					color: #555 !important;
+					font-style: italic;
+				}
+
+				form ::-moz-placeholder
+				{
+					color: #555 !important;
+					font-style: italic;
+				}
+
+				form :-ms-input-placeholder
+				{
+					color: #555 !important;
+					font-style: italic;
+				}
+
+				form ::-moz-focus-inner
+				{
+					border: 0;
+				}
+
+	/* Section/Article */
+
+		section,
+		article
+		{
+			margin-bottom: 1em;
+		}
+		
+			section > :last-child,
+			article > :last-child
+			{
+				margin-bottom: 0;
+			}
+
+			section:last-child,
+			article:last-child
+			{
+				margin-bottom: 0;
+			}
+		
+		header.style1
+		{
+			text-align: center;
+		}
+
+			header.style1 h2
+			{
+				font-weight: 700;
+			}
+			
+			header.style1 p
+			{
+				color: #b1b4b9;
+			}
+
+	/* Image */
+
+		.image
+		{
+			display: inline-block;
+		}
+		
+			.image img
+			{
+				display: block;
+				width: 100%;
+			}
+
+			.image.fit
+			{
+				display: block;
+				width: 100%;
+			}
+
+			.image.left
+			{
+				float: left;
+				margin: 0 2em 2em 0;
+			}
+			
+			.image.centered
+			{
+				display: block;
+				margin: 0 0 2em 0;
+			}
+
+				.image.centered img
+				{
+					margin: 0 auto;
+					width: auto;
+				}
+				
+			.image.featured
+			{
+				display: block;
+				width: 100%;
+				margin: 0 0 2em 0;
+			}
+
+	/* Button */
+	
+		
+		::-webkit-file-upload-button {
+			background: #444;
+			color: #919499;
+			text-align: center;
+			font-weight: 700;
+			letter-spacing: 0.05em;
+			font-size: 0.9em;
+			line-height: 4em;
+			padding: 0 1.5em 0 1.5em;
+			text-decoration: none;
+			border-radius: 0.35em;
+			border: 0;
+			outline: 0;
+			cursor: pointer;
+			-moz-transition: all .25s ease-in-out;
+			-webkit-transition: all .25s ease-in-out;
+			-o-transition: all .25s ease-in-out;
+			-ms-transition: all .25s ease-in-out;
+			transition: all .25s ease-in-out;
+		}
+		::-ms-browse {
+			background: #444;
+			color: #919499;
+			text-align: center;
+			font-weight: 700;
+			letter-spacing: 0.05em;
+			font-size: 0.9em;
+			line-height: 4em;
+			padding: 0 1.5em 0 1.5em;
+			text-decoration: none;
+			border-radius: 0.35em;
+			border: 0;
+			outline: 0;
+			cursor: pointer;
+			-moz-transition: all .25s ease-in-out;
+			-webkit-transition: all .25s ease-in-out;
+			-o-transition: all .25s ease-in-out;
+			-ms-transition: all .25s ease-in-out;
+			transition: all .25s ease-in-out;	
+		}
+	
+		input[type="button"],
+		input[type="submit"],
+		input[type="reset"],
+		.button
+		{
+			display: inline-block;
+			background: #444;
+			text-align: center;
+			text-transform: uppercase;
+			font-weight: 700;
+			letter-spacing: 0.25em;
+			text-decoration: none;
+			border-radius: 0.35em;
+			border: 0;
+			outline: 0;
+			cursor: pointer;
+			-moz-transition: all .25s ease-in-out;
+			-webkit-transition: all .25s ease-in-out;
+			-o-transition: all .25s ease-in-out;
+			-ms-transition: all .25s ease-in-out;
+			transition: all .25s ease-in-out;
+		}
+
+			input[type="button"].style1,
+			input[type="submit"].style1,
+			input[type="reset"].style1,
+			.button.style1
+			{
+				background: #e97770 url('images/overlay.png');
+				color: #fff;
+			}
+
+				input[type="button"].style1:hover,
+				input[type="submit"].style1:hover,
+				input[type="reset"].style1:hover,
+				.button.style1:hover
+				{
+					background-color: #f98780;
+				}
+				
+				input[type="button"].style1:active,
+				input[type="submit"].style1:active,
+				input[type="reset"].style1:active,
+				.button.style1:active
+				{
+					background-color: #d96760;
+				}
+
+			input[type="button"].style2,
+			input[type="submit"].style2,
+			input[type="reset"].style2,
+			.button.style2
+			{
+				background: none;
+				color: #606167;
+				box-shadow: inset 0px 0px 2px 0px #a0a1a7;
+			}
+			
+				input[type="button"].style2:hover,
+				input[type="submit"].style2:hover,
+				input[type="reset"].style2:hover,
+				.button.style2:hover
+				{
+					box-shadow: inset 0px 0px 2px 0px #606167;
+				}
+			
+				input[type="button"].style2:active,
+				input[type="submit"].style2:active,
+				input[type="reset"].style2:active,
+				.button.style2:active
+				{
+					box-shadow: inset 0px 0px 2px 0px #202127;
+				}
+
+			input[type="button"].style3,
+			input[type="submit"].style3,
+			input[type="reset"].style3,
+			.button.style3
+			{
+				background: #2f333b url('images/overlay.png');
+				color: #fff;
+			}
+
+				input[type="button"].style3:hover,
+				input[type="submit"].style3:hover,
+				input[type="reset"].style3:hover,
+				.button.style3:hover
+				{
+					background-color: #3f434b;
+				}
+				
+				input[type="button"].style3:active,
+				input[type="submit"].style3:active,
+				input[type="reset"].style3:active,
+				.button.style3:active
+				{
+					background-color: #1f232b;
+				}
+
+	/* List */
+
+		ul.default
+		{
+			list-style: disc;
+			padding-left: 1em;
+		}
+		
+			ul.default li
+			{
+				padding-left: 0.5em;
+			}
+			
+		ul.style2
+		{
+		}
+		
+			ul.style2 li
+			{
+				border-top: solid 1px #eee;
+				padding: 1.5em 0 0 0;
+				margin: 1.5em 0 0 0;
+			}
+			
+			ul.style2 li:first-child
+			{
+				border-top: 0;
+				padding-top: 0;
+				margin-top: 0;
+			}
+		
+		ul.style3
+		{
+		}
+		
+			ul.style3 li
+			{
+				border-top: solid 1px #eee;
+				padding: 0.5em 0 0 0;
+				margin: 0.5em 0 0 0;
+			}
+			
+			ul.style3 li:first-child
+			{
+				border-top: 0;
+				padding-top: 0;
+				margin-top: 0;
+			}
+
+		ol
+		{
+		}	
+
+			ol.default
+			{
+				list-style: decimal;
+				padding-left: 1.25em;
+			}
+
+				ol.default li
+				{
+					padding-left: 0.25em;
+				}
+				
+	/* Feature List */
+
+		.feature-list
+		{
+		}
+
+			.feature-list h3
+			{
+				color: #e97770 !important;
+			}
+			
+				.feature-list h3:before
+				{
+					position: relative;
+					display: inline-block;
+					color: #fff;
+					background: #2f333b url('images/overlay.png');
+					border-radius: 1em;
+					text-align: center;
+				}
+
+/*********************************************************************************/
+/* Icons                                                                         */
+/*********************************************************************************/
+
+	.icon {
+		text-decoration: none;
+	}
+
+		.icon:before {
+			display: inline-block;
+			font-family: FontAwesome;
+			font-size: 1.25em;
+			text-decoration: none;
+			font-style: normal;
+			font-weight: normal;
+			line-height: 1;
+			-webkit-font-smoothing:antialiased;
+			-moz-osx-font-smoothing:grayscale;
+		}
+		
+		.icon > .label {
+			display: none;
+		}
+
+/*********************************************************************************/
+/* Wrappers                                                                      */
+/*********************************************************************************/
+
+	.wrapper
+	{
+		position: relative;
+	}
+
+		.wrapper .title
+		{
+			position: absolute;
+			top: 0;
+			left: 50%;
+			text-align: center;
+			text-transform: uppercase;
+			display: block;
+			font-weight: 700;
+			letter-spacing: 0.25em;
+		}
+		
+		.wrapper .title:before
+		{
+			content: '';
+			position: absolute;
+			bottom: -38px;
+			left: -35px;
+			width: 35px;
+			height: 38px;
+			background: url('images/shadow.png');
+		}
+		
+		.wrapper .title:after
+		{
+			content: '';
+			position: absolute;
+			bottom: -38px;
+			right: -35px;
+			width: 35px;
+			height: 38px;
+			background: url('images/shadow.png');
+			-moz-transform: scaleX(-1);
+			-webkit-transform: scaleX(-1);
+			-o-transform: scaleX(-1);
+			-ms-transform: scaleX(-1);
+			transform: scaleX(-1);
+    	}
+
+		.wrapper.style1
+		{
+			background: #e97770 url('images/overlay.png');
+			color: #eee;
+			color: rgba(255,255,255,0.75);
+		}
+		
+			.wrapper.style1 .title
+			{
+				background: #e97770 url('images/overlay.png');
+				color: #fff;
+			}
+		
+			.wrapper.style1 h1,
+			.wrapper.style1 h2,
+			.wrapper.style1 h3,
+			.wrapper.style1 h4,
+			.wrapper.style1 h5,
+			.wrapper.style1 h6,
+			.wrapper.style1 strong,
+			.wrapper.style1 b,
+			.wrapper.style1 a
+			{
+				color: #fff;
+			}
+		
+		.wrapper.style2
+		{
+			background: #fff;
+		}
+		
+			.wrapper.style2 .title
+			{
+				background: #fff;
+				color: #484d55;
+			}
+		
+		.wrapper.style3
+		{
+			background: #f3f3f3 url('images/overlay.png');
+		}
+		
+			.wrapper.style3 .title
+			{
+				background: #f3f3f3 url('images/overlay.png');
+				color: #484d55;
+			}
+			
+			.wrapper.style3 .image
+			{
+				border: solid 10px #fff;
+			}
+
+	#header-wrapper
+	{
+		//background: url('../images/banner.jpg') center center;
+		//background-size: cover;
+	}
+	
+		#header-wrapper:before
+		{
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			
+		}
+	
+/* Nav */
+
+	#nav {
+		position: absolute;
+		display: block;
+		top: 2.5em;
+		left: 0;
+		width: 100%;
+		text-align: center;
+	}
+
+		#nav > ul {
+			display: inline-block;
+			border-radius: 0.35em;
+			box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.25);
+			padding: 0 1.5em 0 1.5em;
+			background: #222835 url("images/overlay.png");
+		background-color: rgba(44, 50, 63, 0.925);
+		}
+
+			#nav > ul > li {
+				display: inline-block;
+				text-align: center;
+				padding: 0 1.5em 0 1.5em;
+			}
+
+				#nav > ul > li > ul {
+					display: none;
+				}
+
+				#nav > ul > li > a, #nav > ul > li > span {
+					display: block;
+					color: #eee;
+					color: rgba(255, 255, 255, 0.75);
+					text-transform: uppercase;
+					text-decoration: none;
+					font-size: 0.7em;
+					letter-spacing: 0.25em;
+					height: 5em;
+					line-height: 5em;
+					-moz-transition: all .25s ease-in-out;
+					-webkit-transition: all .25s ease-in-out;
+					-o-transition: all .25s ease-in-out;
+					-ms-transition: all .25s ease-in-out;
+					transition: all .25s ease-in-out;
+					outline: 0;
+				}
+
+				#nav > ul > li:hover > a {
+					color: #fff;
+				}
+
+				#nav > ul > li.active > a, #nav > ul > li.active > span {
+					color: #fff;
+				}
+
+	.dropotron {
+		background: #222835 url("images/overlay.png");
+		background-color: rgba(44, 50, 63, 0.925);
+		padding: 1.25em 1em 1.25em 1em;
+		border-radius: 0.35em;
+		box-shadow: inset 0px 0px 1px 1px rgba(255, 255, 255, 0.25);
+		min-width: 12em;
+		text-align: left;
+		margin-top: -1.25em;
+		margin-left: -1px;
+		list-style: none;
+	}
+
+		.dropotron.level-0 {
+			margin-top: -1px;
+			margin-left: 0;
+			border-top-left-radius: 0;
+			border-top-right-radius: 0;
+		}
+
+		.dropotron a, .dropotron span {
+			-moz-transition: all .25s ease-in-out;
+			-webkit-transition: all .25s ease-in-out;
+			-ms-transition: all .25s ease-in-out;
+			transition: all .25s ease-in-out;
+			display: block;
+			color: #eee;
+			color: rgba(255, 255, 255, 0.75);
+			text-transform: uppercase;
+			text-decoration: none;
+			font-size: 0.7em;
+			letter-spacing: 0.25em;
+			border-top: solid 1px rgba(255, 255, 255, 0.15);
+			line-height: 3em;
+		}
+
+		.dropotron li {
+			padding-left: 0;
+		}
+
+			.dropotron li:first-child a, .dropotron li:first-child span {
+				border-top: 0;
+			}
+
+			.dropotron li:hover > a, .dropotron li:hover > span {
+				color: #fff;
+			}
+
+
+/*********************************************************************************/
+/* Copyright                                                                     */
+/*********************************************************************************/
+			
+	#copyright
+	{
+		text-align: center;
+	}
+	
+		#copyright ul
+		{
+			display: inline-block;
+			border-radius: 0.35em;
+			box-shadow: inset 0px 0px 1px 1px rgba(0,0,0,0.15);
+			color: #000;
+			color: rgba(0,0,0,0.95);
+		}
+		
+		#copyright a
+		{
+			color: inherit;
+		}
+		
+			#copyright a:hover
+			{
+				color: #000;
+			}
+
+
+/*********************************************************************************/
+/* Dygraphs                                                                      */
+/*********************************************************************************/
+
+canvas:hover ~ .dygraph-roller {
+	opacity:0.8;
+}
+
+.dygraph-legend {
+  position: absolute;
+  font-size: 14px;
+  z-index: 10;
+  width: 250px;  /* labelsDivWidth */
+  /*
+  dygraphs determines these based on the presence of chart labels.
+  It might make more sense to create a wrapper div around the chart proper.
+  top: 0px;
+  right: 2px;
+  */
+  left: 70px !important;
+  background: rgba(255,255, 255, 0.8);
+  //background-color: transparent !important;
+  line-height: normal;
+  text-align: left;
+  overflow: hidden;
+}
+
+/* styles for a solid line in the legend */
+.dygraph-legend-line {
+  display: inline-block;
+  position: relative;
+  bottom: .5ex;
+  padding-left: 1em;
+  height: 1px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  /* border-bottom-color is set based on the series color */
+}
+
+/* styles for a dashed line in the legend, e.g. when strokePattern is set */
+.dygraph-legend-dash {
+  display: inline-block;
+  position: relative;
+  bottom: .5ex;
+  height: 1px;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  /* border-bottom-color is set based on the series color */
+  /* margin-right is set based on the stroke pattern */
+  /* padding-left is set based on the stroke pattern */
+}
+
+.dygraph-roller:hover {
+	opacity:1;
+}
+
+.dygraph-roller {
+  position: absolute;
+  z-index: 10;
+  opacity: 0;
+  width: 50px;
+  
+				-webkit-appearance: none;
+				display: block;
+				border: 0;
+				background: #eee;
+				box-shadow: inset 0px 0px 1px 0px #a0a1a7;
+				border-radius: 0.35em;
+				padding: 0.5em 0.5em 0.5em 0.5em;
+				-moz-transition: all .25s ease-in-out;
+				-webkit-transition: all .25s ease-in-out;
+				-o-transition: all .25s ease-in-out;
+				-ms-transition: all .25s ease-in-out;
+				transition: all .25s ease-in-out;
+}
+
+/* This class is shared by all annotations, including those with icons */
+.dygraph-annotation {
+  position: absolute;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* This class only applies to annotations without icons */
+/* Old class name: .dygraphDefaultAnnotation */
+.dygraph-default-annotation {
+  border: 1px solid black;
+  background-color: white;
+  text-align: center;
+}
+
+.dygraph-axis-label {
+  /* position: absolute; */
+  /* font-size: 14px; */
+  z-index: 10;
+  line-height: normal;
+  overflow: hidden;
+  color: black;  /* replaces old axisLabelColor option */
+}
+
+.dygraph-axis-label-x {
+}
+
+.dygraph-axis-label-y {
+}
+
+.dygraph-axis-label-y2 {
+}
+
+.dygraph-title {
+  font-weight: bold;
+  z-index: 10;
+  text-align: center;
+  /* font-size: based on titleHeight option */
+}
+
+.dygraph-xlabel {
+  text-align: center;
+  /* font-size: based on xLabelHeight option */
+}
+
+/* For y-axis label */
+.dygraph-label-rotate-left {
+  text-align: center;
+  /* See http://caniuse.com/#feat=transforms2d */
+  transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+}
+
+/* For y2-axis label */
+.dygraph-label-rotate-right {
+  text-align: center;
+  /* See http://caniuse.com/#feat=transforms2d */
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  height: auto !important;
+}
+
+/*Trex code starts
+
+H
+E
+R
+E
+*/
+
+
+/*********************************************************************************/
+/* T-Rekt                                                                      */
+/*********************************************************************************/
+
+
+/* Copyright 2013 The Chromium Authors. All rights reserved.
+ * Use of this source code is governed by a BSD-style license that can be
+ * found in the LICENSE file. */
+
+/* Don't use the main frame div when the error is in a subframe. */
+html[subframe] #main-frame-error {
+  display: none;
+}
+
+/* Don't use the subframe error div when the error is in a main frame. */
+html:not([subframe]) #sub-frame-error {
+  display: none;
+}
+
+ 
+}
+
+.hidden {
+  display: none;
+}
+
+.suggestions {
+  margin-top: 18px;
+}
+
+.suggestion-header {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.suggestion-body {
+  color: #777;
+}
+
+.error-code {
+  color: #A0A0A0;
+  margin-top: 15px;
+}
+
+/* Increase line height at higher resolutions. */
+@media (min-width: 641px) and (min-height: 641px) {
+  #help-box-inner {
+    line-height: 18px;
+  }
+}
+
+/* Decrease padding at low sizes. */
+@media (max-width: 640px), (max-height: 640px) {
+  body {
+   /* margin: 15px;*/
+  }
+  h1 {
+    margin: 10px 0 15px;
+  }
+  #content-top {
+    margin: 15px;
+  }
+  #help-box-inner {
+    padding: 20px;
+  }
+  .suggestions {
+    margin-top: 10px;
+  }
+  .suggestion-header {
+    margin-bottom: 0;
+  }
+  .error-code {
+    margin-top: 10px;
+  }
+}
+
+/* Don't allow overflow when in a subframe. */
+html[subframe] body {
+  overflow: hidden;
+}
+
+#sub-frame-error {
+  -webkit-align-items: center;
+  align-items: center;
+  background-color: #DDD;
+  display: -webkit-flex;
+  -webkit-flex-flow: column;
+  flex-flow: column;
+  height: 100%;
+  -webkit-justify-content: center;
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+#sub-frame-error:hover {
+  background-color: #EEE;
+}
+
+#sub-frame-error-details {
+  margin: 0 10px;
+  visibility: hidden;
+}
+
+/* Show details only when hovering. */
+#sub-frame-error:hover #sub-frame-error-details {
+  visibility: visible;
+}
+
+/* If the iframe is too small, always hide the error code. */
+/* TODO(mmenke): See if overflow: no-display works better, once supported. */
+@media (max-width: 200px), (max-height: 95px) {
+  #sub-frame-error-details {
+    display: none;
+  }
+}
+
+/* details-button is special; it's a <button> element that looks like a link. */
+#details-button {
+  background-color: inherit;
+  background-image: none;
+  border: none;
+  box-shadow: none;
+  min-width: 0;
+  padding: 0;
+  text-decoration: underline;
+}
+
+/* Styles for platform dependent separation of controls and details button. */
+.suggested-left > #control-buttons,
+.suggested-right > #details-button  {
+  float: left;
+}
+
+.suggested-right > #control-buttons,
+.suggested-left > #details-button  {
+  float: right;
+}
+
+#details-button.singular {
+  float: none;
+}
+
+#buttons::after {
+  clear: both;
+  content: '';
+  display: block;
+  width: 100%;
+}
+
+/* Offline page */
+.offline .interstitial-wrapper {
+  color: #2b2b2b;
+  font-size: 1em;
+  line-height: 1.55;
+  margin: 100px auto 0;
+  max-width: 600px;
+  width: 100%;
+}
+
+.offline .runner-container {
+  height: 150px;
+  max-width: 600px;
+  overflow: hidden;
+  position: absolute;
+  top: 10px;
+  width: 44px;
+  z-index: 2;
+}
+
+.offline .runner-canvas {
+  height: 150px;
+  max-width: 600px;
+  opacity: 1;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+}
+
+.offline .controller {
+  background: rgba(247,247,247, .1);
+  height: 100vh;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  z-index: 1;
+}
+
+#offline-resources {
+  display: none;
+}
+
+@media (max-width: 400px) {
+  .suggested-left > #control-buttons,
+  .suggested-right > #control-buttons {
+    float: none;
+    margin: 50px 0 20px;
+  }
+}
+
+@media (max-height: 350px) {
+  h1 {
+    margin: 0 0 15px;
+  }
+
+  .icon-offline {
+    margin: 0 0 10px;
+  }
+
+  .interstitial-wrapper {
+    margin-top: 5%;
+  }
+
+  .nav-wrapper {
+    margin-top: 30px;
+  }
+}
+
+/* Loader */
+
+.loader,
+.loader:after {
+	border-radius: 50%;
+	width: 10em;
+	height: 10em;
+}
+.loader {    
+	margin: auto;
+	top: 35%;
+	font-size: 10px;
+	position: relative;
+	border-top: 1.1em solid red;
+	border-right: 1.1em solid green;
+	border-bottom: 1.1em solid blue;
+	border-left: 1.1em solid purple;
+	transform: translateZ(0);
+	-webkit-animation: load8 1.1s infinite linear;
+	animation: load8 1.1s infinite linear;
+	opacity:0.5;
+}
+@-webkit-keyframes load8 {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+@keyframes load8 {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
