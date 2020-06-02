@@ -93,7 +93,7 @@ function navBar(){
 		navbar.innerHTML = 
 			"<ul>"+
 				"<li class='current'>"+
-					"<a href='index.php'>Home</a>"+
+					"<a href='index.html'>Home</a>"+
 					"<ul>"+
 						"<li><a href='mole.html'>Mole Game</a></li>	"+								
 					"</ul>"+
