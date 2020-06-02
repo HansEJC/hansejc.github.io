@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Orion Park</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<script src="js/papaparse.js"></script>
+		<script src="js/op.js?=v3.1"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<script src="js/style_minified.js"></script>
+   		<script src="js/script.js"></script>
+	</head>
+	<body class="left-sidebar">
+		<!-- Header -->
+		<div id="header-wrapper" class="wrapper">
+			<div id="header">
+				<!-- Logo -->
+				<div id="logo">
+					<h1><a href="#">Orion Park</a></h1>									 							
+				</div>	
+				<!-- Nav -->
+				<nav id="nav">
+				</nav>
+			</div>
+		</div>
+		<!-- Main -->
+		<div id="main" class="container">
+			<div class="row 100%">
+				<div>
+					<!-- Content -->
+					<div id="content">
+						<form>
+							<br><input type="radio" name ="A" id="PStock" onChange='ifsy();saveRadio(this);'>Project Stock<br>
+							<input type="radio" name ="A" id="WStock" onChange='ifsy();saveRadio(this);'>Warehouse Stock<br>
+							<input type="radio" name ="A" id="Del" onChange='ifsy();saveRadio(this);'>Deliveries<br>
+						</form>	
+						<pre id ="p"></pre>	<pre id ="pp"></pre>	
+						<div class="row 50%">
+							<section class="box">
+								<form>
+									Password<input type="password" id="PASS" onkeyup='saveValue(this);' /> 
+								</form>
+							</section>
+							<section class="box">
+								<form>
+									Search<input type="text" id="SEAR" onkeyup='saveValue(this);' /> 
+								</form>
+							</section>
+						</div>
+						<div class="row 100%">
+							</section class="box">
+							<section id="tab" class="box">
+							</section>				
+						</div>
+						<script type="text/javascript">
+							navBar();
+							delivery();
+							document.getElementById("PStock").checked = (getSavedValue("PStock") == "true");
+							document.getElementById("WStock").checked = (getSavedValue("WStock") == "true");
+							document.getElementById("Del").checked = (getSavedValue("Del") == "true");	
+							document.onkeyup = function() {							
+								ifsy();								
+							};
+						</script>						
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="copyright">
+			<ul>
+				<li>&copy; Hans Juneby.</li><li>Design: <a href="http://html5up.net">HTML5 UP & Hans Juneby</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

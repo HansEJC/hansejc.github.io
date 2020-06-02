@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Help</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js"></script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<script src="js/style_minified.js"></script>
+   		<script src="js/script.js"></script>
+	</head>
+	<body class="left-sidebar">
+		<!-- Header -->
+		<div id="header-wrapper" class="wrapper">
+			<div id="header">
+				<!-- Logo -->
+				<div id="logo">
+					<h1><a href="#">Help</a></h1><br>							
+				</div>
+				<!-- Nav -->
+				<nav id="nav">
+				</nav>
+			</div>
+		</div>
+		<!-- Main -->
+		<div id="main" class="container">
+			<div class="row 100%">
+				<div>
+					<!-- Content -->
+					<div id="content">
+						<div class="row 100%">
+							<p><b>Distance Protection Fault Plotter</b><br>
+								Using Easergy / S1 Agile, open the disturbance record data. Go to "Files" > "Save As" > "CSV Format" > "Vector Values (RMS & Ang)". 
+								For the csv file to load correctly, delete all unneeded rows and columns containing letters. The uploaded csv file must only contain 
+								four columns of data with no labels. The first column must contain the "Vcat-RMS" data, the second column the "Vcat-Ang",  
+								the third column the "Icat-RMS" data, and the fourth column the "Icat-Ang".<br><br>
+								To plot secondary values to primary values, select the secondary radio button and input the VT and CT ratios in the advanced section.
+								Some relay disturbance record display and export the records using secondary values. If this is the case, select the secondary DR 
+								radio button. The fault sample time can be used to calculate in what zone the relay tripped. The default sample time is of 1 ms, but
+								other sample times are also used. The sample time can be found in the disturbance record data.
+							</p>
+						</div>
+						<div class="row 100%">
+							<p><b>CSV Plotter</b><br>
+								For the csv file to load correctly, delete all unneeded rows and columns. 
+								Rolling averages can be used by entering a number in the input box that appears while hovering. 					
+							</p>
+						</div>
+						<div class="row 100%">
+							<p><b>Electrical Engineering Tools Excel Equations</b><br>
+								<a href="downloads/Polar Addition.xlsx">Polar Additions</a>
+							</p>
+						</div>
+						<div class="row 100%">
+							<p id ="p"></p>
+							<script type="text/javascript">	
+								navBar();
+								if (!!navigator.userAgent.match(/Trident\/7\./)){ //if IE is used
+									document.getElementById("p").textContent +="If something feels like it isn't working like it should, switch to another browser you dinosaur. Internet Explorer sucks!";
+								}
+								else {
+									document.getElementById("p").textContent +=" Good for you for not using Internet Explorer!";
+								}
+							</script>
+						</div>		
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="copyright">
+			<ul>
+				<li>&copy; Hans Juneby.</li><li>Design: <a href="http://html5up.net">HTML5 UP & Hans Juneby</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

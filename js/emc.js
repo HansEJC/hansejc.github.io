@@ -206,7 +206,7 @@ function calculations(){
 	}	
 	else {
 		g3.updateOptions({
-			labels: (fields[0].checked) ? [ 'Distance', "Electric Field ("+labls(range)+"V/m)","Public Guidance Limit","Public Required Limit"] : [ 'Distance', "Magnetic Field ("+labls(ran)+"T)","Public Guidance Limit","Public Required Limit"],
+			labels: (fields[0].checked) ? [ 'Distance', "Electric Field ("+labls(range)+"V/m)","Public Guidance Limit (5kV/m)","Public Required Limit (9kV/m)"] : [ 'Distance', "Magnetic Field ("+labls(ran)+"T)","Public Guidance Limit (100μT)","Public Required Limit (360μT)"],
 			valueRange : (fields[0].checked) ? [0,range ]: [0,ran],
 			ylabel: (fields[0].checked) ? "Electric Field ("+labls(range)+"V/m)" : "Magnetic Field ("+labls(ran)+"T)",
 			colors: ["rgb(0,128,128)","#cccc2b","red"],

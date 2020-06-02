@@ -87,3 +87,30 @@
 	});
 
 })(jQuery);
+
+function navBar(){
+	const navbar = document.getElementById('nav');
+		navbar.innerHTML = 
+			"<ul>"+
+				"<li class='current'>"+
+					"<a href='index.php'>Home</a>"+
+					"<ul>"+
+						"<li><a href='mole.html'>Mole Game</a></li>	"+								
+					"</ul>"+
+				"</li>"+
+				"<li>"+
+					"<a href='#'>Tools</a>"+
+					"<ul>"+
+						"<li><a href='csv.html'>CSV Plotter</a></li>"+
+						"<li><a href='relay.html'>Distance Protection Fault Plotter</a></li>"+
+						"<li><a href='earth.html'>Earthing Calculation Tools</a></li>"+	
+						"<li><a href='soil.html'>Earthing Surveys</a></li>		"+
+						"<li><a href='tools.html'>Electrical Engineering Tools</a></li>"+
+						"<li><a href='emc.html'>EMC Calculations</a></li>"+
+						"<li><a href='mortgage.html'>Mortgage Calculator</a></li>	"+								
+					"</ul>"+
+				"</li>"+
+				"<li><a href='op.html'>Orion Park</a></li>"+
+				"<li><a href='help.html'>Help</a></li>"+
+			"</ul>";
+}

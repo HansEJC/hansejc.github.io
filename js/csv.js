@@ -153,10 +153,10 @@ function javaread(bool){
 			var transaction = db.transaction(["plots"], "readonly");
 			var objectStore = transaction.objectStore("plots");
 			objectStore.openCursor(null, "prev").onsuccess = async function(event) {
-				var cursor = event.target.result.value.data;
-				heh =[];
-				heh = cursor.map(x => [...x]);
 				try{
+					var cursor = event.target.result.value.data;
+					heh =[];
+					heh = cursor.map(x => [...x]);
 					plotexp(cursor);
 				}catch(err){
 					console.log(err);
