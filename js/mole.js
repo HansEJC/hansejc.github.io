@@ -84,7 +84,7 @@ function startGame() {
 			timeUpN = true;	
 			peepH();		
 			setTimeout(() => {
-				timeUpN = true;
+				timeUpH = true;
 				gamesStarted = false;
 				saveScores(score);
 			}, 8000);
