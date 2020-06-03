@@ -1,19 +1,28 @@
 function saveScores(scr) {
-    $.post("./savesettings.php?=v1.0",
-    {
-        name: $("#userName").val(),
-        ip: ipString,
-        score: scr,
-		date: new Date().toLocaleString("en-GB", {timeZone: "Europe/London"}),
-    },
-    function(data,status){
-        document.getElementById("TempScore").innerHTML = data;
-        $( "#TempScore" ).fadeIn(100);
-        setTimeout(function(){
-			$( "#TempScore" ).fadeOut(500);	
-			document.location="?"+(new Date).getTime();
-		}, 1000);
-    });
+	let scoreID = document.cookie == "mole=true" ? "moleScores" : "jumpScores"; 
+	let scoreArr = [];
+	const name = document.getElementById("userName");
+	let exists = false;
+
+	try{
+		scoreArr = JSON.parse(localStorage.getItem(scoreID));
+		scoreArr.forEach(val => {
+			if (val[0] == name.value) {
+				val[1] = scr > val[1] ? scr : val[1];
+				exists = true;
+			}
+		});
+	}catch(err){
+		console.log("no highscores yet");
+		scoreArr = [];
+	}
+	
+	if (!exists) scoreArr.push([name.value,scr]);
+	
+	localStorage.setItem(scoreID,JSON.stringify(scoreArr));
+	setTimeout(function(){
+		document.location="?"+(new Date).getTime();
+	}, 1000);
 }
 
 //Speach recognition commands

@@ -8,18 +8,15 @@ let score = 0;
 let time = 0;
 
 try {
-	(async () => {
-		const allScore = await fetch('./uploads/molescores.json')
-			.then(result => result.json());		
-		allScore.sort((a,b) => b[2] - a[2]);			
-		const table = document.getElementById('board');
-		allScore.forEach(val => {
-			let row = table.insertRow(-1);
-			row.insertCell(0).innerHTML = val[0];
-			row.insertCell(1).innerHTML = val[1];
-			row.insertCell(2).innerHTML = val[2];
-		});
-	})();
+	const allScore = JSON.parse(localStorage.getItem("moleScores"));	
+	allScore.sort((a,b) => b[1] - a[1]);			
+	const table = document.getElementById('board');
+	allScore.forEach(val => {
+		let row = table.insertRow(-1);
+		row.insertCell(0).innerHTML = val[0];
+		row.insertCell(1).innerHTML = val[1];
+	});
+
 }catch(err){}
 
 function randomTime(min, max) {
