@@ -73,6 +73,12 @@ function labels(){
 	document.getElementById("yaxis").value = getSavedValue("yaxis");   // set the value to this input
 }
 
+function checkit() {
+	this.checked = true;
+	if (this.id == 'CSVF') document.getElementById("hide").style.display = "none";
+	else document.getElementById("hide").style.display = "block";
+}
+
 function javaread(bool){
 	var idbSupported = false;
 	var db;
@@ -120,6 +126,8 @@ function javaread(bool){
 	document.getElementById("dat").value = getSavedValue("dat");	
 	document.getElementById("datR").value = getSavedValue("datR");
 	localStorage.setItem(document.getElementById("eqcheck").id,false); //uncheck equations with new file
+	const radios = document.querySelectorAll("input[name=ArrayOrCSV]");
+	radios.forEach(rad => rad.addEventListener('change',checkit));
 	
 	function uploadcsv(){
 		document.forms['myForm'].elements['my_upload'].onchange = function(evt) {
@@ -135,6 +143,14 @@ function javaread(bool){
 					return;
 				}
 				var filecontent = evt.target.result;
+				if (document.getElementById("CSVF").checked) {
+					try {//the for loop removes saved labels
+						const len = filecontent.split("\n")[0].split(",").length;
+						for (let i=len;i<len*2;i++) localStorage.removeItem(i);
+						return dyg(filecontent); 
+					}catch (err) {console.log(err);addLoader("CSV Formatting Error, Attempting to Process Upload.",true);}
+				}
+				document.getElementById("PrUp").checked = true;
 				plotcalcs(filecontent);
 			};
 			reader.readAsText(evt.target.files[0]);		
@@ -221,17 +237,6 @@ function plotexp(file){
 	var y = document.getElementById("hide");  
 	y.style.display = "block";	
 	
-	/*Remove unused checkboxes*/
-	try{
-		const myNode = document.getElementById("MyForm");
-		while (myNode.childElementCount>3) { //don't remove the firstborn children
-			myNode.removeChild(myNode.lastChild);
-		}
-		while (document.getElementById("equa").childElementCount>2) { //don't remove the firstborn children
-			document.getElementById("equa").removeChild(document.getElementById("equa").lastChild);
-		}
-	}catch(err){}
-	
 	var csv = file;
 	
 	var dat = new Date(), datb = false;
@@ -245,6 +250,12 @@ function plotexp(file){
 			//dat.setTime(dat.getTime()+1000
 		}
 	}
+	
+	try{
+		while (document.getElementById("equa").childElementCount>2) { //don't remove the firstborn children
+			document.getElementById("equa").removeChild(document.getElementById("equa").lastChild);
+		}
+	}catch(err){}
 	
 	//add equation inputs
 	var eqh = document.getElementById('equa');
@@ -297,6 +308,13 @@ function plotexp(file){
 }
 
 function dyg(csv) {
+	/*Remove unused checkboxes*/
+	try{
+		const myNode = document.getElementById("MyForm");
+		while (myNode.childElementCount>3) { //don't remove the firstborn children
+			myNode.removeChild(myNode.lastChild);
+		}
+	}catch(err){}
 	try {
 		if (g3) g3.destroy();
 	}catch(e){}
@@ -306,10 +324,9 @@ function dyg(csv) {
 		{		
 			xlabel: document.getElementById("xaxis").value,	
 			ylabel: document.getElementById("yaxis").value,	
-			//y2label: document.getElementById("y2axis").value,	
+			connectSeparatedPoints: document.getElementById("CSVF").checked,
 			legend: 'always',
 			includeZero: true,
-			//labels: labl,
 			showRoller: true          
 		}          // options
 	);
