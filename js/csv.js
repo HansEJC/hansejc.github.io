@@ -79,6 +79,24 @@ function checkit() {
 	else document.getElementById("hide").style.display = "block";
 }
 
+function colorUpdate() {
+	const colorNode = document.querySelectorAll("input[type=color]");
+	let colArr = [...colorNode];
+	colArr = colArr.map(col => col.value);
+	g3.updateOptions({
+		colors: colArr
+	});
+}
+
+function addOption(opt, desc, bool) {
+	const newopt = document.createElement('input');newopt.id=opt;newopt.type='checkbox';newopt.checked=bool;newopt.addEventListener('change', updateOps);
+	const label = document.createElement("Label");label.setAttribute("for",opt);label.innerHTML = desc;
+	options.appendChild(label);	label.appendChild(newopt);
+	function updateOps (e){
+		eval('g3.updateOptions({'+e.target.id+':'+e.target.checked+'});');		
+	}
+}
+
 function javaread(bool){
 	var idbSupported = false;
 	var db;
@@ -313,6 +331,9 @@ function dyg(csv) {
 		const myNode = document.getElementById("MyForm");
 		while (myNode.childElementCount>3) { //don't remove the firstborn children
 			myNode.removeChild(myNode.lastChild);
+		while (document.getElementById("ColorForm").childElementCount>1) { //don't remove the firstborn children
+			document.getElementById("ColorForm").removeChild(document.getElementById("ColorForm").lastChild);
+		}
 		}
 	}catch(err){}
 	try {
@@ -332,23 +353,42 @@ function dyg(csv) {
 	);
 	
 	g3.ready(function() {
-		var lbs = g3.getLabels();
+		const lbs = g3.getLabels();
+		const colors = g3.getColors();
 		//lbs.pop();
 		lbs.shift();
-		var cb = [];var cb2 = []; 	
-		var cbh = document.getElementById('MyForm');
+		var cb = [], cb2 = [], col = []; 	
+		const cbh = document.getElementById('MyForm'), colF = document.getElementById('ColorForm');
 		
 		for(var i = 0; i < lbs.length; i++){
-			cb[i] = document.createElement('input');cb2[i] = document.createElement('input'); 
-			cb[i].type = 'checkbox';cb2[i].type = 'text'; 
-			cbh.appendChild(cb[i]);cbh.appendChild(cb2[i]); 
-			cb[i].id = i;cb2[i].id = i+lbs.length; 
-			cb2[i].value = lbs[i]; 			
+			cb[i] = document.createElement('input');cb2[i] = document.createElement('input'); col[i] = document.createElement('input'); 
+			cb[i].type = 'checkbox';cb2[i].type = 'text'; col[i].type = 'color'; 
+			cbh.appendChild(cb[i]);cbh.appendChild(cb2[i]); colF.appendChild(col[i]); 
+			cb[i].id = i;cb2[i].id = i+lbs.length; col[i].id = i+2*lbs.length; 
+			cb2[i].value = lbs[i]; 
+			col[i].value = rgbToHex(colors[i]);		
 			cb2[i].className = "idents";
 			cb[i].checked = true;
 			cb[i].onchange = function(){change(this);}; cb2[i].onblur = function(){saveValue(this); idents(lbs.length);};
 		}	
+		const colorNode = document.querySelectorAll("input[type=color]");
+		colorNode.forEach(col => col.addEventListener('change',colorUpdate));
 		idents(lbs.length);
+		
+		//options		
+		const options = document.getElementById("options"); options.innerHTML='<b>Options</b>';
+		addOption('fillGraph', 'Fill Graph');
+		addOption('logscale', 'Log Scale');
+		addOption('drawGrid', 'Show Grid',true);
+		addOption('connectSeparatedPoints', 'Connect Points',true);
+		addOption('drawPoints', 'Draw Points');
+		addOption('stackedGraph', 'Stacked Graph');
+		addOption('stepPlot', 'Step Plot');
+		addOption('animatedZooms', 'Animated Zoom');
+		addOption('labelsSeparateLines', 'One Line per Label');
+		addOption('labelsKMB', 'Label Format');
+		addOption('labelsKMB2', 'Label Format2');
+		
 		document.getElementById("69").onchange = (() => UncheckAll('MyForm'));
 		setTimeout(function(){
 			window.dispatchEvent(new Event('resize'));
@@ -365,10 +405,17 @@ function dyg(csv) {
 	yaxis.onblur = () => { saveValue(this);
 		g3.updateOptions({ylabel: yaxis.value});								
 	};
+		
+	function rgbToHex(rgb) {
+		const col = rgb.split(/[,)(]/);		
+		const ToHex = (c) => {const hex = c.toString(16);return hex.length == 1 ? "0" + hex : hex;}
+		return "#" + ToHex(+col[1]) + ToHex(+col[2]) + ToHex(+col[3]);
+	}
 	
 	function change(el) {
 		g3.setVisibility(el.id, el.checked);
 	}
+	
 	function UncheckAll(elementID){
 	  var _container = document.getElementById(elementID);
 	  var _chks = _container.getElementsByTagName("INPUT");
@@ -385,14 +432,18 @@ function dyg(csv) {
 		}												 													 
 	}
 	function idents(len){
-		var labl = []; var labd;
+		let labl = [], labd, colors;
 		labl.push("boobs");
 		
 		for (var i=0; i < len;i++){
 			labd = document.getElementById(i+len);
+			colors = document.getElementById(i+len*2);
 			labd.value = getSavedValue(i+len) == "" ? labd.value : getSavedValue(i+len);
 			labl.push(labd.value);
-			if (labd.value.length>0) labd.style['width'] = (labd.value.length*8)+'px';
+			if (labd.value.length>0) {
+				labd.style['width'] = (labd.value.length*8)+'px';
+				colors.style['width'] = (Math.max(40,20+labd.value.length*8))+'px';
+			}
 		}
 		g3.updateOptions({
 			labels: labl

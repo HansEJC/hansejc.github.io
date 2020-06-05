@@ -82,6 +82,8 @@
 									<input type=checkbox id=69 checked>
 									<label for="69"> All</label>
 								</p>	
+								<p id="ColorForm"><b style="width:93px;display:inline-block;">Colors: </b>
+								</p>
 							</article>
 						</div>
 						<div class="row 50%" id="hide" style="display: none;">
@@ -98,23 +100,28 @@
 									<b>Enable Equations </b><input type=checkbox id='eqcheck'>
 								</form>
 							</section>
+							<section class="post" >
+								<form id="options">
+									<b>Options</b>
+								</form>
+							</section>
 						</div>
 						<div class="row 50%">
 							<form id="myForm">
 								<input type="file" accept=".csv" id="my_upload" name="my_upload"/>
 							</form>	
-							<script type="text/javascript">	
-								navBar();
-								labels();									
-								if (!!navigator.userAgent.match(/Trident\/7\./)){ //if IE is used
-									plotIE();
-									alert("Dates don't plot on Internet Explorer correctly. Get off it you Dinasour!");
-								}
-								else {
-									javaread();
-								}
-							</script>
-						</div>																		
+						</div>		
+						<script type="text/javascript">	
+							navBar();
+							labels();									
+							if (!!navigator.userAgent.match(/Trident\/7\./)){ //if IE is used
+								plotIE();
+								alert("Dates don't plot on Internet Explorer correctly. Get off it you Dinasour!");
+							}
+							else {
+								javaread();
+							}
+						</script>																
 					</div>
 				</div>
 			</div>
