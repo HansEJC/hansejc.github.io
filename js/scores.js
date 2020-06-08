@@ -1,5 +1,7 @@
 function saveScores(scr) {
-	let scoreID = document.cookie == "mole=true" ? "moleScores" : "jumpScores"; 
+	let scoreID = "jumpScores";
+	scoreID = document.cookie == "game=mole" ? "moleScores" : scoreID; 
+	scoreID = document.cookie == "game=simon" ? "simonScores" : scoreID; 
 	let scoreArr = [];
 	const name = document.getElementById("userName");
 	let exists = false;
