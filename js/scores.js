@@ -40,9 +40,8 @@ function speech() {
 		/*if (transcript.includes('jump'))*/ Rexy.tRex.startJump();
 		recognition.abort();
 		//recognition.start();
-	};
-	
-	recognition.onend = () => recognition.start();
+	    recognition.onend = () => recognition.start();
+	};	
 	recognition.start();
 }
 
