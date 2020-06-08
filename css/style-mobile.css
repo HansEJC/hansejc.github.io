@@ -445,3 +445,8 @@
 .hole {
   flex: 1 0 50% !important;
 }
+
+/*Simon */
+.memory { 
+	font-size: 18px !important;
+}
