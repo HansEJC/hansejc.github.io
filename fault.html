@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Railway Faults</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js?v1.2"></script>
+		<script src="js/fault.js?v1.0"></script>
+		<script src="js/dygraph.min.js"></script>
+		<link rel="stylesheet" src="dygraph.css" />
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<script src="js/style_minified.js"></script>
+   		<script src="js/script.js"></script>
+	</head>
+	<body class="left-sidebar">
+		<!-- Header -->
+		<div id="header-wrapper" class="wrapper">
+			<div id="header">
+				<!-- Logo -->
+				<div id="logo">
+					<h1><a href="#">Railway Faults</a></h1><br>									 							
+				</div>
+				<!-- Nav -->
+				<nav id="nav">
+				</nav>
+			</div>
+		</div>
+		<!-- Main -->
+		<div id="main" class="container">
+			<div class="row 100%">
+				<div >
+					<!-- Content -->
+					<div id="content">
+						<div class="row 50%" id="Lhide">
+							<section class="box">
+								<form>
+									Fault Current (kA)<input type="number" placeholder=6 min=0 id="FC" onkeyup='saveValue(this);'/>
+									Catenery Impedance (Ω/km)<input step=0.01 placeholder=0.43 min=0 type="number" id="CI" onkeyup='saveValue(this);'/>
+									Contact W Impedance (Ω/km)<input step=0.01 placeholder=0.15 min=0 type="number" id="CW" onkeyup='saveValue(this);'/>
+								</form>
+							</section>
+							<section class="box">
+								<form> 
+									Rail Impedance (Ω/km)<input step=0.01 placeholder=0.2 min=0 type="number" id="RI" onkeyup='saveValue(this);'/>
+									AEW Impedance (Ω/km)<input step=0.01 placeholder=0.18 min=0 type="number" id="AEW" onkeyup='saveValue(this);'/>
+									RSC Impedance (Ω/km)<input step=0.01 placeholder=0.11 min=0 type="number" id="RSC" onkeyup='saveValue(this);'/>
+								</form>
+							</section>
+							<section class="box">
+								<form> 
+									Track Number<input step=1 placeholder=2 type="number" id="TRNU" min=1 onkeyup='saveValue(this);'/>
+									Cross Bonding Distance (m) <input min=0 type="number" id="CRBD" onkeyup='saveValue(this);'/>
+								</form>
+							</section>
+						</div>	
+						<header><hr>
+								<h1>Substations</h1>
+						</header>
+						<div class="row 50%">
+							<section class="box">
+								<form>
+									Quantity<input type="number" id="NPR" onkeyup='saveValue(this);quantities();' /> 
+								</form>
+							</section>
+							<section class="box"><pre>    Substation Name</pre>
+								<form id="Substation">
+								</form>
+							</section>
+							<section class="box"><pre>    Location (km)</pre>
+								<form id="Location">
+								</form>
+							</section>					
+						</div>		
+						<div class="row 100%">
+							<article class="post">
+								<style>.dygraph-legend {width: inherit}</style>
+								<div id="graphdiv3" style="width:1000px; height:600px;"></div>
+								<script type="text/javascript">	
+									navBar(); 
+									quantities();
+									calculations();
+									document.onkeyup = () => calculations();		
+								</script>	
+							</article>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="copyright">
+			<ul>
+				<li>&copy; <a href="mortgage2.php">Hans Juneby.</a></li><li>Design: <a href="http://html5up.net">HTML5 UP & Hans Juneby</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

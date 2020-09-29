@@ -1,0 +1,132 @@
+html {
+  box-sizing: border-box;
+ # font-size: 10px;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.tictactoe {
+	width: 200%;
+	height: 200%;
+	margin: 0 auto;
+}
+
+.tacrow {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    -webkit-flex-flow: row;
+    justify-content: space-around;   
+    line-height: 30px;
+}
+.square {
+    text-align: center;
+    flex: 1 0;
+    height: auto;
+}
+
+.square2, .square8 {
+    border-left: solid;
+    border-right: solid;
+}
+
+.square5 {
+    border: solid;
+}
+
+.square4, .square6 {
+    border-top: solid;
+    border-bottom: solid;
+}
+
+.Xplay {
+	margin: 10% 10% 10% 10%;
+	vertical-align: middle;
+	width: 80%; 
+	height: 80%; 
+	position: relative;
+}
+
+
+.Xplay:before { 
+	content: '';
+	position: absolute;
+	border-bottom: solid;
+	height: 100%;
+	width: 100%;
+	transform: translateX(-50%) rotate(45deg) translateY(-50%);
+	color: purple;
+}
+
+.Xplay:after { 
+    content: '';
+    position: absolute;
+    border-right: solid;
+    height: 100%;
+    width: 100%;
+    transform: translateX(-50%) rotate(45deg) translateX(-50%);
+	color: purple;
+}
+
+.Oplay{
+	margin: 10% 10% 10% 10%;
+	vertical-align: middle;
+	width: 80%;
+	height: 80%;	
+	position: relative;
+}
+
+.Oplay:after{
+    content: '';
+    position: absolute;
+    border: solid;
+	border-radius: 50%;
+    height: 100%;
+    width: 100%;
+    transform: translateX(-50%);
+	color: blue;
+}
+
+.square:before {
+    content:'';
+    float:left;
+    padding-top:100%;
+}
+
+.hwin {
+	background-image: linear-gradient(#000, #000);
+	background-size: 100% 5px;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.vwin {
+	background-image: linear-gradient(#000, #000);
+	background-size: 5px 100%;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.dlwin {
+	background-image: linear-gradient(#000, #000);
+    height: 100%;
+    width: 100%;
+	background-size: 5px 100%;
+	background-repeat: no-repeat;
+	background-position: center center;
+    transform: rotate(-45deg);
+}
+
+
+.drwin {
+	background-image: linear-gradient(#000, #000);
+    height: 100%;
+    width: 100%;
+	background-size: 5px 100%;
+	background-repeat: no-repeat;
+	background-position: center center;
+    transform: rotate(45deg);
+}

@@ -22,7 +22,7 @@ function calculations(){
 	document.getElementById("OP").value = getSavedValue("OP");
 	var hpi = Number(getSavedValue("HPI"));    // set the value to this input
 	var today = new Date();
-	var monthd = (today-new Date(2019,5,1))/1000/60/60/24/365.25*12; //difference in month
+	var monthd = (today-new Date(2020,7,1))/1000/60/60/24/365.25*12; //difference in month
 	
 	var il = 176225; //initial loan	
 	if (hpi < 100000) hpi = il + 9275;
@@ -35,7 +35,7 @@ function calculations(){
 	teq = hpi - il; //initial deposit plus HPI
 	
 	var i;
-	for (i = 0; i < 13; i++) { //first two years
+	for (i = 0; i < 13; i++) { //first year
 		intr = rl*iir;
 		eqp = 1000-intr;
 		teq = teq + eqp;
@@ -44,7 +44,7 @@ function calculations(){
 		tpa = tpa +1000;
 	}
 	
-	for (i = 0; i < 11; i++) { //next two years
+	for (i = 0; i < 11; i++) { // changed overpayment to £1100
 		intr = rl*iir;
 		eqp = 1100-intr;
 		teq = teq + eqp;
@@ -60,7 +60,7 @@ function calculations(){
 	rl = rl-eqp;
 	tpa = tpa + 1100;
 	
-	for (i = 0; i < monthd; i++) { 
+	for (i = 0; i < 14; i++) { // changed overpayment to £1200
 		intr = rl*nir;
 		eqp = 1200-intr;
 		teq = teq + eqp;
@@ -68,6 +68,16 @@ function calculations(){
 		rl = rl-eqp;	
 		tpa = tpa +1200;	
 	}
+	
+	for (i = 0; i < monthd; i++) { // changed overpayment to £1500
+		intr = rl*nir;
+		eqp = 1500-intr;
+		teq = teq + eqp;
+		mortgage.push([new Date(2020,7+i,1), intr, eqp, intr+eqp]);
+		rl = rl-eqp;	
+		tpa = tpa +1500;	
+	}
+	
 	ltv = 100 - teq / (teq + rl) * 100;
 	
 	var op = Number(getSavedValue("OP"));
@@ -89,7 +99,7 @@ function calculations(){
 	for (i = 0; rl > 0; i++) { 
 		intr = rl*nir;
 		eqp = tp-intr;
-		mortgage.push([new Date(2019,6+i+monthd,1), intr, eqp, intr+eqp]);
+		mortgage.push([new Date(2020,8+i+monthd,1), intr, eqp, intr+eqp]);
 		rl = rl-eqp;
 		pn++;		
 		start+=1;if(start>max)break;

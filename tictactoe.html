@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Tic Tac Toe</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.dropotron.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/skel-layers.min.js"></script>
+		<script src="js/init.js?=v1.2"></script>
+		<link rel="stylesheet" href="css/tictactoe.css?v1.3" />
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+		</noscript>
+		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
+		<script src="js/style_minified.js"></script>
+   		<script src="js/script.js"></script>
+	</head>
+	<body class="left-sidebar">
+		<!-- Header -->
+		<div id="header-wrapper" class="wrapper">
+			<div id="header">
+				<!-- Logo -->
+				<div id="logo">
+					<h1><a href="#">Tic Tac Toe</a></h1><br>							
+				</div>	
+				<!-- Nav -->
+				<nav id="nav">
+				</nav>
+			</div>
+		</div>
+		<!-- Main -->				
+		<div id="main" class="container">
+			<div class="row 100%">				
+				<div>				
+					<!-- Content -->
+					<div id="content"><br>
+						<div class="row 50%">
+							<section class="box">
+								<form><br>										
+									<button class="button label" onClick="startGame(); event.preventDefault()">Start!</button>
+								</form>
+							</section>	
+							<section class="box">
+								<form>
+									Level:
+									 <span id="Mode" class="label"></span>	
+								</form>
+							</section>																							
+						</div>	
+						<div class="row 50%">
+							<div class="tictactoe">
+								<div class="tacrow">
+									<div class="square square1 row1 col1"><div class='diag1'></div></div>
+									<div class="square square2 row1 col2"><div></div></div>
+									<div class="square square3 row1 col3"><div class='diag2'></div></div>
+								</div>
+								<div class="tacrow">
+									<div class="square square4 row2 col1"><div></div></div>
+									<div class="square square5 row2 col2"><div class='diag1 diag2'></div></div>
+									<div class="square square6 row2 col3"><div></div></div>
+								</div>
+								<div class="tacrow">
+									<div class="square square7 row3 col1"><div class='diag2'></div></div>
+									<div class="square square8 row3 col2"><div></div></div>
+									<div class="square square9 row3 col3"><div class='diag1'></div></div>
+								</div>
+							</div>
+						</div>					  
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/tictactoe.js?=v2.1"></script>
+		<script type="text/javascript">
+			navBar();	
+		</script>
+		<div id="copyright">
+			<ul>
+				<li>&copy; <a href=javascript:fullscores();>Hans Juneby.</a></li><li>Design: <a href="http://html5up.net">HTML5 UP & Hans Juneby</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

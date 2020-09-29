@@ -94,22 +94,23 @@ function navBar(){
 		"<ul>"+
 			"<li class='current heh'>"+
 				"<a href='#'>Home</a>"+
-				"<ul>"+
-					"<li><a href='index.html'>TRex</a></li>"+		
-					"<li><a href='mole.html'>Whack a Mole</a></li>"+		
-					"<li><a href='memory.html'>Simon</a></li>"+								
+				"<ul>"+		
+					"<li><a href='memory.html'>Simon</a></li>"+	
+					"<li><a href='index.html'>TRex</a></li>"+			
+					"<li><a href='mole.html'>Whack a Mole</a></li>"+						
 				"</ul>"+
 			"</li>"+
 			"<li class='heh'>"+
 				"<a href='#'>Tools</a>"+
 				"<ul>"+
 					"<li><a href='csv.html'>CSV Plotter</a></li>"+
-					"<li><a href='relay.html'>Distance Protection Fault Plotter</a></li>"+
+					"<li><a href='relay.html'>Distance Protection Fault Plotter</a></li>"+	
 					"<li><a href='earth.html'>Earthing Calculation Tools</a></li>"+	
 					"<li><a href='soil.html'>Earthing Surveys</a></li>		"+
-					"<li><a href='tools.html'>Electrical Engineering Tools</a></li>"+
+					"<li><a href='tools.html'>Electrical Engineering Tools</a></li>"+		
 					"<li><a href='emc.html'>EMC Calculations</a></li>"+
-					"<li><a href='mortgage.html'>Mortgage Calculator</a></li>	"+								
+					"<li><a href='mortgage.html'>Mortgage Calculator</a></li>	"+	
+					"<li><a href='fault.html'>Railway Faults</a></li>"+				
 				"</ul>"+
 			"</li>"+
 			"<li><a href='op.html'>Orion Park</a></li>"+

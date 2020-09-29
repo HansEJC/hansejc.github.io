@@ -1,0 +1,73 @@
+html {
+  box-sizing: border-box;
+ # font-size: 10px;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.tictactoe {
+	width: 200%;
+	height: 200%;
+	margin: 0 auto;
+}
+
+.tacrow {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    -webkit-flex-flow: row;
+    justify-content: space-around;   
+    line-height: 30px;
+}
+
+.key {
+    text-align: center;
+    flex: 1 0;
+    height: auto;
+    border: solid;
+}
+
+.pressed {
+	color: purple;
+	background-color: purple;
+}
+
+.Xplay {
+	margin: 10% 10% 10% 10%;
+	vertical-align: middle;
+	width: 80%; 
+	height: 80%; 
+	position: relative;
+}
+
+
+.Xplay:before { 
+	content: '';
+	position: absolute;
+	border-bottom: solid;
+	height: 100%;
+	width: 100%;
+	transform: translateX(-50%) rotate(45deg) translateY(-50%);
+	color: purple;
+}
+
+.Xplay:after { 
+    content: '';
+    position: absolute;
+    border-right: solid;
+    height: 100%;
+    width: 100%;
+    transform: translateX(-50%) rotate(45deg) translateX(-50%);
+	color: purple;
+}
+
+
+
+.key:before {
+    content:'';
+    float:left;
+    padding-top:100%;
+}

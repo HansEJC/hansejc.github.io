@@ -172,19 +172,12 @@ function fetchHeader(url, wch) {
         xhr.onload = function () {
             if (this.status >= 200 && this.status < 300) {
                 resolve(xhr.getResponseHeader(wch));
-				
             } else {
-                reject({
-                    status: this.status,
-                    statusText: xhr.statusText
-                });
+                resolve("June 28 1998");
             }
         };
         xhr.onerror = function () {
-            reject({
-                status: this.status,
-                statusText: xhr.statusText
-            });
+            resolve("June 28 1998");
         };
         xhr.send();
     });
