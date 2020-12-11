@@ -232,6 +232,7 @@ function javaread(bool){
 			}
 		}	
 		localStorage.setItem(document.getElementById("eqcheck").id,false); //uncheck equations with new file
+		document.getElementById("69").checked = true; //checkbox "Show" with new file
 	
 		save(csv);
 		//setTimeout(dyg,1,(csv));

@@ -60,32 +60,39 @@
 									Rail Impedance (Ω/km)<input step=0.01 placeholder=0.2 min=0 type="number" id="RI" onkeyup='saveValue(this);'/>
 									AEW Impedance (Ω/km)<input step=0.01 placeholder=0.18 min=0 type="number" id="AEW" onkeyup='saveValue(this);'/>
 									RSC Impedance (Ω/km)<input step=0.01 placeholder=0.11 min=0 type="number" id="RSC" onkeyup='saveValue(this);'/>
+									<input type="radio" name="RailR" id="SRR" onchange="calculations();" checked>Single RR
+									<input type="radio" name="RailR" id="DRR" onchange="calculations();">Double RR
 								</form>
 							</section>
 							<section class="box">
 								<form> 
-									Track Number<input step=1 placeholder=2 type="number" id="TRNU" min=1 onkeyup='saveValue(this);'/>
+									Number of Locations<input type="number" id="NPR" onkeyup='saveValue(this);quantities();'/> 
 									Cross Bonding Distance (m) <input min=0 type="number" id="CRBD" onkeyup='saveValue(this);'/>
+									<input type="radio" name="Feeding" id="CLASS" onchange="calculations();" checked>Classic
+									<input type="radio" name="Feeding" id="BOOST" onchange="calculations();">Booster
+									<input type="radio" name="Feeding" id="ATFEED" onchange="calculations();">ATF<br>
+									<div id="Bstuff">Booster Impedance (Ω)<input step=0.01 placeholder=0.21 min=0 type="number" id="BIMP" onkeyup='saveValue(this);'/></div>
+									<div id="ATFstuff">ATF Impedance (Ω/km)<input step=0.01 placeholder=0.07 min=0 type="number" id="ATF" onkeyup='saveValue(this);'/></div>
 								</form>
 							</section>
 						</div>	
 						<header><hr>
-								<h1>Substations</h1>
+								<br>
 						</header>
 						<div class="row 50%">
-							<section class="box">
-								<form>
-									Quantity<input type="number" id="NPR" onkeyup='saveValue(this);quantities();' /> 
-								</form>
-							</section>
-							<section class="box"><pre>    Substation Name</pre>
+							<section class="box"><pre>    Location Name</pre>
 								<form id="Substation">
 								</form>
 							</section>
 							<section class="box"><pre>    Location (km)</pre>
 								<form id="Location">
 								</form>
-							</section>					
+							</section>	
+							<section class="box"><pre>    Track Number</pre>
+								<form id="Tracks">
+									<input step=1 placeholder=2 type="number" id="TRNU" min=1 onkeyup='saveValue(this);'/>
+								</form>
+							</section>				
 						</div>		
 						<div class="row 100%">
 							<article class="post">
@@ -98,6 +105,11 @@
 									document.onkeyup = () => calculations();		
 								</script>	
 							</article>
+						</div>
+						<div class="row 50%">
+							<form>
+								<br><button class ="button" type="button" onclick="exportToCsv('faults.csv', calculations())">Export</button>
+							</form>						
 						</div>
 					</div>
 				</div>
