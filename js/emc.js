@@ -3,6 +3,20 @@ function saveValue(e){
 	var id = e.id;  // get the sender's id to save it . 
 	var val = e.value; // get the value. 
 	localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+	
+	let url ='';
+	let params = {};
+	document.querySelectorAll('input').forEach((element) => {
+		if (element.value.length > 0) params[element.id] = element.value;
+	});
+	let esc = encodeURIComponent;
+	let query = Object.keys(params)
+		.map(k => esc(k) + '=' + esc(params[k]))
+		.join('&');
+	url += '?' + query;
+		
+	let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + url;
+	window.history.pushState({ path: newurl }, '', newurl);
 }
 
 //get the saved value function - return the value of "v" from localStorage. 
@@ -18,13 +32,13 @@ function change(el) {
 }
 
 function killthemeter(num) {
-  if (num > 1000) return (num/1000).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " km";
-  else if (num > 1) return num.toFixed(2) + " m";
-  else if (num > 0.1) return (num*100).toFixed(2) + " cm";
-  else if (num > 0.001) return (num*1000).toFixed(2) + " mm";
-  else if (num > 0.000001) return (num*1000000).toFixed(2) + " μm";
-  else if (num > 0.000000001) return (num*1000000000).toFixed(2) + " nm";
-  else if (num > 0) return (num*1000000000000).toFixed(2) + " pm";
+  if (num > 1000) return +(num/1000).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " km";
+  else if (num > 1) return +num.toFixed(2) + " m";
+  else if (num > 0.1) return +(num*100).toFixed(2) + " cm";
+  else if (num > 0.001) return +(num*1000).toFixed(2) + " mm";
+  else if (num > 0.000001) return +(num*1000000).toFixed(2) + " μm";
+  else if (num > 0.000000001) return +(num*1000000000).toFixed(2) + " nm";
+  else if (num > 0) return +(num*1000000000000).toFixed(2) + " pm";
   else return "-";
 }
 
@@ -64,6 +78,9 @@ function checkit() {
 }
 
 function calculations(){
+	(new URL(document.location)).searchParams.forEach((x, y) => {
+		localStorage.setItem(y,x);
+	});
 	//Change multiplier if over 1000
 	if (document.getElementById("MUL").value == "H" && getSavedValue("TF") > 999) {
 		localStorage.setItem(document.getElementById("TF").id, document.getElementById("TF").value/1000);
@@ -82,6 +99,8 @@ function calculations(){
 	radios.forEach(rad => rad.addEventListener('change',checkit));
 	const fields = document.querySelectorAll("input[name=field]");
 	fields.forEach(rad => rad.addEventListener('change',calculations));
+	
+	const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
 
 	document.getElementById("TF").value = getSavedValue("TF");    // set the value to this input
 	document.getElementById("EIRP").value = getSavedValue("EIRP");
@@ -113,7 +132,7 @@ function calculations(){
 	document.getElementById("FI").innerHTML = killthemeter(fi);
 	
 	let earray = [];	
-	let range = 0, ran = 0;
+	let range = 0, ran = 0, distrange = 0;
 	
 	if (radios[1].checked) {
 		for (i = 0; i < 5000; i++) { 
@@ -138,12 +157,19 @@ function calculations(){
 	}
 	
 	else {
-		for (i = 1; i < 1100; i++) { 
-			d = i/100;
-			if (fields[0].checked) earray.push([d,q/(2*Math.PI*eo*d),5e3,9e3]);
-			else earray.push([d,uo*cu/(2*Math.PI*d),100e-6,360e-6]);
+		const lowfreqrange = 51000;
+		for (i = 0; i < lowfreqrange; i++) { 
+			d = i/1000;
+			if (fields[0].checked) {
+				earray.push([d,q/(2*Math.PI*eo*d),5e3,9e3]);
+				distrange = q/(2*Math.PI*eo*d) < 2000 ? q/(2*Math.PI*eo*d) > 1990 ? d : distrange : lowfreqrange/1000;
+			}
+			else {
+				earray.push([d,uo*cu/(2*Math.PI*d),100e-6,360e-6]);
+				distrange = uo*cu/(2*Math.PI*d) < 5e-5 ? uo*cu/(2*Math.PI*d) > 4.5e-5 ? d : distrange : lowfreqrange/1000;
+			}
 		}			
-		range = Math.max(q/(2*Math.PI*eo*.3),10e3);
+		range = Math.max(q/(2*Math.PI*eo*.3),50e3);
 		ran = Math.max(uo*cu/(2*Math.PI*.3),400e-6);
 	}
 	
@@ -162,12 +188,12 @@ function calculations(){
 			axes: {
               x: {
 				axisLabelFormatter: function(y) {
-                  return  y + ' m';
+                  return  killthemeter(smoothdec(y));
                 },
               },
               y: {
                 axisLabelFormatter: function(y) {
-                  return  kill(y);
+                  return  kill(smoothdec(y));
                 },
               }
 			}
@@ -210,6 +236,7 @@ function calculations(){
 			valueRange : (fields[0].checked) ? [0,range ]: [0,ran],
 			ylabel: (fields[0].checked) ? "Electric Field ("+labls(range)+"V/m)" : "Magnetic Field ("+labls(ran)+"T)",
 			colors: ["rgb(0,128,128)","#cccc2b","red"],
+			dateWindow: [0, distrange]
 		});		
 	}
 }
