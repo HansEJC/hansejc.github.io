@@ -4,6 +4,9 @@ function volts(v) {
 }
 
 function earthing() {
+	(new URL(document.location)).searchParams.forEach((x, y) => {
+		localStorage.setItem(y,x);
+	});
 	document.getElementById("ER").value = getSavedValue("ER");    // set the value to this input
 	document.getElementById("RR").value = getSavedValue("RR");
 	document.getElementById("FC").value = getSavedValue("FC");
@@ -53,16 +56,27 @@ function earthing() {
 	var era = Number(getSavedValue("ERA"));
 	var pa = era*p/rg;
 	document.getElementById("PA").textContent = +pa.toFixed(2)+" Ωm";
-				/* Here you can add more inputs to set value. if it's saved */
-
-	//Save the value function - save it to localStorage as (ID, VALUE)
-	
-
 }
+
+//Save the value function - save it to localStorage as (ID, VALUE)
 function saveValue(e){
 	var id = e.id;  // get the sender's id to save it . 
 	var val = e.value; // get the value. 
 	localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+	
+	let url ='';
+	let params = {};
+	document.querySelectorAll('input').forEach((element) => {
+		if (element.value.length > 0) params[element.id] = element.value;
+	});
+	let esc = encodeURIComponent;
+	let query = Object.keys(params)
+		.map(k => esc(k) + '=' + esc(params[k]))
+		.join('&');
+	url += '?' + query;
+		
+	let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + url;
+	window.history.pushState({ path: newurl }, '', newurl);
 }
 
 //get the saved value function - return the value of "v" from localStorage. 
