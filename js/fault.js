@@ -3,6 +3,20 @@ function saveValue(e){
 	var id = e.id;  // get the sender's id to save it . 
 	var val = e.value; // get the value. 
 	localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+	
+	let url ='';
+	let params = {};
+	document.querySelectorAll('input').forEach((element) => {
+		if (element.value.length > 0) params[element.id] = element.value;
+	});
+	let esc = encodeURIComponent;
+	let query = Object.keys(params)
+		.map(k => esc(k) + '=' + esc(params[k]))
+		.join('&');
+	url += '?' + query;
+		
+	let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + url;
+	window.history.pushState({ path: newurl }, '', newurl);
 }
 
 //get the saved value function - return the value of "v" from localStorage. 
@@ -18,6 +32,9 @@ function change(el) {
 }
 
 function quantities() {
+	(new URL(document.location)).searchParams.forEach((x, y) => {
+		localStorage.setItem(y,x);
+	});
 	const myNode = document.getElementById("Substation");
 	myNode.innerHTML = '';
 	const myNode2 = document.getElementById("Location");
@@ -45,8 +62,7 @@ function quantities() {
 	}
 }
 
-function calculations(){
-	
+function calculations(){	
 	document.getElementById("NPR").value = getSavedValue("NPR");    // set the value to this input
 	document.getElementById("FC").value = getSavedValue("FC");
 	document.getElementById("CI").value = getSavedValue("CI");
@@ -54,7 +70,6 @@ function calculations(){
 	document.getElementById("RI").value = getSavedValue("RI");
 	document.getElementById("AEW").value = getSavedValue("AEW");
 	document.getElementById("RSC").value = getSavedValue("RSC");
-	//document.getElementById("TRNU").value = getSavedValue("TRNU");
 	document.getElementById("CRBD").value = getSavedValue("CRBD");
 	document.getElementById("BIMP").value = getSavedValue("BIMP");
 	document.getElementById("ATF").value = getSavedValue("ATF");
@@ -80,7 +95,7 @@ function calculations(){
 	let ole = 1/(1/ci+1/cw);
 	let faultimp = ole/2+1/(2/ri+1/aew+1/rsc); //in ohm/km
 	let oleimp = 0, returnimp = 0;
-	let totlc = 0, previmp = 0, prevole = 0; //total length, previous impedance, prev OLE
+	let totlc = 0, previmp = 0, prevole = 0, previmpneg = 0, prevoleneg = 0, textlc = 0; //total length, previous impedance, prev OLE
 	let res = 1000; //resolution
 	let bloc = 0; //booster location
 	let bdist = 3; //booster distance of 3km
@@ -94,10 +109,9 @@ function calculations(){
 		loc.value = getSavedValue(loc.id);
 		let lc = getSavedValue(loc.id);
 		lc = lc == "" ? 5 : Math.abs(lc); //set to 5km if it's empty to avoid lag
-		let nextlc = +(getSavedValue(1+(+loc.id)))*0.1;
-		let sub = getSavedValue(100+(+loc.id));
 		
 		for (i=1;i<=res;i++){
+			i = ind == 0 ? res : i; //shift the first sub to its km point
 			let lcc = smoothdec(lc*i/res); //current location
 			let lch = getSavedValue(loc.id) < 0 ? totlc-lcc : totlc+lcc; //current total location
 			let nxbnd = lcd(lc/res,crbd); //next bond location 
@@ -109,8 +123,8 @@ function calculations(){
 			//nxbnd = nxbnd > bdist ? bdist : nxbnd; //if booster is greater than sub distance, set to sub distance
 			//lxb = smoothdec(lcc % nxbnd) == 0 ? nxbnd : smoothdec(lcc % nxbnd) || 0;//location after last xbond
 				oleimp = 1/(1/(ole*lcc)+1/((ole*lc)/trnu + ole*(lc-lcc)));
-				oleimp += 2*bimp*Math.floor(lch/bdist);
 				if (trnu<1) oleimp = ole*lcc;
+				oleimp += 2*bimp*Math.floor(Math.abs(lch)/bdist);
 				//returnimp = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
 				returnimp = aew*lxb; //bonds at cross bond location
 				//prevole += oleimp;// -1/(1/(ole*lcc)+1/((ole*lc)/trnu + ole*(lc-lcc)));
@@ -126,34 +140,48 @@ function calculations(){
 				if (trnu<1) oleimp = ole*lcc;
 				returnimp = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
 			}
+			oleimp = ind == 0 ? 0 : oleimp; //set FS impedance to 0
+			returnimp = ind == 0 ? 0 : returnimp; //set FS impedance to 0
 			faultimp = oleimp+returnimp; 
 			let subfault = vol/(faultimp+imp+previmp+prevole);
-			if (getSavedValue(loc.id) < 0) earray.push([lch,, subfault]);
-			else earray.push([lch, subfault,undefined]);
-			if ((lxb >= nxbnd || lcc >= lc) && nxbnd > 0) previmp += returnimp; //previous impedance
-			if (lcc >= lc) prevole += oleimp; //previous impedance	
+			
+			if (getSavedValue(loc.id) < 0) { //negative sub locs
+				subfault = vol/(faultimp+imp+previmp+prevole+previmpneg+prevoleneg);
+				earray.push([textlc-lcc,, subfault]);
+				if ((lxb >= nxbnd || lcc >= lc) && nxbnd > 0) previmpneg += returnimp; //previous impedance
+				if (lcc >= lc) prevoleneg += oleimp; //previous impedance
+			}
+			else { //positive sub locs
+				earray.push([lch, subfault,undefined]);
+				if ((lxb >= nxbnd || lcc >= lc) && nxbnd > 0) previmp += returnimp; //previous impedance
+				if (lcc >= lc) prevole += oleimp; //previous impedance	
+				textlc = totlc;
+				prevoleneg = previmpneg = 0;
+			}
 			bloc = bloc >= bdist ? 0 : smoothdec(bloc+lc/res); //booster location	
 		}
 		
-		totlc += +getSavedValue(loc.id); //total length
+		totlc += +getSavedValue(loc.id) < 0 ? 0 : lc; //total length
+		textlc += +getSavedValue(loc.id); //total length
+		let sub = getSavedValue(100+(+loc.id));
+		let nextlc = +(getSavedValue(1+(+loc.id)))*0.1;
 		subarray[ind] = {
 		  series: getSavedValue(loc.id) < 0 ? "Fault Current (kA)." : "Fault Current (kA)",
-		  x: totlc == 0 ? nextlc : totlc,
+		  x: /*textlc == 0 ? nextlc :*/ getSavedValue(loc.id) < 0 ? textlc : totlc,
 		  width: sub.length*8,
 		  height: 24,
 		  //tickHeight: 10,
-		  cssClass: totlc == 0 ? "dygraph-first-annotation" : "",
+		  //cssClass: textlc == 0 ? "dygraph-first-annotation" : "",
 		  tickColor: "white",
 		  shortText: sub
 		};
 	});
-	earray = earray.join("\r\n");
 	try {
 		if (g3) g3.destroy();
 	}catch(e){}
 	g3 = new Dygraph(
 		document.getElementById("graphdiv3"),												
-		earray,
+		earray.join("\r\n"),
 		{	
 			xlabel: "Location (km)",
 			ylabel: "Fault Current (kA)",
@@ -162,7 +190,8 @@ function calculations(){
 			//fillGraph: true,	
 			//includeZero: true,
 			//legend: 'always',
-			connectSeparatedPoints: true,
+			//connectSeparatedPoints: true,
+			pointSize: 0.1,
 			axes: {
               x: {
 				axisLabelFormatter: function(y) {
@@ -184,6 +213,12 @@ function calculations(){
 			window.dispatchEvent(new Event('resize'));
 		}, 500); 
 		g3.setAnnotations(subarray);
+		let min = g3.xAxisExtremes()[0];
+		let max = g3.xAxisExtremes()[1];
+		let adj = Math.abs(max-min)*0.1;
+		g3.updateOptions({
+			dateWindow: [min-adj,max+adj]
+		});
 	});
 	
 	return earray;
