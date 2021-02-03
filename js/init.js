@@ -88,6 +88,22 @@
 
 })(jQuery);
 
+//fix for IE
+if (! Object.getOwnPropertyDescriptor(NodeList.prototype, 'forEach')) {
+    Object.defineProperty(NodeList.prototype, 'forEach', Object.getOwnPropertyDescriptor(Array.prototype, 'forEach'));
+}
+if (!String.prototype.includes) {
+  String.prototype.includes = function(search, start) {
+    'use strict';
+
+    if (search instanceof RegExp) {
+      throw TypeError('first argument must not be a RegExp');
+    }
+    if (start === undefined) { start = 0; }
+    return this.indexOf(search, start) !== -1;
+  };
+}
+
 function navBar(){
 	const navbar = document.getElementById('nav');
 	navbar.innerHTML = 
@@ -116,14 +132,14 @@ function navBar(){
 			"<li><a href='op.html'>Orion Park</a></li>"+
 			"<li><a href='help.html'>Help</a></li>"+
 		"</ul>";
-	document.querySelectorAll('.heh').forEach(item => item.addEventListener('click',randomPage));
+	document.querySelectorAll('.heh').forEach(function(item) {return item.addEventListener('click',randomPage)});
 }
 let test;
 const navs = ['Home','Tools'];
-const randomChild = (len) => Math.floor(Math.random()*len);
+const randomChild = function(len) {return Math.floor(Math.random()*len)};
 function randomPage(e) {
 	test = e;
-	if (navs.some(nav => e.target.innerHTML.includes(nav))){
+	if (navs.some(function(nav) {return e.target.innerHTML.includes(nav)})){
 		let nodeLen = randomChild(e.target.parentElement.children[1].querySelectorAll('li').length)
 		//e.target.parentElement.children[1].childNodes[0].firstElementChild.click();
 		e.target.parentElement.children[1].querySelectorAll('li')[nodeLen].firstElementChild.click();
