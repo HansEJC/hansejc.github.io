@@ -339,7 +339,8 @@ function dyg(csv) {
 	}catch(err){}
 	try {
 		if (g3) g3.destroy();
-	}catch(e){}
+	}catch(e){}	
+	const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
 	g3 = new Dygraph(
 		document.getElementById("graphdiv3"),
 		csv,
@@ -349,7 +350,19 @@ function dyg(csv) {
 			connectSeparatedPoints: document.getElementById("CSVF").checked,
 			legend: 'always',
 			includeZero: true,
-			showRoller: true          
+			showRoller: true,
+			axes: {
+              x: {
+				axisLabelFormatter: function(y, gran, opts) {
+					return  y instanceof Date ? Dygraph.dateAxisLabelFormatter(y, gran, opts) : smoothdec(y);
+                },
+              },
+              y: {
+				axisLabelFormatter: function(y) {
+                  return  smoothdec(y);
+                },
+              },
+			}          
 		}          // options
 	);
 	
@@ -393,7 +406,7 @@ function dyg(csv) {
 		document.getElementById("69").onchange = (() => UncheckAll('MyForm'));
 		setTimeout(function(){
 			window.dispatchEvent(new Event('resize'));
-			document.getElementById("myForm").innerHTML= "<input type='file' accept='.csv' id='my_upload' name='my_upload'/>";
+			//document.getElementById("myForm").innerHTML= "<input type='file' accept='.csv' id='my_upload' name='my_upload'/>"; // I can't remember why I reset this?
 			javaread(true);
 		}, 500); 
 	});
