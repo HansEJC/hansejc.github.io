@@ -3,6 +3,20 @@ function saveValue(e){
 	var id = e.id;  // get the sender's id to save it . 
 	var val = e.value; // get the value. 
 	localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+	
+	let url ='';
+	let params = {};
+	document.querySelectorAll('input').forEach((element) => {
+		if (element.value.length > 0) params[element.id] = element.value;
+	});
+	let esc = encodeURIComponent;
+	let query = Object.keys(params)
+		.map(k => esc(k) + '=' + esc(params[k]))
+		.join('&');
+	url += '?' + query;
+		
+	let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + url;
+	window.history.pushState({ path: newurl }, '', newurl);
 }
 
 //get the saved value function - return the value of "v" from localStorage. 
