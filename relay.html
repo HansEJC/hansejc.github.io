@@ -26,6 +26,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		<script src="js/papaparse.js"></script>
 		<script src="js/relay.js?v2.0"></script>
 		<script src="js/relayIE.js"></script>
+		<script src="js/html2canvas.min.js"></script>	
 		<script src="js/dygraph.min.js"></script>
 		<link rel="stylesheet" src="dygraph.css" />
 		<noscript>
@@ -128,6 +129,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 									<input type=checkbox id=3 onchange="change(this)" checked>
 									<label for="3"> Zone3</label>
 								</p>	
+								Copy to Clipboard: <a href="javascript:clippy(700,400)">A4 Normal</a>
+								<a href="javascript:clippy(700,300)">A4 Narrow</a>
+								<a href="javascript:clippy(1000,500)">A3 Normal</a>
+								<a href="javascript:clippy(1000,400)">A3 Narrow</a>
 							</article>
 						</div>
 						<div class="row 50%">

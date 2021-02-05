@@ -24,6 +24,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		<script src="js/skel-layers.min.js"></script>
 		<script src="js/init.js?v1.2"></script>
 		<script src="js/emc.js?v2.0"></script>
+		<script src="js/html2canvas.min.js"></script>	
 		<script src="js/dygraph.min.js"></script>
 		<!--<script id="MathJax-script" async src="js/tex-mml-chtml.js"></script>-->
 		<script id="MathJax-script" async
@@ -138,7 +139,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 									<form>
 										<input type="radio" name="field" id="EF" checked>Electric Field
 										<input type="radio" name="field" id="MF">Magnetic Field
-									</form>
+									</form>	
+									Copy to Clipboard: <a href="javascript:clippy(700,400)">A4 Normal</a>
+									<a href="javascript:clippy(700,300)">A4 Narrow</a>
+									<a href="javascript:clippy(1000,500)">A3 Normal</a>
+									<a href="javascript:clippy(1000,400)">A3 Narrow</a>
 								</section>									
 								<br>
 								<p id="MyForm" hidden><b>Show: </b></p>

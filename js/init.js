@@ -146,3 +146,83 @@ function randomPage(e) {
 	}
 	else return;
 }
+
+//function to resize plot and copy to clipboard
+function clippy (x,y) { 
+	let offset = document.querySelector('#graphdiv3').offsetTop;
+	document.querySelector('#graphdiv3').setAttribute('style', 'height:'+y+'px !important; width:'+x+'px !important; margin: 0px 0px 10px 10px;');
+	window.dispatchEvent(new Event('resize'));
+	//window.scrollTo(0,document.querySelector('#graphdiv3').offsetTop);
+	//setTimeout(function(){
+	for (var j = 0; j < 3; j++) {	//weird way to make it actually work
+		html2canvas(document.querySelector("#graphdiv3"), {
+			y: offset, 
+			//scrollY: -window.scrollY,
+			scrollX:0,
+			scrollY:0,
+			height: y+30,
+			//width: x+30,
+		}).then(canvas => {
+			//document.body.appendChild(canvas);
+			//setTimeout(function(){    	//timeout only needed for debugging
+				//document.querySelectorAll('canvas')[document.querySelectorAll('canvas').length-1].toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]));
+				if (typeof(navigator.clipboard)!='undefined'){
+					canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]));
+				}
+				else{
+					document.querySelector("#graphdiv3").innerHTML='';
+					document.querySelector("#graphdiv3").appendChild(canvas);
+				}
+				//document.body.removeChild(document.body.lastChild);				
+				//document.querySelector('#graphdiv3').removeAttribute('style');
+				//window.dispatchEvent(new Event('resize'));
+			//},2000)
+		});
+	//},200)
+	}
+	if (typeof(navigator.clipboard)=='undefined') {
+		let htmltext = (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes("Edg")) ? "<br><br><a href=chrome://flags/#unsafely-treat-insecure-origin-as-secure>Auto copy to clipboard not supported in http. Copy this link and open in new tab to add this site as trusted to enable.</a>" : "<br><br><a>Auto copy to clipboard not supported. Right click plot and copy as image.</a>";
+		let article = document.querySelector('article');
+		if (article.lastChild.nodeName != "A") article.innerHTML+=htmltext;
+	}
+}
+
+//Save the value function - save it to localStorage as (ID, VALUE)
+function saveValue(e){
+	var id = e.id;  // get the sender's id to save it . 
+	var val = e.value; // get the value. 
+	localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+	
+	let url ='';
+	let params = {};
+	document.querySelectorAll('input').forEach((element) => {
+		if (element.value.length > 0) params[element.id] = element.value;
+	});
+	let esc = encodeURIComponent;
+	let query = Object.keys(params)
+		.map(k => esc(k) + '=' + esc(params[k]))
+		.join('&');
+	url += '?' + query;
+		
+	let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + url;
+	window.history.pushState({ path: newurl }, '', newurl);
+}
+
+//Save the value function - save it to localStorage as (ID, VALUE)
+function saveRadio(e){
+	var id = e.id;  // get the sender's id to save it . 
+	var val = e.checked; // get the value. 
+	localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+}
+
+//get the saved value function - return the value of "v" from localStorage. 
+function getSavedValue  (v){
+	if (!localStorage.getItem(v)) {
+		return "";// You can change this to your defualt value. 
+	}
+	return localStorage.getItem(v);
+}
+
+function change(el) {
+	g3.setVisibility(el.id, el.checked);
+}

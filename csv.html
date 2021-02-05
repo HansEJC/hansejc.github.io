@@ -27,6 +27,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		<script src="js/papaparse.js"></script>
 		<script src="js/csv.js?v=3.0"></script>
 		<script src="js/csvIE.js"></script>
+		<script src="js/html2canvas.min.js"></script>		
 		<link rel="stylesheet" src="dygraph.css" />
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
@@ -95,6 +96,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 								</p>	
 								<p id="ColorForm"><b style="width:93px;display:inline-block;">Colors: </b>
 								</p>
+								Copy to Clipboard: <a href="javascript:clippy(700,400)">A4 Normal</a>
+								<a href="javascript:clippy(700,300)">A4 Narrow</a>
+								<a href="javascript:clippy(1000,500)">A3 Normal</a>
+								<a href="javascript:clippy(1000,400)">A3 Narrow</a>
 							</article>
 						</div>
 						<div class="row 50%" id="hide" style="display: none;">
