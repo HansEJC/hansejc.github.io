@@ -1,32 +1,3 @@
-//Save the value function - save it to localStorage as (ID, VALUE)
-function saveValue(e){
-	var id = e.id;  // get the sender's id to save it . 
-	var val = e.value; // get the value. 
-	localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
-	
-	let url ='';
-	let params = {};
-	document.querySelectorAll('input').forEach((element) => {
-		if (element.value.length > 0) params[element.id] = element.value;
-	});
-	let esc = encodeURIComponent;
-	let query = Object.keys(params)
-		.map(k => esc(k) + '=' + esc(params[k]))
-		.join('&');
-	url += '?' + query;
-		
-	let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + url;
-	window.history.pushState({ path: newurl }, '', newurl);
-}
-
-//get the saved value function - return the value of "v" from localStorage. 
-function getSavedValue  (v){
-	if (!localStorage.getItem(v)) {
-		return "";// You can change this to your defualt value. 
-	}
-	return localStorage.getItem(v);
-}
-
 function hider() {
   var x = document.getElementById("hide");
   if (x.style.display === "none") 
