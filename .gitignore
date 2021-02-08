@@ -1,8 +1,6 @@
 
 *.php
-index.html
 js/memory.js
 js/piano.js
 piano.html
 uploads/temperatures.csv
-mole.html
