@@ -1,6 +1,6 @@
 @charset 'UTF-8';
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700,900');
-@import url('font-awesome.min.css');
+/*@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700,900&display=swap');
+@import url('font-awesome.min.css');*/
 
 /*
 	Escape Velocity by HTML5 UP
@@ -12,10 +12,14 @@
 /* Basic                                                                         */
 /*********************************************************************************/
 
-	body, input, textarea, select, button, .label
+	body, input, textarea, select, .label
 	{
-		font-family: 'Source Sans Pro', sans-serif;
-		font-weight: 400;
+		font-family: arial, sans-serif;
+		font-weight: 400;	
+		color: #666666;/*old color was #919499;*/
+	}
+	button
+	{
 		color: #919499;
 	}
 
@@ -1010,7 +1014,7 @@ canvas:hover ~ .dygraph-roller {
 
 .dygraph-axis-label {
   /* position: absolute; */
-  /* font-size: 14px; */
+  font-size: 13px; 
   z-index: 10;
   line-height: normal;
   overflow: hidden;
