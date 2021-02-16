@@ -257,3 +257,14 @@ function transpose(a) {
         return a.map(function(r) { return r[c]; });
     });
 }
+
+//startup
+calculations();
+def();
+def2();
+soil();
+plotFop();
+document.onkeyup = function() {							
+	soil();	
+	plotFop();
+};		

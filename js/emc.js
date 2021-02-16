@@ -44,7 +44,7 @@ function checkit() {
 	calculations();
 }
 
-function calculations(){
+async function calculations(){
 	(new URL(document.location)).searchParams.forEach((x, y) => {
 		localStorage.setItem(y,x);
 	});
@@ -207,3 +207,20 @@ function calculations(){
 		});		
 	}
 }
+
+//startup
+window.addEventListener("load", function() {
+	calculations(); 
+	document.onkeyup = function() {							
+		calculations();								
+	};
+	MathJax.Hub.Config({
+		tex2jax: {
+		  inlineMath: [["$","$"],["\\(","\\)"]]
+		}
+	});
+	MathJax.Hub.Queue(
+	function () {
+		document.querySelectorAll(".Math").forEach(math => math.style.visibility = "");
+	});
+});

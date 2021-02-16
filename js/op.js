@@ -1,6 +1,10 @@
 async function delivery() {
 	document.getElementById("SEAR").value = getSavedValue("SEAR");    // set the value to this input
 	document.getElementById("PASS").value = getSavedValue("PASS");    // set the value to this input
+		
+	document.querySelectorAll('input[type="radio"]').forEach(rad => {
+		rad.checked = (getSavedValue(rad.id) == "true");
+	});
 	
 	// await code here
 	DRp = [];	
@@ -169,16 +173,8 @@ function fetchHeader(url, wch) {
     });
 }
 
-//Save the value function - save it to localStorage as (ID, VALUE)
-function saveRadio(e){
-	e.checkbox = true;
-	var id1 = document.getElementById("PStock").id;  // get the sender's id to save it . 
-	var ch1 = document.getElementById("PStock").checked; // get the value. 
-	var id2 = document.getElementById("WStock").id;  // get the sender's id to save it . 
-	var ch2 = document.getElementById("WStock").checked; // get the value. 
-	var id3 = document.getElementById("Del").id;  // get the sender's id to save it . 
-	var ch3 = document.getElementById("Del").checked; // get the value. 
-	localStorage.setItem(id1, ch1);// Every time user writing something, the localStorage's value will override .  
-	localStorage.setItem(id2, ch2);// Every time user writing something, the localStorage's value will override .  
-	localStorage.setItem(id3, ch3);// Every time user writing something, the localStorage's value will override . 
-}
+//startup
+delivery();
+document.onkeyup = function() {							
+	ifsy();								
+};

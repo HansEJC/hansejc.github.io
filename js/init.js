@@ -3,30 +3,12 @@
 	html5up.net | @n33co
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
-
-if ("serviceWorker" in navigator) {
-	//Adds manifest and stuff
-	let head = document.head;
-	let mani = document.createElement("link"), apple = document.createElement("link"), theme = document.createElement("meta");
-	mani.rel = "manifest"; apple.rel = "apple-touch-icon"; theme.name = "theme-color";
-	mani.href = "manifest.json"; apple.href = "/images/apple-icon-180.png"; theme.content = "#800080";
-	head.appendChild(mani); head.appendChild(apple); head.appendChild(theme);
-	
-	//Makes website available offline
-	window.addEventListener("load", function() {
-		navigator.serviceWorker
-			.register("/sw.js")
-			.then(res => console.log("service worker registered"))
-			.catch(err => console.log("service worker not registered", err))
-	})
-}
-
 (function($) {
 
 	skel.init({
 		reset: 'full',
 		breakpoints: {
-			'global':	{ range: '*', href: 'css/style.css?v=1.3' },
+			/*'global':	{ range: '*', href: 'css/style.css?v=1.3' },*/
 			'desktop':	{ range: '765-', href: 'css/style-desktop.css', containers: 1200, grid: { gutters: 50 } },
 			'1000px':	{ range: '765-1200', href: 'css/style-1000px.css', containers: '100%!', grid: { gutters: 35 } },
 			'mobile':	{ range: '-764', href: 'css/style-mobile.css?v=1.1', containers: '100%!', grid: { gutters: 20 }, viewport: { scalable: false } }
@@ -105,22 +87,6 @@ if ("serviceWorker" in navigator) {
 
 })(jQuery);
 
-//fix for IE
-if (! Object.getOwnPropertyDescriptor(NodeList.prototype, 'forEach')) {
-    Object.defineProperty(NodeList.prototype, 'forEach', Object.getOwnPropertyDescriptor(Array.prototype, 'forEach'));
-}
-if (!String.prototype.includes) {
-  String.prototype.includes = function(search, start) {
-    'use strict';
-
-    if (search instanceof RegExp) {
-      throw TypeError('first argument must not be a RegExp');
-    }
-    if (start === undefined) { start = 0; }
-    return this.indexOf(search, start) !== -1;
-  };
-}
-
 function navBar(){
 	const navbar = document.getElementById('nav');
 	navbar.innerHTML = 
@@ -151,6 +117,8 @@ function navBar(){
 		"</ul>";
 	document.querySelectorAll('.heh').forEach(function(item) {return item.addEventListener('click',randomPage)});
 }
+
+navBar();
 let test;
 const navs = ['Home','Tools'];
 const randomChild = function(len) {return Math.floor(Math.random()*len)};
@@ -158,10 +126,61 @@ function randomPage(e) {
 	test = e;
 	if (navs.some(function(nav) {return e.target.innerHTML.includes(nav)})){
 		let nodeLen = randomChild(e.target.parentElement.children[1].querySelectorAll('li').length)
-		//e.target.parentElement.children[1].childNodes[0].firstElementChild.click();
 		e.target.parentElement.children[1].querySelectorAll('li')[nodeLen].firstElementChild.click();
 	}
 	else return;
+}
+
+if ("serviceWorker" in navigator) {
+	//Adds manifest and stuff
+	let head = document.head;
+	let mani = document.createElement("link"), apple = document.createElement("link"), theme = document.createElement("meta");
+	mani.rel = "manifest"; apple.rel = "apple-touch-icon"; theme.name = "theme-color";
+	mani.href = "manifest.json"; apple.href = "images/apple-icon-180.png"; theme.content = "#800080";
+	head.appendChild(mani); head.appendChild(apple); head.appendChild(theme);
+	
+	//Makes website available offline
+	window.addEventListener("load", function() {
+		navigator.serviceWorker
+			.register("sw.js")
+			.then(res => console.log("service worker registered"))
+			.catch(err => console.log("service worker not registered", err));
+			
+		let deferredPrompt;
+		let body = document.querySelector("#main");
+		let btn = document.createElement("button");
+		btn.classList.add("add-button","button");
+		btn.innerText = "Add to home screen";
+		body.appendChild(btn); 
+		const addBtn = document.querySelector('.add-button');
+		addBtn.style.display = 'none';
+		
+		//Enable Progressive Web Apps on supported desktop browsers
+		window.addEventListener('beforeinstallprompt', (e) => {
+		  // Prevent Chrome 67 and earlier from automatically showing the prompt
+		  e.preventDefault();
+		  // Stash the event so it can be triggered later.
+		  deferredPrompt = e;
+		  // Update UI to notify the user they can add to home screen
+		  addBtn.style.display = 'block';
+
+		  addBtn.addEventListener('click', (e) => {
+			// hide our user interface that shows our A2HS button
+			addBtn.style.display = 'none';
+			// Show the prompt
+			deferredPrompt.prompt();
+			// Wait for the user to respond to the prompt
+			deferredPrompt.userChoice.then((choiceResult) => {
+				if (choiceResult.outcome === 'accepted') {
+				  console.log('User accepted the A2HS prompt');
+				} else {
+				  console.log('User dismissed the A2HS prompt');
+				}
+				deferredPrompt = null;
+			  });
+		  });
+		});
+	})
 }
 
 //function to resize plot and copy to clipboard
@@ -169,8 +188,6 @@ function clippy (x,y) {
 	let offset = document.querySelector('#graphdiv3').offsetTop;
 	document.querySelector('#graphdiv3').setAttribute('style', 'height:'+y+'px !important; width:'+x+'px !important; margin: 0px 0px 10px 10px;');
 	window.dispatchEvent(new Event('resize'));
-	//window.scrollTo(0,document.querySelector('#graphdiv3').offsetTop);
-	//setTimeout(function(){
 	for (var j = 0; j < 3; j++) {	//weird way to make it actually work
 		html2canvas(document.querySelector("#graphdiv3"), {
 			y: offset, 
@@ -180,22 +197,14 @@ function clippy (x,y) {
 			height: y+30,
 			//width: x+30,
 		}).then(canvas => {
-			//document.body.appendChild(canvas);
-			//setTimeout(function(){    	//timeout only needed for debugging
-				//document.querySelectorAll('canvas')[document.querySelectorAll('canvas').length-1].toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]));
-				if (typeof(navigator.clipboard)!='undefined'){
-					canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]));
-				}
-				else{
-					document.querySelector("#graphdiv3").innerHTML='';
-					document.querySelector("#graphdiv3").appendChild(canvas);
-				}
-				//document.body.removeChild(document.body.lastChild);				
-				//document.querySelector('#graphdiv3').removeAttribute('style');
-				//window.dispatchEvent(new Event('resize'));
-			//},2000)
+			if (typeof(navigator.clipboard)!='undefined'){
+				canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]));
+			}
+			else{
+				document.querySelector("#graphdiv3").innerHTML='';
+				document.querySelector("#graphdiv3").appendChild(canvas);
+			}
 		});
-	//},200)
 	}
 	if (typeof(navigator.clipboard)=='undefined') {
 		let htmltext = (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes("Edg")) ? "<br><br><a href=chrome://flags/#unsafely-treat-insecure-origin-as-secure>Auto copy to clipboard not supported in http. Copy this link and open in new tab to add this site as trusted to enable.</a>" : "<br><br><a>Auto copy to clipboard not supported. Right click plot and copy as image.</a>";
@@ -227,9 +236,8 @@ function saveValue(e){
 
 //Save the value function - save it to localStorage as (ID, VALUE)
 function saveRadio(e){
-	var id = e.id;  // get the sender's id to save it . 
-	var val = e.checked; // get the value. 
-	localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+	e.checkbox = true;
+	document.querySelectorAll('input[type="radio"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
 }
 
 //get the saved value function - return the value of "v" from localStorage. 
@@ -243,3 +251,5 @@ function getSavedValue  (v){
 function change(el) {
 	g3.setVisibility(el.id, el.checked);
 }
+
+document.documentElement.setAttribute('lang', navigator.language); //add language to html

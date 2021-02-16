@@ -57,3 +57,20 @@ function earthing() {
 	var pa = era*p/rg;
 	document.getElementById("PA").textContent = +pa.toFixed(2)+" Ωm";
 }
+
+//startup
+window.addEventListener("load", function() {
+	earthing();
+	document.onkeyup = function() {							
+		earthing();										
+	};
+	MathJax.Hub.Config({
+		tex2jax: {
+		  inlineMath: [["$","$"],["\\(","\\)"]]
+		}
+	});
+	MathJax.Hub.Queue(
+	function () {
+		document.querySelectorAll(".Math").forEach(math => math.style.visibility = "");
+	});
+});

@@ -138,3 +138,15 @@ function remParallel() {
 	const myNode3 = document.getElementById("Angs");
 	myNode3.innerHTML = '';
 }
+
+//startup
+calculations();
+polrec();
+poladd();
+loadcalc();
+consum();
+document.onkeyup = function() {							
+	parallel();
+	poladd();
+	consum();
+};	

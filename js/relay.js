@@ -413,3 +413,18 @@ async function plotProtection(csvarr){
 		
 	});												
 }
+
+//startup
+if (!!navigator.userAgent.match(/Trident\/7\./)){ //if IE is used									
+	var DRcsv = loadFile("uploads/fault.csv");
+	var DR = Papa.parse(DRcsv).data;
+	//alert(DRcsv);
+	plotIE();
+	console.error("Get off Internet Explorer you Dinasour!");
+	document.onkeyup = function() {							
+		plotIE();								
+	};
+}
+else {
+	doAjaxThings();
+}

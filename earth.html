@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -5,7 +6,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-5QF2LGP');</script>
 <!-- End Google Tag Manager -->
-<!DOCTYPE HTML>
 <!--
 	Escape Velocity by HTML5 UP
 	html5up.net | @n33co
@@ -15,26 +15,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 	<head>
 		<title>Earthing Calculation Tools</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="" />
-		<meta name="keywords" content="" />
-		<!--[if lte IE 8]><script src="css/ie/html5shiv.js"></script><![endif]-->
-		<script src="js/jquery.min.js"></script>
-		<script src="js/jquery.dropotron.min.js"></script>
-		<script src="js/skel.min.js"></script>
-		<script src="js/skel-layers.min.js"></script>
-		<script src="js/init.js"></script>
-		<script src="js/earthing.js"></script>
-		<script id="MathJax-script" async
-			src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+		<meta name="description" content="Earthing Calculation Tools" />
+		<meta name="keywords" content="Earthing Calculation Tools" />
+		<link rel="stylesheet" href="css/style.css"/>
+		<script defer src="js/jquery.min.js"></script>
+		<script defer src="js/jquery.dropotron.min.js"></script>
+		<script defer src="js/skel.min.js"></script>
+		<script defer src="js/skel-layers.min.js"></script>
+		<script defer src="js/init.js"></script>
+		<script defer id="MathJax-script" async
+			src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_HTML-full">
 		</script>
+		<script defer src="js/earthing.js"></script>
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
 			<link rel="stylesheet" href="css/style.css" />
 			<link rel="stylesheet" href="css/style-desktop.css" />
 		</noscript>
-		<!--[if lte IE 8]><link rel="stylesheet" href="css/ie/v8.css" /><![endif]-->
-		<script src="js/style_minified.js"></script>
-   		<script src="js/script.js"></script>
 	</head>
 	<body class="left-sidebar">
 		<!-- Google Tag Manager (noscript) -->
@@ -94,7 +91,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 									Ground Resistivity \(\rho\) (mΩ)<input type="number" id="P" onkeyup='saveValue(this);'/> 
 									\(Area\) (m<sup>2</sup>)<input type="number" id="AREA" onkeyup='saveValue(this);'/> 
 									Radius of Circular Plate<br>  of Same Area as Grid \(r\) (m)<span id="R" class="label "></span> 
-									$$ r = \sqrt{Area \over \pi} $$		
+									<p class="Math" style="visibility: hidden;">$$ r = \sqrt{Area \over \pi} $$</p>
 								</form>
 							</section>
 							<section class="box">
@@ -105,7 +102,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 									<style>#RE {display: none}</style>
 									<span hidden id="RE" class="label "></span>	<br>			
 									Rod Factor \(K_R\)<span id="KR" class="label "></span> 	
-									$$ K_R= 1 + {{n_R \times {l_R}^2} \over {10r^2}} $$	
+									<p class="Math" style="visibility: hidden;">$$ K_R= 1 + {{n_R \times {l_R}^2} \over {10r^2}} $$</p>
 								</form>
 							</section>	
 							<section class="box">
@@ -114,7 +111,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 									Rod Length \(l_R\) (m)<input type="number" id="LR" onkeyup='saveValue(this);'/>	
 									Earth Resistance Calculated <br>with Rods \(R_G\) (Ω):
 									<span id="RG" class="label "></span>												
-									<p><!--$$ R_e = {\rho \over 4r} + {\rho \over {1 + n_R \times l_R}} $$<br>-->
+									<p class="Math" style="visibility: hidden;"><!--$$ R_e = {\rho \over 4r} + {\rho \over {1 + n_R \times l_R}} $$<br>-->
 									\[R_G=\rho  {\left({1+ {\left(r \over {r+2.5h}\right)} \over 8r \times K_R}+{1 \over L}\right)}\]</p>											
 								</form>
 							</section>		
@@ -135,17 +132,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 							</section>		
 							<section class="box">
 								<form>
-									$$ \rho_A = {R \times \rho \over R_G} $$												
+									<p class="Math" style="visibility: hidden;">$$ \rho_A = {R \times \rho \over R_G} $$</p>												
 								</form>
 							</section>	
-						</div>
-						<script type="text/javascript">
-							navBar();
-							earthing();
-							document.onkeyup = function() {							
-									earthing();										
-							};																																		
-						</script>						
+						</div>						
 					</div>
 				</div>
 			</div>

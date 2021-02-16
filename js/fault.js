@@ -231,3 +231,7 @@ function exportToCsv(filename, rows) {
 		}
 	}
 }
+//startup
+quantities();
+calculations();
+document.onkeyup = () => calculations();									

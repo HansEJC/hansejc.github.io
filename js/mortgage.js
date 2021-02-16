@@ -77,3 +77,9 @@ function calculations(){
 		window.dispatchEvent(new Event('resize'));
 	}, 500); 												
 }
+
+//startup
+calculations();
+document.onkeyup = function() {							
+	calculations();								
+};
