@@ -490,26 +490,20 @@ function Horizon(canvas, images, dimensions, gapCoefficient) {
     this.init();
 };
 
-function trekt() {
+function trekt(imgs1,imgs2) {
 	
 	document.getElementById("main-frame-error").innerHTML = 
 		"<div id='offline-resources' jstcache='0'>"+
-		"<div id='offline-resources-1x' jstcache='0'>"+
-		  "<img id='1x-obstacle-large' src='./images/1x-large-obstacle.png' jstcache='0'>"+
-		  "<img id='1x-obstacle-small' src='./images/1x-small-obstacle.png' jstcache='0'>"+
-		  "<img id='1x-cloud' src='./images/1x-cloud.png' jstcache='0'>"+
-		  "<img id='1x-text' src='./images/1x-text.png' jstcache='0'>"+
+		"<div id='offline-resources-1x' jstcache='0'>"+imgs1+
 		  "<img id='1x-horizon' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLAAAAAMAgMAAAAPCKxBAAAABlBMVEX///9TU1NYzE1OAAAAAXRSTlMAQObYZgAAALJJREFUeF7t1EEKAyEMhtEvMNm7sPfJEVyY+1+ltLgYAsrQCtWhbxEhQvgxIJtSZypxa/WGshgzKdbq/UihMFMlt3o/CspEYoihIMaAb6mCvM6C+BTAeyo+wN4yykV/6pVfkdLpVyI1hh7GJ6QunUoLEQlQglNP2nkQkeF8+ei9cLxMue1qxVRfk1Ej0s6AEGWfVOk0QUtnK5Xo0Lac6wpdtnQqB6VxomPaz+dgF1PaqqmeWJlz1jYUaSIAAAAASUVORK5CYII=' jstcache='0'>"+
-		  "<img id='1x-trex' src='./images/1x-trex.png' jstcache='0'>"+
 		  "<img id='1x-restart' src='./images/1x-restart.png' jstcache='0'>"+
+			"<img id='1x-cloud' src='images/1x-cloud.png' jstcache='0'>"+
+			"<img id='1x-text' src='images/1x-text.png' jstcache='0'>"+
 		"</div>"+
-		"<div id='offline-resources-2x' jstcache='0'>"+
-		  "<img id='2x-obstacle-large' src='./images/2x-large-obstacle.png' jstcache='0'>"+
-		  "<img id='2x-obstacle-small' src='./images/2x-small-obstacle.png' jstcache='0'>"+
-		  "<img id='2x-cloud' src='./images/2x-cloud.png' jstcache='0'>"+
-		  "<img id='2x-text' src='./images/2x-text.png' jstcache='0'>"+
+		"<div id='offline-resources-2x' jstcache='0'>"+imgs2+
 		  "<img id='2x-horizon' src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAACWAAAAAYAQMAAABEalRSAAAABlBMVEX///9TU1NYzE1OAAAAAXRSTlMAQObYZgAAAOtJREFUeF7tljEKwzAMRb/J0CWgI/QKOYAh1+pUcjQfpUfw2MFEHVyDQSQmQUNM9AYNcobnh4egU+YVqhAvZSpgsfolPnSv5d0nz3vHslgUdK81RLzyvHcsi+WBNxQh4Ln8pw4Wi7skAg9mXgHMrEACXJnbHIllsbqGAtwXhnYswzFzwPWxWEPc2CexoobkHM4ZpD6s2loWiyIEEwCChIomMiMEHqgP573C9eHkc5VLWh3XsljnGVoLWVl+31bp38piTVVuihtPOAm9kcRLbrFjEvqwamtZLK5eI8sSan9rXEK0LcNFrY5oWawf59S7YSRD7eMAAAAASUVORK5CYII=' jstcache='0'>"+
-		  "<img id='2x-trex' src='./images/2x-trex.png' jstcache='0'>"+
+			"<img id='2x-cloud' src='images/2x-cloud.png' jstcache='0'>"+
+			"<img id='2x-text' src='images/2x-text.png' jstcache='0'>"+
 		  "<img id='2x-restart' src='./images/2x-restart.png' jstcache='0'>"+
 		"</div>"+
 		"<template id='audio-resources' jstcache='0'>"+
