@@ -1,30 +1,48 @@
 function saveScores(scr) {
-	let scoreID = "jumpScores";
-	scoreID = document.cookie.includes('game=mole') ? "moleScores" : scoreID; 
-	scoreID = document.cookie.includes('game=simon') ? "simonScores" : scoreID; 
-	let scoreArr = [];
-	const name = document.getElementById("userName");
-	let exists = false;
-
 	try{
-		scoreArr = JSON.parse(localStorage.getItem(scoreID));
-		scoreArr.forEach(val => {
-			if (val[0] == name.value) {
-				val[1] = scr > val[1] ? scr : val[1];
-				exists = true;
-			}
+		$.post("./savesettings.php?=v1.0",
+		{
+			name: $("#userName").val(),
+			ip: ipString,
+			score: scr,
+			date: new Date().toLocaleString("en-GB", {timeZone: "Europe/London"}),
+		},
+		function(data,status){
+			document.getElementById("TempScore").innerHTML = data;
+			$( "#TempScore" ).fadeIn(100);
+			setTimeout(function(){
+				$( "#TempScore" ).fadeOut(500);	
+				document.location="?"+(new Date).getTime();
+			}, 1000);
 		});
-	}catch(err){
-		console.log("no highscores yet");
-		scoreArr = [];
+	}catch{
+		let scoreID = "jumpScores";
+		scoreID = document.cookie.includes('game=mole') ? "moleScores" : scoreID; 
+		scoreID = document.cookie.includes('game=simon') ? "simonScores" : scoreID; 
+		let scoreArr = [];
+		const name = document.getElementById("userName");
+		let exists = false;
+
+		try{
+			scoreArr = JSON.parse(localStorage.getItem(scoreID));
+			scoreArr.forEach(val => {
+				if (val[0] == name.value) {
+					val[1] = scr > val[1] ? scr : val[1];
+					exists = true;
+				}
+			});
+		}catch(err){
+			console.log("no highscores yet");
+			scoreArr = [];
+		}
+		
+		if (!exists) scoreArr.push([name.value,scr]);
+		
+		localStorage.setItem(scoreID,JSON.stringify(scoreArr));
+		setTimeout(function(){
+			document.location="?"+(new Date).getTime();
+		}, 1000);
 	}
-	
-	if (!exists) scoreArr.push([name.value,scr]);
-	
-	localStorage.setItem(scoreID,JSON.stringify(scoreArr));
-	setTimeout(function(){
-		document.location="?"+(new Date).getTime();
-	}, 1000);
 }
 
 //Speach recognition commands
@@ -48,21 +66,6 @@ function speech() {
 //Scores redirect
 function fullscores(){				
 	document.location="fullscores.php?"+(new Date).getTime();			
-}
-
-//Save the value function - save it to localStorage as (ID, VALUE)
-function saveValue(e){
-	var id = e.id;  // get the sender's id to save it . 
-	var val = e.value; // get the value. 
-	localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
-}
-
-//get the saved value function - return the value of "v" from localStorage. 
-function getSavedValue  (v){
-	if (!localStorage.getItem(v)) {
-		return "";// You can change this to your defualt value. 
-	}
-	return localStorage.getItem(v);
 }
 
 function ip(){

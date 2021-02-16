@@ -129,15 +129,24 @@ function k(w,x,y){
 }
 
 try {
-	const allScore = JSON.parse(localStorage.getItem("simonScores"));	
-	allScore.sort((a,b) => b[1] - a[1]);			
-	const table = document.getElementById('board');
-	allScore.forEach(val => {
-		let row = table.insertRow(-1);
-		row.insertCell(0).innerHTML = val[0];
-		row.insertCell(1).innerHTML = val[1];
-	});
-
+	(async () => {
+		const serverScore = await fetch('./uploads/simonscores.json')
+			.then(result => result.json());	
+		const localScore = JSON.parse(localStorage.getItem("simonScores"));
+		const allScore = (!localScore) ? serverScore : [...serverScore,...localScore];
+		allScore.sort((a,b) => b[1] - a[1]);			
+		const table = document.getElementById('board');
+		allScore.forEach(val => {
+			let row = table.insertRow(-1);
+			row.insertCell(0).innerHTML = val[0];
+			row.insertCell(1).innerHTML = val[1];
+		});
+	})();
 }catch(err){}
 
 board.classList.add('waiting');
+
+//startup
+document.cookie="game=simon";
+document.getElementById("userName").value = getSavedValue("userName");
+ip();
