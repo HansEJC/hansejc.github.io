@@ -1,5 +1,5 @@
 function saveScores(scr) {
-	try{
+	if (!window.location.hostname.includes("github")) {
 		$.post("./savesettings.php?=v1.0",
 		{
 			name: $("#userName").val(),
@@ -15,7 +15,8 @@ function saveScores(scr) {
 				document.location="?"+(new Date).getTime();
 			}, 1000);
 		});
-	}catch{
+	}
+	else {
 		let scoreID = "jumpScores";
 		scoreID = document.cookie.includes('game=mole') ? "moleScores" : scoreID; 
 		scoreID = document.cookie.includes('game=simon') ? "simonScores" : scoreID; 
