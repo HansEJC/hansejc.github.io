@@ -48,20 +48,22 @@ function saveScores(scr) {
 
 //Speach recognition commands
 function speech() {
-	window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-	let recognition = new SpeechRecognition();
-	recognition.interimResults = true;
-	recognition.continuous = true;
-	//recognition.onresult = e => {
-	recognition.onsoundstart = e => {
-		//let transcript = [...e.results].map(res => res[0].transcript).join('');
-		console.log("now");
-		/*if (transcript.includes('jump'))*/ Rexy.tRex.startJump();
-		recognition.abort();
-		//recognition.start();
-	    recognition.onend = () => recognition.start();
-	};	
-	recognition.start();
+	try{
+		window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+		let recognition = new SpeechRecognition();
+		recognition.interimResults = true;
+		recognition.continuous = true;
+		//recognition.onresult = e => {
+		recognition.onsoundstart = e => {
+			//let transcript = [...e.results].map(res => res[0].transcript).join('');
+			console.log("now");
+			/*if (transcript.includes('jump'))*/ Rexy.tRex.startJump();
+			recognition.abort();
+			//recognition.start();
+			recognition.onend = () => recognition.start();
+		};	
+		recognition.start();
+	} catch(err) {console.log(err+" speech recognition not supported")}
 }
 
 //Scores redirect
