@@ -102,7 +102,6 @@ function plotFop() {
 		meas = Number(document.getElementById("fopmeas"+i).value);
 		if (meas != 0) foparr.push([dis,meas]);	
 	}
-	if (foparr.length == 0) return;
 	var fir = Number(document.getElementById("fopmeas5").value),
 		sec = Number(document.getElementById("fopmeas6").value),
 		thir = Number(document.getElementById("fopmeas7").value);
@@ -120,6 +119,7 @@ function plotFop() {
 	try {
 		if (g3) g3.destroy();
 	}catch(e){}
+	if (foparr.length == 0) return;
 	g3 = new Dygraph(
 		document.getElementById("graphdiv3"),												
 		foparr,
