@@ -47,8 +47,8 @@ function gameMode(){
 	let imgs1,imgs2;
 	if (document.querySelector("#Jon").checked) {
 		document.querySelector("#Desc").innerText="Help Jon make it safely through the day. Press spacebar to start.";
-		document.querySelectorAll("label")[0].innerText="Ignore Mark";
-		document.querySelectorAll("label")[1].innerText="Infinite jump away from work";
+		document.getElementById("0").innerText="Ignore Mark";
+		document.getElementById("1").innerText="Infinite jump away from work";
 		imgs1 =		
 			"<img id='1x-obstacle-large' src='images/1x-large-obstacle.png' jstcache='0'>"+
 			"<img id='1x-obstacle-small' src='images/1x-small-obstacle.png' jstcache='0'>"+
@@ -60,8 +60,8 @@ function gameMode(){
 	}
 	else {
 		document.querySelector("#Desc").innerText="Help the noob survive. Press spacebar to start.";
-		document.querySelectorAll("label")[0].innerText="God Mode";
-		document.querySelectorAll("label")[1].innerText="Tripe Jump";
+		document.getElementById("0").innerText="God Mode";
+		document.getElementById("1").innerText="Tripe Jump";
 		imgs1 =		
 			"<img id='1x-obstacle-large' src='images/Backup/1x-large-obstacle.png' jstcache='0'>"+
 			"<img id='1x-obstacle-small' src='images/Backup/1x-small-obstacle.png' jstcache='0'>"+
