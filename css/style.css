@@ -9,6 +9,44 @@
 */
 
 /*********************************************************************************/
+/* Dark Mode                                                                     */
+/*********************************************************************************/
+
+	.dark {
+		color: #baaabb;
+		background-color: #0d1117;
+	}
+	.dark strong,.dark b,.dark a,.dark input,.dark .dygraph-axis-label,
+	.dark #copyright ul,.dark th,.dark tr,.dark td,.dark .label, .dark h1{
+		color: #baaabb;
+	}
+	.dark form input[type="text"],.dark form input[type="number"],.dark form input[type="datetime-local"],
+	.dark form input[type="email"],.dark form input[type="password"],.dark form select,.dark form textarea, 
+	.dark .dygraph-roller, .dark .idents, .dark input[type="color"] {
+		background-color: #06090f;
+		box-shadow: inset 0px 0px 1px 0px #000000;
+	}
+	.dark form input[type="text"]:focus,
+	.dark form input[type="number"]:focus,
+	.dark form input[type="datetime-local"]:focus,
+	.dark form input[type="email"]:focus,
+	.dark input[type="color"]:focus,
+	.dark form input[type="password"]:focus,
+	.dark form select:focus,
+	.dark form textarea:focus,
+	.dark .dygraph-roller:focus
+	{
+		background: #0d1117;
+	}
+	.dark tr, .dark .dygraph-legend{
+		background-color:#161b22;
+	}
+	.dark th{
+		background-color:#101010;
+	}
+	
+
+/*********************************************************************************/
 /* Basic                                                                         */
 /*********************************************************************************/
 
@@ -18,9 +56,9 @@
 		font-weight: 400;	
 		color: #666666;/*old color was #919499;*/
 	}
-	button
+	button, button.label, button.button.label
 	{
-		color: #919499;
+		color: #FFFFFF;
 	}
 
 		body.is-loading *
@@ -1336,4 +1374,73 @@ html[subframe] body {
 		-webkit-transform: rotate(360deg);
 		transform: rotate(360deg);
 	}
+}
+
+/* Dark Mode Toggle */
+/* The switch - the box around the slider */
+.switch {
+  position: absolute; /*relative;*/
+  right: 69px;
+  top:12px; 
+  display: inline-block;
+  width: 52px;
+  height: 20px;
+}
+.toggLabel {
+  position: absolute; 
+  right: 60px;
+  top:36px; 
+  display: inline-block;	
+}
+#titleBar { /*fixes issue with title bar blocking the slider*/
+	width:30% !important;
+}
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  /*left: 4px;*/
+  bottom: -3px;
+  background-color: #f1f1f1;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider {
+  background-color: #800080;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #800080;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+  background-color: #ca5eca;
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+.slider.round:before {
+  border-radius: 50%;
 }

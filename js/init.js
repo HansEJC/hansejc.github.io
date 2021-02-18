@@ -3,6 +3,45 @@
 	html5up.net | @n33co
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
+
+//Toggle Dark Mode
+(function () {
+	//Add toggle to page
+	const switchLabel = document.createElement('label');
+	const toggLabel = document.createElement('label');
+	const checkBox = document.createElement('input');
+	const spanny = document.createElement('span');
+	switchLabel.classList.add('switch');
+	checkBox.id = "DarkToggle";
+	checkBox.type = "checkbox";
+	spanny.classList.add('slider', 'round');
+	toggLabel.innerText = "Dark Mode";
+	toggLabel.classList.add('toggLabel');
+	switchLabel.appendChild(checkBox);
+	switchLabel.appendChild(spanny);
+	document.querySelector("#header-wrapper").appendChild(switchLabel);
+	document.querySelector("#header-wrapper").appendChild(toggLabel);
+	
+	// Use matchMedia to check the user preference
+	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+	const darkToggle = document.querySelector("#DarkToggle");
+
+	toggleDarkTheme(prefersDark.matches && (getSavedValue(darkToggle.id) == "true"));
+	if (prefersDark.matches && !darkToggle.checked && (getSavedValue(darkToggle.id) == "true")) darkToggle.click();
+
+	// Listen for changes to the prefers-color-scheme media query
+	prefersDark.addListener((mediaQuery) => toggleDarkTheme(mediaQuery.matches));
+
+	// Add or remove the "dark" class based on if the media query matches
+	function toggleDarkTheme(shouldAdd) {
+	  document.body.classList.toggle('dark', shouldAdd);
+	}
+	//Toggle to change mode manually
+	darkToggle.addEventListener('change', function() {toggleDarkTheme(darkToggle.checked); saveCheckbox(this)});
+
+})();
+
+//init
 (function($) {
 
 	skel.init({
@@ -238,6 +277,10 @@ function saveValue(e){
 function saveRadio(e){
 	e.checkbox = true;
 	document.querySelectorAll('input[type="radio"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
+}
+function saveCheckbox(e){
+	e.checkbox = true;
+	document.querySelectorAll('input[type="checkbox"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
 }
 
 //get the saved value function - return the value of "v" from localStorage. 
