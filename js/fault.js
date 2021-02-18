@@ -9,14 +9,15 @@ function quantities() {
 	const myNode3 = document.getElementById("Tracks");
 	myNode3.innerHTML = '';
 
-	var npr = +(getSavedValue("NPR"));     // set the value to this input	
+	let NumLocs = +(getSavedValue("NumLocs"));     // set the value to this input
+	NumLocs = NumLocs < 2 ? 2 : NumLocs;
 	var cb = []; var cb2 = []; var cb3 = [];	
-	if (npr < 20){
-		for(var i = 0; i < npr; i++){
+	if (NumLocs < 20){
+		for(var i = 0; i < NumLocs; i++){
 				cb[i] = document.createElement('input'); cb2[i] = document.createElement('input'); cb3[i] = document.createElement('input');
 				cb[i].type = 'text'; cb2[i].type = 'number'; cb3[i].type = 'number';
 				cb[i].onkeyup = function(){saveValue(this);}; cb2[i].onkeyup = function(){saveValue(this);}; cb3[i].onkeyup = function(){saveValue(this);};
-				myNode.appendChild(cb[i]); myNode2.appendChild(cb2[i]); if (i < npr-1) myNode3.appendChild(cb3[i]); 
+				myNode.appendChild(cb[i]); myNode2.appendChild(cb2[i]); if (i < NumLocs-1) myNode3.appendChild(cb3[i]); 
 				cb[i].id = i+200; cb2[i].id = i+100; cb3[i].id = i+300;		
 				cb[i].classList.add("sub"); cb2[i].classList.add("loc"); cb3[i].classList.add("sub");		
 		}
@@ -30,7 +31,7 @@ function quantities() {
 }
 
 function calculations(){	
-	document.getElementById("NPR").value = getSavedValue("NPR");    // set the value to this input
+	document.getElementById("NumLocs").value = getSavedValue("NumLocs");    // set the value to this input
 	document.getElementById("FC").value = getSavedValue("FC");
 	document.getElementById("CI").value = getSavedValue("CI");
 	document.getElementById("CW").value = getSavedValue("CW");
@@ -146,6 +147,7 @@ function calculations(){
 	try {
 		if (g3) g3.destroy();
 	}catch(e){}
+	if (earray.length == 0) return;
 	g3 = new Dygraph(
 		document.getElementById("graphdiv3"),												
 		earray.join("\r\n"),

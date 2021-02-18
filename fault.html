@@ -75,7 +75,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 							</section>
 							<section class="box">
 								<form> 
-									Number of Locations<input type="number" id="NPR" onkeyup='saveValue(this);quantities();'/> 
+									Number of Locations<input type="number" min=2 id="NumLocs" onkeyup='saveValue(this);quantities();'/> 
 									Cross Bonding Distance (m) <input min=0 type="number" id="CRBD" onkeyup='saveValue(this);'/>
 									<input type="radio" name="Feeding" id="CLASS" onchange="calculations();" checked>Classic
 									<input type="radio" name="Feeding" id="BOOST" onchange="calculations();">Booster
