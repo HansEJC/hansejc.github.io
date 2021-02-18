@@ -60,17 +60,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 				<div class="row 50%">
 					<section class="box">
 						<form>
-							Number of Measurements<input type="number" id="NPR" onkeyup='saveValue(this);rem();calculations();def();' />
-						</form>
-					</section>	
-					<section class="box">
-						<form>
 							Test Location<input type="text" id="TLOC" onkeyup='saveValue(this);' />
 						</form>
 					</section>	
 					<section class="box">
 						<form>
-							<br><button class ="button" type="button" onclick="exportToCsv(document.getElementById('TLOC').value+'_soil.csv', soil())">Export</button>
+							<br><button class ="button" type="button">Export</button>
 						</form>
 					</section>					
 				</div>
@@ -88,13 +83,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 						</form>
 					</section>					
 				</div>
-				<div class="row 50%">
-					<form>
-						<input type=checkbox id="showTable" onchange='table();'>Show Table:
-					</form>
-					<section id="tab" class="box">
-					</section>					
-				</div>
 				<header><hr>
 					<h1>Fall of Potential</h1>
 						<br><b><span id="span2"></span></b>
@@ -102,7 +90,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 				<div class="row 50%">
 					<section class="box">
 						<form>
-							Distance (m)<input type="number" id="NPR2" onkeyup='saveValue(this);rem2();def2();' /> 
+							Distance (m)<input type="number" id="FOPDis" onkeyup='saveValue(this);' /> 
 						</form>
 					</section>	
 					<section class="box">
@@ -112,7 +100,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 					</section>		
 					<section class="box">
 						<form>
-							<br><button class ="button" type="button" onclick="exportToCsv(document.getElementById('TLOC').value+'_FOP.csv', plotFop())">Export</button>
+							<br><button class ="button" type="button">Export</button>
 						</form>
 					</section>						
 				</div>
@@ -132,7 +120,38 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 						  style="width:1000px; height:600px;">
 						</div>	
 					</article>
-				</div>		
+				</div>	
+				<header><hr>
+					<h1>Results</h1>
+				</header><br>	
+				<div class="row 50%">
+					<section class="box">
+						<form>
+							<table id="soilResults" class="scores" col width='100'><col width='100'><col width='100'>
+								<tr><th colspan="2">Soil Resistivity</th></tr>
+								<tr>
+									<th>Site</th>
+									<th>Show</th>
+								</tr>
+							</table>
+						</form>					
+					</section>	
+					<section class="box">
+						<form>
+							<table id="fopResults" class="scores" col width='100'><col width='100'><col width='100'>
+								<tr><th colspan="2">Fall of Potential</th></tr>
+								<tr>
+									<th>Site</th>
+									<th>Show</th>
+								</tr>
+							</table>
+						</form>					
+					</section>				
+				</div>				
+				<div class="row 50%">
+					<section id="tab" class="box">
+					</section>			
+				</div>
 			</div>
 		</div>
 		<div id="copyright">
