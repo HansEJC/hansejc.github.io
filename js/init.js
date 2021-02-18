@@ -25,9 +25,13 @@
 	// Use matchMedia to check the user preference
 	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
 	const darkToggle = document.querySelector("#DarkToggle");
+	
+	//Toggle to change mode manually
+	darkToggle.addEventListener('change', function() {toggleDarkTheme(darkToggle.checked); saveCheckbox(this)});
 
-	toggleDarkTheme(prefersDark.matches && (getSavedValue(darkToggle.id) == "true"));
-	if (prefersDark.matches && !darkToggle.checked && (getSavedValue(darkToggle.id) == "true")) darkToggle.click();
+	toggleDarkTheme(prefersDark.matches && (getSavedValue(darkToggle.id) != "false"));
+	if (getSavedValue(darkToggle.id) == "true") toggleDarkTheme(true); //iif statement as it would turn off if false
+	//if ((prefersDark.matches || (getSavedValue(darkToggle.id) == "true")) && !darkToggle.checked) darkToggle.click();
 
 	// Listen for changes to the prefers-color-scheme media query
 	prefersDark.addListener((mediaQuery) => toggleDarkTheme(mediaQuery.matches));
@@ -35,9 +39,8 @@
 	// Add or remove the "dark" class based on if the media query matches
 	function toggleDarkTheme(shouldAdd) {
 	  document.body.classList.toggle('dark', shouldAdd);
+	  darkToggle.checked = shouldAdd;
 	}
-	//Toggle to change mode manually
-	darkToggle.addEventListener('change', function() {toggleDarkTheme(darkToggle.checked); saveCheckbox(this)});
 
 })();
 
