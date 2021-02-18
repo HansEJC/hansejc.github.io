@@ -11,9 +11,9 @@
 	body, input, select, textarea
 	{
 		line-height: 1.5em;
-		font-size: 8pt;
+		font-size: 9pt;
 		letter-spacing: 0;
-		padding: 1em 0.5em 0 !important;
+		/*padding: 1em 0.5em 0 !important;*/ /*was too small, now goes with default padding*/
 	}
 	
 	.label
