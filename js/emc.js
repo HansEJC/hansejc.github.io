@@ -101,6 +101,11 @@ async function calculations(){
 	let earray = [];	
 	let range = 0, ran = 0, distrange = 0;
 	
+	try {
+		if (g3) g3.destroy();
+	}catch(e){}
+	
+	if (radios[1].checked && tf*eirp == 0) return; //return if plotting nothing
 	if (radios[1].checked) {
 		for (i = 0; i < 5000; i++) { 
 			d = i/100;
@@ -124,6 +129,8 @@ async function calculations(){
 	}
 	
 	else {
+		if (fields[0].checked && q == 0) return; //return if plotting nothing
+		if (fields[1].checked && cu == 0) return;
 		const lowfreqrange = 51000;
 		for (i = 0; i < lowfreqrange; i++) { 
 			d = i/1000;
@@ -140,9 +147,6 @@ async function calculations(){
 		ran = Math.max(uo*cu/(2*Math.PI*.3),400e-6);
 	}
 	
-	try {
-		if (g3) g3.destroy();
-	}catch(e){}
 	g3 = new Dygraph(
 		document.getElementById("graphdiv3"),												
 		earray,

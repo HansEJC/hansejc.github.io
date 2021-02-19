@@ -44,6 +44,8 @@ function calculations(){
 	try {
 		if (g3) g3.destroy();
 	}catch(e){}
+	if (mortgage.length < 2) return;
+	const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
 	g3 = new Dygraph(
 		document.getElementById("graphdiv3"),												
 		mortgage,
@@ -57,16 +59,10 @@ function calculations(){
 			fillGraph: true,			
 			legend: 'always',
 			connectSeparatedPoints: true,
-			axes: {/*
-              x: {
-				axisLabelFormatter: function(y) {
-                  return  y + ' Ω';
-                },
-               // axisLabelWidth: 100 
-              },*/
+			axes: {
               y: {
                 axisLabelFormatter: function(y) {
-                  return  y + ' £';
+                  return  smoothdec(y) + ' £';
                 },
                 axisLabelWidth: 60
               }
