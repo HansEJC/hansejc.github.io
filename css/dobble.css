@@ -31,7 +31,12 @@ html {
 	border-radius: 50%;
 	width: 25em;
 	height: 25em;
-	background: linear-gradient(#800080db, #800080db), url("../images/manifest-icon-512.png") bottom center no-repeat;
+	background: linear-gradient(#8000800f, #8000800f);
+	background-size: contain;
+}
+
+.dark .dobble {
+	background: linear-gradient(#800080db, #800080db), url("../images/manifest-icon-512.png") bottom center no-repeat;	
 	background-size: contain;
 }
 
