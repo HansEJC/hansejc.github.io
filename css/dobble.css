@@ -6,6 +6,14 @@ html {
   box-sizing: inherit;
 }
 
+.Player {
+	color: #baaabb;
+	font-size: 3em;
+	text-align: center;
+	position: absolute;
+	top: 45%;
+}
+
 .dobble {
 	display: flex;
 	flex-wrap: wrap;
@@ -13,10 +21,10 @@ html {
 	margin: 1em;	
 	overflow: hidden;
 	padding: 3em 3em 1em 3em !important;
-	border: 2px solid #800080;
+	border: 2px solid #800080; 
+	top: 35%;
+	position: relative;
 }
-
-/* Dobble */
 
 .dobble,
 .dobble:after {
@@ -24,14 +32,7 @@ html {
 	width: 25em;
 	height: 25em;
 	background: linear-gradient(#800080db, #800080db), url("../images/manifest-icon-512.png") bottom center no-repeat;
-	#background: #800080;
 	background-size: contain;
-}
-.dobble {  
-	top: 35%;
-	position: relative;
-	/*
-	transform: scaleY(-1);*/
 }
 
 .P1 {
