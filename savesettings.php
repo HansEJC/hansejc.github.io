@@ -2,6 +2,7 @@
 if ($_COOKIE['game'] == 'rex') $a = json_decode(file_get_contents('./uploads/scores.json'), true);
 if ($_COOKIE['game'] == 'mole') $a = json_decode(file_get_contents('./uploads/molescores.json'), true);
 if ($_COOKIE['game'] == 'simon') $a = json_decode(file_get_contents('./uploads/simonscores.json'), true);
+if ($_COOKIE['game'] == 'dobble') $a = json_decode(file_get_contents('./uploads/dobblescores.json'), true);
 $existed = false;
 foreach ($a as &$val){ 
 	if ($val[0] == $_POST['name']){
@@ -17,5 +18,6 @@ if (!$existed){
 if ($_COOKIE['game'] == 'rex') file_put_contents("./uploads/scores.json",json_encode($a, JSON_UNESCAPED_UNICODE));
 if ($_COOKIE['game'] == 'mole') file_put_contents("./uploads/molescores.json",json_encode($a, JSON_UNESCAPED_UNICODE));
 if ($_COOKIE['game'] == 'simon') file_put_contents("./uploads/simonscores.json",json_encode($a, JSON_UNESCAPED_UNICODE));
+if ($_COOKIE['game'] == 'dobble') file_put_contents("./uploads/dobblescores.json",json_encode($a, JSON_UNESCAPED_UNICODE));
 echo "Updating scores. Using cheats won't get you a high score!";   
 ?>

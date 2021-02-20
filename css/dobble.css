@@ -1,0 +1,241 @@
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.dobble {
+	display: flex;
+	flex-wrap: wrap;
+	max-width: 100vw; 
+	margin: 1em;	
+	overflow: hidden;
+	padding: 3em 3em 1em 3em !important;
+	border: 2px solid #800080;
+}
+
+/* Dobble */
+
+.dobble,
+.dobble:after {
+	border-radius: 50%;
+	width: 25em;
+	height: 25em;
+	background: linear-gradient(#800080db, #800080db), url("../images/manifest-icon-512.png") bottom center no-repeat;
+	#background: #800080;
+	background-size: contain;
+}
+.dobble {  
+	top: 35%;
+	position: relative;
+	/*
+	transform: scaleY(-1);*/
+}
+
+.P1 {
+	flex: 1 0 26%;
+	overflow: hidden;
+	position: relative;
+	display: block;
+	background-size: contain;
+	content: '';
+	width: 100%;
+	height:30%;
+	z-index: 2;
+}
+
+.P2 {
+	flex: 1 0 26%;
+	overflow: hidden;
+	position: relative;
+	display: block;
+	background-size: contain;
+	content: '';
+	width: 100%;
+	height:30%;
+	z-index: 2;
+}
+.House {
+	flex: 1 0 26%;
+	overflow: hidden;
+	position: relative;
+	display: block;
+	background-size: contain;
+	content: '';
+	width: 100%;
+	height:30%;
+	z-index: 2;
+}
+.hotdog {
+	background: url("../images/Dobble/1F32D.png") bottom center no-repeat;
+}
+.taco{
+	background: url("../images/Dobble/1F32E.png") bottom center no-repeat;
+}
+.corn{
+	background: url("../images/Dobble/1F33D.png") bottom center no-repeat;
+}
+.orange{
+	background: url("../images/Dobble/1F34A.png") bottom center no-repeat;
+}
+.lemon{
+	background: url("../images/Dobble/1F34B.png") bottom center no-repeat;
+}
+.banana{
+	background: url("../images/Dobble/1F34C.png") bottom center no-repeat;
+}
+.tomato{
+	background: url("../images/Dobble/1F34E.png") bottom center no-repeat;
+}
+.apple{
+	background: url("../images/Dobble/1F34F.png") bottom center no-repeat;
+}
+.bread{
+	background: url("../images/Dobble/1F35E.png") bottom center no-repeat;
+}
+.fries{
+	background: url("../images/Dobble/1F35F.png") bottom center no-repeat;
+}
+.cake{
+	background: url("../images/Dobble/1F36E.png") bottom center no-repeat;
+}
+.shroom{
+	background: url("../images/Dobble/1F344.png") bottom center no-repeat;
+}
+.pom{
+	background: url("../images/Dobble/1F345.png") bottom center no-repeat;
+}
+.eggplant{
+	background: url("../images/Dobble/1F346.png") bottom center no-repeat;
+}
+.grapes{
+	background: url("../images/Dobble/1F347.png") bottom center no-repeat;
+}
+.melon{
+	background: url("../images/Dobble/1F348.png") bottom center no-repeat;
+}
+.watermelon{
+	background: url("../images/Dobble/1F349.png") bottom center no-repeat;
+}
+.pear{
+	background: url("../images/Dobble/1F350.png") bottom center no-repeat;
+}
+.plum{
+	background: url("../images/Dobble/1F351.png") bottom center no-repeat;
+}
+.cherries{
+	background: url("../images/Dobble/1F352.png") bottom center no-repeat;
+}
+.strawberry{
+	background: url("../images/Dobble/1F353.png") bottom center no-repeat;
+}
+.burger{
+	background: url("../images/Dobble/1F354.png") bottom center no-repeat;
+}
+.pizza{
+	background: url("../images/Dobble/1F355.png") bottom center no-repeat;
+}
+.rib{
+	background: url("../images/Dobble/1F356.png") bottom center no-repeat;
+}
+.leg{
+	background: url("../images/Dobble/1F357.png") bottom center no-repeat;
+}
+.cone{
+	background: url("../images/Dobble/1F366.png") bottom center no-repeat;
+}
+.icecream{
+	background: url("../images/Dobble/1F367.png") bottom center no-repeat;
+}
+.balls{
+	background: url("../images/Dobble/1F368.png") bottom center no-repeat;
+}
+.donut{
+	background: url("../images/Dobble/1F369.png") bottom center no-repeat;
+}
+.slice{
+	background: url("../images/Dobble/1F370.png") bottom center no-repeat;
+}
+.mouse{
+	background: url("../images/Dobble/1F401.png") bottom center no-repeat;
+}
+.bull{
+	background: url("../images/Dobble/1F402.png") bottom center no-repeat;
+}
+.oxe{
+	background: url("../images/Dobble/1F403.png") bottom center no-repeat;
+}
+.cow{
+	background: url("../images/Dobble/1F404.png") bottom center no-repeat;
+}
+.tiger{
+	background: url("../images/Dobble/1F405.png") bottom center no-repeat;
+}
+.leopard{
+	background: url("../images/Dobble/1F406.png") bottom center no-repeat;
+}
+.rabbit{
+	background: url("../images/Dobble/1F407.png") bottom center no-repeat;
+}
+.cat{
+	background: url("../images/Dobble/1F408.png") bottom center no-repeat;
+}
+.sheep{
+	background: url("../images/Dobble/1F411.png") bottom center no-repeat;
+}
+.monkey{
+	background: url("../images/Dobble/1F412.png") bottom center no-repeat;
+}
+.chicken{
+	background: url("../images/Dobble/1F413.png") bottom center no-repeat;
+}
+.hen{
+	background: url("../images/Dobble/1F414.png") bottom center no-repeat;
+}
+.dog{
+	background: url("../images/Dobble/1F415.png") bottom center no-repeat;
+}
+.doge{
+	background: url("../images/Dobble/1F415-200D-1F9BA.png") bottom center no-repeat;
+}
+.pig{
+	background: url("../images/Dobble/1F416.png") bottom center no-repeat;
+}
+.boar{
+	background: url("../images/Dobble/1F417.png") bottom center no-repeat;
+}
+.elefant{
+	background: url("../images/Dobble/1F418.png") bottom center no-repeat;
+}
+.octopus{
+	background: url("../images/Dobble/1F419.png") bottom center no-repeat;
+}
+.fish{
+	background: url("../images/Dobble/1F420.png") bottom center no-repeat;
+}
+.puffer{
+	background: url("../images/Dobble/1F421.png") bottom center no-repeat;
+}
+.turtle{
+	background: url("../images/Dobble/1F422.png") bottom center no-repeat;
+}
+.chick{
+	background: url("../images/Dobble/1F423.png") bottom center no-repeat;
+}
+.whale{
+	background: url("../images/Dobble/1F433.png") bottom center no-repeat;
+}
+.horse{
+	background: url("../images/Dobble/1F434.png") bottom center no-repeat;
+}
+.ape{
+	background: url("../images/Dobble/1F435.png") bottom center no-repeat;
+}
+.woof{
+	background: url("../images/Dobble/1F436.png") bottom center no-repeat;
+}
+.oink{
+	background: url("../images/Dobble/1F437.png") bottom center no-repeat;
+}

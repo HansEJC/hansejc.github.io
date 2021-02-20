@@ -20,6 +20,7 @@ function saveScores(scr) {
 		let scoreID = "jumpScores";
 		scoreID = document.cookie.includes('game=mole') ? "moleScores" : scoreID; 
 		scoreID = document.cookie.includes('game=simon') ? "simonScores" : scoreID; 
+		scoreID = document.cookie.includes('game=dobble') ? "dobbleScores" : scoreID; 
 		let scoreArr = [];
 		const name = document.getElementById("userName");
 		let exists = false;

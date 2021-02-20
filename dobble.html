@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-5QF2LGP');</script>
+<!-- End Google Tag Manager -->
+<!--
+	Escape Velocity by HTML5 UP
+	html5up.net | @n33co
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Dobble</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="Dobble" />
+		<meta name="keywords" content="Dobble" />
+		<link rel="stylesheet" href="css/style.css"/>
+		<script defer src="js/jquery.min.js"></script>
+		<script defer src="js/jquery.dropotron.min.js"></script>
+		<script defer src="js/skel.min.js"></script>
+		<script defer src="js/skel-layers.min.js"></script>
+		<script defer src="js/init.js"></script>
+		<script defer src="js/scores.js"></script>
+		<script defer src="js/dobble.js"></script>
+		<link rel="stylesheet" href="css/dobble.css" />
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+			<link rel="stylesheet" href="css/style-desktop.css" />
+		</noscript>
+	</head>
+	<body class="left-sidebar">
+		<!-- Google Tag Manager (noscript) -->
+		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
+		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+		<!-- End Google Tag Manager (noscript) -->
+		<!-- Header -->
+		<div id="header-wrapper" class="wrapper">
+			<div id="header">
+				<!-- Logo -->
+				<div id="logo">
+					<h1><a href="#">Dobble</a></h1><br>							
+				</div>	
+				<!-- Nav -->
+				<nav id="nav">
+				</nav>
+			</div>
+		</div>
+		<!-- Main -->				
+		<div id="main" class="container">
+			<div class="row 100%">				
+				<div>				
+					<!-- Content -->
+					<div id="content"><br>
+						<div class="row 50%">
+							<section class="box">
+								<form>		<br>										
+									<button class="button label" onClick="startGame(); event.preventDefault()">Start!</button>	
+								</form>
+							</section>	
+							<section class="box">
+								<form>
+									P1 Score:
+									 <span class="score label">0</span>	
+								</form>
+							</section>		
+							<section class="box">
+								<form>
+									P2 Score:
+									 <span class="score2 label">0</span>
+								</form>
+							</section>									
+							<section class="box">
+								<form>
+									Cards left:
+									 <span class="cardsLeft label">0</span>
+								</form>
+							</section>											
+							<section class="box">
+								<form>
+									Time left:
+									 <span class="timeLeft label">0</span>
+								</form>
+							</section>								
+							<br><b><span id="TempScore"></span></b>																					
+						</div>	
+						<div class="row 50%">	
+							<div class="dobble">
+								<div class="P1"></div><div class="P1"></div><div class="P1"></div><div class="P1"></div>
+								<div class="P1"></div><div class="P1"></div><div class="P1"></div><div class="P1"></div>
+							</div>
+							<div class="dobble">
+								<div class="House"></div><div class="House"></div><div class="House"></div><div class="House"></div>
+								<div class="House"></div><div class="House"></div><div class="House"></div><div class="House"></div>
+							</div>
+							<div class="dobble">
+								<div class="P2"></div><div class="P2"></div><div class="P2"></div><div class="P2"></div>
+								<div class="P2"></div><div class="P2"></div><div class="P2"></div><div class="P2"></div>
+							</div>
+						</div>				  
+					</div>
+				</div>
+			</div><br>	
+			<div class="row 50%">
+				<section class="box">
+					<form class="scores">
+						<label for "userName"></label>
+						<input type="text" name="fname" autocomplete="given-name" id="userName" onkeyup='saveValue(this);' placeholder="Name"/> 
+					</form>
+				</section>				
+				<section class="box">
+					<form class="scores">
+						<table id="board" class="scores">
+							<tr>
+								<th>Name</th>
+								<th>High <br>Score</th>
+								<th>High Score Date</th>
+								<th>Last Played Date</th>
+							</tr>
+						</table>
+					</form>					
+				</section>
+			</div>		
+		</div>
+		<div id="copyright">
+			<ul>
+				<li>&copy; <a href=javascript:fullscores();>Hans Juneby.</a></li><li>Design: <a href="http://html5up.net">HTML5 UP & Hans Juneby</a></li>
+			</ul>
+		</div>
+	</body>
+</html>

@@ -136,8 +136,10 @@ function navBar(){
 			"<li class='current heh'>"+
 				"<a href='#'>Home</a>"+
 				"<ul>"+		
+					"<li><a href='dobble.html'>Dobble</a></li>"+	
 					"<li><a href='memory.html'>Simon</a></li>"+	
-					"<li><a href='index.html'>TRex</a></li>"+			
+					"<li><a href='index.html'>TRex</a></li>"+	
+					"<li><a href='tictactoe.html'>TicTacToe</a></li>"+			
 					"<li><a href='mole.html'>Whack a Mole</a></li>"+						
 				"</ul>"+
 			"</li>"+
