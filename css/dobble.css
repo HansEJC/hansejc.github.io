@@ -13,6 +13,14 @@ html {
 	position: absolute;
 	top: 45%;
 }
+h1.Player {
+	padding: 0 !important;
+}
+
+.dobble.dobbReference {
+	width: 20em;
+	height: 20em;
+}
 
 .dobble {
 	display: flex;
@@ -40,7 +48,7 @@ html {
 	background-size: contain;
 }
 
-.P1 {
+.P1, .P2, .House {
 	flex: 1 0 26%;
 	overflow: hidden;
 	position: relative;
@@ -49,7 +57,7 @@ html {
 	content: '';
 	width: 100%;
 }
-
+/*
 .P2 {
 	flex: 1 0 26%;
 	overflow: hidden;
@@ -67,7 +75,7 @@ html {
 	background-size: contain;
 	content: '';
 	width: 100%;
-}
+}*/
 .hotdog {
 	background: url("../images/Dobble/1F32D.png") bottom center no-repeat;
 }
