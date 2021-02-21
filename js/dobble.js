@@ -78,23 +78,43 @@ function createDeck(){
 const spin = () => Math.round(Math.random() * (360));
 
 function newP1Card(){
-	lastP1Card = deck.shift();
-	P1Deck.forEach((symb,ind) => {
-		//symb.innerHTML = lastP1Card[ind];
-		symb.classList.remove(...symb.classList);
-		symb.classList.add('P1',lastP1Card[ind]);
-		symb.addEventListener('click',clicked);
-		symb.style.transform = 'rotate(' + spin() + 'deg)';
-	});
+	if (deck.length == 0) {
+		P1Deck.forEach((symb,ind) => {
+			symb.classList.remove(...symb.classList);
+			symb.classList.add('P1');
+			symb.removeEventListener('click',clicked);
+		});	
+		cardsGone();
+	}
+	else {
+		lastP1Card = deck.shift();
+		P1Deck.forEach((symb,ind) => {
+			//symb.innerHTML = lastP1Card[ind];
+			symb.classList.remove(...symb.classList);
+			symb.classList.add('P1',lastP1Card[ind]);
+			symb.addEventListener('click',clicked);
+			symb.style.transform = 'rotate(' + spin() + 'deg)';
+		});
+	}
 }
 function newP2Card(){
-	lastP2Card = deck.shift();
-	P2Deck.forEach((symb,ind) => {
-		symb.classList.remove(...symb.classList);
-		symb.classList.add('P2',lastP2Card[ind]);
-		symb.addEventListener('click',clicked);
-		symb.style.transform = 'rotate(' + spin() + 'deg)';
-	});	
+	if (deck.length == 0) {
+		P2Deck.forEach((symb,ind) => {
+			symb.classList.remove(...symb.classList);
+			symb.classList.add('P2');
+			symb.removeEventListener('click',clicked);
+		});	
+		cardsGone();
+	}
+	else {
+		lastP2Card = deck.shift();
+		P2Deck.forEach((symb,ind) => {
+			symb.classList.remove(...symb.classList);
+			symb.classList.add('P2',lastP2Card[ind]);
+			symb.addEventListener('click',clicked);
+			symb.style.transform = 'rotate(' + spin() + 'deg)';
+		});	
+	}
 }
 function newHouseCard(){
 	newCard = deck.shift();
@@ -113,7 +133,15 @@ function moveToHouse(oldCard){
 	});
 }
 
-//code end for now
+function cardsGone() {
+	gamesStarted = false;	
+	document.getElementById("TempScore").innerHTML = "No more cards left! Press Start to continue.";
+		$( "#TempScore" ).fadeIn(100);
+		setTimeout(function(){
+			$( "#TempScore" ).fadeOut(500);	
+		}, 3000);
+	return;	
+}
 
 function clicked(e) {
 	if(!e.isTrusted) return; // cheater!
@@ -140,7 +168,6 @@ function clicked(e) {
 			scoreBoard2.textContent = score2;
 		}
 	});
-	if (cardsLeft == 0) gameOver();
 	if (scored) return;
 	k(10,30,200);
 	if (classy.value.includes('P1')){
