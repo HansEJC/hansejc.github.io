@@ -11,6 +11,8 @@ let gamesStarted = false;
 let noHighScore = false;
 let score = 0, score2 = 0;
 let lastP1Card = [], lastP2Card = [];
+const radios = document.querySelectorAll("input[name=players]");
+radios.forEach(rad => rad.addEventListener('change',numPlayers));
 
 const symbols = ['hotdog','taco','corn','orange','lemon','banana','tomato',
 'apple','bread','fries','cake','shroom','pom','eggplant','grapes','melon','watermelon',
@@ -230,6 +232,13 @@ function startTimer(duration) {
 			gameOver();			
         }
     }, 1000);
+}
+
+function numPlayers(){
+	this.checked = true;
+	let x = document.getElementById("Player2"), y = document.getElementById("Score2"), z = document.getElementById("GameTimer");
+	if (this.id == 'SingleP') x.style.display = "none", y.style.display = "none", z.style.display = "block";
+	else x.style.display = "block", y.style.display = "block", z.style.display = "none";
 }
 
 try {

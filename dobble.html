@@ -66,20 +66,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 									P1 Score:
 									 <span class="score label">0</span>	
 								</form>
-							</section>		
-							<section class="box">
-								<form>
-									P2 Score:
-									 <span class="score2 label">0</span>
-								</form>
-							</section>									
+							</section>										
 							<section class="box">
 								<form>
 									Cards left:
 									 <span class="cardsLeft label">0</span>
 								</form>
+							</section>	
+							<section class="box" id="Score2" style="display: none;">
+								<form>
+									P2 Score:
+									 <span class="score2 label">0</span>
+								</form>
 							</section>											
-							<section class="box">
+							<section class="box" id="GameTimer">
 								<form>
 									Time left:
 									 <span class="timeLeft label">0</span>
@@ -96,7 +96,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 								<div class="House"></div><div class="House"></div><div class="House"></div><div class="House"></div>
 								<div class="House"></div><div class="House"></div><div class="House"></div><div class="House"></div>
 							</div>
-							<div class="dobble"><h1 class="Player">Player 2</h1>
+							<div class="dobble" id="Player2" style="display: none;"><h1 class="Player">Player 2</h1>
 								<div class="P2"></div><div class="P2"></div><div class="P2"></div><div class="P2"></div>
 								<div class="P2"></div><div class="P2"></div><div class="P2"></div><div class="P2"></div>
 							</div>
@@ -109,6 +109,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 					<form class="scores">
 						<label for "userName"></label>
 						<input type="text" name="fname" autocomplete="given-name" id="userName" onkeyup='saveValue(this);' placeholder="Name"/> 
+					</form>
+					<form>
+						<label for "SingleP"><input type="radio" name="players" id="SingleP" checked>Single Player</label>
+						<label for "TwoP"><input type="radio" name="players" id="TwoP">Two Players</label>
 					</form>
 				</section>				
 				<section class="box">
