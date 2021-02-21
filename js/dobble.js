@@ -187,18 +187,24 @@ function gameOver(){
 	setTimeout(() => {saveScores(score)}, 1000);;
 }
 
+
+var AudioContext = window.AudioContext // Default
+    || window.webkitAudioContext // Safari and old versions of Chrome
+    || false; 
+if (AudioContext) {var a = new AudioContext();}
 // gain, frequency, duration
-const a=new AudioContext();
 function k(w,x,y){
-  v=a.createOscillator()
-  u=a.createGain()
-  v.connect(u)
-  v.frequency.value=x
-  v.type="square"
-  u.connect(a.destination)
-  u.gain.value=w*0.01
-  v.start(a.currentTime)
-  v.stop(a.currentTime+y*0.001)
+	try {
+		v=a.createOscillator()
+		u=a.createGain()
+		v.connect(u)
+		v.frequency.value=x
+		v.type="square"
+		u.connect(a.destination)
+		u.gain.value=w*0.01
+		v.start(a.currentTime)
+		v.stop(a.currentTime+y*0.001)
+	}catch(err){console.log(err+"not supported")}
 }
 
 function shuffleArray(array) {
