@@ -450,3 +450,14 @@
 .memory { 
 	font-size: 18px !important;
 }
+
+/*Dobble*/
+.row .dobble,
+.row .dobble:after {
+	width: 32vh;
+	height: 32vh;
+	margin: 0.1em;
+}
+h1.Player {
+	padding: 0 !important;
+}

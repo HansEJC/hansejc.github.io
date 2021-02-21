@@ -48,8 +48,6 @@ html {
 	background-size: contain;
 	content: '';
 	width: 100%;
-	height:30%;
-	z-index: 2;
 }
 
 .P2 {
@@ -60,8 +58,6 @@ html {
 	background-size: contain;
 	content: '';
 	width: 100%;
-	height:30%;
-	z-index: 2;
 }
 .House {
 	flex: 1 0 26%;
@@ -71,8 +67,6 @@ html {
 	background-size: contain;
 	content: '';
 	width: 100%;
-	height:30%;
-	z-index: 2;
 }
 .hotdog {
 	background: url("../images/Dobble/1F32D.png") bottom center no-repeat;
