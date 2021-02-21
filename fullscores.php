@@ -18,7 +18,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		<script defer src="js/jquery.dropotron.min.js"></script>
 		<script defer src="js/skel.min.js"></script>
 		<script defer src="js/skel-layers.min.js"></script>
-		<script defer src="js/init.js?=v1.0"></script>
+		<script defer src="js/init.js"></script>
 		<noscript>
 			<link rel="stylesheet" href="css/skel.css" />
 			<link rel="stylesheet" href="css/style.css" />
@@ -47,6 +47,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 			if ($_COOKIE['game'] == 'rex') $a2 = json_decode(file_get_contents('./uploads/scores.json'), true);
 			if ($_COOKIE['game'] == 'mole') $a2 = json_decode(file_get_contents('./uploads/molescores.json'), true);
 			if ($_COOKIE['game'] == 'simon') $a2 = json_decode(file_get_contents('./uploads/simonscores.json'), true);
+			if ($_COOKIE['game'] == 'dobble') $a2 = json_decode(file_get_contents('./uploads/dobblescores.json'), true);
 			array_multisort(array_column($a2, '1'), SORT_DESC, $a2);
 		?>
 			<table class="scores">

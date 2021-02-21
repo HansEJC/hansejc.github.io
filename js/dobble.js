@@ -211,8 +211,6 @@ try {
 			let row = table.insertRow(-1);
 			row.insertCell(0).innerHTML = val[0];
 			row.insertCell(1).innerHTML = val[1];
-			row.insertCell(2).innerHTML = val[2];
-			row.insertCell(3).innerHTML = val[3];
 		});
 	})();
 }catch(err){}
