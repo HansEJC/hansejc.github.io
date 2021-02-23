@@ -282,6 +282,7 @@ function saveValue(e){
 function saveRadio(e){
 	e.checkbox = true;
 	document.querySelectorAll('input[type="radio"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
+	document.querySelectorAll('input[type="checkbox"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
 }
 function saveCheckbox(e){
 	e.checkbox = true;
