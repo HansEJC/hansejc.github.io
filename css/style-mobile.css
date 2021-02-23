@@ -42,33 +42,6 @@
 			padding: 1em 1em 0 !important;
 		}
 
-		header
-		{
-		}
-		
-			header br
-			{
-				display: none;
-			}
-
-			header.style1
-			{
-				padding: 0 0 1em 0;
-			}
-
-				header.style1 h2
-				{
-					font-size: 1.5em;
-					letter-spacing: 0.075em;
-					line-height: 1.25em;
-				}
-				
-				header.style1 p
-				{
-					display: block;
-					margin: 0;
-				}
-
 	/* Button */
 
 		input[type="button"],
@@ -84,64 +57,6 @@
 			max-width: 30em;
 			margin: 0 auto;
 		}
-
-	/* List */
-
-		ul.actions
-		{
-			margin: 2em 0 0 0;
-		}
-
-			form ul.actions
-			{
-				margin: 1em 0 0 0;
-			}
-		
-			ul.actions li
-			{
-				margin: 15px 0 0 0;
-			}
-
-	/* Feature List */
-
-		.feature-list
-		{
-		}
-
-			.feature-list section
-			{
-				border-top: solid 1px #eee;
-			}
-
-				/* Ugh ... disgusting. */
-				.feature-list > div > div:first-child > div:first-child > section
-				{
-					border-top: 0;
-					padding-top: 0;
-				}
-			
-			.feature-list h3
-			{
-				position: relative;
-				padding: 4px 0 0 48px;
-				line-height: 1.25em;
-			}
-
-				.feature-list h3:before
-				{
-					position: absolute;
-					left: 0;
-					top: 0;
-					width: 32px;
-					height: 32px;
-					line-height: 32px;
-					font-size: 16px;
-				}
-		
-			.feature-list p
-			{
-				margin: 0 0 0 48px;
-			}
 
 	/* Box */
 
@@ -234,7 +149,7 @@
 
 	#navPanel
 	{
-		background: #242730 url('images/overlay.png');
+		background: #242730;
 		box-shadow: inset -3px 0px 4px 0px rgba(0,0,0,0.1);
 	}
 
@@ -274,26 +189,6 @@
 		padding: 15px 15px 5em 15px;
 	}
 
-		.wrapper .title
-		{
-			font-size: 0.9em;
-			width: 18em;
-			height: 2.5em;
-			top: -2.5em;
-			line-height: 2.5em;
-			margin-bottom: -2.5em;
-			margin-left: -9em;
-			padding-top: 0.5em;
-		}
-		
-			.wrapper .title:before,
-			.wrapper .title:after
-			{
-				height: 15px;
-				bottom: -15px;
-				background-size: 100% 100%;
-			}
-
 	#header-wrapper
 	{
 		padding: 0.2em 0.2em 0.2em 0.2em;
@@ -309,14 +204,6 @@
 			border-top-color: #eee;
 			border-top-color: rgba(255,255,255,0.05);
 		}
-
-/*********************************************************************************/
-/* Header                                                                        */
-/*********************************************************************************/
-
-	#header
-	{
-	}
 
 /*********************************************************************************/
 /* Logo                                                                          */
@@ -350,24 +237,6 @@
 		display: none;
 	}
 	
-/*********************************************************************************/
-/* Intro                                                                         */
-/*********************************************************************************/
-
-	#intro
-	{
-		text-align: center;
-		padding: 1em 2em 1em 2em !important;
-		margin: 0 auto;
-	}
-	
-		#intro .style2
-		{
-			font-size: 1.5em;
-			letter-spacing: 0.05em;
-			line-height: 1.25em;
-			padding: 1.25em;
-		}
 
 /*********************************************************************************/
 /* Main                                                                          */
@@ -395,10 +264,6 @@
 /*********************************************************************************/
 /* Footer                                                                        */
 /*********************************************************************************/
-
-	#footer
-	{
-	}
 	
 		#footer hr
 		{

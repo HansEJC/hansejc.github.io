@@ -25,11 +25,6 @@
 		min-width: 1200px;
 	}
 
-	hr
-	{
-		/*margin: 2em 0 2em 0;*/
-	}
-
 	/* Section/Article */
 
 		section,
@@ -38,27 +33,6 @@
 			margin: 0 0 1em 0;
 			padding: 0 0 0 4em !important;
 		}
-
-		header.style1
-		{
-			padding: 3em 0 3em 0;
-		}
-
-			header.style1 h2
-			{
-				font-size: 2em;
-				letter-spacing: 0.075em;
-				line-height: 1.5em;
-			}
-			
-			header.style1 p
-			{
-				display: block;
-				margin: 1.15em 0 0 0;
-				font-size: 1.3em;
-				letter-spacing: 0.075em;
-				line-height: 1.5em;
-			}
 
 	/* Form */
 
@@ -86,14 +60,6 @@
 			line-height: 4em;
 		}
 		
-			input[type="button"].big,
-			input[type="submit"].big,
-			input[type="reset"].big,
-			.button.big
-			{
-				font-size: 1em;
-				min-width: 14em;
-			}
 
 	/* List */
 
@@ -132,127 +98,6 @@
 					text-align: center;
 				}
 
-	/* Feature List */		
-
-		.feature-list
-		{
-		}
-
-			.feature-list section
-			{
-				padding-top: 2em;
-				border-top: solid 1px #eee;
-			}
-
-			.feature-list .row
-			{
-			}
-		
-				.feature-list .row:first-child
-				{
-				}
-				
-					.feature-list .row:first-child section
-					{
-						padding-top: 0;
-						border-top: 0;
-					}
-
-			.feature-list h3
-			{
-				margin: 0 0 0.75em 0;
-				font-size: 1.15em;
-				letter-spacing: 0.05em;
-				margin-top: -0.35em;
-			}
-
-				.feature-list h3:before
-				{
-					width: 64px;
-					height: 64px;
-					line-height: 64px;
-					margin-right: 0.75em;
-					font-size: 32px;
-					top: 0.2em;
-				}
-		
-			.feature-list p
-			{
-				margin: 0 0 0 5em;
-			}
-			
-			.feature-list.small
-			{
-			}
-			
-				.feature-list.small h3
-				{
-				}
-			
-					.feature-list.small h3:before
-					{
-						font-size: 24px;
-						line-height: 45px;
-						width: 45px;
-						height: 45px;
-						margin-right: 1em;
-					}
-					
-				.feature-list.small p
-				{
-					margin: 0 0 0 4em;
-				}
-
-	/* Box */
-
-		.box
-		{
-		}
-		
-			.box header
-			{
-				margin: 0 0 1.5em 0;
-			}
-
-				.box header.style1
-				{
-					position: relative;
-					margin: -0.5em 0 0 0;
-					padding-top: 0;
-				}
-
-			.box h2
-			{
-				margin: 0 0 0.75em 0;
-				font-size: 1.15em;
-				letter-spacing: 0.05em;
-			}
-
-			.box h3
-			{
-				margin: 0 0 0.5em 0;
-				font-size: 1em;
-				font-weight: 600;
-				letter-spacing: 0.05em;
-			}
-
-		.box.post-excerpt
-		{
-		}
-		
-			.box.post-excerpt .image.left
-			{
-				position: relative;
-				top: 0.5em;
-				width: 5em;
-			}
-			
-			.box.-post-excerpt h3,
-			.box.post-excerpt p
-			{
-				margin-left: 7em;
-			}
-			
 /*********************************************************************************/
 /* Wrappers                                                                      */
 /*********************************************************************************/
@@ -351,43 +196,7 @@
 			margin: 0 auto;
 		}
 
-/*********************************************************************************/
-/* Features                                                                      */
-/*********************************************************************************/
 
-	#features
-	{
-		padding: 0 6em 0 6em;
-	}
-
-		#features header.style1
-		{
-			padding-bottom: 5em;
-		}
-		
-		#features .actions
-		{
-			margin-top: 5em;
-		}
-
-/*********************************************************************************/
-/* Highlights                                                                    */
-/*********************************************************************************/
-
-	#highlights
-	{
-	}
-
-		#highlights .highlight
-		{
-		}
-
-			#highlights .highlight h3
-			{
-				margin: 0 0 0.75em 0;
-				font-size: 1.15em;
-				letter-spacing: 0.05em;
-			}
 
 /*********************************************************************************/
 /* Main                                                                          */
@@ -405,23 +214,6 @@
 			margin-bottom: 0;
 		}
 
-/*********************************************************************************/
-/* Footer                                                                        */
-/*********************************************************************************/
-
-	#footer
-	{
-	}
-
-		#footer header.style1
-		{
-			padding-bottom: 0;
-		}
-
-		#footer hr
-		{
-			margin: 6em 0 6em 0;
-		}
 
 /*********************************************************************************/
 /* Copyright                                                                     */
