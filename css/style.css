@@ -23,7 +23,7 @@
 	.dark form input[type="text"],.dark form input[type="number"],.dark form input[type="datetime-local"],
 	.dark form input[type="email"],.dark form input[type="password"],.dark form select,.dark form textarea, 
 	.dark .dygraph-roller, .dark .idents, .dark input[type="color"] {
-		background-color: #06090f;
+		background-color: #222;
 		box-shadow: inset 0px 0px 1px 0px #000000;
 	}
 	.dark form input[type="text"]:focus,
@@ -389,21 +389,6 @@
 			{
 				margin-bottom: 0;
 			}
-		
-		header.style1
-		{
-			text-align: center;
-		}
-
-			header.style1 h2
-			{
-				font-weight: 700;
-			}
-			
-			header.style1 p
-			{
-				color: #b1b4b9;
-			}
 
 	/* Image */
 
@@ -514,83 +499,23 @@
 			-o-transition: all .25s ease-in-out;
 			-ms-transition: all .25s ease-in-out;
 			transition: all .25s ease-in-out;
+		}	
+
+		input[type="button"]:hover,
+		input[type="submit"]:hover,
+		input[type="reset"]:hover,
+		.button:hover
+		{
+			background-color: #3f434b;
 		}
-
-			input[type="button"].style1,
-			input[type="submit"].style1,
-			input[type="reset"].style1,
-			.button.style1
-			{
-				background: #e97770 url('images/overlay.png');
-				color: #fff;
-			}
-
-				input[type="button"].style1:hover,
-				input[type="submit"].style1:hover,
-				input[type="reset"].style1:hover,
-				.button.style1:hover
-				{
-					background-color: #f98780;
-				}
-				
-				input[type="button"].style1:active,
-				input[type="submit"].style1:active,
-				input[type="reset"].style1:active,
-				.button.style1:active
-				{
-					background-color: #d96760;
-				}
-
-			input[type="button"].style2,
-			input[type="submit"].style2,
-			input[type="reset"].style2,
-			.button.style2
-			{
-				background: none;
-				color: #606167;
-				box-shadow: inset 0px 0px 2px 0px #a0a1a7;
-			}
-			
-				input[type="button"].style2:hover,
-				input[type="submit"].style2:hover,
-				input[type="reset"].style2:hover,
-				.button.style2:hover
-				{
-					box-shadow: inset 0px 0px 2px 0px #606167;
-				}
-			
-				input[type="button"].style2:active,
-				input[type="submit"].style2:active,
-				input[type="reset"].style2:active,
-				.button.style2:active
-				{
-					box-shadow: inset 0px 0px 2px 0px #202127;
-				}
-
-			input[type="button"].style3,
-			input[type="submit"].style3,
-			input[type="reset"].style3,
-			.button.style3
-			{
-				background: #2f333b url('images/overlay.png');
-				color: #fff;
-			}
-
-				input[type="button"].style3:hover,
-				input[type="submit"].style3:hover,
-				input[type="reset"].style3:hover,
-				.button.style3:hover
-				{
-					background-color: #3f434b;
-				}
-				
-				input[type="button"].style3:active,
-				input[type="submit"].style3:active,
-				input[type="reset"].style3:active,
-				.button.style3:active
-				{
-					background-color: #1f232b;
-				}
+		
+		input[type="button"]:active,
+		input[type="submit"]:active,
+		input[type="reset"]:active,
+		.button:active
+		{
+			background-color: #1f232b;
+		}
 
 	/* List */
 
@@ -605,102 +530,6 @@
 				padding-left: 0.5em;
 			}
 			
-		ul.style2
-		{
-		}
-		
-			ul.style2 li
-			{
-				border-top: solid 1px #eee;
-				padding: 1.5em 0 0 0;
-				margin: 1.5em 0 0 0;
-			}
-			
-			ul.style2 li:first-child
-			{
-				border-top: 0;
-				padding-top: 0;
-				margin-top: 0;
-			}
-		
-		ul.style3
-		{
-		}
-		
-			ul.style3 li
-			{
-				border-top: solid 1px #eee;
-				padding: 0.5em 0 0 0;
-				margin: 0.5em 0 0 0;
-			}
-			
-			ul.style3 li:first-child
-			{
-				border-top: 0;
-				padding-top: 0;
-				margin-top: 0;
-			}
-
-		ol
-		{
-		}	
-
-			ol.default
-			{
-				list-style: decimal;
-				padding-left: 1.25em;
-			}
-
-				ol.default li
-				{
-					padding-left: 0.25em;
-				}
-				
-	/* Feature List */
-
-		.feature-list
-		{
-		}
-
-			.feature-list h3
-			{
-				color: #e97770 !important;
-			}
-			
-				.feature-list h3:before
-				{
-					position: relative;
-					display: inline-block;
-					color: #fff;
-					background: #2f333b url('images/overlay.png');
-					border-radius: 1em;
-					text-align: center;
-				}
-
-/*********************************************************************************/
-/* Icons                                                                         */
-/*********************************************************************************/
-
-	.icon {
-		text-decoration: none;
-	}
-
-		.icon:before {
-			display: inline-block;
-			font-family: FontAwesome;
-			font-size: 1.25em;
-			text-decoration: none;
-			font-style: normal;
-			font-weight: normal;
-			line-height: 1;
-			-webkit-font-smoothing:antialiased;
-			-moz-osx-font-smoothing:grayscale;
-		}
-		
-		.icon > .label {
-			display: none;
-		}
-
 /*********************************************************************************/
 /* Wrappers                                                                      */
 /*********************************************************************************/
@@ -708,99 +537,7 @@
 	.wrapper
 	{
 		position: relative;
-	}
-
-		.wrapper .title
-		{
-			position: absolute;
-			top: 0;
-			left: 50%;
-			text-align: center;
-			text-transform: uppercase;
-			display: block;
-			font-weight: 700;
-			letter-spacing: 0.25em;
-		}
-		
-		.wrapper .title:before
-		{
-			content: '';
-			position: absolute;
-			bottom: -38px;
-			left: -35px;
-			width: 35px;
-			height: 38px;
-			background: url('images/shadow.png');
-		}
-		
-		.wrapper .title:after
-		{
-			content: '';
-			position: absolute;
-			bottom: -38px;
-			right: -35px;
-			width: 35px;
-			height: 38px;
-			background: url('images/shadow.png');
-			-moz-transform: scaleX(-1);
-			-webkit-transform: scaleX(-1);
-			-o-transform: scaleX(-1);
-			-ms-transform: scaleX(-1);
-			transform: scaleX(-1);
-    	}
-
-		.wrapper.style1
-		{
-			background: #e97770 url('images/overlay.png');
-			color: #eee;
-			color: rgba(255,255,255,0.75);
-		}
-		
-			.wrapper.style1 .title
-			{
-				background: #e97770 url('images/overlay.png');
-				color: #fff;
-			}
-		
-			.wrapper.style1 h1,
-			.wrapper.style1 h2,
-			.wrapper.style1 h3,
-			.wrapper.style1 h4,
-			.wrapper.style1 h5,
-			.wrapper.style1 h6,
-			.wrapper.style1 strong,
-			.wrapper.style1 b,
-			.wrapper.style1 a
-			{
-				color: #fff;
-			}
-		
-		.wrapper.style2
-		{
-			background: #fff;
-		}
-		
-			.wrapper.style2 .title
-			{
-				background: #fff;
-				color: #484d55;
-			}
-		
-		.wrapper.style3
-		{
-			background: #f3f3f3 url('images/overlay.png');
-		}
-		
-			.wrapper.style3 .title
-			{
-				background: #f3f3f3 url('images/overlay.png');
-				color: #484d55;
-			}
-			
-			.wrapper.style3 .image
-			{
-				border: solid 10px #fff;
-			}
+	}			
 
 /*********************************************************************************/
 /* Header                                                                        */
@@ -853,8 +590,8 @@
 			border-radius: 0.35em;
 			box-shadow: inset 0px 0px 1px 1px rgba(255,255,255,0.25);
 			padding: 0 1.5em 0 1.5em;
-			background: #222835 url("images/overlay.png");
-			background-color: rgba(44, 50, 63, 0.925);
+			background: #444;
+			background-color: #444444ec;
 		}
 
 		#nav > ul > li
@@ -869,7 +606,7 @@
 			{
 				display: block;
 				color: #eee;
-				color: rgba(255,255,255,0.75);
+				color: 444444bf;
 				text-transform: uppercase;
 				text-decoration: none;
 				font-size: 0.7em;
@@ -893,8 +630,8 @@
 
 	.dropotron
 	{
-		background: #222835 url('images/overlay.png');
-		background-color: rgba(44,50,63,0.925);
+		background: #444;
+		background-color: #444444ec;
 		padding: 1.25em 1em 1.25em 1em;
 		border-radius: 0.35em;
 		box-shadow: inset 0px 0px 1px 1px rgba(255,255,255,0.25);
@@ -1035,18 +772,18 @@ canvas:hover ~ .dygraph-roller {
   opacity: 0;
   width: 50px;
   
-				-webkit-appearance: none;
-				display: block;
-				border: 0;
-				background: #eee;
-				box-shadow: inset 0px 0px 1px 0px #a0a1a7;
-				border-radius: 0.35em;
-				padding: 0.5em 0.5em 0.5em 0.5em;
-				-moz-transition: all .25s ease-in-out;
-				-webkit-transition: all .25s ease-in-out;
-				-o-transition: all .25s ease-in-out;
-				-ms-transition: all .25s ease-in-out;
-				transition: all .25s ease-in-out;
+	-webkit-appearance: none;
+	display: block;
+	border: 0;
+	background: #eee;
+	box-shadow: inset 0px 0px 1px 0px #a0a1a7;
+	border-radius: 0.35em;
+	padding: 0.5em 0.5em 0.5em 0.5em;
+	-moz-transition: all .25s ease-in-out;
+	-webkit-transition: all .25s ease-in-out;
+	-o-transition: all .25s ease-in-out;
+	-ms-transition: all .25s ease-in-out;
+	transition: all .25s ease-in-out;
 }
 
 /* This class is shared by all annotations, including those with icons */
@@ -1151,9 +888,6 @@ html:not([subframe]) #sub-frame-error {
   display: none;
 }
 
- 
-}
-
 .hidden {
   display: none;
 }
@@ -1249,17 +983,6 @@ html[subframe] body {
   #sub-frame-error-details {
     display: none;
   }
-}
-
-/* details-button is special; it's a <button> element that looks like a link. */
-#details-button {
-  background-color: inherit;
-  background-image: none;
-  border: none;
-  box-shadow: none;
-  min-width: 0;
-  padding: 0;
-  text-decoration: underline;
 }
 
 /* Styles for platform dependent separation of controls and details button. */
