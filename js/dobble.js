@@ -112,7 +112,7 @@ function newP2Card(){
 		lastP2Card = deck.shift();
 		P2Deck.forEach((symb,ind) => {
 			symb.classList.remove(...symb.classList);
-			symb.classList.add('P2',lastP2Card[ind]);
+			symb.classList.add('P2','Player2',lastP2Card[ind]);
 			symb.addEventListener('click',clicked);
 			symb.style.transform = 'rotate(' + spin() + 'deg)';
 		});	
@@ -238,7 +238,7 @@ function numPlayers(){
 	this.checked = true;
 	let x = document.getElementById("Player2"), y = document.getElementById("Score2"), z = document.getElementById("GameTimer");
 	if (this.id == 'SingleP') x.style.display = "none", y.style.display = "none", z.style.display = "block";
-	else x.style.display = "block", y.style.display = "block", z.style.display = "none";
+	else x.style.display = "flex", y.style.display = "block", z.style.display = "none";
 }
 
 try {
