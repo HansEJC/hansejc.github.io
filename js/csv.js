@@ -153,7 +153,18 @@ function javaread(bool){
 				document.getElementById("PrUp").checked = true;
 				plotcalcs(filecontent);
 			};
-			reader.readAsText(evt.target.files[0]);		
+			reader.readAsText(evt.target.files[0]);	
+			
+			//put filename in span
+			let fullPath = document.getElementById('my_upload').value;
+			if (fullPath) {
+				let startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+				let filename = fullPath.substring(startIndex);
+				if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
+					filename = filename.substring(1);
+				}
+				localStorage.setItem('Filename', filename);
+			}
 		};
 	}
 	
@@ -279,16 +290,12 @@ function plotexp(file){
 	function arrayequations() {
 		for (let i=0;i<csv.length;i++){		
 			for (let j=1;j<csv[i].length;j++){	
-				//eval("var "+ String.fromCharCode(96+j)+"= csv[i][j]");
 				window[String.fromCharCode(96+j)] = csv[i][j];
 			}
 			for (let j=1;j<csv[i].length;j++){	
 				csv[i][j] = eval(document.getElementById(String.fromCharCode(96+j)).value);
 				size++;
 			}
-			/*if ((i/csv.length*100).toFixed(1) % 10 === 0) {
-				setTimeout(() => {addLoader("Calculating Equations"+i/csv.length*100);},1);
-			} */
 		}
 	}	
 	document.getElementById("eqcheck").checked = (getSavedValue("eqcheck") == "true");
@@ -392,7 +399,8 @@ function dyg(csv) {
 		document.getElementById("69").onchange = (() => UncheckAll('MyForm'));
 		setTimeout(function(){
 			window.dispatchEvent(new Event('resize'));
-			//document.getElementById("myForm").innerHTML= "<input type='file' accept='.csv' id='my_upload' name='my_upload'/>"; // I can't remember why I reset this?
+			document.getElementById("myForm").innerHTML= "<input type='file' accept='.csv' id='my_upload' name='my_upload'/><span id='FullFile'></span></b>"; // Resets input to be able to upload same file.			
+			document.querySelector('#FullFile').innerText = localStorage.getItem('Filename');
 			javaread(true);
 		}, 500); 
 	});
@@ -420,7 +428,7 @@ function dyg(csv) {
 	  var _container = document.getElementById(elementID);
 	  var _chks = _container.getElementsByTagName("INPUT");
 	  var _numChks = _chks.length-1;
-																									 
+	  
 	  for(var i = 0; i < _numChks; i++){
 		
 		if(_chks[0].checked==false){
@@ -502,7 +510,6 @@ function isOK(x) {
 };
 
 // A plotter which uses splines to create a smooth curve.
-// See tests/plotters.html for a demo.
 // Can be controlled via smoothPlotter.smoothing
 function smoothPlotter(e) {
   var ctx = e.drawingContext,
@@ -526,10 +533,6 @@ function smoothPlotter(e) {
                                       {x: p1.canvasx, y: p1.canvasy},
                                       p2 && {x: p2.canvasx, y: p2.canvasy},
                                       smoothPlotter.smoothing);
-      // Uncomment to show the control points:
-      // ctx.lineTo(lastRightX, lastRightY);
-      // ctx.lineTo(controls[0], controls[1]);
-      // ctx.lineTo(p1.canvasx, p1.canvasy);
       lastRightX = (lastRightX !== null) ? lastRightX : p0.canvasx;
       lastRightY = (lastRightY !== null) ? lastRightY : p0.canvasy;
       ctx.bezierCurveTo(lastRightX, lastRightY,
@@ -551,10 +554,6 @@ function smoothPlotter(e) {
 }
 smoothPlotter.smoothing = 1/3;
 smoothPlotter._getControlPoints = getControlPoints;  // for testing
-
-// older versions exported a global.
-// This will be removed in the future.
-// The preferred way to access smoothPlotter is via Dygraph.smoothPlotter.
 window.smoothPlotter = smoothPlotter;
 Dygraph.smoothPlotter = smoothPlotter;
 
