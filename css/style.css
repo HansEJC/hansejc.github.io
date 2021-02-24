@@ -44,12 +44,16 @@
 	.dark th{
 		background-color:#101010;
 	}
-	
+	.dark .helpImg{
+		filter:invert(100%);
+	}
 
 /*********************************************************************************/
 /* Basic                                                                         */
 /*********************************************************************************/
-
+	html{
+		scroll-behavior:smooth;
+	}
 	body, input, textarea, select, .label
 	{
 		font-family: arial, sans-serif;

@@ -157,9 +157,15 @@ function navBar(){
 				"</ul>"+
 			"</li>"+
 			"<li><a href='op.html'>Orion Park</a></li>"+
-			"<li><a href='help.html'>Help</a></li>"+
+			"<li><a href='javascript:helpPage()'>Help</a></li>"+
 		"</ul>";
 	document.querySelectorAll('.heh').forEach(function(item) {return item.addEventListener('click',randomPage)});
+}
+
+function helpPage(){
+	let hashy = location.pathname.split(".")[0].split("/");
+	hashy=hashy[hashy.length-1];
+	location = 'help.html#'+hashy;
 }
 
 navBar();
