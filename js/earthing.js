@@ -72,5 +72,6 @@ window.addEventListener("load", function() {
 	MathJax.Hub.Queue(
 	function () {
 		document.querySelectorAll(".Math").forEach(math => math.style.visibility = "");
+		document.querySelectorAll(".Math").forEach(math => math.style.display = "inline-block");
 	});
 });
