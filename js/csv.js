@@ -559,10 +559,4 @@ Dygraph.smoothPlotter = smoothPlotter;
 
 //startup
 labels();									
-if (!!navigator.userAgent.match(/Trident\/7\./)){ //if IE is used
-	plotIE();
-	alert("Dates don't plot on Internet Explorer correctly. Get off it you Dinasour!");
-}
-else {
-	javaread();
-}
+javaread();
