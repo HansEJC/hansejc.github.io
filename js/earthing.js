@@ -1,6 +1,5 @@
 function volts(v) {
-	if (v > 1000) return +(v/1000).toFixed(2)+" kV";
-	else return +v.toFixed(2)+" V";
+	return v > 1000 ? +(v/1000).toFixed(2)+" kV" : +v.toFixed(2)+" V";
 }
 
 function earthing() {

@@ -212,8 +212,7 @@ function javaread(bool){
 			}
 		}	
 		csv = csv.map(i => i.map(j =>{
-				if (j == "null") return null; //added this to process null in csv files
-				else return +j;
+				return j == "null" ? null : +j;
 			})); //loop through 2D array and map individual items
 		for (var i=0;i<csv.length;i++){		//eliminate not numbers	
 			for (var j=0;j<csv[i].length;j++){		//eliminate not numbers
