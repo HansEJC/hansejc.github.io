@@ -1,4 +1,5 @@
 [![DeepScan grade](https://deepscan.io/api/teams/13094/projects/16113/branches/338723/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=13094&pid=16113&bid=338723)
+[![codebeat badge](https://codebeat.co/badges/01f684f9-effc-4599-bc60-8706d5a4d3b7)](https://codebeat.co/projects/github-com-hansejc-hansejc-github-io-master)
 
 # hansejc.github.io
 Hobby website I use to simplify my life
