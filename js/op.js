@@ -57,7 +57,7 @@ function search(arrheh){
 	var pw = document.getElementById("PASS").value;
 	pn = pn.toLowerCase().split(" ");
 	var myArray = arrheh;	
-	
+	var myTable;
 	myArray = myArray.map(e => e.join(','));//remove undefined row
 	var npr = myArray.length; //number of rows
 	var sArray = [];
@@ -81,25 +81,17 @@ function search(arrheh){
 	
 	if(document.getElementById("Del").checked){
 		//create table
-		var myTable= "<table><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><tr><th>Date</th>";
+		myTable= "<table><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><tr><th>Date</th>";
 		myTable+= "<th>Time</th>";
-		//myTable+= "<th>Courier</th>";
-		//myTable+= "<th>Tracking #</th>";
 		myTable+= "<th>Supplier</th>";
-	   // myTable+= "<th># of Boxes</th>";
-	   // myTable+= "<th>Pallets</th>";
 		myTable+= "<th>Comments</th>";
 		myTable+= "<th>Project</th>";
 		myTable+="<th>PO #</th></tr>";
 		
-		for(var i = 0; i < sArray.length; i++){
+		for(let i = 0; i < sArray.length; i++){
 			myTable+="<tr><td>" + sArray[i][0] + "</td>";
 			myTable+="<td>" + sArray[i][1] + "</td>";
-			//myTable+="<td>" + sArray[i][2] + "</td>";
-			//myTable+="<td>" + sArray[i][3] + "</td>";
 			myTable+="<td>" + sArray[i][4] + "</td>";
-			//myTable+="<td>" + sArray[i][5] + "</td>";
-			//myTable+="<td>" + sArray[i][6] + "</td>";
 			myTable+="<td>" + sArray[i][7] + "</td>";
 			myTable+="<td>" + sArray[i][8] + "</td>";
 			myTable+="<td>" + sArray[i][9] + "</td></tr>";
@@ -108,7 +100,7 @@ function search(arrheh){
 	
 	else{
 			//create table
-		var myTable= "<table><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><tr><th>Part #</th>";
+		myTable= "<table><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><tr><th>Part #</th>";
 		myTable+= "<th>Description</th>";
 		myTable+= "<th>Quantity</th>";
 		myTable+= "<th>Date</th>";

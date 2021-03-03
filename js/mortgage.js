@@ -50,14 +50,11 @@ function calculations(){
 		document.getElementById("graphdiv3"),												
 		mortgage,
 		{		
-			//dateWindow : [-50,80],
-			//valueRange : [-20,100],
 			legend: 'always',
 			labels: [ 'Date', 'Interest','Equity', 'Payment'],
 			xlabel: "Dates",	
 			ylabel: "Payments (£)",	
-			fillGraph: true,			
-			legend: 'always',
+			fillGraph: true,	
 			connectSeparatedPoints: true,
 			axes: {
               y: {

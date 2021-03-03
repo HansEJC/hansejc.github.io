@@ -78,7 +78,7 @@ function calculations(){
 		let lc = getSavedValue(loc.id);
 		lc = lc == "" ? 5 : Math.abs(lc); //set to 5km if it's empty to avoid lag
 		
-		for (i=1;i<=res;i++){
+		for (let i=1;i<=res;i++){
 			i = ind == 0 ? res : i; //shift the first sub to its km point
 			let lcc = smoothdec(lc*i/res); //current location
 			let lch = getSavedValue(loc.id) < 0 ? totlc-lcc : totlc+lcc; //current total location
@@ -132,7 +132,7 @@ function calculations(){
 		totlc += +getSavedValue(loc.id) < 0 ? 0 : lc; //total length
 		textlc += +getSavedValue(loc.id); //total length
 		let sub = getSavedValue(100+(+loc.id));
-		let nextlc = +(getSavedValue(1+(+loc.id)))*0.1;
+		//let nextlc = +(getSavedValue(1+(+loc.id)))*0.1;
 		subarray[ind] = {
 		  series: getSavedValue(loc.id) < 0 ? "Fault Current (kA)." : "Fault Current (kA)",
 		  x: /*textlc == 0 ? nextlc :*/ getSavedValue(loc.id) < 0 ? textlc : totlc,
@@ -156,10 +156,6 @@ function calculations(){
 			ylabel: "Fault Current (kA)",
 			labels:	["Distance (km)", "Fault Current (kA)", "Fault Current (kA)."],	
 			colors: ["red"],			
-			//fillGraph: true,	
-			//includeZero: true,
-			//legend: 'always',
-			//connectSeparatedPoints: true,
 			pointSize: 0.1,
 			axes: {
               x: {

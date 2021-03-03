@@ -99,7 +99,6 @@ function bonk(e) {
 }
 
 function hardMode() {
-	let square;
 	if (!firstMove) {
 		firstMove = true;
 		if (squares[4].firstChild.classList.value.includes('X')) { //X in the middle

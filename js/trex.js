@@ -219,7 +219,6 @@ function GameOverPanel(canvas, textSprite, restartImg, dimensions) {
     * @return {Array.<CollisionBox>}
     */
 function checkForCollision(obstacle, tRex, opt_canvasCtx) {
-    var obstacleBoxXPos = Runner.defaultDimensions.WIDTH + obstacle.xPos;
     // Adjustments are made to the bounding box as there is a 1 pixel white
     // border around the t-rex and obstacles.
     var tRexBox = new CollisionBox(
@@ -295,10 +294,7 @@ function drawCollisionBoxes(canvasCtx, tRexBox, obstacleBox) {
     */
 function boxCompare(tRexBox, obstacleBox) {
     var crashed = false;
-    var tRexBoxX = tRexBox.x;
-    var tRexBoxY = tRexBox.y;
     var obstacleBoxX = obstacleBox.x;
-    var obstacleBoxY = obstacleBox.y;
     // Axis-Aligned Bounding Box method.
     if (tRexBox.x < obstacleBoxX + obstacleBox.width &&
 		tRexBox.x + tRexBox.width > obstacleBoxX &&
@@ -541,8 +537,6 @@ function trekt(imgs1,imgs2) {
     window.navigator.userAgent.indexOf('UIWebViewForStaticFileContent') > -1;
     /** @const */
     IS_MOBILE = window.navigator.userAgent.indexOf('Mobi') > -1 || IS_IOS;
-    /** @const */
-    var IS_TOUCH_ENABLED = 'ontouchstart' in window;
     /**
     * Default game configuration.
     * @enum {number}

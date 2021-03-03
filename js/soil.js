@@ -44,7 +44,7 @@ function def2() {
 	document.getElementById("FOPDis").value = getSavedValue("FOPDis");    // set the value to this input
 
 	var fopdis = Number(getSavedValue("FOPDis"));    // set the value to this input	
-	if (fopdis=="") {
+	if (fopdis==0) {
 		fopdis = 50;
 		document.getElementById("FOPDis").value = 50;
 	}
@@ -80,7 +80,6 @@ function soil() {
 }
 
 function def() {
-	const measurements = 11;    // set the value to this input 
 	document.getElementById("dis"+0).value = 0.2;
 	document.getElementById("dis"+1).value = 0.4;
 	document.getElementById("dis"+2).value = 0.8;
@@ -195,7 +194,6 @@ function exportToDB(filename,rows) {
 
 //Save to json
 function saveResults(filename,rows){
-	let db =(filename.includes("FOP")) ? "fop" :  "soil";
 	let tloc = document.getElementById('TLOC').value;
 	
 	$.post("./saveSoil.php",

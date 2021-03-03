@@ -107,7 +107,7 @@ async function calculations(){
 	
 	if (radios[1].checked && tf*eirp == 0) return; //return if plotting nothing
 	if (radios[1].checked) {
-		for (i = 0; i < 5000; i++) { 
+		for (let i = 0; i < 5000; i++) { 
 			d = i/100;
 			if (d < c/(2*Math.PI*tf) && d!=0) {
 				if (fields[0].checked) earray.push([d,Math.pow(c,2)*Math.sqrt(eirp)/(7.2*Math.pow(tf,2)*Math.pow(d,3))]);
@@ -132,7 +132,7 @@ async function calculations(){
 		if (fields[0].checked && q == 0) return; //return if plotting nothing
 		if (fields[1].checked && cu == 0) return;
 		const lowfreqrange = 51000;
-		for (i = 0; i < lowfreqrange; i++) { 
+		for (let i = 0; i < lowfreqrange; i++) { 
 			d = i/1000;
 			if (fields[0].checked) {
 				earray.push([d,q/(2*Math.PI*eo*d),5e3,9e3]);
@@ -152,9 +152,7 @@ async function calculations(){
 		earray,
 		{		
 			legend: 'always',
-			xlabel: "Distance (m)",		
-			//fillGraph: true,			
-			legend: 'always',
+			xlabel: "Distance (m)",	
 			connectSeparatedPoints: true,
 			axes: {
               x: {

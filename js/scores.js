@@ -1,3 +1,4 @@
+var ipString = "removeMe?";
 function saveScores(scr) {
 	if (!window.location.hostname.includes("github")) {
 		$.post("./savesettings.php?=v1.0",
@@ -107,23 +108,20 @@ function ip(){
 		}
 		
 		function grepSDP(sdp) {
-			var hosts = [];
+			var hosts = [], parts, addr, type;
 			sdp.split('\r\n').forEach(function (line) { // c.f. http://tools.ietf.org/html/rfc4566#page-39
 				if (~line.indexOf("a=candidate")) {     // http://tools.ietf.org/html/rfc4566#section-5.13
-					var parts = line.split(' '),        // http://tools.ietf.org/html/rfc5245#section-15.1
+					parts = line.split(' '),        // http://tools.ietf.org/html/rfc5245#section-15.1
 						addr = parts[4],
 						type = parts[7];
 					if (type === 'host') updateDisplay(addr);
 				} else if (~line.indexOf("c=")) {       // http://tools.ietf.org/html/rfc4566#section-5.7
-					var parts = line.split(' '),
+					parts = line.split(' '),
 						addr = parts[2];
 					updateDisplay(addr);
 				}
 			});
 		}
-	})(); else {
-		//document.getElementById('IEX').innerHTML = "<code>ifconfig | grep inet | grep -v inet6 | cut -d\" \" -f2 | tail -n1</code>";
-		//document.getElementById('list').nextSibling.textContent = "In Chrome and Firefox your IP should display automatically, by the power of WebRTCskull.";
-	}
+	})(); 
 }
 

@@ -179,9 +179,7 @@ async function plotProtection(csvarr){
 	document.getElementById("CTR").value = getSavedValue("CTR");
 	/* Here you can add more inputs to set value. if it's saved */
 	
-	var prim = document.getElementById("Prim");
 	var sec = document.getElementById("Sec");
-	var primdr = document.getElementById("PrimDR");
 	var secdr = document.getElementById("SecDR");
 	
 	//Advances settings variables
@@ -196,7 +194,7 @@ async function plotProtection(csvarr){
 	else vtr = Number(document.getElementById("VTR").value);
 	
 	if (document.getElementById("CTR").value=="") ctr = 1;
-	else var ctr = Number(document.getElementById("CTR").value);
+	else ctr = Number(document.getElementById("CTR").value);
 	
 	var tr =ctr/vtr; //secondary ratio
 	
@@ -225,7 +223,6 @@ async function plotProtection(csvarr){
 	var Z3t = (-3* Math.PI / 180);
 	var R3R = Number(document.getElementById("Zone3RH").value);
 	var R3L = Number(document.getElementById("Zone3LH").value);
-	var Z3s = (70* Math.PI / 180);
 	var Z3rev = 2;
 	
 	//Primary or Secondary Inputs
@@ -324,7 +321,7 @@ async function plotProtection(csvarr){
 	var i;
 	
 	var faultarray = []; 
-	for (i = 0; i < DR.length; i++) { //add csv to array
+	for (let i = 0; i < DR.length; i++) { //add csv to array
 		faultarray[i] = [];
 		if ((DR[i][0]/DR[i][2])/trdr*Math.cos((DR[i][1]-DR[i][3])* Math.PI / 180)<90 && 
 			(DR[i][0]/DR[i][2])/trdr*Math.sin((DR[i][1]-DR[i][3])* Math.PI / 180)<90 && 
@@ -337,7 +334,7 @@ async function plotProtection(csvarr){
 	var Z3time = 0;
 	var Z2time = 0;
 	var Z1trip,Z2trip,Z3trip; //In zone booleans
-	for (i = 0; i < faultarray.length; i++) { //check through fault if in zone
+	for (let i = 0; i < faultarray.length; i++) { //check through fault if in zone
 		if (inside(faultarray[i],Z3pol)){
 			Z3time = Z3time + 1*fst;
 			if (Z3time > z3del){
@@ -364,7 +361,7 @@ async function plotProtection(csvarr){
 	}	
 
 	var total = elements2.slice();
-	for (i = 0; i < DR.length; i++) {
+	for (let i = 0; i < DR.length; i++) {
 		total.push(faultarray[i]);											
 	}
 	
