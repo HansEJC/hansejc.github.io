@@ -318,7 +318,6 @@ async function plotProtection(csvarr){
 	
 	var DR = [];
 	DR = csvarr;
-	var i;
 	
 	var faultarray = []; 
 	for (let i = 0; i < DR.length; i++) { //add csv to array

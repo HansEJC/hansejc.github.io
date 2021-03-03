@@ -274,12 +274,12 @@ function plotexp(file){
 	
 	//add equation inputs
 	var eqh = document.getElementById('equa');
-	var equ = [], eqw = [], eqb = false;
+	var equ = [], /*eqw = [],*/ eqb = false;
 	for (let i=1;i<csv[0].length;i++){
 		equ[i] = document.createElement('input');	
 		equ[i].type = 'text';
 		equ[i].value = getSavedValue(String.fromCharCode(96+i)) == "" ? String.fromCharCode(96+i) : getSavedValue(String.fromCharCode(96+i));
-		eqw[i-1] = equ[i].value;
+		//eqw[i-1] = equ[i].value;
 		equ[i].id = String.fromCharCode(96+i);
 		equ[i].onkeyup = function(){saveValue(this);};
 		eqh.appendChild(equ[i]);
