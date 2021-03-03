@@ -187,14 +187,11 @@ async function plotProtection(csvarr){
 	var z3del = Number(document.getElementById("Z3del").value);
 	var fst, vtr, ctr;
 	
-	if (document.getElementById("FST").value=="") fst = 1;
-	else fst = Number(document.getElementById("FST").value);
+	fst = document.getElementById("FST").value=="" ? 1 : Number(document.getElementById("FST").value);
 	
-	if (document.getElementById("VTR").value=="") vtr = 1;
-	else vtr = Number(document.getElementById("VTR").value);
+	vtr = document.getElementById("VTR").value=="" ? 1 : Number(document.getElementById("VTR").value);
 	
-	if (document.getElementById("CTR").value=="") ctr = 1;
-	else ctr = Number(document.getElementById("CTR").value);
+	ctr = document.getElementById("CTR").value=="" ? 1 : Number(document.getElementById("CTR").value);
 	
 	var tr =ctr/vtr; //secondary ratio
 	
@@ -366,8 +363,7 @@ async function plotProtection(csvarr){
 	}
 	
 	var Z3lim;
-	if (Z3>100) Z3lim = Z3;
-	else Z3lim = 100;
+	Z3lim = Z3>100 ? Z3 : 100;
 	
 	try {
 		if (g3) g3.destroy();
