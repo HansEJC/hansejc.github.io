@@ -1,3 +1,5 @@
+[![DeepScan grade](https://deepscan.io/api/teams/13094/projects/16113/branches/338723/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=13094&pid=16113&bid=338723)
+
 # hansejc.github.io
 Hobby website I use to simplify my life
 
