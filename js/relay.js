@@ -48,10 +48,8 @@ function read() {
 
 function javaread(){
 	document.forms['myForm'].elements["rel_upload"].onchange = function(evt) {
-		if(!window.FileReader) return; // Browser is not compatible
-		
+		if(!window.FileReader) return; // Browser is not compatible		
 		var reader = new FileReader();
-
 		reader.onload = function(evt) {
 			if(evt.target.readyState != 2) return;
 			if(evt.target.error) {
@@ -81,10 +79,8 @@ function javaread(){
 			var objectStore = transaction.objectStore("plots");
 			var request = objectStore.get("2");
 			request.onerror = function(event) {
-			  // Handle errors!
 			};
 			request.onsuccess = function(event) {
-			  //console.log(request);
 			  read();
 			};
 		}
@@ -95,7 +91,7 @@ function javaread(){
 	}
 }
 
-async function doAjaxThings() {
+async function startup() {
 	javaread();
 	// await code here
 	var DR = [];
@@ -156,165 +152,145 @@ function inside(point, vs) {
     return inside;
 };
 
-async function plotProtection(csvarr){
-	(new URL(document.location)).searchParams.forEach((x, y) => {
-		localStorage.setItem(y,x);
-	});
-	document.getElementById("Zone1").value = getSavedValue("Zone1");    // set the value to this input
-	document.getElementById("Zone1A").value = getSavedValue("Zone1A");
-	document.getElementById("Zone1RH").value = getSavedValue("Zone1RH");
-	document.getElementById("Zone1LH").value = getSavedValue("Zone1LH");
-	document.getElementById("Zone2").value = getSavedValue("Zone2");   // set the value to this input
-	document.getElementById("Zone2A").value = getSavedValue("Zone2A");
-	document.getElementById("Zone2RH").value = getSavedValue("Zone2RH");
-	document.getElementById("Zone2LH").value = getSavedValue("Zone2LH");
-	document.getElementById("Zone3").value = getSavedValue("Zone3");   // set the value to this input
-	document.getElementById("Zone3A").value = getSavedValue("Zone3A");
-	document.getElementById("Zone3RH").value = getSavedValue("Zone3RH");
-	document.getElementById("Zone3LH").value = getSavedValue("Zone3LH");
-	document.getElementById("Z2del").value = getSavedValue("Z2del");
-	document.getElementById("Z3del").value = getSavedValue("Z3del");
-	document.getElementById("FST").value = getSavedValue("FST");
-	document.getElementById("VTR").value = getSavedValue("VTR");
-	document.getElementById("CTR").value = getSavedValue("CTR");
-	/* Here you can add more inputs to set value. if it's saved */
-	
-	var sec = document.getElementById("Sec");
-	var secdr = document.getElementById("SecDR");
-	
-	//Advances settings variables
-	var z2del = Number(document.getElementById("Z2del").value);
-	var z3del = Number(document.getElementById("Z3del").value);
-	var fst, vtr, ctr;
-	
-	fst = document.getElementById("FST").value=="" ? 1 : Number(document.getElementById("FST").value);
-	
-	vtr = document.getElementById("VTR").value=="" ? 1 : Number(document.getElementById("VTR").value);
-	
-	ctr = document.getElementById("CTR").value=="" ? 1 : Number(document.getElementById("CTR").value);
-	
-	var tr =ctr/vtr; //secondary ratio
-	
+function Zone1(tr){
 	//%Zone 1 setting   
-
 	var Z1 = Number(document.getElementById("Zone1").value);
 	var Z1A = (Number(document.getElementById("Zone1A").value)* Math.PI / 180);
 	var Z1t = (-3* Math.PI / 180);
 	var R1R = Number(document.getElementById("Zone1RH").value);
 	var R1L = Number(document.getElementById("Zone1LH").value);
-	var Z1s = (87* Math.PI / 180);
-
-	//%Zone 2 setting   
-
-	var Z2 = Number(document.getElementById("Zone2").value);
-	var Z2A = (Number(document.getElementById("Zone2A").value)* Math.PI / 180);
-	var Z2t = (-3* Math.PI / 180);
-	var R2R = Number(document.getElementById("Zone2RH").value);
-	var R2L = Number(document.getElementById("Zone2LH").value);
-	var Z2s = (87* Math.PI / 180);
-
-	//%Zone 3 setting   
-
-	var Z3 = Number(document.getElementById("Zone3").value);
-	var Z3A = (Number(document.getElementById("Zone3A").value)* Math.PI / 180);
-	var Z3t = (-3* Math.PI / 180);
-	var R3R = Number(document.getElementById("Zone3RH").value);
-	var R3L = Number(document.getElementById("Zone3LH").value);
-	var Z3rev = 2;
-	
+	var Z1s = (87* Math.PI / 180);	
 	//Primary or Secondary Inputs
-	
+	const sec = document.getElementById("Sec");
 	if (sec.checked) {
 		Z1=Z1/tr;R1R=R1R/tr;R1L=R1L/tr;
-		Z2=Z2/tr;R2R=R2R/tr;R2L=R2L/tr;
-		Z3=Z3/tr;R3R=R3R/tr;R3L=R3L/tr;
-	}
-	
-	//Primary or Secondary Disturbance record
-	
-	var trdr = 1;
-	var vtrdr = 1;
-	if (secdr.checked) {trdr = tr; vtrdr = vtr;}
-	
+	}	
 	//%Zone 1 plot
-
 	var x1 = Math.sin(Z1A)*R1L/Math.sin((180* Math.PI / 180)-Z1A+Z1t);
 	var xx1 = Math.sin(Z1A)*R1R/Math.sin((180* Math.PI / 180)-Z1A+Z1t);
-
 	var pkx1 = -x1*Math.sin(Z1t)+Z1*Math.sin(Z1A);
 	if (-R1L*Math.sin((-90* Math.PI / 180)+Z1s) > pkx1){ 
 		var pgx1 = pkx1;}
 	else{
 		pgx1 = -R1L*Math.sin((-90* Math.PI / 180)+Z1s);
 	}
-
 	var pcx1 = xx1*Math.sin(Z1t)+Z1*Math.sin(Z1A);
 	var prx1 = R1R*Math.sin(Z1A)/Math.sin((90* Math.PI / 180)+Z1s-Z1A)*Math.sin((-90* Math.PI / 180)+Z1s);
-
 	var pgr1 = -pgx1*Math.sin(Z1s)/Math.sin((90* Math.PI / 180)-Z1s);
 	if (pgx1 == pkx1) {
 		var pkr1 = pgr1;}
 	else{
 		pkr1 = -x1*Math.cos(Z1t)+Z1*Math.cos(Z1A);
 	}
-
 	var pcr1 = xx1*Math.cos(Z1t)+Z1*Math.cos(Z1A);
-	var prr1 = R1R*Math.sin(Z1A)/Math.sin((90* Math.PI / 180)+Z1s-Z1A)*Math.cos((-90* Math.PI / 180)+Z1s);
+	var prr1 = R1R*Math.sin(Z1A)/Math.sin((90* Math.PI / 180)+Z1s-Z1A)*Math.cos((-90* Math.PI / 180)+Z1s);	
+	let Z1pol = [[pgr1,pgx1],[pkr1,pkx1],[pcr1,pcx1],[prr1,prx1],[pgr1,pgx1]]; //Z1 polygon
+	let Z1el = [[pgr1,,pgx1],[pkr1,,pkx1],[pcr1,,pcx1],[prr1,,prx1],[pgr1,,pgx1]];
+	return [Z1pol,Z1el];
+}
 
+function Zone2(tr){
+	//%Zone 2 setting   
+	var Z2 = Number(document.getElementById("Zone2").value);
+	var Z2A = (Number(document.getElementById("Zone2A").value)* Math.PI / 180);
+	var Z2t = (-3* Math.PI / 180);
+	var R2R = Number(document.getElementById("Zone2RH").value);
+	var R2L = Number(document.getElementById("Zone2LH").value);
+	var Z2s = (87* Math.PI / 180);
+	//Primary or Secondary Inputs
+	const sec = document.getElementById("Sec");
+	if (sec.checked) {
+		Z2=Z2/tr;R2R=R2R/tr;R2L=R2L/tr;
+	}	
 	//%Zone 2 plot
-
 	var x2 = Math.sin(Z2A)*R2L/Math.sin((180* Math.PI / 180)-Z2A+Z2t);
 	var xx2 = Math.sin(Z2A)*R2R/Math.sin((180* Math.PI / 180)-Z2A+Z2t);
-
 	var pkx2 = -x2*Math.sin(Z2t)+Z2*Math.sin(Z2A);
-
 	if (-R2L*Math.sin((-90* Math.PI / 180)+Z2s) > pkx2){
 		var pgx2 = pkx2;}
 	else{
 		pgx2 = -R2L*Math.sin((-90* Math.PI / 180)+Z2s);
 	}
-
 	var pcx2 = xx2*Math.sin(Z2t)+Z2*Math.sin(Z2A);
 	var prx2 = R2R*Math.sin(Z2A)/Math.sin((90* Math.PI / 180)+Z2s-Z2A)*Math.sin((-90* Math.PI / 180)+Z2s);
-
 	var pgr2 = -pgx2*Math.sin(Z2s)/Math.sin((90* Math.PI / 180)-Z2s);
 	if (pgx2 == pkx2) {
 		var pkr2 = pgr2;}
 	else{
 		pkr2 = -x2*Math.cos(Z2t)+Z2*Math.cos(Z2A);
 	}
-
 	var pcr2 = xx2*Math.cos(Z2t)+Z2*Math.cos(Z2A);
 	var prr2 = R2R*Math.sin(Z2A)/Math.sin((90* Math.PI / 180)+Z2s-Z2A)*Math.cos((-90* Math.PI / 180)+Z2s);
+	let Z2pol = [[pgr2,pgx2],[pkr2,pkx2],[pcr2,pcx2],[prr2,prx2],[pgr2,pgx2]];
+	let Z2el = [[pgr2,,,pgx2],[pkr2,,,pkx2],[pcr2,,,pcx2],[prr2,,,prx2],[pgr2,,,pgx2]];
+	return [Z2pol,Z2el];
+}
 
+function Zone3(tr){
+	//%Zone 3 setting  
+	var Z3 = Number(document.getElementById("Zone3").value);
+	var Z3A = (Number(document.getElementById("Zone3A").value)* Math.PI / 180);
+	var Z3t = (-3* Math.PI / 180);
+	var R3R = Number(document.getElementById("Zone3RH").value);
+	var R3L = Number(document.getElementById("Zone3LH").value);
+	var Z3rev = 2;
+	//Primary or Secondary Inputs
+	const sec = document.getElementById("Sec");
+	if (sec.checked) {
+		Z3=Z3/tr;R3R=R3R/tr;R3L=R3L/tr;
+	}	
 	//%Zone 3 plot
-
 	var x3 = Math.sin(Z3A)*R3L/Math.sin((180* Math.PI / 180)-Z3A+Z3t);
 	var xx3 = Math.sin(Z3A)*R3R/Math.sin((180* Math.PI / 180)-Z3A+Z3t);
-
 	var ox3 = -Z3rev*Math.sin(Z3A);
 	var pgx3 = ox3-x3*Math.sin(Z3t);
 	var pkx3 = pgx3+(Z3+Z3rev)*Math.sin(Z3A);
 	var prx3 = ox3+xx3*Math.sin(Z3t);
 	var pcx3 = prx3+(Z3+Z3rev)*Math.sin(Z3A);
-
 	var or3 = -Z3rev*Math.cos(Z3A);
 	var pgr3 = or3-x3*Math.cos(Z3t);
 	var pkr3 = pgr3+(Z3+Z3rev)*Math.cos(Z3A);
 	var prr3 = or3+xx3*Math.cos(Z3t);
 	var pcr3 = prr3+(Z3+Z3rev)*Math.cos(Z3A);
-	
-	var Z1pol = [[pgr1,pgx1],[pkr1,pkx1],[pcr1,pcx1],[prr1,prx1],[pgr1,pgx1]]; //Z1 polygon
-	var Z2pol = [[pgr2,pgx2],[pkr2,pkx2],[pcr2,pcx2],[prr2,prx2],[pgr2,pgx2]];
-	var Z3pol = [[pgr3,pgx3],[pkr3,pkx3],[pcr3,pcx3],[prr3,prx3],[pgr3,pgx3]];
+	let Z3pol = [[pgr3,pgx3],[pkr3,pkx3],[pcr3,pcx3],[prr3,prx3],[pgr3,pgx3]];
+	let Z3el = [[-Z3rev*Math.cos(Z3A),,,,,-Z3rev*Math.sin(Z3A)],[Z3*Math.cos(Z3A),,,,,Z3*Math.sin(Z3A)], 
+				[pgr3,,,,pgx3],[pkr3,,,,pkx3],[pcr3,,,,pcx3],[prr3,,,,prx3],[pgr3,,,,pgx3]];	
+	let Z3lim = Z3>100 ? Z3 : 100;
+	return [Z3pol,Z3el, Z3lim];
+}
 
-	elements2 = [[-Z3rev*Math.cos(Z3A),,,,,-Z3rev*Math.sin(Z3A)],[Z3*Math.cos(Z3A),,,,,Z3*Math.sin(Z3A)], //All Zone polygons and the char angle
-	[pgr3,,,,pgx3],[pkr3,,,,pkx3],[pcr3,,,,pcx3],[prr3,,,,prx3],[pgr3,,,,pgx3],
-	[pgr2,,,pgx2],[pkr2,,,pkx2],[pcr2,,,pcx2],[prr2,,,prx2],[pgr2,,,pgx2],
-	[pgr1,,pgx1],[pkr1,,pkx1],[pcr1,,pcx1],[prr1,,prx1],[pgr1,,pgx1]];
+async function plotProtection(csvarr){
+	(new URL(document.location)).searchParams.forEach((x, y) => {
+		localStorage.setItem(y,x);
+	});
 	
-	var DR = [];
-	DR = csvarr;
+	document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
+	document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
+	
+	var secdr = document.getElementById("SecDR");
+	
+	//Advanced settings variables
+	var z2del = Number(document.getElementById("Z2del").value);
+	var z3del = Number(document.getElementById("Z3del").value);
+	var fst, vtr, ctr;
+	
+	fst = document.getElementById("FST").value=="" ? 1 : Number(document.getElementById("FST").value);	
+	vtr = document.getElementById("VTR").value=="" ? 1 : Number(document.getElementById("VTR").value);	
+	ctr = document.getElementById("CTR").value=="" ? 1 : Number(document.getElementById("CTR").value);
+	var tr =ctr/vtr; //secondary ratio
+	
+	//Primary or Secondary Disturbance record
+	var trdr = 1;
+	var vtrdr = 1;
+	if (secdr.checked) {trdr = tr; vtrdr = vtr;}
+	
+	let [Z1pol, Z1el] = Zone1(tr);
+	let [Z2pol, Z2el] = Zone2(tr);
+	let [Z3pol, Z3el, Z3lim] = Zone3(tr);
+
+	elements2 = [...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
+	
+	var DR = []; DR = csvarr;
 	
 	var faultarray = []; 
 	for (let i = 0; i < DR.length; i++) { //add csv to array
@@ -351,8 +327,7 @@ async function plotProtection(csvarr){
 			Z1trip = true;
 			document.getElementById("FaultLoc").textContent = "Zone 1 trip";
 			break;
-		}
-		
+		}		
 		else document.getElementById("FaultLoc").textContent = "No trip!";
 	}	
 
@@ -361,10 +336,11 @@ async function plotProtection(csvarr){
 		total.push(faultarray[i]);											
 	}
 	
-	var Z3lim;
-	Z3lim = Z3>100 ? Z3 : 100;
-	
-	try {
+	dygPlot(total,Z3lim)	
+}
+
+function dygPlot(total,Z3lim)
+	{try {
 		if (g3) g3.destroy();
 	}catch(e){}
 	g3 = new Dygraph(
@@ -387,7 +363,6 @@ async function plotProtection(csvarr){
 				axisLabelFormatter: function(y) {
                   return  y + ' Ω';
                 },
-               // axisLabelWidth: 100 
               },
               y: {
                 axisLabelFormatter: function(y) {
@@ -403,20 +378,7 @@ async function plotProtection(csvarr){
 			window.dispatchEvent(new Event('resize'));
 		}, 500); 
 		
-	});												
+	});				
 }
-
 //startup
-if (!!navigator.userAgent.match(/Trident\/7\./)){ //if IE is used									
-	var DRcsv = loadFile("uploads/fault.csv");
-	var DR = Papa.parse(DRcsv).data;
-	//alert(DRcsv);
-	plotIE();
-	console.error("Get off Internet Explorer you Dinasour!");
-	document.onkeyup = function() {							
-		plotIE();								
-	};
-}
-else {
-	doAjaxThings();
-}
+startup();
