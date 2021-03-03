@@ -1415,7 +1415,7 @@ function trekt(imgs1,imgs2) {
 		* Sets the t-rex to blink at random intervals.
 		*/
 		init: function() {
-		this.blinkDelay = this.setBlinkDelay();
+		this.setBlinkDelay();
 		this.groundYPos = Runner.defaultDimensions.HEIGHT - this.config.HEIGHT -
 		Runner.config.BOTTOM_PAD;
 		this.yPos = this.groundYPos;
