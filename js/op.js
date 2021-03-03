@@ -10,12 +10,12 @@ async function delivery() {
 	DRp = [];	
 	DRw = [];	
 	DR = [];	
-	let DRpcsv = await makeRequest("GET", "Orion Park/op-Project Stock.csv");
-	let DRwcsv = await makeRequest("GET", "Orion Park/op-Warehouse Stock .csv");
-	let DRcsv = await makeRequest("GET", "Orion Park/op-Delivery.csv");
+	let DRpcsv =  await fetch("Orion Park/op-Project Stock.csv").then(result => result.text());
+	let DRwcsv = await fetch("Orion Park/op-Warehouse Stock .csv").then(result => result.text());
+	let DRcsv = await fetch("Orion Park/op-Delivery.csv").then(result => result.text());
 	let lastmod = await fetchHeader("Orion Park/op.xlsx", 'Last-Modified');
 	let lastfetch = await fetchHeader("Orion Park/op-Delivery.csv", 'Last-Modified');
-	// code below here will only execute when await makeRequest() finished loading
+	// code below here will only execute when await fetch() finished loading
 	document.getElementById("p").textContent ="Last Updated: "+ new Date (lastmod);
 	document.getElementById("pp").textContent ="Last Checked: "+ new Date(lastfetch);
 	DRp = Papa.parse(DRpcsv).data.reverse();
@@ -120,31 +120,6 @@ function search(arrheh){
 	myTable+="</table>";
 	if(pw == "asdfasdf") document.getElementById('tab').innerHTML = myTable;
 	else document.getElementById('tab').innerHTML = "";
-}
-
-function makeRequest(method, url) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open(method, url);
-        xhr.onload = function () {
-            if (this.status >= 200 && this.status < 300) {
-                resolve(xhr.response);
-				
-            } else {
-                reject({
-                    status: this.status,
-                    statusText: xhr.statusText
-                });
-            }
-        };
-        xhr.onerror = function () {
-            reject({
-                status: this.status,
-                statusText: xhr.statusText
-            });
-        };
-        xhr.send();
-    });
 }
 
 function fetchHeader(url, wch) {

@@ -37,8 +37,8 @@ function read() {
 		try{
 			plotProtection(Papa.parse(cursor.value.data).data);
 		}catch(err){
-			let DRcsv = await makeRequest("GET", "uploads/fault.csv");
-			// code below here will only execute when await makeRequest() finished loading
+			let DRcsv = await fetch('uploads/fault.csv').then(result => result.text());
+			// code below here will only execute when await fetch() finished loading
 			DR = Papa.parse(DRcsv).data;
 			plotProtection(DR);
 		}
@@ -103,30 +103,6 @@ async function startup() {
 	document.getElementById("Sec").onchange = function(){checkit();read();};
 	document.getElementById("PrimDR").onchange = function(){read();};
 	document.getElementById("SecDR").onchange = function(){read();};
-}
-
-function makeRequest(method, url) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();		
-        xhr.open(method, url);
-        xhr.onload = function () {
-            if (this.status >= 200 && this.status < 300) {
-                resolve(xhr.response);				
-            } else {
-                reject({
-                    status: this.status,
-                    statusText: xhr.statusText
-                });
-            }
-        };
-        xhr.onerror = function () {
-            reject({
-                status: this.status,
-                statusText: xhr.statusText
-            });
-        };
-        xhr.send();
-    });
 }
 
 function change(el) {

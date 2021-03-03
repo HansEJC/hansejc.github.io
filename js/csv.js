@@ -20,30 +20,6 @@ function addLoader(html,err){
 	}
 }
 
-function makeRequest(method, url) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();		
-        xhr.open(method, url);
-        xhr.onload = function () {
-            if (this.status >= 200 && this.status < 300) {
-                resolve(xhr.response);				
-            } else {
-                reject({
-                    status: this.status,
-                    statusText: xhr.statusText
-                });
-            }
-        };
-        xhr.onerror = function () {
-            reject({
-                status: this.status,
-                statusText: xhr.statusText
-            });
-        };
-        xhr.send();
-    });
-}
-
 function labels(){		
 	document.getElementById("xaxis").value = getSavedValue("xaxis");    // set the value to this input
 	document.getElementById("yaxis").value = getSavedValue("yaxis");   // set the value to this input
@@ -188,7 +164,7 @@ function javaread(bool){
 				}catch(err){
 					console.log(err);
 					addLoader("Calculations or Data Error. Uploading Default Graph.",true);
-					var csv = await makeRequest("GET", "uploads/graph.csv");
+					var csv = await fetch('uploads/graph.csv').then(result => result.text());
 					plotcalcs(csv);
 				}
 			}
