@@ -44,35 +44,39 @@ function checkit() {
 	calculations();
 }
 
+function multipliers(){
+	//Change multiplier if over 1000
+	let multy = document.getElementById("MUL");
+	let tf = document.getElementById("TF");
+	if (multy.value == "H" && getSavedValue("TF") > 999) {
+		localStorage.setItem(tf.id, tf.value/1000);
+		localStorage.setItem(multy.id, "K");
+	}	
+	if (multy.value == "K" && getSavedValue("TF") > 999) {
+		localStorage.setItem(tf.id, tf.value/1000);
+		localStorage.setItem(multy.id, "M");
+	}	
+	if (multy.value == "M" && getSavedValue("TF") > 999) {
+		localStorage.setItem(tf.id, tf.value/1000);
+		localStorage.setItem(multy.id, "G");
+	}		
+}
+
 async function calculations(){
 	(new URL(document.location)).searchParams.forEach((x, y) => {
 		localStorage.setItem(y,x);
 	});
-	//Change multiplier if over 1000
-	if (document.getElementById("MUL").value == "H" && getSavedValue("TF") > 999) {
-		localStorage.setItem(document.getElementById("TF").id, document.getElementById("TF").value/1000);
-		localStorage.setItem(document.getElementById("MUL").id, "K");
-	}	
-	if (document.getElementById("MUL").value == "K" && getSavedValue("TF") > 999) {
-		localStorage.setItem(document.getElementById("TF").id, document.getElementById("TF").value/1000);
-		localStorage.setItem(document.getElementById("MUL").id, "M");
-	}	
-	if (document.getElementById("MUL").value == "M" && getSavedValue("TF") > 999) {
-		localStorage.setItem(document.getElementById("TF").id, document.getElementById("TF").value/1000);
-		localStorage.setItem(document.getElementById("MUL").id, "G");
-	}	
+	multipliers();
 	
 	const radios = document.querySelectorAll("input[name=drive]");
 	radios.forEach(rad => rad.addEventListener('change',checkit));
 	const fields = document.querySelectorAll("input[name=field]");
 	fields.forEach(rad => rad.addEventListener('change',calculations));
+	let HiFreq = radios[1].checked, EField = fields[0].checked;
 	
-	const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
-
-	document.getElementById("TF").value = getSavedValue("TF");    // set the value to this input
-	document.getElementById("EIRP").value = getSavedValue("EIRP");
-	document.getElementById("VO").value = getSavedValue("VO");
-	document.getElementById("CU").value = getSavedValue("CU");
+	document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
+	document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
+	
 	document.getElementById("CA").value = getSavedValue("CA") || 0.02;
 	if (getSavedValue("MUL") != "") document.getElementById("MUL").value = getSavedValue("MUL");
 	
@@ -95,7 +99,6 @@ async function calculations(){
 	if (document.getElementById("MUL").value == "G") tf=tf*1000000000;
 	
 	let fi = c/(2*Math.PI*tf);
-	//document.getElementById("FI").innerHTML = "Field Indication: \\(c/2\\pi f="+killthemeter(fi)+"\\) ";
 	document.getElementById("FI").innerHTML = killthemeter(fi);
 	
 	let earray = [];	
@@ -105,16 +108,16 @@ async function calculations(){
 		if (g3) g3.destroy();
 	}catch(e){}
 	
-	if (radios[1].checked && tf*eirp == 0) return; //return if plotting nothing
-	if (radios[1].checked) {
+	if (HiFreq && tf*eirp == 0) return; //return if plotting nothing
+	if (HiFreq) {
 		for (let i = 0; i < 5000; i++) { 
 			d = i/100;
 			if (d < c/(2*Math.PI*tf) && d!=0) {
-				if (fields[0].checked) earray.push([d,Math.pow(c,2)*Math.sqrt(eirp)/(7.2*Math.pow(tf,2)*Math.pow(d,3))]);
+				if (EField) earray.push([d,Math.pow(c,2)*Math.sqrt(eirp)/(7.2*Math.pow(tf,2)*Math.pow(d,3))]);
 				else earray.push([d,c*Math.sqrt(eirp)/(434*tf*Math.pow(d,2))]);
 			}
 			if (d > c/(2*Math.PI*tf)) {
-				if (fields[0].checked) earray.push([d,5.48*Math.sqrt(eirp)/d]);
+				if (EField) earray.push([d,5.48*Math.sqrt(eirp)/d]);
 				else earray.push([d,Math.sqrt(eirp)/(68.8*d)]);
 			}
 		}
@@ -129,12 +132,12 @@ async function calculations(){
 	}
 	
 	else {
-		if (fields[0].checked && q == 0) return; //return if plotting nothing
+		if (EField && q == 0) return; //return if plotting nothing
 		if (fields[1].checked && cu == 0) return;
 		const lowfreqrange = 51000;
 		for (let i = 0; i < lowfreqrange; i++) { 
 			d = i/1000;
-			if (fields[0].checked) {
+			if (EField) {
 				earray.push([d,q/(2*Math.PI*eo*d),5e3,9e3]);
 				distrange = q/(2*Math.PI*eo*d) < 2000 ? q/(2*Math.PI*eo*d) > 1990 ? d : distrange : lowfreqrange/1000;
 			}
@@ -146,7 +149,12 @@ async function calculations(){
 		range = Math.max(q/(2*Math.PI*eo*.3),50e3);
 		ran = Math.max(uo*cu/(2*Math.PI*.3),400e-6);
 	}
-	
+	dygPlot(earray, radios, fields, ran, range, distrange);
+}
+
+function dygPlot(earray, radios, fields, ran, range, distrange){	
+	const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
+	let HiFreq = radios[1].checked, EField = fields[0].checked;
 	g3 = new Dygraph(
 		document.getElementById("graphdiv3"),												
 		earray,
@@ -171,7 +179,6 @@ async function calculations(){
 	
 	g3.ready(function() {
 		var lbs = g3.getLabels();
-		//lbs.pop();
 		lbs.shift();
 		var cb = []; 	
 		var cbh = document.getElementById('MyForm');
@@ -192,22 +199,22 @@ async function calculations(){
 		}, 500); 
 	});
 	
-	if (radios[1].checked) {
+	if (HiFreq) {
 		g3.updateOptions({
-			labels: (fields[0].checked) ? [ 'Distance', "Electric Field ("+labls(range)+"V/m)"] : ['Distance', "Magnetic Field ("+labls(ran)+"A/m)"],
-			ylabel: (fields[0].checked) ? "Electric Field ("+labls(range)+"V/m)" : "Magnetic Field ("+labls(ran)+"A/m)",
-			valueRange : (fields[0].checked) ? [0,range ]: [0,ran],
+			labels: (EField) ? [ 'Distance', "Electric Field ("+labls(range)+"V/m)"] : ['Distance', "Magnetic Field ("+labls(ran)+"A/m)"],
+			ylabel: (EField) ? "Electric Field ("+labls(range)+"V/m)" : "Magnetic Field ("+labls(ran)+"A/m)",
+			valueRange : (EField) ? [0,range ]: [0,ran],
 		});
 	}	
 	else {
 		g3.updateOptions({
-			labels: (fields[0].checked) ? [ 'Distance', "Electric Field ("+labls(range)+"V/m)","Public Guidance Limit (5kV/m)","Public Required Limit (9kV/m)"] : [ 'Distance', "Magnetic Field ("+labls(ran)+"T)","Public Guidance Limit (100μT)","Public Required Limit (360μT)"],
-			valueRange : (fields[0].checked) ? [0,range ]: [0,ran],
-			ylabel: (fields[0].checked) ? "Electric Field ("+labls(range)+"V/m)" : "Magnetic Field ("+labls(ran)+"T)",
+			labels: (EField) ? [ 'Distance', "Electric Field ("+labls(range)+"V/m)","Public Guidance Limit (5kV/m)","Public Required Limit (9kV/m)"] : [ 'Distance', "Magnetic Field ("+labls(ran)+"T)","Public Guidance Limit (100μT)","Public Required Limit (360μT)"],
+			valueRange : (EField) ? [0,range ]: [0,ran],
+			ylabel: (EField) ? "Electric Field ("+labls(range)+"V/m)" : "Magnetic Field ("+labls(ran)+"T)",
 			colors: ["rgb(0,128,128)","#cccc2b","red"],
 			dateWindow: [0, distrange]
 		});		
-	}
+	}	
 }
 
 //startup
