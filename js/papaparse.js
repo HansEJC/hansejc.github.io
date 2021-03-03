@@ -234,10 +234,7 @@ License: MIT
 		}
 		else if (typeof _input === 'string')
 		{
-			if (_config.download)
-				streamer = new NetworkStreamer(_config);
-			else
-				streamer = new StringStreamer(_config);
+			streamer = _config.download ? new NetworkStreamer(_config) : new StringStreamer(_config);
 		}
 		else if (_input.readable === true && isFunction(_input.read) && isFunction(_input.on))
 		{
@@ -1383,11 +1380,7 @@ License: MIT
 		var fastMode = config.fastMode;
 		var quoteChar;
 		/** Allows for no quoteChar by setting quoteChar to undefined in config */
-		if (config.quoteChar === undefined) {
-			quoteChar = '"';
-		} else {
-			quoteChar = config.quoteChar;
-		}
+		quoteChar = config.quoteChar === undefined ? '"' : config.quoteChar;
 		var escapeChar = quoteChar;
 		if (config.escapeChar !== undefined) {
 			escapeChar = config.escapeChar;
