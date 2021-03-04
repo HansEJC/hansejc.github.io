@@ -130,11 +130,11 @@ function inside(point, vs) {
 
 function Zone1(tr){
 	//%Zone 1 setting   
-	var Z1 = Number(document.getElementById("Zone1").value);
-	var Z1A = (Number(document.getElementById("Zone1A").value)* Math.PI / 180);
+	var Z1 = +(document.getElementById("Zone1").value);
+	var Z1A = (+(document.getElementById("Zone1A").value)* Math.PI / 180);
 	var Z1t = (-3* Math.PI / 180);
-	var R1R = Number(document.getElementById("Zone1RH").value);
-	var R1L = Number(document.getElementById("Zone1LH").value);
+	var R1R = +(document.getElementById("Zone1RH").value);
+	var R1L = +(document.getElementById("Zone1LH").value);
 	var Z1s = (87* Math.PI / 180);	
 	//Primary or Secondary Inputs
 	const sec = document.getElementById("Sec");
@@ -142,16 +142,20 @@ function Zone1(tr){
 		Z1=Z1/tr;R1R=R1R/tr;R1L=R1L/tr;
 	}	
 	//%Zone 1 plot
-	var x1 = Math.sin(Z1A)*R1L/Math.sin((180* Math.PI / 180)-Z1A+Z1t);
-	var xx1 = Math.sin(Z1A)*R1R/Math.sin((180* Math.PI / 180)-Z1A+Z1t);
-	var pkx1 = -x1*Math.sin(Z1t)+Z1*Math.sin(Z1A);
-	if (-R1L*Math.sin((-90* Math.PI / 180)+Z1s) > pkx1){ 
+	const xmul1 = Math.sin(Z1A);
+	const xmul2 = Math.sin((180* Math.PI / 180)-Z1A+Z1t);
+	const pmul1 = R1R*xmul1/Math.sin((90* Math.PI / 180)+Z1s-Z1A);
+	const pmul2 = (-90* Math.PI / 180)+Z1s;
+	var x1 = xmul1*R1L/xmul2;
+	var xx1 = xmul1*R1R/xmul2;
+	var pkx1 = -x1*Math.sin(Z1t)+Z1*xmul1;
+	if (-R1L*Math.sin(pmul2) > pkx1){ 
 		var pgx1 = pkx1;}
 	else{
-		pgx1 = -R1L*Math.sin((-90* Math.PI / 180)+Z1s);
+		pgx1 = -R1L*Math.sin(pmul2);
 	}
-	var pcx1 = xx1*Math.sin(Z1t)+Z1*Math.sin(Z1A);
-	var prx1 = R1R*Math.sin(Z1A)/Math.sin((90* Math.PI / 180)+Z1s-Z1A)*Math.sin((-90* Math.PI / 180)+Z1s);
+	var pcx1 = xx1*Math.sin(Z1t)+Z1*xmul1;
+	var prx1 = pmul1*Math.sin(pmul2);
 	var pgr1 = -pgx1*Math.sin(Z1s)/Math.sin((90* Math.PI / 180)-Z1s);
 	if (pgx1 == pkx1) {
 		var pkr1 = pgr1;}
@@ -159,7 +163,7 @@ function Zone1(tr){
 		pkr1 = -x1*Math.cos(Z1t)+Z1*Math.cos(Z1A);
 	}
 	var pcr1 = xx1*Math.cos(Z1t)+Z1*Math.cos(Z1A);
-	var prr1 = R1R*Math.sin(Z1A)/Math.sin((90* Math.PI / 180)+Z1s-Z1A)*Math.cos((-90* Math.PI / 180)+Z1s);	
+	var prr1 = pmul1*Math.cos(pmul2);	
 	let Z1pol = [[pgr1,pgx1],[pkr1,pkx1],[pcr1,pcx1],[prr1,prx1],[pgr1,pgx1]]; //Z1 polygon
 	let Z1el = [[pgr1,,pgx1],[pkr1,,pkx1],[pcr1,,pcx1],[prr1,,prx1],[pgr1,,pgx1]];
 	return [Z1pol,Z1el];
@@ -167,28 +171,33 @@ function Zone1(tr){
 
 function Zone2(tr){
 	//%Zone 2 setting   
-	var Z2 = Number(document.getElementById("Zone2").value);
-	var Z2A = (Number(document.getElementById("Zone2A").value)* Math.PI / 180);
+	var Z2 = +(document.getElementById("Zone2").value);
+	var Z2A = (+(document.getElementById("Zone2A").value)* Math.PI / 180);
 	var Z2t = (-3* Math.PI / 180);
-	var R2R = Number(document.getElementById("Zone2RH").value);
-	var R2L = Number(document.getElementById("Zone2LH").value);
+	var R2R = +(document.getElementById("Zone2RH").value);
+	var R2L = +(document.getElementById("Zone2LH").value);
 	var Z2s = (87* Math.PI / 180);
 	//Primary or Secondary Inputs
 	const sec = document.getElementById("Sec");
 	if (sec.checked) {
 		Z2=Z2/tr;R2R=R2R/tr;R2L=R2L/tr;
 	}	
+	const xmul1 = Math.sin(Z2A);
+	const xmul2 = (180* Math.PI / 180)-Z2A+Z2t;
+	const pr21 = R2R*xmul1/Math.sin((90* Math.PI / 180)+Z2s-Z2A);
+	const pr22 = (-90* Math.PI / 180)+Z2s;
 	//%Zone 2 plot
-	var x2 = Math.sin(Z2A)*R2L/Math.sin((180* Math.PI / 180)-Z2A+Z2t);
-	var xx2 = Math.sin(Z2A)*R2R/Math.sin((180* Math.PI / 180)-Z2A+Z2t);
-	var pkx2 = -x2*Math.sin(Z2t)+Z2*Math.sin(Z2A);
-	if (-R2L*Math.sin((-90* Math.PI / 180)+Z2s) > pkx2){
+	var x2 = xmul1*R2L/Math.sin(xmul2);
+	var xx2 = xmul1*R2R/Math.sin(xmul2);
+	var pkx2 = -x2*Math.sin(Z2t)+Z2*xmul1;
+	if (-R2L*Math.sin(pr22) > pkx2){
 		var pgx2 = pkx2;}
 	else{
-		pgx2 = -R2L*Math.sin((-90* Math.PI / 180)+Z2s);
+		pgx2 = -R2L*Math.sin(pr22);
 	}
-	var pcx2 = xx2*Math.sin(Z2t)+Z2*Math.sin(Z2A);
-	var prx2 = R2R*Math.sin(Z2A)/Math.sin((90* Math.PI / 180)+Z2s-Z2A)*Math.sin((-90* Math.PI / 180)+Z2s);
+	
+	var pcx2 = xx2*Math.sin(Z2t)+Z2*xmul1;
+	var prx2 = pr21*Math.sin(pr22);
 	var pgr2 = -pgx2*Math.sin(Z2s)/Math.sin((90* Math.PI / 180)-Z2s);
 	if (pgx2 == pkx2) {
 		var pkr2 = pgr2;}
@@ -196,7 +205,7 @@ function Zone2(tr){
 		pkr2 = -x2*Math.cos(Z2t)+Z2*Math.cos(Z2A);
 	}
 	var pcr2 = xx2*Math.cos(Z2t)+Z2*Math.cos(Z2A);
-	var prr2 = R2R*Math.sin(Z2A)/Math.sin((90* Math.PI / 180)+Z2s-Z2A)*Math.cos((-90* Math.PI / 180)+Z2s);
+	var prr2 = pr21*Math.cos(pr22);
 	let Z2pol = [[pgr2,pgx2],[pkr2,pkx2],[pcr2,pcx2],[prr2,prx2],[pgr2,pgx2]];
 	let Z2el = [[pgr2,,,pgx2],[pkr2,,,pkx2],[pcr2,,,pcx2],[prr2,,,prx2],[pgr2,,,pgx2]];
 	return [Z2pol,Z2el];
@@ -204,11 +213,11 @@ function Zone2(tr){
 
 function Zone3(tr){
 	//%Zone 3 setting  
-	var Z3 = Number(document.getElementById("Zone3").value);
-	var Z3A = (Number(document.getElementById("Zone3A").value)* Math.PI / 180);
+	var Z3 = +(document.getElementById("Zone3").value);
+	var Z3A = (+(document.getElementById("Zone3A").value)* Math.PI / 180);
 	var Z3t = (-3* Math.PI / 180);
-	var R3R = Number(document.getElementById("Zone3RH").value);
-	var R3L = Number(document.getElementById("Zone3LH").value);
+	var R3R = +(document.getElementById("Zone3RH").value);
+	var R3L = +(document.getElementById("Zone3LH").value);
 	var Z3rev = 2;
 	//Primary or Secondary Inputs
 	const sec = document.getElementById("Sec");
@@ -216,20 +225,22 @@ function Zone3(tr){
 		Z3=Z3/tr;R3R=R3R/tr;R3L=R3L/tr;
 	}	
 	//%Zone 3 plot
-	var x3 = Math.sin(Z3A)*R3L/Math.sin((180* Math.PI / 180)-Z3A+Z3t);
-	var xx3 = Math.sin(Z3A)*R3R/Math.sin((180* Math.PI / 180)-Z3A+Z3t);
-	var ox3 = -Z3rev*Math.sin(Z3A);
+	const xmul1 = Math.sin(Z3A);
+	const xmul2 = (180* Math.PI / 180)-Z3A+Z3t;
+	var x3 = xmul1*R3L/Math.sin(xmul2);
+	var xx3 = xmul1*R3R/Math.sin(xmul2);
+	var ox3 = -Z3rev*xmul1;
 	var pgx3 = ox3-x3*Math.sin(Z3t);
-	var pkx3 = pgx3+(Z3+Z3rev)*Math.sin(Z3A);
+	var pkx3 = pgx3+(Z3+Z3rev)*xmul1;
 	var prx3 = ox3+xx3*Math.sin(Z3t);
-	var pcx3 = prx3+(Z3+Z3rev)*Math.sin(Z3A);
+	var pcx3 = prx3+(Z3+Z3rev)*xmul1;
 	var or3 = -Z3rev*Math.cos(Z3A);
 	var pgr3 = or3-x3*Math.cos(Z3t);
 	var pkr3 = pgr3+(Z3+Z3rev)*Math.cos(Z3A);
 	var prr3 = or3+xx3*Math.cos(Z3t);
 	var pcr3 = prr3+(Z3+Z3rev)*Math.cos(Z3A);
 	let Z3pol = [[pgr3,pgx3],[pkr3,pkx3],[pcr3,pcx3],[prr3,prx3],[pgr3,pgx3]];
-	let Z3el = [[-Z3rev*Math.cos(Z3A),,,,,-Z3rev*Math.sin(Z3A)],[Z3*Math.cos(Z3A),,,,,Z3*Math.sin(Z3A)], 
+	let Z3el = [[-Z3rev*Math.cos(Z3A),,,,,-Z3rev*xmul1],[Z3*Math.cos(Z3A),,,,,Z3*xmul1], 
 				[pgr3,,,,pgx3],[pkr3,,,,pkx3],[pcr3,,,,pcx3],[prr3,,,,prx3],[pgr3,,,,pgx3]];	
 	let Z3lim = Z3>100 ? Z3 : 100;
 	return [Z3pol,Z3el, Z3lim];
@@ -241,18 +252,17 @@ async function plotProtection(csvarr){
 	});
 	
 	document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-	document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
-	
-	var secdr = document.getElementById("SecDR");
+	document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));	
+	const secdr = document.getElementById("SecDR");
 	
 	//Advanced settings variables
-	var z2del = Number(document.getElementById("Z2del").value);
-	var z3del = Number(document.getElementById("Z3del").value);
+	var z2del = +(document.getElementById("Z2del").value);
+	var z3del = +(document.getElementById("Z3del").value);
 	var fst, vtr, ctr;
 	
-	fst = document.getElementById("FST").value=="" ? 1 : Number(document.getElementById("FST").value);	
-	vtr = document.getElementById("VTR").value=="" ? 1 : Number(document.getElementById("VTR").value);	
-	ctr = document.getElementById("CTR").value=="" ? 1 : Number(document.getElementById("CTR").value);
+	fst = document.getElementById("FST").value=="" ? 1 : +(document.getElementById("FST").value);	
+	vtr = document.getElementById("VTR").value=="" ? 1 : +(document.getElementById("VTR").value);	
+	ctr = document.getElementById("CTR").value=="" ? 1 : +(document.getElementById("CTR").value);
 	var tr =ctr/vtr; //secondary ratio
 	
 	//Primary or Secondary Disturbance record
@@ -263,22 +273,40 @@ async function plotProtection(csvarr){
 	let [Z1pol, Z1el] = Zone1(tr);
 	let [Z2pol, Z2el] = Zone2(tr);
 	let [Z3pol, Z3el, Z3lim] = Zone3(tr);
-
 	elements2 = [...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
 	
-	var DR = []; DR = csvarr;
+	var DR = []; DR = csvarr;	
+	let calcStuff = {DR,trdr,vtrdr};
+	let faultarray = addCSVtoArray(calcStuff);
+	let stuff = {faultarray,Z1pol,Z2pol,Z3pol,fst,z2del,z3del};
+	FaultZone(stuff);
 	
-	var faultarray = []; 
+	var total = elements2.slice();
+	for (let i = 0; i < DR.length; i++) {
+		total.push(faultarray[i]);											
+	}	
+	dygPlot(total,Z3lim)	
+}
+
+function addCSVtoArray(stuff){
+	let {DR,trdr,vtrdr} = stuff;
+	let faultarray = [], DRdiv, DRmult; 
 	for (let i = 0; i < DR.length; i++) { //add csv to array
 		faultarray[i] = [];
-		if ((DR[i][0]/DR[i][2])/trdr*Math.cos((DR[i][1]-DR[i][3])* Math.PI / 180)<90 && 
-			(DR[i][0]/DR[i][2])/trdr*Math.sin((DR[i][1]-DR[i][3])* Math.PI / 180)<90 && 
+		DRdiv = (DR[i][0]/DR[i][2])/trdr;
+		DRmult = (DR[i][1]-DR[i][3])* Math.PI / 180;
+		if (DRdiv*Math.cos(DRmult)<90 && 
+			DRdiv*Math.sin(DRmult)<90 && 
 			DR[i][0]*vtrdr>1000){
-			faultarray[i][0] = (DR[i][0]/DR[i][2])/trdr*Math.cos((DR[i][1]-DR[i][3])* Math.PI / 180); //resistive values
-			faultarray[i][1] = (DR[i][0]/DR[i][2])/trdr*Math.sin((DR[i][1]-DR[i][3])* Math.PI / 180);//reactive values
+			faultarray[i][0] = DRdiv*Math.cos(DRmult); //resistive values
+			faultarray[i][1] = DRdiv*Math.sin(DRmult);//reactive values
 		}
 	}
-	
+	return faultarray;
+}
+
+function FaultZone(stuff){
+	let {faultarray,Z1pol,Z2pol,Z3pol,fst,z2del,z3del} = stuff;
 	var Z3time = 0;
 	var Z2time = 0;
 	var Z1trip,Z2trip,Z3trip; //In zone booleans
@@ -306,16 +334,9 @@ async function plotProtection(csvarr){
 		}		
 		else document.getElementById("FaultLoc").textContent = "No trip!";
 	}	
-
-	var total = elements2.slice();
-	for (let i = 0; i < DR.length; i++) {
-		total.push(faultarray[i]);											
-	}
-	
-	dygPlot(total,Z3lim)	
 }
 
-function dygPlot(total,Z3lim)
+async function dygPlot(total,Z3lim)
 	{try {
 		if (g3) g3.destroy();
 	}catch(e){}
