@@ -102,8 +102,8 @@ async function calculations(){
 	document.getElementById("FI").innerHTML = killthemeter(fi);
 	
 	var earray = [];	
-	var range = 0, ran = 0, distrange = 0;
-	let stuff = {radios,fields,ran,range,distrange};
+	//var range = 0, ran = 0, distrange = 0;
+	let stuff = {radios,fields};
 	let freqStuff = {earray,c,tf,EField,eirp,eo,q,uo,cu,fi,...stuff}
 	
 	try {
@@ -122,7 +122,8 @@ async function calculations(){
 }
 
 function HiFreqFun(stuff){
-	let {ran,range,distrange,earray,c,tf,EField,eirp,fi} = stuff;
+	let {earray,c,tf,EField,eirp,fi} = stuff;
+	let d,ran,range,distrange;
 	for (let i = 0; i < 5000; i++) { 
 		d = i/100;
 		if (d < c/(2*Math.PI*tf) && d!=0) {
@@ -147,7 +148,8 @@ function HiFreqFun(stuff){
 }
 
 function LowFreqFun(stuff){
-	let {fields,ran,range,distrange,earray,EField,eo,q,uo,cu} = stuff;
+	let {fields,earray,EField,eo,q,uo,cu} = stuff;
+	let d,ran,range,distrange;
 	if (EField && q == 0) return; //return if plotting nothing
 	if (fields[1].checked && cu == 0) return;
 	const lowfreqrange = 51000;
@@ -216,22 +218,6 @@ function dygUpdate(stuff){
 }
 
 function dygReady(){
-/*	var lbs = g3.getLabels();
-	lbs.shift();
-	var cb = []; 	
-	var cbh = document.getElementById('MyForm');
-	while (cbh.childElementCount>1) { //don't remove the firstborn children
-		cbh.removeChild(cbh.lastChild);
-	}
-	
-	for(var i = 0; i < lbs.length; i++){
-		cb[i] = document.createElement('input'); 
-		cb[i].type = 'checkbox';
-		cbh.appendChild(cb[i]);
-		cb[i].id = i;
-		cb[i].checked = true;
-		cb[i].onchange = function(){change(this);};
-	}	*/
 	setTimeout(function(){
 		window.dispatchEvent(new Event('resize'));
 	}, 500); 	
