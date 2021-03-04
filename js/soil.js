@@ -231,28 +231,25 @@ function fetchResults(){
 				.then(result => result.json());	
 			soilResults.sort((a,b) => b[1] - a[1]);			
 			const soilTable = document.getElementById('soilResults');
-			soilResults.forEach(val => {
-				let row = soilTable.insertRow(-1);
-				let check = document.createElement('input');
-				check.type = "checkbox";
-				check.onchange = function(){table(val,this);}
-				row.insertCell(0).innerHTML = val.site;
-				row.insertCell(1).appendChild(check);
-			});
+			resultsTable(soilResults,soilTable);
 			const fopResults = await fetch('uploads/fop.json')
 				.then(result => result.json());	
 			fopResults.sort((a,b) => b[1] - a[1]);			
 			const fopTable = document.getElementById('fopResults');
-			fopResults.forEach(val => {
-				let row = fopTable.insertRow(-1);
-				let check = document.createElement('input');
-				check.type = "checkbox";
-				check.onchange = function(){table(val,this);}
-				row.insertCell(0).innerHTML = val.site;
-				row.insertCell(1).appendChild(check);
-			});
+			resultsTable(fopResults,fopTable);
 		})();
 	}catch(err){}
+}
+
+function resultsTable(results,tbl){
+	results.forEach(val => {
+		let row = tbl.insertRow(-1);
+		let check = document.createElement('input');
+		check.type = "checkbox";
+		check.onchange = function(){table(val,this);}
+		row.insertCell(0).innerHTML = val.site;
+		row.insertCell(1).appendChild(check);
+	});	
 }
 
 function table(rows,target){		

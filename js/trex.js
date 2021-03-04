@@ -28,16 +28,16 @@ function mods()  {
 	else Runner.prototype.gameOver = original;
 }
 
+const startBool =(e) => !this.crashed && (Runner.keycodes.JUMP[String(e.keyCode)] || e.type == Runner.events.TOUCHSTART);
 //infinite jumps
 function cheats() {
 	mods();
 	document.activeElement.blur(); //remove focus from checkbox
 	if (document.getElementById("1").checked){
 		Runner.prototype.onKeyDown = function(e) {
-				if (!this.crashed && (Runner.keycodes.JUMP[String(e.keyCode)] ||
-				e.type == Runner.events.TOUCHSTART)) {
-					this.tRex.startJump();
-				}					
+			if (startBool(e)) {
+				this.tRex.startJump();
+			}					
 		}
 		
 		Trex.prototype.startJump = function() {
@@ -49,30 +49,31 @@ function cheats() {
 		}
 	}
 	else{
-		Runner.prototype.onKeyDown = function(e) {
-			if (e.target != this.detailsButton) {
-				if (!this.crashed && (Runner.keycodes.JUMP[String(e.keyCode)] ||
-				e.type == Runner.events.TOUCHSTART)) {
-					if (!this.activated) {
-						this.loadSounds();
-						this.activated = true;
-					}
-					if (!this.tRex.jumping) {
-						this.playSound(this.soundFx.BUTTON_PRESS);
-						this.tRex.startJump();
-					}
-				}
-				if (this.crashed && e.type == Runner.events.TOUCHSTART &&
-				e.currentTarget == this.containerEl) {
-					this.restart();
-				}
+		Runner.prototype.onKeyDown = trexKeyDown;
+	}	
+}
+
+function trexKeyDown(e) {
+	if (e.target != this.detailsButton) {
+		if (startBool(e)) {
+			if (!this.activated) {
+				this.loadSounds();
+				this.activated = true;
 			}
-			// Speed drop, activated only when jump key is not pressed.
-			if (Runner.keycodes.DUCK[e.keyCode] && this.tRex.jumping) {
-				e.preventDefault();
-				this.tRex.setSpeedDrop();
+			if (!this.tRex.jumping) {
+				this.playSound(this.soundFx.BUTTON_PRESS);
+				this.tRex.startJump();
 			}
 		}
+		if (this.crashed && e.type == Runner.events.TOUCHSTART &&
+		e.currentTarget == this.containerEl) {
+			this.restart();
+		}
+	}
+	// Speed drop, activated only when jump key is not pressed.
+	if (Runner.keycodes.DUCK[e.keyCode] && this.tRex.jumping) {
+		e.preventDefault();
+		this.tRex.setSpeedDrop();
 	}	
 }
 
@@ -953,30 +954,7 @@ function trekt(imgs1,imgs2) {
 		* Process keydown.
 		* @param {Event} e
 		*/
-		onKeyDown: function(e) {
-			if (e.target != this.detailsButton) {
-				if (!this.crashed && (Runner.keycodes.JUMP[String(e.keyCode)] ||
-				e.type == Runner.events.TOUCHSTART)) {
-					if (!this.activated) {
-						this.loadSounds();
-						this.activated = true;
-					}
-					if (!this.tRex.jumping) {
-						this.playSound(this.soundFx.BUTTON_PRESS);
-						this.tRex.startJump();
-					}
-				}
-				if (this.crashed && e.type == Runner.events.TOUCHSTART &&
-				e.currentTarget == this.containerEl) {
-					this.restart();
-				}
-			}
-			// Speed drop, activated only when jump key is not pressed.
-			if (Runner.keycodes.DUCK[e.keyCode] && this.tRex.jumping) {
-				e.preventDefault();
-				this.tRex.setSpeedDrop();
-			}
-		},
+		onKeyDown: trexKeyDown,
 		/**
 		* Process key up.
 		* @param {Event} e
@@ -2042,5 +2020,3 @@ function trekt(imgs1,imgs2) {
     }
     };
 }
-	
-

@@ -48,6 +48,20 @@ function saveScores(scr) {
 	}
 }
 
+async function getScores(file,storage){	
+	const serverScore = await fetch(file)
+		.then(result => result.json());
+	const localScore = JSON.parse(localStorage.getItem(storage));
+	const allScore = (!localScore) ? serverScore : [...serverScore,...localScore];
+	allScore.sort((a,b) => b[1] - a[1]);
+	const table = document.getElementById('board');
+	allScore.forEach(val => {
+		let row = table.insertRow(-1);
+		row.insertCell(0).innerHTML = val[0];
+		row.insertCell(1).innerHTML = val[1];
+	});			
+}
+
 //Speach recognition commands
 function speech() {
 	try{
@@ -71,6 +85,21 @@ function speech() {
 //Scores redirect
 function fullscores(){				
 	document.location="fullscores.php?"+(new Date).getTime();			
+}
+
+// gain, frequency, duration
+function k(w,x,y){
+	try {
+		v=a.createOscillator()
+		u=a.createGain()
+		v.connect(u)
+		v.frequency.value=x
+		v.type="square"
+		u.connect(a.destination)
+		u.gain.value=w*0.01
+		v.start(a.currentTime)
+		v.stop(a.currentTime+y*0.001)
+	}catch(err){console.log(err+"not supported")}
 }
 
 function ip(){
@@ -124,4 +153,3 @@ function ip(){
 		}
 	})(); 
 }
-

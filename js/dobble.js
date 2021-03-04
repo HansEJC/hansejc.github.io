@@ -120,19 +120,19 @@ function newP2Card(){
 }
 function newHouseCard(){
 	newCard = deck.shift();
-	HouseDeck.forEach((symb,ind) => {
-		symb.classList.remove(...symb.classList);
-		symb.classList.add('House',newCard[ind]);
-		symb.style.transform = 'rotate(' + spin() + 'deg)';
-	});
+	HouseDecky();
 }
 function moveToHouse(oldCard){
 	newCard = oldCard;
+	HouseDecky();
+}
+
+function HouseDecky(){
 	HouseDeck.forEach((symb,ind) => {
 		symb.classList.remove(...symb.classList);
 		symb.classList.add('House',newCard[ind]);
 		symb.style.transform = 'rotate(' + spin() + 'deg)';
-	});
+	});	
 }
 
 function cardsGone() {
@@ -194,20 +194,6 @@ var AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
     || false; 
 if (AudioContext) {var a = new AudioContext();}
-// gain, frequency, duration
-function k(w,x,y){
-	try {
-		v=a.createOscillator()
-		u=a.createGain()
-		v.connect(u)
-		v.frequency.value=x
-		v.type="square"
-		u.connect(a.destination)
-		u.gain.value=w*0.01
-		v.start(a.currentTime)
-		v.stop(a.currentTime+y*0.001)
-	}catch(err){console.log(err+"not supported")}
-}
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -242,19 +228,7 @@ function numPlayers(){
 }
 
 try {
-	(async () => {
-		const serverScore = await fetch('./uploads/dobblescores.json')
-			.then(result => result.json());	
-		const localScore = JSON.parse(localStorage.getItem("dobbleScores"));
-		const allScore = (!localScore) ? serverScore : [...serverScore,...localScore];
-		allScore.sort((a,b) => b[1] - a[1]);			
-		const table = document.getElementById('board');
-		allScore.forEach(val => {
-			let row = table.insertRow(-1);
-			row.insertCell(0).innerHTML = val[0];
-			row.insertCell(1).innerHTML = val[1];
-		});
-	})();
+	getScores('uploads/dobblescores.json',"dobbleScores");
 }catch(err){}
 
 

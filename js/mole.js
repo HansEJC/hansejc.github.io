@@ -8,19 +8,7 @@ let score = 0;
 let time = 0;
 
 try {
-	(async () => {
-		const serverScore = await fetch('./uploads/molescores.json')
-			.then(result => result.json());	
-		const localScore = JSON.parse(localStorage.getItem("moleScores"));
-		const allScore = (!localScore) ? serverScore : [...serverScore,...localScore];
-		allScore.sort((a,b) => b[1] - a[1]);			
-		const table = document.getElementById('board');
-		allScore.forEach(val => {
-			let row = table.insertRow(-1);
-			row.insertCell(0).innerHTML = val[0];
-			row.insertCell(1).innerHTML = val[1];
-		});
-	})();
+	getScores('uploads/molescores.json',"moleScores");
 }catch(err){}
 
 function randomTime(min, max) {
