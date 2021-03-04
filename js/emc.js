@@ -101,60 +101,75 @@ async function calculations(){
 	let fi = c/(2*Math.PI*tf);
 	document.getElementById("FI").innerHTML = killthemeter(fi);
 	
-	let earray = [];	
-	let range = 0, ran = 0, distrange = 0;
+	var earray = [];	
+	var range = 0, ran = 0, distrange = 0;
+	let stuff = {radios,fields,ran,range,distrange};
+	let freqStuff = {earray,c,tf,EField,eirp,eo,q,uo,cu,fi,...stuff}
 	
 	try {
 		if (g3) g3.destroy();
 	}catch(e){}
 	
 	if (HiFreq && tf*eirp == 0) return; //return if plotting nothing
-	if (HiFreq) {
-		for (let i = 0; i < 5000; i++) { 
-			d = i/100;
-			if (d < c/(2*Math.PI*tf) && d!=0) {
-				if (EField) earray.push([d,Math.pow(c,2)*Math.sqrt(eirp)/(7.2*Math.pow(tf,2)*Math.pow(d,3))]);
-				else earray.push([d,c*Math.sqrt(eirp)/(434*tf*Math.pow(d,2))]);
-			}
-			if (d > c/(2*Math.PI*tf)) {
-				if (EField) earray.push([d,5.48*Math.sqrt(eirp)/d]);
-				else earray.push([d,Math.sqrt(eirp)/(68.8*d)]);
-			}
-		}
-		if (0.1 < fi){ 
-			range = Math.pow(c,2)*Math.sqrt(eirp)/(7.2*Math.pow(tf,2));
-			ran = c*Math.sqrt(eirp)/(434*tf);
-		}
-		if (0.1 > fi || tf>45000000){ 	
-			range = 5.48*Math.sqrt(eirp);
-			ran = Math.sqrt(eirp)/(68.8);
-		}
-	}
+	let freqObj = {};
+	freqObj = HiFreq ? HiFreqFun(freqStuff) : LowFreqFun(freqStuff);	
+	try{
+		({earray,ran,range,distrange} = freqObj);
+	}catch(err) {return}
 	
-	else {
-		if (EField && q == 0) return; //return if plotting nothing
-		if (fields[1].checked && cu == 0) return;
-		const lowfreqrange = 51000;
-		for (let i = 0; i < lowfreqrange; i++) { 
-			d = i/1000;
-			if (EField) {
-				earray.push([d,q/(2*Math.PI*eo*d),5e3,9e3]);
-				distrange = q/(2*Math.PI*eo*d) < 2000 ? q/(2*Math.PI*eo*d) > 1990 ? d : distrange : lowfreqrange/1000;
-			}
-			else {
-				earray.push([d,uo*cu/(2*Math.PI*d),100e-6,360e-6]);
-				distrange = uo*cu/(2*Math.PI*d) < 5e-5 ? uo*cu/(2*Math.PI*d) > 4.5e-5 ? d : distrange : lowfreqrange/1000;
-			}
-		}			
-		range = Math.max(q/(2*Math.PI*eo*.3),50e3);
-		ran = Math.max(uo*cu/(2*Math.PI*.3),400e-6);
-	}
-	dygPlot(earray, radios, fields, ran, range, distrange);
+	dygPlot(earray);
+	dygUpdate({...stuff,...freqObj});	
 }
 
-function dygPlot(earray, radios, fields, ran, range, distrange){	
+function HiFreqFun(stuff){
+	let {ran,range,distrange,earray,c,tf,EField,eirp,fi} = stuff;
+	for (let i = 0; i < 5000; i++) { 
+		d = i/100;
+		if (d < c/(2*Math.PI*tf) && d!=0) {
+			if (EField) earray.push([d,Math.pow(c,2)*Math.sqrt(eirp)/(7.2*Math.pow(tf,2)*Math.pow(d,3))]);
+			else earray.push([d,c*Math.sqrt(eirp)/(434*tf*Math.pow(d,2))]);
+		}
+		if (d > c/(2*Math.PI*tf)) {
+			if (EField) earray.push([d,5.48*Math.sqrt(eirp)/d]);
+			else earray.push([d,Math.sqrt(eirp)/(68.8*d)]);
+		}
+	}
+	if (0.1 < fi){ 
+		range = Math.pow(c,2)*Math.sqrt(eirp)/(7.2*Math.pow(tf,2));
+		ran = c*Math.sqrt(eirp)/(434*tf);
+	}
+	if (0.1 > fi || tf>45000000){ 	
+		range = 5.48*Math.sqrt(eirp);
+		ran = Math.sqrt(eirp)/(68.8);
+	}	
+	let freqStuff = {earray,ran,range,distrange};
+	return freqStuff;
+}
+
+function LowFreqFun(stuff){
+	let {fields,ran,range,distrange,earray,EField,eo,q,uo,cu} = stuff;
+	if (EField && q == 0) return; //return if plotting nothing
+	if (fields[1].checked && cu == 0) return;
+	const lowfreqrange = 51000;
+	for (let i = 0; i < lowfreqrange; i++) { 
+		d = i/1000;
+		if (EField) {
+			earray.push([d,q/(2*Math.PI*eo*d),5e3,9e3]);
+			distrange = q/(2*Math.PI*eo*d) < 2000 ? q/(2*Math.PI*eo*d) > 1990 ? d : distrange : lowfreqrange/1000;
+		}
+		else {
+			earray.push([d,uo*cu/(2*Math.PI*d),100e-6,360e-6]);
+			distrange = uo*cu/(2*Math.PI*d) < 5e-5 ? uo*cu/(2*Math.PI*d) > 4.5e-5 ? d : distrange : lowfreqrange/1000;
+		}
+	}			
+	range = Math.max(q/(2*Math.PI*eo*.3),50e3);
+	ran = Math.max(uo*cu/(2*Math.PI*.3),400e-6);
+	let freqStuff = {earray,ran,range,distrange};
+	return freqStuff;
+}
+
+function dygPlot(earray){	
 	const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
-	let HiFreq = radios[1].checked, EField = fields[0].checked;
 	g3 = new Dygraph(
 		document.getElementById("graphdiv3"),												
 		earray,
@@ -175,30 +190,13 @@ function dygPlot(earray, radios, fields, ran, range, distrange){
               }
 			}
 		}          // options
-	);
-	
-	g3.ready(function() {
-		var lbs = g3.getLabels();
-		lbs.shift();
-		var cb = []; 	
-		var cbh = document.getElementById('MyForm');
-		while (cbh.childElementCount>1) { //don't remove the firstborn children
-			cbh.removeChild(cbh.lastChild);
-		}
-		
-		for(var i = 0; i < lbs.length; i++){
-			cb[i] = document.createElement('input'); 
-			cb[i].type = 'checkbox';
-			cbh.appendChild(cb[i]);
-			cb[i].id = i;
-			cb[i].checked = true;
-			cb[i].onchange = function(){change(this);};
-		}	
-		setTimeout(function(){
-			window.dispatchEvent(new Event('resize'));
-		}, 500); 
-	});
-	
+	);	
+	g3.ready(dygReady);	
+}
+
+function dygUpdate(stuff){
+	let {radios,fields,ran,range,distrange} = stuff;
+	let HiFreq = radios[1].checked, EField = fields[0].checked;
 	if (HiFreq) {
 		g3.updateOptions({
 			labels: (EField) ? [ 'Distance', "Electric Field ("+labls(range)+"V/m)"] : ['Distance', "Magnetic Field ("+labls(ran)+"A/m)"],
@@ -215,6 +213,28 @@ function dygPlot(earray, radios, fields, ran, range, distrange){
 			dateWindow: [0, distrange]
 		});		
 	}	
+}
+
+function dygReady(){
+/*	var lbs = g3.getLabels();
+	lbs.shift();
+	var cb = []; 	
+	var cbh = document.getElementById('MyForm');
+	while (cbh.childElementCount>1) { //don't remove the firstborn children
+		cbh.removeChild(cbh.lastChild);
+	}
+	
+	for(var i = 0; i < lbs.length; i++){
+		cb[i] = document.createElement('input'); 
+		cb[i].type = 'checkbox';
+		cbh.appendChild(cb[i]);
+		cb[i].id = i;
+		cb[i].checked = true;
+		cb[i].onchange = function(){change(this);};
+	}	*/
+	setTimeout(function(){
+		window.dispatchEvent(new Event('resize'));
+	}, 500); 	
 }
 
 //startup
