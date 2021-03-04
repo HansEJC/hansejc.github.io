@@ -488,7 +488,7 @@ function getControlPoints(p0, p1, p2, opt_alpha, opt_allowFalseExtrema) {
 // i.e. is none of (null, undefined, NaN)
 function isOK(x) {
   return !!x && !isNaN(x);
-};
+}
 
 // A plotter which uses splines to create a smooth curve.
 // Can be controlled via smoothPlotter.smoothing

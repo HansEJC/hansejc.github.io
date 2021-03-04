@@ -126,7 +126,7 @@ function inside(point, vs) {
     }
 
     return inside;
-};
+}
 
 function Zone1(tr){
 	//%Zone 1 setting   
