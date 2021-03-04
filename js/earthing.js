@@ -5,10 +5,8 @@ function volts(v) {
 function earthing() {
 	(new URL(document.location)).searchParams.forEach((x, y) => {
 		localStorage.setItem(y,x);
-	});
-	document.getElementById("ER").value = getSavedValue("ER");    // set the value to this input
-	document.getElementById("RR").value = getSavedValue("RR");
-	document.getElementById("FC").value = getSavedValue("FC");
+	});		
+	document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
 	var er = Number(getSavedValue("ER"));    // set the value to this input
 	var rr = Number(getSavedValue("RR"));
 	var fc = Number(getSavedValue("FC"));
@@ -29,12 +27,6 @@ function earthing() {
 	if (epr>645) document.getElementById("EPR").className = 'label danger';
 	else document.getElementById("EPR").className = 'label safe';
 	
-	document.getElementById("P").value = getSavedValue("P");
-	document.getElementById("AREA").value = getSavedValue("AREA");
-	document.getElementById("H").value = getSavedValue("H")
-	document.getElementById("L").value = getSavedValue("L");
-	document.getElementById("NR").value = getSavedValue("NR");
-	document.getElementById("LR").value = getSavedValue("LR");
 	var p = Number(getSavedValue("P"));    // set the value to this input
 	var area = Number(getSavedValue("AREA"));
 	var h = Number(getSavedValue("H"));
@@ -51,7 +43,6 @@ function earthing() {
 	document.getElementById("RE").textContent = +re.toFixed(2)+" Ω";
 	document.getElementById("RG").textContent = +rg.toFixed(2)+" Ω";
 	
-	document.getElementById("ERA").value = getSavedValue("ERA");
 	var era = Number(getSavedValue("ERA"));
 	var pa = era*p/rg;
 	document.getElementById("PA").textContent = +pa.toFixed(2)+" Ωm";
