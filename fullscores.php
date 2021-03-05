@@ -43,11 +43,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 			</div>
 		</div>
 		<br>			
-		<?php			
-			if ($_COOKIE['game'] == 'rex') $a2 = json_decode(file_get_contents('./uploads/scores.json'), true);
-			if ($_COOKIE['game'] == 'mole') $a2 = json_decode(file_get_contents('./uploads/molescores.json'), true);
-			if ($_COOKIE['game'] == 'simon') $a2 = json_decode(file_get_contents('./uploads/simonscores.json'), true);
-			if ($_COOKIE['game'] == 'dobble') $a2 = json_decode(file_get_contents('./uploads/dobblescores.json'), true);
+		<?php		
+			$cookie = $_COOKIE['game'];
+			$a2 = json_decode(file_get_contents("./uploads/{$cookie}scores.json"), true);
 			array_multisort(array_column($a2, '1'), SORT_DESC, $a2);
 		?>
 			<table class="scores">

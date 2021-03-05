@@ -13,7 +13,7 @@ function initiate(){
 		ip(); 
 		try {
 			speech();
-			getScores('uploads/scores.json',"jumpScores");
+			getScores('uploads/rexscores.json',"jumpScores");
 		}catch(e){}
 	} else {
 		new Runner('.interstitial-wrapper');
