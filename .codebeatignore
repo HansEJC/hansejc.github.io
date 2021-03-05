@@ -1,6 +1,6 @@
 js/papaparse.js
 js/trex.js
-js/csv2array
+js/csv2array.js
 js/xlsx.core.min.js
 js/html2canvas.min.js
 js/jquery.min.js
