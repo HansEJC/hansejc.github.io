@@ -13,8 +13,8 @@ async function delivery() {
 	let DRpcsv =  await fetch("Orion Park/op-Project Stock.csv").then(result => result.text());
 	let DRwcsv = await fetch("Orion Park/op-Warehouse Stock .csv").then(result => result.text());
 	let DRcsv = await fetch("Orion Park/op-Delivery.csv").then(result => result.text());
-	let lastmod = await fetchHeader("Orion Park/op.xlsx", 'Last-Modified');
-	let lastfetch = await fetchHeader("Orion Park/op-Delivery.csv", 'Last-Modified');
+	let lastmod = await fetch("Orion Park/op.xlsx").then(result => result.headers.get('Last-Modified'));
+	let lastfetch = await fetch("Orion Park/op-Delivery.csv").then(result => result.headers.get('Last-Modified'));
 	// code below here will only execute when await fetch() finished loading
 	document.getElementById("p").textContent ="Last Updated: "+ new Date (lastmod);
 	document.getElementById("pp").textContent ="Last Checked: "+ new Date(lastfetch);
@@ -77,10 +77,8 @@ function search(arrheh){
 						 if(pn[0].length>0) e = e.replace(new RegExp(RegExp.quote(pn.join('|')),'gi'), x => '<mark>'+x+'</mark>');
 						 return e.split(',');
 					});
-	//console.table(sArray);	
 	
 	if(document.getElementById("Del").checked){
-		//create table
 		myTable= "<table><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><tr><th>Date</th>";
 		myTable+= "<th>Time</th>";
 		myTable+= "<th>Supplier</th>";
@@ -98,8 +96,7 @@ function search(arrheh){
 		}
 	}
 	
-	else{
-			//create table
+	else{ //create table
 		myTable= "<table><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><tr><th>Part #</th>";
 		myTable+= "<th>Description</th>";
 		myTable+= "<th>Quantity</th>";
@@ -120,24 +117,6 @@ function search(arrheh){
 	myTable+="</table>";
 	if(pw == "asdfasdf") document.getElementById('tab').innerHTML = myTable;
 	else document.getElementById('tab').innerHTML = "";
-}
-
-function fetchHeader(url, wch) {
-    return new Promise(function (resolve, reject) {
-        let xhr = new XMLHttpRequest();
-        xhr.open("HEAD", url);
-        xhr.onload = function () {
-            if (this.status >= 200 && this.status < 300) {
-                resolve(xhr.getResponseHeader(wch));
-            } else {
-                resolve("June 28 1998");
-            }
-        };
-        xhr.onerror = function () {
-            resolve("June 28 1998");
-        };
-        xhr.send();
-    });
 }
 
 //startup
