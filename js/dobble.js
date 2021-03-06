@@ -138,9 +138,9 @@ function HouseDecky(){
 function cardsGone() {
 	gamesStarted = false;	
 	document.getElementById("TempScore").innerHTML = "No more cards left! Press Start to continue.";
-		$( "#TempScore" ).fadeIn(100);
-		setTimeout(function(){
-			$( "#TempScore" ).fadeOut(500);	
+		_('#TempScore').fade('in', 100);
+		setTimeout(function(){	
+			_('#TempScore').fade('out', 500);
 		}, 3000);
 	return;	
 }

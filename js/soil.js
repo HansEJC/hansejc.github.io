@@ -167,61 +167,61 @@ function exportToDB(filename,rows) {
 	let db =(filename.includes("FOP")) ? "fop" :  "soil";
 	let tloc = document.getElementById('TLOC').value.split(' ').join('_');
 	
-    $.post("./soildb.php",
+    post("./soildb.php",
     {	
 		datab: db,
 		tabl: tloc,
         distance: transpose(rows)[0],
         res: transpose(rows)[1],
-    },
-    function(data,status){
+    },sucPost);
+	function sucPost(data){
         if (filename.includes("FOP")) {
 			document.getElementById("span2").innerHTML = data;
-			$( "#span2" ).fadeIn(200);
+			_('#span2').fade('in', 200);
 			setTimeout(function(){
-				$( "#span2" ).fadeOut(500);
+				_('#span2').fade('out', 500);
 			}, 3000);
 		}
 		else {
 			document.getElementById("span1").innerHTML = data;
-			$( "#span1" ).fadeIn(200);
+			_('#span1').fade('in', 200);
 			setTimeout(function(){
-				$( "#span1" ).fadeOut(500);
+				_('#span1').fade('out', 500);
 			}, 3000);
 		}
-    });
+	}
 }
 
 //Save to json
 function saveResults(filename,rows){
 	let tloc = document.getElementById('TLOC').value;
 	
-	$.post("./saveSoil.php",
+	post("./saveSoil.php",
 	{
 		site: tloc,
 		results: rows,
 		delete: (document.querySelector("#FOPDis").value == "69"),
-	},
-    function(data,status){
+	 },sucPost);
+	function sucPost(data){
         if (filename.includes("FOP")) {
 			document.getElementById("span2").innerHTML = data;
-			$( "#span2" ).fadeIn(200);
+			_('#span2').fade('in', 200);
 			setTimeout(function(){
-				$( "#span2" ).fadeOut(500);
+				_('#span2').fade('out', 500);
 				location.reload();
 				return false;
 			}, 3000);
 		}
 		else {
 			document.getElementById("span1").innerHTML = data;
-			$( "#span1" ).fadeIn(200);
+			_('#span1').fade('in', 200);
 			setTimeout(function(){
-				$( "#span1" ).fadeOut(500);
+				_('#span1').fade('out', 500);
 				location.reload();
 				return false;
 			}, 3000);
 		}
-    });
+    }
 }
 
 function fetchResults(){

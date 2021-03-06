@@ -13,17 +13,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="description" content="Scores" />
 		<meta name="keywords" content="Scores" />
-		<link rel="stylesheet" href="css/style.css"/>
-		<script defer src="js/jquery.min.js"></script>
-		<script defer src="js/jquery.dropotron.min.js"></script>
-		<script defer src="js/skel.min.js"></script>
-		<script defer src="js/skel-layers.min.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<link rel="stylesheet" href="css/main-style.css"/>
 		<script defer src="js/init.js"></script>
-		<noscript>
-			<link rel="stylesheet" href="css/skel.css" />
-			<link rel="stylesheet" href="css/style.css" />
-			<link rel="stylesheet" href="css/style-desktop.css" />
-		</noscript>
 	</head>
 	<body class="left-sidebar">
 		<!-- Google Tag Manager (noscript) -->
@@ -31,16 +23,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 		<!-- Header -->
-		<div id="header-wrapper" class="wrapper">
-			<div id="header">
-				<!-- Logo -->
-				<div id="logo">
+		<div id="header">
+			<div class="topnav" id="myTopnav"></div>
+			<!-- Logo -->
+			<div id="logo">
 					<h1><a href="#">Scores</a></h1><br>							
 				</div>
-				<!-- Nav -->
-				<nav id="nav">
-				</nav>
-			</div>
 		</div>
 		<br>			
 		<?php		
@@ -67,7 +55,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		<div id="main">	</div>
 		<div id="copyright">
 			<ul>
-				<li>&copy; Hans Juneby.</li><li>Design: <a href="http://html5up.net">HTML5 UP & Hans Juneby</a></li>
+				<li>&copy; Hans Juneby</li>
 			</ul>
 		</div>
 	</body>

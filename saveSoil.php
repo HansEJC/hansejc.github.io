@@ -1,13 +1,16 @@
 <?php
 $a = json_decode(file_get_contents("./uploads/{$_COOKIE['test']}.json"), true);
-$delete = ($_POST['delete'] === 'true');
+$body = file_get_contents('php://input');
+$data = json_decode($body , true);
+$delete = $data['delete'];
 foreach ($a as $key=>$val){ 
-	if ($val['site'] == $_POST['site']){
+	if ($val['site'] == $data['site']){
 		\array_splice($a, $key, 1);
 	}
+	echo $delete['delete'];
 }
 if (!$delete){
-	array_unshift($a,['site' => $_POST['site'],'results' => $_POST['results']]);
+	array_unshift($a,['site' => $data['site'],'results' => $data['results']]);
 	echo "Saving test results to the server";  
 }
 else {

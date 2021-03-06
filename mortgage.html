@@ -6,31 +6,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-5QF2LGP');</script>
 <!-- End Google Tag Manager -->
-<!--
-	Escape Velocity by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
 <html>
 	<head>
-		<title>Mortgage Page</title>
+		<title>Loan Page</title>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="Mortgage Page" />
-		<meta name="keywords" content="Mortgage Page" />
-		<link rel="stylesheet" href="css/style.css"/>
-		<script defer src="js/jquery.min.js"></script>
-		<script defer src="js/jquery.dropotron.min.js"></script>
-		<script defer src="js/skel.min.js"></script>
-		<script defer src="js/skel-layers.min.js"></script>
+		<meta name="description" content="Loan Page" />
+		<meta name="keywords" content="Loan Page" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<link rel="stylesheet" href="css/main-style.css"/>
 		<script defer src="js/init.js"></script>
-		<script defer src="js/dygraph.min.js"></script>
+		<script defer src="js/ext/dygraph.min.js"></script>
 		<script defer src="js/mortgage.js"></script>
 		<link rel="stylesheet" src="dygraph.css" />
-		<noscript>
-			<link rel="stylesheet" href="css/skel.css" />
-			<link rel="stylesheet" href="css/style.css" />
-			<link rel="stylesheet" href="css/style-desktop.css" />
-		</noscript>
 	</head>
 	<body class="left-sidebar">
 		<!-- Google Tag Manager (noscript) -->
@@ -38,20 +25,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 		<!-- End Google Tag Manager (noscript) -->
 		<!-- Header -->
-		<div id="header-wrapper" class="wrapper">
-			<div id="header">
-				<!-- Logo -->
-				<div id="logo">
-					<h1><a href="#">Mortgage</a></h1><br>									 							
+		<div id="header">
+			<div class="topnav" id="myTopnav"></div>
+			<!-- Logo -->
+			<div id="logo">
+					<h1><a href="#">Loan</a></h1><br>									 							
 				</div>
-				<!-- Nav -->
-				<nav id="nav">
-				</nav>
-			</div>
 		</div>
 		<!-- Main -->
 		<div id="main" class="container">
-			<div class="row 100%">
+			<div class="row 50%">
 				<div >
 					<!-- Content -->
 					<div id="content">
@@ -60,8 +43,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 								<form>
 									Amount Borrowed (£)<input type="number" id="AB" onkeyup='saveValue(this);'/>
 									Interest Rate (%)<input type="number" id="IR" onkeyup='saveValue(this);'/>
-									Mortgage Term (years)<input type="number" id="MT" onkeyup='saveValue(this);'/>
-									Mortgage Payment (£)<span id="MP" class="label"></span>
+									Loan Term (years)<input type="number" id="MT" onkeyup='saveValue(this);'/>
+									Loan Payment (£)<span id="MP" class="label"></span>
 								</form>
 							</section>
 							<section class="box">
@@ -78,9 +61,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 								</form>
 							</section>						
 						</div>		
-						<div class="row 100%">
+						<div class="row 50%">
 							<article class="post">
-								<div id="graphdiv3" style="width:1000px; height:600px;"></div>									
+								<div id="graphdiv3"></div>									
 								<br>
 								<p><b>Show: </b>
 									<input type=checkbox id=0 onClick="change(this)" checked>
@@ -98,7 +81,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		</div>
 		<div id="copyright">
 			<ul>
-				<li>&copy; <a href="mortgage2.html">Hans Juneby.</a></li><li>Design: <a href="http://html5up.net">HTML5 UP & Hans Juneby</a></li>
+				<li>&copy; <a href="mortgage2.html">Hans Juneby.</a></li>
 			</ul>
 		</div>
 	</body>

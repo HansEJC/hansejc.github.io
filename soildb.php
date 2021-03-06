@@ -2,8 +2,10 @@
 $servername = "localhost";
 $username = "Hans";
 $password = "asdfasdf";
-$dbname = $_POST['datab'];
-$tabl = $_POST['tabl'];
+$body = file_get_contents('php://input');
+$data = json_decode($body , true);
+$dbname = $data['datab'];
+$tabl = $data['tabl'];
 
 $conn = new mysqli($servername, $username, $password, $dbname); // Create connection
 if ($conn->connect_error) {     // Check connection
@@ -22,8 +24,8 @@ if ($conn->query($sql) === TRUE) {
     echo mysqli_error($conn) . " and has now been overwritten";
 }
 
-$distance = $_POST['distance'];
-$res = $_POST['res'];
+$distance = $data['distance'];
+$res = $data['res'];
 
 for ($i = 0; $i < count($distance); $i++) {
 	$sql = "INSERT INTO $tabl (distance,res)

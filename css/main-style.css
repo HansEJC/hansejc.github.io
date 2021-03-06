@@ -1,29 +1,25 @@
 @charset 'UTF-8';
-/*@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700,900&display=swap');
-@import url('font-awesome.min.css');*/
-
-/*
-	Escape Velocity by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
-
+:root {
+  --greyishMagenta: #baaabb;
+  --darkBlue: #0d1117;
+  
+}
 /*********************************************************************************/
 /* Dark Mode                                                                     */
 /*********************************************************************************/
 
 	.dark {
-		color: #baaabb;
-		background-color: #0d1117;
+		color: var(--greyishMagenta);
+		background-color: var(--darkBlue);
 	}
 	.dark strong,.dark b,.dark a,.dark input,.dark .dygraph-axis-label,
 	.dark #copyright ul,.dark th,.dark tr,.dark td,.dark .label, .dark h1{
-		color: #baaabb;
+		color: var(--greyishMagenta);
 	}
 	.dark form input[type="text"],.dark form input[type="number"],.dark form input[type="datetime-local"],
 	.dark form input[type="email"],.dark form input[type="password"],.dark form select,.dark form textarea, 
 	.dark .dygraph-roller, .dark .idents, .dark input[type="color"] {
-		background-color: #222;
+		background-color: #222; /*dark grey*/
 		box-shadow: inset 0px 0px 1px 0px #000000;
 	}
 	.dark form input[type="text"]:focus,
@@ -36,7 +32,7 @@
 	.dark form textarea:focus,
 	.dark .dygraph-roller:focus
 	{
-		background: #0d1117;
+		background: var(--darkBlue);
 	}
 	.dark tr, .dark .dygraph-legend{
 		background-color:#161b22;
@@ -82,6 +78,7 @@
 	h1,h2,h3,h4,h5,h6
 	{
 		font-weight: 700;
+		font-size: 100%;
 		color: #484d55;
 		padding: 0 0 0 1em !important;
 	}
@@ -550,140 +547,93 @@
 	#header
 	{
 		position: relative;
-		padding: 3em 0 0 0;
-	}
-	#header-wrapper
-	{
-		/*background: url('../images/banner.jpg') center center;
-		background-size: cover;*/
 	}
 	
-		#header-wrapper:before
-		{
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			
-		}
+/*********************************************************************************/
+/* Content                                                                       */
+/*********************************************************************************/
+
+	#content
+	{
+		padding: 0 0 2em 1em;
+	}
 	
 /*********************************************************************************/
 /* Nav                                                                           */
 /*********************************************************************************/
 
-	#nav
-	{
-		position: absolute;
-		display: block;
-		top: 0.1em;
-		left: 0;
-		width: 100%;
-		text-align: center;
-	}
+.topnav {
+	overflow: hidden;
+	background-color: #444e;
+	text-align: center;
+	top:0;
+	font-weight: 700;
+	z-index: 69;
+	border-radius: 0.5em;
+	width: fit-content;
+    margin: 0 auto;
+}
 
-		#nav > ul > li > ul
-		{
-			display: none;
-		}
+.topnav a {
+  display: inline-block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 24px;
+  text-decoration: none;
+}
 
-		#nav > ul
-		{
-			display: inline-block;
-			border-radius: 0.35em;
-			box-shadow: inset 0px 0px 1px 1px rgba(255,255,255,0.25);
-			padding: 0 1.5em 0 1.5em;
-			background: #444;
-			background-color: #444444ec;
-		}
 
-		#nav > ul > li
-		{
-			display: inline-block;
-			text-align: center;
-			padding: 0 1.5em 0 1.5em;
-		}
-		
-			#nav > ul > li > a,
-			#nav > ul > li > span
-			{
-				display: block;
-				color: #eee;
-				color: 444444bf;
-				text-transform: uppercase;
-				text-decoration: none;
-				font-size: 0.7em;
-				letter-spacing: 0.25em;
-				height: 5em;
-				line-height: 5em;
-				-moz-transition: all .25s ease-in-out;
-				-webkit-transition: all .25s ease-in-out;
-				-o-transition: all .25s ease-in-out;
-				-ms-transition: all .25s ease-in-out;
-				transition: all .25s ease-in-out;
-				outline: 0;
-			}
-			
-			#nav > ul > li:hover > a,
-			#nav > ul > li.active > a,
-			#nav > ul > li.active > span
-			{
-				color: #fff;
-			}
+.topnav .icon {
+  display: none;
+  padding: 14px 14px;
+}
 
-	.dropotron
-	{
-		background: #444;
-		background-color: #444444ec;
-		padding: 1.25em 1em 1.25em 1em;
-		border-radius: 0.35em;
-		box-shadow: inset 0px 0px 1px 1px rgba(255,255,255,0.25);
-		#min-width: 12em;
-		text-align: left;
-		margin-top: -1.25em;
-		margin-left: -1px;
-	}
-	
-		.dropotron.level-0
-		{
-			margin-top: -1px;
-			margin-left: 0;
-			border-top-left-radius: 0;
-			border-top-right-radius: 0;
-		}
-	
-		.dropotron a,
-		.dropotron span
-		{
-			display: block;
-			color: #eee;
-			color: rgba(255,255,255,0.75);
-			text-transform: uppercase;
-			text-decoration: none;
-			font-size: 0.7em;
-			letter-spacing: 0.25em;
-			border-top: solid 1px rgba(255,255,255,0.15);
-			line-height: 3em;
-			-moz-transition: all .25s ease-in-out;
-			-webkit-transition: all .25s ease-in-out;
-			-o-transition: all .25s ease-in-out;
-			-ms-transition: all .25s ease-in-out;
-			transition: all .25s ease-in-out;
-		}
-		
-		.dropotron li:first-child a,
-		.dropotron li:first-child span
-		{
-			border-top: 0;
-		}
-		
-		.dropotron li:hover > a,
-		.dropotron li:hover > span
-		{
-			color: #fff;
-		}
+.dropdown {
+ display:inline-block;
+}
 
+.dropdown .dropbtn { 
+  border: none;
+  outline: none;
+  color: white;
+  background-color: inherit;
+  font-family: arial, sans-serif;
+}
+
+.dropdown-content {
+	position: absolute;
+	background-color: #444e;
+	min-width: 160px;
+	z-index: 69;  
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
+	border-radius: 0em 0em 0.5em 0.5em;
+	margin: -0.2em 0 0 0;
+}
+
+.dropdown-content a {
+  float: none;
+  padding: 4px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.topnav a:hover, .dropdown:hover .dropbtn {
+  background-color: #555;
+  color: white;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.dropdown:hover .dropdown-content {
+  visibility: visible;
+  opacity: 1;
+}
 
 /*********************************************************************************/
 /* Copyright                                                                     */
@@ -874,7 +824,7 @@ E
 
 
 /*********************************************************************************/
-/* T-Rekt                                                                      */
+/* T-Rekt                                                                        */
 /*********************************************************************************/
 
 
@@ -1136,7 +1086,7 @@ html[subframe] body {
 .toggLabel {
   position: absolute; 
   right: 60px;
-  top:36px; 
+  top:30px; 
   display: inline-block;	
 }
 #titleBar { /*fixes issue with title bar blocking the slider*/
@@ -1191,3 +1141,590 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+/*********************************************************************************/
+/* Desktop style                                                                 */
+/*********************************************************************************/
+
+@media screen and (min-width: 850px) {
+
+	body, input, select, textarea
+	{
+		font-size: 11pt;
+		line-height: 1.75em;
+		letter-spacing: 0.025em;
+	}
+	
+	.label
+	{
+		height:38px;
+	}
+
+	/* Section/Article */
+
+		section,
+		article
+		{
+			margin: 0 0 1em 0;
+			padding: 0 0 0 4em !important;
+		}
+
+	/* Form */
+
+		form
+		{
+			padding: 1em 0 1em 1em !important;
+		}
+		
+			form label
+			{
+				margin: 0.25em 0 0.5em 0;
+			}
+
+	/* Button */
+
+		input[type="button"],
+		input[type="submit"],
+		input[type="reset"],
+		.button
+		{
+			padding: 0 2.25em 0 2.25em;
+			font-size: 0.9em;
+			min-width: 12em;
+			height: 4em;
+			line-height: 4em;
+		}
+		
+
+	/* List */
+
+		ul
+		{
+		}
+
+			ul.actions
+			{
+				margin: 3em 0 0 0;
+			}
+			
+				form ul.actions
+				{
+					margin-top: 0;
+				}
+			
+				ul.actions li
+				{
+					display: inline-block;
+					margin: 0 0.75em 0 0.75em;
+				}
+				
+				ul.actions li:first-child
+				{
+					margin-left: 0;
+				}
+				
+				ul.actions li:last-child
+				{
+					margin-right: 0;
+				}
+				
+				ul.actions-centered
+				{
+					text-align: center;
+				}
+
+
+
+/*********************************************************************************/
+/* Logo                                                                          */
+/*********************************************************************************/
+
+	#logo
+	{
+		/*position: absolute;
+		height: 5em;*/
+		top: 50%;
+		left: 0;
+		width: 100%;
+		text-align: center;
+		margin-top: 1em;
+	}
+
+		.homepage #logo
+		{
+			margin-top: -1em;
+		}
+
+		#logo h1
+		{
+			font-size: 2em;
+			letter-spacing: 0.25em;
+		}
+		
+		#logo p
+		{
+			margin: 1.25em 0 0 0;
+			display: block;
+			letter-spacing: 0.2em;
+			font-size: 0.9em;
+		}
+
+
+/*********************************************************************************/
+/* Intro                                                                         */
+/*********************************************************************************/
+
+	#intro
+	{
+		text-align: center;
+	}
+
+		#intro > .style1
+		{
+			font-size: 1.5em;
+			letter-spacing: 0.075em;
+		}	
+		
+		#intro > .style2
+		{
+			font-size: 2.75em;
+			letter-spacing: 0.075em;
+			line-height: 1.35em;
+			padding: 1em 0 1em 0;
+			margin-bottom: 1em;
+		}
+		
+		#intro > .style3
+		{
+			font-size: 1.1em;
+			width: 48em;
+			margin: 0 auto;
+		}
+
+
+
+/*********************************************************************************/
+/* Main                                                                          */
+/*********************************************************************************/
+
+	#main
+	{
+		margin-top: 1em;
+		margin-bottom: 1em;
+	}
+
+		.homepage #main
+		{
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+	
+	/* Container */
+	.container {
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+		max-width: 1200px;
+	}
+
+/*********************************************************************************/
+/* Copyright                                                                     */
+/*********************************************************************************/
+
+	#copyright
+	{
+		margin: 6em 0 0 0;
+	}
+	
+		#copyright ul
+		{
+			padding: 0.75em 2em;
+			font-size: 0.9em;
+		}
+		
+			#copyright ul li
+			{
+				display: inline-block;
+				margin-left: 1em;
+				padding-left: 1em;
+				border-left: solid 1px #333;
+				border-left-color: rgba(255,255,255,0.05);
+			}
+			
+				#copyright ul li:first-child
+				{
+					border-left: 0;
+					margin-left: 0;
+					padding-left: 0;
+				}
+				
+				
+	#graphdiv3
+	{
+		width: 90vw; 
+		height: 50vw;
+		max-width:850px; 
+		max-height:470px;
+	}
+}
+
+/*********************************************************************************/
+/* Mobile  style                                                                 */
+/*********************************************************************************/
+@media screen and (max-width: 850px) {
+	
+/*********************************************************************************/
+/* Header                                                                        */
+/*********************************************************************************/
+	
+	#header
+	{
+		padding: 4em 0 0 0;
+	}
+/*********************************************************************************/
+/* Basic                                                                         */
+/*********************************************************************************/
+
+	body, input, select, textarea
+	{
+		line-height: 1.5em;
+		font-size: 9pt;
+		letter-spacing: 0;
+		/*padding: 1em 0.5em 0 !important;*/ /*was too small, now goes with default padding*/
+	}
+	
+	.label
+	{
+		height:32px;
+	}
+
+	h2, h3, h4, h5, h6
+	{
+		font-size: 1.2em;
+		letter-spacing: 0.05em;
+		margin: 0 0 1em 0;
+	}
+
+	hr
+	{
+		margin: 1em 0 1em 0;
+	}
+
+	/* Section/Article */
+
+		section,
+		article
+		{/*This dumb code below was hard to find. It makes the box class start over in the row below.*/
+			/*clear: both;*/
+			padding: 1em 1em 0 !important;
+		}
+
+	/* Button */
+
+		input[type="button"],
+		input[type="submit"],
+		input[type="reset"],
+		input[type="file"],
+		.button
+		{
+			display: block;
+			width: 100%;
+			font-size: 1em;
+			padding: 1em 0 1em 0 !important;
+			max-width: 30em;
+			margin: 0 auto;
+		}
+
+	/* Box */
+
+		.box
+		{
+			width: 30% !important;
+		}
+
+			.box.post-excerpt
+			{
+			}
+			
+				.box.post-excerpt .image.left
+				{
+					position: relative;
+					top: 0.25em;
+					width: 25%;
+					margin: 0;
+				}
+				
+				.box.post-excerpt h3,
+				.box.post-excerpt p
+				{
+					margin-left: 32.5%;
+				}
+
+	/* Box */
+
+		.row
+		{
+			/*width: 100% !important;*/
+		}
+
+
+
+/*********************************************************************************/
+/* Logo                                                                          */
+/*********************************************************************************/
+
+	#logo
+	{
+		text-align: center;
+	}
+
+		#logo h1
+		{
+			font-size: 1.5em;
+			letter-spacing: 0.2em;
+		}
+		
+		#logo p
+		{
+			margin: 1.25em 0 0 0;
+			display: block;
+			letter-spacing: 0.2em;
+			font-size: 0.9em;
+		}
+	
+/*********************************************************************************/
+/* Nav                                                                           */
+/*********************************************************************************/
+
+	.topnav {
+		position: absolute;
+	}
+	.topnav a:not(:first-child), .dropdown .dropbtn {
+		display: none;
+	}
+	.topnav a.icon {
+		float: left;
+		display: block;
+	}
+
+	.topnav.responsive a {
+		float: none;
+		display: block;
+		text-align: left;
+		visibility: visible;
+		opacity: 1;
+	}
+	.dropdown{
+		display:block;
+	}
+	.topnav.responsive .dropdown {float: none;}
+	.topnav.responsive .dropdown-content {
+		position: relative;
+		visibility: visible;
+		opacity: 1;
+		background-color: #4440;
+	}
+	.topnav.responsive .dropdown-content a {
+		padding: 10px 30px;
+	}
+	.topnav.responsive .dropdown .dropbtn {
+		display: block;
+		width: 100%;
+		text-align: left;
+	}
+	
+
+/*********************************************************************************/
+/* Main                                                                          */
+/*********************************************************************************/
+
+	#main
+	{
+		padding: 1em 0 0 0;
+	}
+
+/*********************************************************************************/
+/* Content                                                                       */
+/*********************************************************************************/
+
+	#content
+	{
+		padding: 0 0 2em 1em;
+	}
+
+		#content header.style1
+		{
+			padding-bottom: 2.5em;
+		}
+
+/*********************************************************************************/
+/* Footer                                                                        */
+/*********************************************************************************/
+	
+		#footer hr
+		{
+			display: none;
+		}
+
+/*********************************************************************************/
+/* Copyright                                                                     */
+/*********************************************************************************/
+
+	#copyright
+	{
+		padding: 2em 0 0 0;
+	}
+	
+		#copyright ul
+		{
+			padding: 1em 2em;
+			width: 100%;
+		}
+		
+			#copyright ul li
+			{
+				display: block;
+				margin: 0.5em 0 0 0;
+			}
+			
+				#copyright ul li:first-child
+				{
+					margin-top: 0;
+				}
+	#graphdiv3
+	{
+		width: 90vw; 
+		height: 50vw;
+	}
+		
+	/* Mole Game */
+	.game {
+	  width: 400px !important;
+	  height: 600px !important;
+	}
+
+	.hole {
+	  flex: 1 0 50% !important;
+	}
+
+	/*Simon */
+	.memory { 
+		font-size: 18px !important;
+	}
+
+	/*Dobble*/
+	.row .dobble,
+	.row .dobble:after {
+		width: 60vw;
+		height: 60vw;
+		margin: 0.1em;
+		padding: 2em 2em 1em 2em !important
+	}
+	h1.Player {
+		padding: 0 !important;
+		font-size: 2.5em;
+	}
+	 div.dobble.dobbReference {
+		width: 50vw;
+		height: 50vw;
+		float: right;
+		margin: -6em 0 -6em 0;
+		right: 0.1em;
+	}
+
+	.House, .P1, .P2 {
+		background-size: contain !important;
+	}
+}
+
+/* Resets (http://meyerweb.com/eric/tools/css/reset/ | v2.0 | 20110126 | License: none (public domain)) */
+
+/* Box Model */
+
+	*, *:before, *:after {
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		box-sizing: border-box;
+	}
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,
+pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,
+small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,
+form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,
+details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,
+summary,time,mark,audio,video{
+	font-family:arial, sans-serif;
+	vertical-align:baseline;
+}
+	
+/* Grid */
+
+	.row {
+		border-bottom: solid 1px transparent;
+	}
+
+	.row > * {
+		float: left;
+	}
+
+	.row:after, .row:before {
+		content: '';
+		display: block;
+		clear: both;
+		height: 0;
+	}
+
+	.row.uniform > * > :first-child {
+		margin-top: 0;
+	}
+
+	.row.uniform > * > :last-child {
+		margin-bottom: 0;
+	}
+
+	/* Gutters */
+
+		/* Normal */
+
+			.row > * {
+				/* padding: (gutters.horizontal) 0 0 (gutters.vertical) */
+				padding: 40px 0 0 40px;
+			}
+
+			.row {
+				/* margin: -(gutters.horizontal) 0 -1px -(gutters.vertical) */
+				margin: -40px 0 -1px -40px;
+			}
+
+			.row.uniform > * {
+				/* padding: (gutters.vertical) 0 0 (gutters.vertical) */
+				padding: 40px 0 0 40px;
+			}
+
+			.row.uniform {
+				/* margin: -(gutters.vertical) 0 -1px -(gutters.vertical) */
+				margin: -40px 0 -1px -40px;
+			}
+
+		/* 50% */
+
+			.row.\35 0\25 > * {
+				/* padding: (gutters.horizontal) 0 0 (gutters.vertical) */
+				padding: 20px 0 0 20px;
+			}
+
+			.row.\35 0\25 {
+				/* margin: -(gutters.horizontal) 0 -1px -(gutters.vertical) */
+				margin: -20px 0 -1px -20px;
+			}
+
+			.row.uniform.\35 0\25 > * {
+				/* padding: (gutters.vertical) 0 0 (gutters.vertical) */
+				padding: 20px 0 0 20px;
+			}
+
+			.row.uniform.\35 0\25 {
+				/* margin: -(gutters.vertical) 0 -1px -(gutters.vertical) */
+				margin: -20px 0 -1px -20px;
+			}

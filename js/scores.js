@@ -1,21 +1,13 @@
 var ipString = "removeMe?";
 function saveScores(scr) {
 	if (!window.location.hostname.includes("github")) {
-		$.post("./savesettings.php?=v1.0",
+		post("./savesettings.php?=v1.0",
 		{
-			name: $("#userName").val(),
+			name: document.querySelector("#userName").value,
 			ip: ipString,
 			score: scr,
 			date: new Date().toLocaleString("en-GB", {timeZone: "Europe/London"}),
-		},
-		function(data,status){
-			document.getElementById("TempScore").innerHTML = data;
-			$( "#TempScore" ).fadeIn(100);
-			setTimeout(function(){
-				$( "#TempScore" ).fadeOut(500);	
-				document.location="?"+(new Date).getTime();
-			}, 1000);
-		});
+		},sucPost);
 	}
 	else {
 		let scoreID = "jumpScores";
@@ -46,6 +38,15 @@ function saveScores(scr) {
 			document.location="?"+(new Date).getTime();
 		}, 1000);
 	}
+}
+
+function sucPost(data){
+	document.getElementById("TempScore").innerHTML = data;
+	_('#TempScore').fade('in', 100);
+	setTimeout(function(){	
+		_('#TempScore').fade('out', 500);
+		document.location="?"+(new Date).getTime();
+	}, 1000);
 }
 
 async function getScores(file,storage){	

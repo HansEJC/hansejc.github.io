@@ -7,10 +7,9 @@ function addLoader(html,err){
 		errdiv.insertBefore(div,errdiv.firstChild); 
 		div.innerHTML="<center>"+html+"</center>";
 		div.id="error";
-		$( "#error" ).fadeIn(300);
+		_('#error').fade('in', 300);
         setTimeout(() => {
-			$( "#error" ).fadeOut(500);
-		//div.innerHTML="";
+			_('#error').fade('out', 500);
 		}, 3000);
 	}
 	if (!err) {

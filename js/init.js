@@ -1,9 +1,3 @@
-/*
-	Escape Velocity by HTML5 UP
-	html5up.net | @n33co
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
-
 //Toggle Dark Mode
 (function () {
 	//Add toggle to page
@@ -19,8 +13,8 @@
 	toggLabel.classList.add('toggLabel');
 	switchLabel.appendChild(checkBox);
 	switchLabel.appendChild(spanny);
-	document.querySelector("#header-wrapper").appendChild(switchLabel);
-	document.querySelector("#header-wrapper").appendChild(toggLabel);
+	document.querySelector("#header").appendChild(switchLabel);
+	document.querySelector("#header").appendChild(toggLabel);
 	
 	// Use matchMedia to check the user preference
 	const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
@@ -44,111 +38,44 @@
 
 })();
 
-//init
-(function($) {
-
-	skel.init({
-		reset: 'full',
-		breakpoints: {
-			/*'global':	{ range: '*', href: 'css/style.css?v=1.3' },*/
-			'desktop':	{ range: '765-', href: 'css/style-desktop.css', containers: 1200, grid: { gutters: 50 } },
-			'1000px':	{ range: '765-1200', href: 'css/style-1000px.css', containers: '100%!', grid: { gutters: 35 } },
-			'mobile':	{ range: '-764', href: 'css/style-mobile.css?v=1.1', containers: '100%!', grid: { gutters: 20 }, viewport: { scalable: false } }
-		},
-		plugins: {
-			layers: {
-				config: {
-					mode: 'transform'
-				},
-				navPanel: {
-					hidden: true,
-					breakpoints: 'mobile',
-					position: 'top-left',
-					side: 'left',
-					animation: 'pushX',
-					width: '80%',
-					height: '100%',
-					clickToHide: true,
-					html: '<div data-action="navList" data-args="nav"></div>',
-					orientation: 'vertical'
-				},
-				titleBar: {
-					breakpoints: 'mobile',
-					position: 'top-left',
-					side: 'top',
-					height: 44,
-					width: '100%',
-					html: '<span class="toggle" data-action="toggleLayer" data-args="navPanel"></span><span class="title" data-action="copyHTML" data-args="logo"></span>'
-				}
-			}
-		}
-	});
-
-	$(function() {
-
-		var	$window = $(window),
-			$body = $('body');
-
-		// Disable animations/transitions until the page has loaded.
-			$body.addClass('is-loading');
-
-			$window.on('load', function() {
-				$body.removeClass('is-loading');
-			});
-
-		// Forms
-			var $form = $('form');
-			if ($form.length > 0) {
-
-			$form.find('.form-button-submit')
-				.on('click', function() {
-					$(this).parents('form').submit();
-					return false;
-				});
-			}
-
-		// Dropdowns.
-			$('#nav > ul').dropotron({
-				mode: 'fade',
-				noOpenerFade: true,
-				alignment: 'center',
-				detach: false
-			});
-
-	});
-
-})(jQuery);
-
+function myFunction() {
+	var x = document.getElementById("myTopnav");
+	if (x.className === "topnav") {
+		x.className += " responsive";
+	} else {
+		x.className = "topnav";
+	}
+}
 function navBar(){
-	const navbar = document.getElementById('nav');
-	navbar.innerHTML = 
-		"<ul>"+
-			"<li class='current heh'>"+
-				"<a href='#'>Home</a>"+
-				"<ul>"+		
-					"<li><a href='dobble.html'>Dobble</a></li>"+	
-					"<li><a href='memory.html'>Simon</a></li>"+	
-					"<li><a href='index.html'>TRex</a></li>"+	
-					"<li><a href='tictactoe.html'>TicTacToe</a></li>"+			
-					"<li><a href='mole.html'>Whack a Mole</a></li>"+						
-				"</ul>"+
-			"</li>"+
-			"<li class='heh'>"+
-				"<a href='#'>Tools</a>"+
-				"<ul>"+
-					"<li><a href='csv.html'>CSV Plotter</a></li>"+
-					"<li><a href='relay.html'>Distance Protection Fault Plotter</a></li>"+	
-					"<li><a href='earth.html'>Earthing Calculation Tools</a></li>"+	
-					"<li><a href='soil.html'>Earthing Surveys</a></li>		"+
-					"<li><a href='tools.html'>Electrical Engineering Tools</a></li>"+		
-					"<li><a href='emc.html'>EMC Calculations</a></li>"+
-					"<li><a href='mortgage.html'>Mortgage Calculator</a></li>	"+	
-					"<li><a href='fault.html'>Railway Faults</a></li>"+				
-				"</ul>"+
-			"</li>"+
-			"<li><a href='op.html'>Orion Park</a></li>"+
-			"<li><a href='javascript:helpPage()'>Help</a></li>"+
-		"</ul>";
+	const navbar = document.querySelector('#myTopnav');
+		navbar.innerHTML =`
+			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+			<div class="dropdown">
+				<a href='#' class="dropbtn heh">Games</a>
+				<div class="dropdown-content">
+					<a href='dobble.html'>Dobble</a>
+					<a href='memory.html'>Simon</a>
+					<a href='index.html'>TRex</a>
+					<a href='tictactoe.html'>TicTacToe</a>
+					<a href='mole.html'>Whack a Mole</a>
+				</div>
+			</div> 
+			<div class="dropdown">
+				<a href='#' class="dropbtn heh">Tools</a>
+				<div class="dropdown-content">
+					<a href='csv.html'>CSV Plotter</a>
+					<a href='relay.html'>Distance Protection Fault Plotter</a>	
+					<a href='earth.html'>Earthing Calculation Tools</a>	
+					<a href='soil.html'>Earthing Surveys</a>		
+					<a href='tools.html'>Electrical Engineering Tools</a>		
+					<a href='emc.html'>EMC Calculations</a>
+					<a href='mortgage.html'>Loan Calculator</a>		
+					<a href='fault.html'>Railway Faults</a>					
+				</div>
+			</div> 
+			<a href='op.html'>Orion Park</a>
+			<a href='javascript:helpPage()'>Help</a>
+		`;
 	document.querySelectorAll('.heh').forEach(function(item) {return item.addEventListener('click',randomPage)});
 }
 
@@ -160,13 +87,13 @@ function helpPage(){
 
 navBar();
 let test;
-const navs = ['Home','Tools'];
+const navs = ['Games','Tools'];
 const randomChild = function(len) {return Math.floor(Math.random()*len)};
 function randomPage(e) {
 	test = e;
 	if (navs.some(function(nav) {return e.target.innerHTML.includes(nav)})){
-		let nodeLen = randomChild(e.target.parentElement.children[1].querySelectorAll('li').length)
-		e.target.parentElement.children[1].querySelectorAll('li')[nodeLen].firstElementChild.click();
+		let nodeLen = randomChild(e.target.parentElement.children[1].querySelectorAll('a').length)
+		e.target.parentElement.children[1].querySelectorAll('a')[nodeLen].click();
 	}
 	else return;
 }
@@ -334,6 +261,47 @@ function exportToCsv(filename, rows) {
 			document.body.removeChild(link);
 		}
 	}	
+}
+
+window.post = function(url, data, sucPost) {
+	return fetch(url, {method: "POST", body: JSON.stringify(data)})
+	.then(response => response.text())
+	.then(sucPost)
+	.catch((error) => {
+		console.log('Error:', data);
+	});
+}
+
+//fade in and fadeout
+function _(el) {
+  if (!(this instanceof _)) {
+    return new _(el);
+  }
+  this.el = document.querySelector(el);
+}
+
+_.prototype.fade = function fade(type, ms) {
+  var isIn = type === 'in',
+    opacity = isIn ? 0 : 1,
+    interval = 50,
+    duration = ms,
+    gap = interval / duration,
+    self = this;
+
+  if(isIn) {
+    self.el.style.display = 'inline';
+    self.el.style.opacity = opacity;
+  }
+
+  function func() {
+    opacity = isIn ? opacity + gap : opacity - gap;
+    self.el.style.opacity = opacity;
+
+    if(opacity <= 0) self.el.style.display = 'none'
+    if(opacity <= 0 || opacity >= 1) window.clearInterval(fading);
+  }
+
+  var fading = window.setInterval(func, interval);
 }
 
 document.documentElement.setAttribute('lang', navigator.language); //add language to html
