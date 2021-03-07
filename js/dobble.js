@@ -5,6 +5,7 @@ const timeLeft = document.querySelector('.timeLeft');
 const P1Deck = document.querySelectorAll('.P1');
 const HouseDeck = document.querySelectorAll('.House');
 const P2Deck = document.querySelectorAll('.P2');
+const PlayerLabels = document.querySelectorAll('.Player');
 let interval = 0;
 let deck = [];
 let gamesStarted = false;
@@ -36,6 +37,7 @@ function startGame() {
 	newP2Card();
 	startTimer(60); //countdown 1 min
 	cardsLeft.textContent = deck.length;
+	PlayerLabels.forEach(lab => lab.innerHTML="");
 }
 
 function createDeck(){	
@@ -185,6 +187,9 @@ function gameOver(){
 	setTimeout(() => {k(10,30,300);}, 600);
 	setTimeout(() => {k(10,20,300);}, 900);
 	gamesStarted = false;	
+	PlayerLabels[0].innerHTML = "Player 1";
+	PlayerLabels[1].innerHTML = "Reference";
+	PlayerLabels[2].innerHTML = "Player 2";
 	if (noHighScore) return; //don't records if P2 has played
 	setTimeout(() => {saveScores(score)}, 1000);;
 }
