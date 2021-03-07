@@ -11,8 +11,8 @@ function calculations(){
 	var mt = Number(getSavedValue("MT"))*12;
 	var mp = ab*((ir*Math.pow((1+ir),mt))/(Math.pow((1+ir),mt)-1));		
 	
-	document.getElementById("MP").textContent = mp.toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+" £";
-
+	spanToMoney("MP",mp);
+	
 	var today = new Date();
 	
 	var mortgage = [];
@@ -21,9 +21,8 @@ function calculations(){
 	
 	var op = Number(getSavedValue("OP"));
 	var tp = op+mp;
-	document.getElementById("TP").textContent = tp.toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+" £";
-	
-	document.getElementById("MOP").textContent = (ab/120).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+" £";
+	spanToMoney("TP",tp);
+	spanToMoney("MOP",ab/120);
 	
 	if ((ab/120)<op) document.getElementById("MOP").className = 'label danger';
 	else document.getElementById("MOP").className = 'label safe';
@@ -39,7 +38,7 @@ function calculations(){
 	}	
 	
 	document.getElementById("RT").textContent = Math.floor((pn)/12)+" y " + (12*((pn)/12-Math.floor(pn/12))).toFixed(0)+" m";
-	document.getElementById("AP").textContent = (pn*tp).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+" £";
+	spanToMoney("AP",pn*tp);
 
 	try {
 		if (g3) g3.destroy();
@@ -70,6 +69,8 @@ function calculations(){
 		window.dispatchEvent(new Event('resize'));
 	}, 500); 												
 }
+
+const spanToMoney = (span,cont) => document.getElementById(span).textContent = (cont).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")+" £";
 
 //startup
 calculations();
