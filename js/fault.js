@@ -38,7 +38,6 @@ function oleFun(stuff){
 	return 1/(1/(ole*lcc)+1/((ole*lc)/trnu + ole*(lc-lcc)));		
 }
 
-
 function calculations(){		
 	document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
 	document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
@@ -68,8 +67,7 @@ function calculations(){
 	let res = 1000; //resolution
 	let bloc = 0; //booster location
 	let bdist = 3; //booster distance of 3km
-	
-	
+		
 	document.querySelectorAll(".sub").forEach(sub => sub.value = getSavedValue(sub.id));
 	document.querySelectorAll(".loc").forEach((loc,ind) => {
 		let trnu = +(getSavedValue(+loc.id+199)) || 2; trnu = trnu == 1 ? 1/Number.MAX_SAFE_INTEGER : trnu-1;
@@ -80,34 +78,17 @@ function calculations(){
 		for (let i=1;i<=res;i++){
 			i = ind == 0 ? res : i; //shift the first sub to its km point
 			let lcc = smoothdec(lc*i/res); //current location
-			let stuff = {ole,lcc,lc,trnu};
 			let lch = getSavedValue(loc.id) < 0 ? totlc-lcc : totlc+lcc; //current total location
 			let nxbnd = lcd(lc/res,crbd); //next bond location 
 			nxbnd = nxbnd > lc ? lc : nxbnd; //if cross bonding is greater than sub distance, set to sub distance
 			let lxb = smoothdec(lcc % nxbnd) == 0 ? nxbnd : smoothdec(lcc % nxbnd) || 0;//location after last xbond
 			//if (boost && bloc >= bdist) previmp += bimp;
 			//if (boost && bloc >= bdist){
-			if (boost){
-			//nxbnd = nxbnd > bdist ? bdist : nxbnd; //if booster is greater than sub distance, set to sub distance
-			//lxb = smoothdec(lcc % nxbnd) == 0 ? nxbnd : smoothdec(lcc % nxbnd) || 0;//location after last xbond
-				oleimp = oleFun(stuff);
-				if (trnu<1) oleimp = ole*lcc;
-				oleimp += 2*bimp*Math.floor(Math.abs(lch)/bdist);
-				//returnimp = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
-				returnimp = aew*lxb; //bonds at cross bond location
-				//prevole += oleimp;// -oleFun(stuff);
-				//previmp += returnimp;// -1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb)));;
-			}
-			else if (atfeed){
-				oleimp = oleFun(stuff);
-				if (trnu<1) oleimp = ole*lcc;
-				returnimp = 1/(1/(ri*lxb)+1/((atf*nxbnd)+ri*(nxbnd-lxb))); //bonds at cross bond location
-			}
-			else{
-				oleimp = oleFun(stuff);
-				if (trnu<1) oleimp = ole*lcc;
-				returnimp = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
-			}
+			let stuff = {ole,lcc,lc,trnu,bimp,lch,bdist,lxb,aew,ri,railR,nxbnd,rsc,atf};
+			oleimp = oleFun(stuff);
+			if (trnu<1) oleimp = ole*lcc;
+			if (boost) ({oleimp,returnimp} = boosterCalc({oleimp,returnimp,...stuff}));
+			else returnimp = (atfeed) ? atCalc(stuff): normalCalc(stuff);
 			oleimp = ind == 0 ? 0 : oleimp; //set FS impedance to 0
 			returnimp = ind == 0 ? 0 : returnimp; //set FS impedance to 0
 			faultimp = oleimp+returnimp; 
@@ -145,6 +126,29 @@ function calculations(){
 	
 	dygPlot(earray,subarray);
 	return earray;
+}
+
+function normalCalc(stuff){
+	let {trnu,lxb,aew,ri,railR,nxbnd,rsc} = stuff;
+	return 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
+}
+
+function atCalc(stuff){
+	let {lxb,ri,nxbnd,atf} = stuff;
+	return 1/(1/(ri*lxb)+1/((atf*nxbnd)+ri*(nxbnd-lxb))); //bonds at cross bond location
+}
+
+function boosterCalc(stuff){
+//nxbnd = nxbnd > bdist ? bdist : nxbnd; //if booster is greater than sub distance, set to sub distance
+//lxb = smoothdec(lcc % nxbnd) == 0 ? nxbnd : smoothdec(lcc % nxbnd) || 0;//location after last xbond
+	let {oleimp,returnimp,ole,lcc,lc,trnu,bimp,lch,bdist,lxb,aew} = stuff;
+	if (trnu<1) oleimp = ole*lcc;
+	oleimp += 2*bimp*Math.floor(Math.abs(lch)/bdist);
+	//returnimp = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
+	returnimp = aew*lxb; //bonds at cross bond location
+	//prevole += oleimp;// -oleFun(stuff);
+	//previmp += returnimp;// -1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb)));;	
+	return {oleimp,returnimp}
 }
 
 function dygPlot(earray,subarray){
