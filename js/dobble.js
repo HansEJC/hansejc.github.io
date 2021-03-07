@@ -82,14 +82,7 @@ function createDeck(){
 const spin = () => Math.round(Math.random() * (360));
 
 function newP1Card(){
-	if (deck.length == 0) {
-		P1Deck.forEach((symb,ind) => {
-			symb.classList.remove(...symb.classList);
-			symb.classList.add('P1');
-			symb.removeEventListener('click',clicked);
-		});	
-		cardsGone();
-	}
+	if (deck.length == 0) emptyDeck(P1Deck,'P1');
 	else {
 		lastP1Card = deck.shift();
 		P1Deck.forEach((symb,ind) => {
@@ -102,14 +95,7 @@ function newP1Card(){
 	}
 }
 function newP2Card(){
-	if (deck.length == 0) {
-		P2Deck.forEach((symb,ind) => {
-			symb.classList.remove(...symb.classList);
-			symb.classList.add('P2');
-			symb.removeEventListener('click',clicked);
-		});	
-		cardsGone();
-	}
+	if (deck.length == 0) emptyDeck(P2Deck,'P2');
 	else {
 		lastP2Card = deck.shift();
 		P2Deck.forEach((symb,ind) => {
@@ -120,6 +106,16 @@ function newP2Card(){
 		});	
 	}
 }
+
+function emptyDeck(dk,pl){
+	dk.forEach((symb,ind) => {
+		symb.classList.remove(...symb.classList);
+		symb.classList.add(pl);
+		symb.removeEventListener('click',clicked);
+	});	
+	cardsGone();
+}
+
 function newHouseCard(){
 	newCard = deck.shift();
 	HouseDecky();
