@@ -57,25 +57,31 @@ h1.Player {
 	content: '';
 	width: 100%;
 }
-/*
-.P2 {
-	flex: 1 0 26%;
-	overflow: hidden;
-	position: relative;
-	display: block;
-	background-size: contain;
-	content: '';
-	width: 100%;
+
+@media screen and (max-width: 850px) {
+	.row .dobble,
+	.row .dobble:after {
+		width: 60vw;
+		height: 60vw;
+		margin: 0.1em;
+		padding: 2em 2em 1em 2em !important
+	}
+	h1.Player {
+		padding: 0 !important;
+		font-size: 2.5em;
+	}
+	 div.dobble.dobbReference {
+		width: 50vw;
+		height: 50vw;
+		float: right;
+		margin: -6em 0 -6em 0;
+		right: 0.1em;
+	}
+
+	.House, .P1, .P2 {
+		background-size: contain !important;
+	}
 }
-.House {
-	flex: 1 0 26%;
-	overflow: hidden;
-	position: relative;
-	display: block;
-	background-size: contain;
-	content: '';
-	width: 100%;
-}*/
 .hotdog {
 	background: url("../images/Dobble/1F32D.png") bottom center no-repeat;
 }

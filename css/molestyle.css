@@ -1,6 +1,5 @@
 html {
   box-sizing: border-box;
- # font-size: 10px;
 }
 
 *, *:before, *:after {
@@ -8,8 +7,10 @@ html {
 }
 
 .game {
-  width: 600px;
-  height: 400px;
+  width: 100vw;
+  height: 67vw;
+  max-width: 600px;
+  max-height: 400px;
   display: flex;
   flex-wrap: wrap;
   margin: 0 auto;
@@ -55,4 +56,17 @@ html {
 
 .hole.up .mole {
   top: 0;
+}
+
+@media screen and (max-width: 600px) {	
+	.game {
+		width: 100vw;
+		height: 150vw;
+		max-width: 400px;
+		max-height: 600px;
+	}
+
+	.hole {
+	  flex: 1 0 50% !important;
+	}
 }

@@ -1,18 +1,9 @@
 html {
   box-sizing: border-box;
- # font-size: 10px;
 }
 
 *, *:before, *:after {
   box-sizing: inherit;
-}
-
-.game {
-  width: 600px;
-  height: 400px;
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 auto;
 }
 
 /* Memory */
@@ -20,13 +11,11 @@ html {
 .memory,
 .memory:after {
 	border-radius: 50%;
-	width: 20em;
-	height: 20em;
 }
 .memory {    
 	margin: auto;
 	top: 35%;
-	font-size: 25px;
+	font-size: min(4vw, 24px);
 	position: relative;
 	border-top: 10em solid rgb(255, 0, 0, 0.5);
 	border-right: 10em solid rgb(0, 128, 0, 0.5);

@@ -1,6 +1,5 @@
 html {
   box-sizing: border-box;
- # font-size: 10px;
 }
 
 *, *:before, *:after {
@@ -8,9 +7,10 @@ html {
 }
 
 .tictactoe {
-	width: 200%;
-	height: 200%;
-	margin: 0 auto;
+	max-width: 600px;
+	max-height: 600px;
+	width: 95vw;
+	height: 95vw;
 }
 
 .tacrow {
@@ -119,7 +119,6 @@ html {
 	background-position: center center;
     transform: rotate(-45deg);
 }
-
 
 .drwin {
 	background-image: linear-gradient(#000, #000);
