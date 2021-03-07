@@ -38,18 +38,22 @@
 
 })();
 
-function myFunction() {
-	var x = document.getElementById("myTopnav");
-	if (x.className === "topnav") {
-		x.className += " responsive";
-	} else {
-		x.className = "topnav";
-	}
+function toggleNav(e) {
+	const x = document.getElementById("myTopnav");
+	try{
+		if (e.target.parentElement.className === "topnav") {
+			x.className += " responsive";
+		} else {
+			x.className = "topnav";
+		}
+	}catch(err) {x.className = "topnav"}
 }
+document.addEventListener('click',toggleNav);
+
 function navBar(){
 	const navbar = document.querySelector('#myTopnav');
 		navbar.innerHTML =`
-			<a href="javascript:void(0);" style="font-size:15px;" class="icon" onclick="myFunction()">&#9776;</a>
+			<a href="javascript:void(0);" style="font-size:15px;" class="icon">&#9776;</a>
 			<div class="dropdown">
 				<a href='#' class="dropbtn heh">Games</a>
 				<div class="dropdown-content">
@@ -300,7 +304,6 @@ _.prototype.fade = function fade(type, ms) {
     if(opacity <= 0) self.el.style.display = 'none'
     if(opacity <= 0 || opacity >= 1) window.clearInterval(fading);
   }
-
   var fading = window.setInterval(func, interval);
 }
 
