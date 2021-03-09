@@ -9,7 +9,9 @@ const col3 = document.querySelectorAll('.col3');
 const diag1 = document.querySelectorAll('.diag1');
 const diag2 = document.querySelectorAll('.diag2');
 const mode = document.querySelector("#Mode");
-mode.textContent = "Easy";
+let board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+let currPlayer = 'Xplay';
+mode.textContent = "Hard";
 let squareClass;
 let gamesStarted = false;
 let firstMove = false, secondMove = false, thirdMove = false, fourthMove = false;
@@ -29,9 +31,26 @@ function randomSquare() {
 	return square;
 }
 
-function checkStatus(){
-	squareClass = [...squares]
-		.map(sq => sq.firstChild.classList.value);
+function checker(three,type,row){
+	if (three.every(ev => ev.includes('X')) || three.every(ev => ev.includes('O'))) {
+		row.forEach(el => el.classList.add(type)); 
+		return true;
+	}
+	return false;
+}
+
+//available spots
+function avail() {
+	squareClass = [...squares].map(sq => sq.firstChild.classList.value);
+	squareClass.forEach((s,ind) => {
+		if (s.includes('X')) board[ind] = 'X';
+		if (s.includes('O')) board[ind] = 'O';
+	});
+	return board.filter(s => s != "X" && s != "O");
+}
+
+function checkWin(){
+	squareClass = [...squares].map(sq => sq.firstChild.classList.value);
 	
 	let r1 = [squareClass[0],squareClass[1],squareClass[2]];
 	let r2 = [squareClass[3],squareClass[4],squareClass[5]];
@@ -42,19 +61,92 @@ function checkStatus(){
 	let d1 = [squareClass[0],squareClass[4],squareClass[8]];
 	let d2 = [squareClass[2],squareClass[4],squareClass[6]];
 	
-	if (r1.every(ev => ev.includes('X')) || r1.every(ev => ev.includes('O'))) row1.forEach(el => el.classList.add('hwin')), gameOver();
-	if (r2.every(ev => ev.includes('X')) || r2.every(ev => ev.includes('O'))) row2.forEach(el => el.classList.add('hwin')), gameOver();
-	if (r3.every(ev => ev.includes('X')) || r3.every(ev => ev.includes('O'))) row3.forEach(el => el.classList.add('hwin')), gameOver();
-	if (c1.every(ev => ev.includes('X')) || c1.every(ev => ev.includes('O'))) col1.forEach(el => el.classList.add('vwin')), gameOver();
-	if (c2.every(ev => ev.includes('X')) || c2.every(ev => ev.includes('O'))) col2.forEach(el => el.classList.add('vwin')), gameOver();
-	if (c3.every(ev => ev.includes('X')) || c3.every(ev => ev.includes('O'))) col3.forEach(el => el.classList.add('vwin')), gameOver();
-	if (d1.every(ev => ev.includes('X')) || d1.every(ev => ev.includes('O'))) diag1.forEach(el => el.classList.add('dlwin')), gameOver();
-	if (d2.every(ev => ev.includes('X')) || d2.every(ev => ev.includes('O'))) diag2.forEach(el => el.classList.add('drwin')), gameOver();
-	
-	if (squareClass.every(ev => ev.includes('play'))){
+	if (
+		checker(r1,'hwin',row1) ||
+		checker(r2,'hwin',row2) ||
+		checker(r3,'hwin',row3) ||
+		checker(c1,'vwin',col1) ||
+		checker(c2,'vwin',col2) ||
+		checker(c3,'vwin',col3) ||
+		checker(d1,'dlwin',diag1) ||
+		checker(d2,'drwin',diag2) ||
+		squareClass.every(ev => ev.includes('play'))
+	) {
 		gameOver();
+		return true;
 	}
+	return false;
 }
+let iter=0;
+function minimax(reboard, player) {
+	iter++;
+	let array = avail();
+	if (array.length == 9) return {index: 7};
+	if (winning(reboard,'X')) {
+		return {score: -10};
+	} 
+	else if (winning(reboard,'O')) {
+		return {score: 10};
+	} 
+	else if (array.length === 0) {
+		return {score: 0};
+	}
+
+	let moves = [];
+	for (let i = 0; i < array.length; i++) {
+		var move = {};
+		move.index = reboard[array[i]];
+		reboard[array[i]] = player;
+
+		if (player == 'O') {
+		  var g = minimax(reboard, 'X');
+		  move.score = g.score;
+		} else {
+		  var g = minimax(reboard, 'O');
+		  move.score = g.score;
+		}
+		reboard[array[i]] = move.index;
+		moves.push(move);
+	}
+
+	let bestMove, bestScore;
+	if (player === 'O') {
+		bestScore = -10000;
+		for (let i = 0; i < moves.length; i++) {
+		  if (moves[i].score > bestScore) {
+			bestScore = moves[i].score;
+			bestMove = i;
+		  }
+	}
+	} else {
+		bestScore = 10000;
+		for (let i = 0; i < moves.length; i++) {
+		  if (moves[i].score < bestScore) {
+			bestScore = moves[i].score;
+			bestMove = i;
+		  }
+		}
+	}
+	return moves[bestMove];
+}
+
+// winning combinations
+function winning(board, player) {
+	if (
+		(board[0] == player && board[1] == player && board[2] == player) ||
+		(board[3] == player && board[4] == player && board[5] == player) ||
+		(board[6] == player && board[7] == player && board[8] == player) ||
+		(board[0] == player && board[3] == player && board[6] == player) ||
+		(board[1] == player && board[4] == player && board[7] == player) ||
+		(board[2] == player && board[5] == player && board[8] == player) ||
+		(board[0] == player && board[4] == player && board[8] == player) ||
+		(board[2] == player && board[4] == player && board[6] == player)
+	) {
+	return true;
+	} else 	return false;
+}
+
+const toggleMode = () => mode.textContent = mode.textContent === "Hard" ? 'Easy' : 'Hard';
 
 function gameOver(){
 	squares.forEach(sq => sq.addEventListener('click', bonk));
@@ -68,15 +160,18 @@ function gameOver(){
 	firstMove = false, secondMove = false, thirdMove = false, fourthMove = false;
 	firstMid = false, firstCor = false, firstEd = false;
 	gamesStarted = false;
-	mode.textContent = "Easy";
+	toggleMode();
 }
 
-function nextMove() {
-	checkStatus();
-	const square = getMove();
+function nextMove() {	
+	board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+	if (checkWin()) return;
+	let square;
+	square = mode.textContent === "Hard" ? squares[minimax(board,'O').index].firstChild : getMove();
+	console.log(`Scenarios assessed: ${iter}`); //check how many moves where simulated
 	setTimeout(() => {
 		square.classList.add('Oplay');
-		checkStatus();
+		checkWin();
 		squares.forEach(sq => sq.addEventListener('click', bonk));
 	}, 300);
 }
@@ -84,22 +179,30 @@ function nextMove() {
 function startGame() {
 	if (gamesStarted) return;
 	gamesStarted = true;
-	mode.textContent = "Hard";
-	nextMove();
+	toggleMode();
+	setTimeout(() => {nextMove();}, 1);
 }
 
+const Players = () => document.querySelector('#SingleP').checked ? 'Xplay' : togglePlayer();
+const togglePlayer = () => currPlayer = currPlayer === 'Xplay' ? 'Oplay' : 'Xplay';
+
 function bonk(e) {
+	iter = 0;
 	if(!e.isTrusted) return; // cheater!
 	try{
 		if (['Xplay','Oplay'].some(ev => this.firstChild.classList.value.includes(ev))) return;
-		this.firstChild.classList.add('Xplay');
+		this.firstChild.classList.add(Players());
 	}catch(err){
 		console.log(err,'no children exist yet');
 		return;
 	}
-	squares.forEach(sq => sq.removeEventListener('click', bonk));
-	nextMove();
+	if (document.querySelector('#SingleP').checked){
+		squares.forEach(sq => sq.removeEventListener('click', bonk));
+		setTimeout(() => {nextMove();}, 1);
+	}
+	else checkWin();
 }
+
 function twoSimp(sq1,sq2,sq3){
 	if (classInc(sq1-1,'X') && classInc(sq2-1,'X') && !classInc(sq3-1,'play')) return squares[sq3-1].firstChild;
 }
