@@ -279,25 +279,21 @@ function plotexp(file){
 	}
 
 	//column equations
-	let size = 0;
 	function arrayequations() {
 		for (let i=0;i<csv.length;i++){		
 			for (let j=1;j<csv[i].length;j++){	
 				window[String.fromCharCode(96+j)] = csv[i][j];
-			}
-			for (let j=1;j<csv[i].length;j++){	
 				csv[i][j] = eval(document.getElementById(String.fromCharCode(96+j)).value);
-				size++;
 			}
 		}
 	}	
 	document.getElementById("eqcheck").checked = (getSavedValue("eqcheck") == "true");
 	if (document.getElementById("eqcheck").checked){ eqb = true;
 		addLoader("Calculating Equations");
-		arrayequations();
+		setTimeout(() => {arrayequations()},1);
 	}
 	
-	setTimeout(dyg,1,(csv));
+	setTimeout(() => {dyg(csv)},1);
 	//setTimeout(()=> g3.updateOptions({file: csv}),10);
 	
 	/*if (typeof(worker) != "undefined") worker.terminate();
