@@ -154,7 +154,7 @@ function boosterCalc(stuff){
 function dygPlot(earray,subarray){
   try {
     if (g3) g3.destroy();
-  }catch(e){}
+  }catch(e){console.log(e);}
   if (earray.length == 0) return;
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),

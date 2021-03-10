@@ -117,7 +117,7 @@ function plotFop() {
 
   try {
     if (g3) g3.destroy();
-  }catch(e){}
+  }catch(e){console.log(e);}
   if (foparr.length == 0) return;
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
@@ -238,7 +238,7 @@ function fetchResults(){
       const fopTable = document.getElementById('fopResults');
       resultsTable(fopResults,fopTable);
     })();
-  }catch(err){}
+  }catch(err){console.log(e);}
 }
 
 function resultsTable(results,tbl){

@@ -263,7 +263,7 @@ function plotexp(file){
     while (document.getElementById("equa").childElementCount>2) { //don't remove the firstborn children
       document.getElementById("equa").removeChild(document.getElementById("equa").lastChild);
     }
-  }catch(err){}
+  }catch(err){console.log(e);}
 
   //add equation inputs
   var eqh = document.getElementById('equa');
@@ -317,10 +317,10 @@ function dyg(csv) {
       document.getElementById("ColorForm").removeChild(document.getElementById("ColorForm").lastChild);
     }
     }
-  }catch(err){}
+  }catch(err){console.log(e);}
   try {
     if (g3) g3.destroy();
-  }catch(e){}
+  }catch(e){console.log(e);}
   const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),

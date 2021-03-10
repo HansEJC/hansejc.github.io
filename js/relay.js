@@ -339,7 +339,7 @@ function FaultZone(stuff){
 async function dygPlot(total,Z3lim)
   {try {
     if (g3) g3.destroy();
-  }catch(e){}
+  }catch(e){console.log(e);}
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     total,

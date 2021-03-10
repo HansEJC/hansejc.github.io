@@ -230,7 +230,7 @@ function numPlayers(){
 
 try {
   getScores('uploads/dobblescores.json',"dobbleScores");
-}catch(err){}
+}catch(err){console.log(e);}
 
 
 //startup

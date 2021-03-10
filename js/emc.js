@@ -108,7 +108,7 @@ async function calculations(){
 
   try {
     if (g3) g3.destroy();
-  }catch(e){}
+  }catch(e){console.log(e);}
 
   if (HiFreq && tf*eirp == 0) return; //return if plotting nothing
   let freqObj = {};

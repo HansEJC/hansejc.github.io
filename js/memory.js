@@ -121,7 +121,7 @@ if (AudioContext) {var a = new AudioContext();}
 
 try {
   getScores('uploads/simonscores.json',"simonScores");
-}catch(err){}
+}catch(err){console.log(e);}
 
 board.classList.add('waiting');
 

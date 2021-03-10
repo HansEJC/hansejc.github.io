@@ -14,7 +14,7 @@ function initiate(){
     try {
       speech();
       getScores('uploads/rexscores.json',"jumpScores");
-    }catch(e){}
+    }catch(e){console.log(e);}
   } else {
     new Runner('.interstitial-wrapper');
     document.getElementById("TempScore").textContent="This game doesn't work on Internet Explorer. Get off it you dinosaur!";
