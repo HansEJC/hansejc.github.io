@@ -1,10 +1,17 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5QF2LGP');</script>
+<script>
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != "dataLayer" ? "&l=" + l : "";
+    j.async = true;
+    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, "script", "dataLayer", "GTM-5QF2LGP");
+</script>
 <!-- End Google Tag Manager -->
 <html>
   <head>
@@ -12,10 +19,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="description" content="Graph Interface" />
     <meta name="keywords" content="Graph Interface" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <link rel="stylesheet" href="css/main-style.css"/>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="stylesheet" href="css/main-style.css" />
     <script defer src="js/init.js"></script>
-    <link rel="stylesheet" href="css/dygraph.css"/>
+    <link rel="stylesheet" href="css/dygraph.css" />
     <script defer src="js/ext/dygraph.min.js"></script>
     <script defer src="js/ext/papaparse.js"></script>
     <script defer src="js/csv.js"></script>
@@ -23,16 +33,23 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </head>
   <body class="left-sidebar">
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <!-- Header -->
     <div id="header">
       <div class="topnav" id="myTopnav"></div>
       <!-- Logo -->
       <div id="logo">
-          <h1><a href="#">CSV Plotter</a></h1><br>
-        </div>
+        <h1><a href="#">CSV Plotter</a></h1>
+        <br />
+      </div>
     </div>
     <!-- Main -->
     <div id="main" class="container">
@@ -40,11 +57,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div>
           <!-- Content -->
           <div id="content">
-            <div class="row 50%"><br>
+            <div class="row 50%">
+              <br />
               <section class="box">
                 <form>
-                  <input type="radio" name="ArrayOrCSV" id="PrUp" checked>Process Upload
-                  <input type="radio" name="ArrayOrCSV" id="CSVF">CSV Formatted
+                  <input
+                    type="radio"
+                    name="ArrayOrCSV"
+                    id="PrUp"
+                    checked
+                  />Process Upload
+                  <input type="radio" name="ArrayOrCSV" id="CSVF" />CSV
+                  Formatted
                 </form>
               </section>
             </div>
@@ -52,48 +76,71 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <section class="box">
                 <form>
                   x Axis Label
-                  <input type="text" id="xaxis" value="Date" onkeyup='saveValue(this);'/>
+                  <input
+                    type="text"
+                    id="xaxis"
+                    value="Date"
+                    onkeyup="saveValue(this);"
+                  />
                 </form>
               </section>
 
               <section class="box">
                 <form>
                   y Axis Label
-                  <input type="text" id="yaxis" value="Voltage (V)" onkeyup='saveValue(this);'/>
+                  <input
+                    type="text"
+                    id="yaxis"
+                    value="Voltage (V)"
+                    onkeyup="saveValue(this);"
+                  />
                 </form>
               </section>
             </div>
             <div class="row 50%">
               <article class="post" id="err">
                 <div id="graphdiv3"></div>
-                <br>
-                <p id="MyForm"><b>Show: </b>
-                  <input type=checkbox id=69 checked>
+                <br />
+                <p id="MyForm">
+                  <b>Show: </b>
+                  <input type="checkbox" id="69" checked />
                   <label for="69"> All</label>
                 </p>
-                <p id="ColorForm"><b style="width:93px;display:inline-block;">Colors: </b>
+                <p id="ColorForm">
+                  <b style="width: 93px; display: inline-block">Colors: </b>
                 </p>
-                Copy to Clipboard: <a href="javascript:clippy(700,400)">A4 Normal</a>
+                Copy to Clipboard:
+                <a href="javascript:clippy(700,400)">A4 Normal</a>
                 <a href="javascript:clippy(700,300)">A4 Narrow</a>
                 <a href="javascript:clippy(1000,500)">A3 Normal</a>
                 <a href="javascript:clippy(1000,400)">A3 Narrow</a>
               </article>
             </div>
-            <div class="row 50%" id="hide" style="display: none;">
+            <div class="row 50%" id="hide" style="display: none">
               <section class="post">
                 <form>
-                  <input type="number" id="LabR" onkeyup='saveValue(this);' style="display:none"/>
-                    <input type=checkbox id="99">
-                   Start Date:<input type="datetime-local" id="dat"/>
-                  Rate in seconds:<input type="number" min="0" id="datR" placeholder="1"/>
+                  <input
+                    type="number"
+                    id="LabR"
+                    onkeyup="saveValue(this);"
+                    style="display: none"
+                  />
+                  <input type="checkbox" id="99" />
+                  Start Date:<input type="datetime-local" id="dat" /> Rate in
+                  seconds:<input
+                    type="number"
+                    min="0"
+                    id="datR"
+                    placeholder="1"
+                  />
                 </form>
               </section>
-              <section class="post" >
+              <section class="post">
                 <form id="equa">
-                  <b>Enable Equations </b><input type=checkbox id='eqcheck'>
+                  <b>Enable Equations </b><input type="checkbox" id="eqcheck" />
                 </form>
               </section>
-              <section class="post" >
+              <section class="post">
                 <form id="options">
                   <b>Options</b>
                 </form>
@@ -101,7 +148,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             </div>
             <div class="row 50%">
               <form id="myForm">
-                <input type="file" accept=".csv" id="my_upload" name="my_upload"/>
+                <input
+                  type="file"
+                  accept=".csv"
+                  id="my_upload"
+                  name="my_upload"
+                />
               </form>
             </div>
           </div>

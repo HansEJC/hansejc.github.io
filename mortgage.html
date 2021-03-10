@@ -1,10 +1,17 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5QF2LGP');</script>
+<script>
+  (function (w, d, s, l, i) {
+    w[l] = w[l] || [];
+    w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+    var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s),
+      dl = l != "dataLayer" ? "&l=" + l : "";
+    j.async = true;
+    j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+    f.parentNode.insertBefore(j, f);
+  })(window, document, "script", "dataLayer", "GTM-5QF2LGP");
+</script>
 <!-- End Google Tag Manager -->
 <html>
   <head>
@@ -12,47 +19,75 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="description" content="Loan Page" />
     <meta name="keywords" content="Loan Page" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <link rel="stylesheet" href="css/main-style.css"/>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="stylesheet" href="css/main-style.css" />
     <script defer src="js/init.js"></script>
-    <link rel="stylesheet" href="css/dygraph.css"/>
+    <link rel="stylesheet" href="css/dygraph.css" />
     <script defer src="js/ext/dygraph.min.js"></script>
     <script defer src="js/mortgage.js"></script>
   </head>
   <body class="left-sidebar">
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <!-- Header -->
     <div id="header">
       <div class="topnav" id="myTopnav"></div>
       <!-- Logo -->
       <div id="logo">
-          <h1><a href="#">Loan</a></h1><br>
-        </div>
+        <h1><a href="#">Loan</a></h1>
+        <br />
+      </div>
     </div>
     <!-- Main -->
     <div id="main" class="container">
       <div class="row 50%">
-        <div >
+        <div>
           <!-- Content -->
           <div id="content">
             <div class="row 50%">
               <section class="box">
                 <form>
-                  Amount Borrowed (£)<input type="number" id="AB" onkeyup='saveValue(this);'/>
-                  Interest Rate (%)<input type="number" id="IR" onkeyup='saveValue(this);'/>
-                  Loan Term (years)<input type="number" id="MT" onkeyup='saveValue(this);'/>
+                  Amount Borrowed (£)<input
+                    type="number"
+                    id="AB"
+                    onkeyup="saveValue(this);"
+                  />
+                  Interest Rate (%)<input
+                    type="number"
+                    id="IR"
+                    onkeyup="saveValue(this);"
+                  />
+                  Loan Term (years)<input
+                    type="number"
+                    id="MT"
+                    onkeyup="saveValue(this);"
+                  />
                   Loan Payment (£)<span id="MP" class="label"></span>
                 </form>
               </section>
               <section class="box">
                 <form>
-                  Overpayment (£)<input type="number" id="OP" onkeyup='saveValue(this);'/>
-                  Total Payment (£)<span id="TP" class="label"></span>
-                  Remaining Term<span id="RT" class="label"></span>
-                  Total Payed (£)<span id="AP" class="label"></span>
+                  Overpayment (£)<input
+                    type="number"
+                    id="OP"
+                    onkeyup="saveValue(this);"
+                  />
+                  Total Payment (£)<span id="TP" class="label"></span> Remaining
+                  Term<span id="RT" class="label"></span> Total Payed (£)<span
+                    id="AP"
+                    class="label"
+                  ></span>
                 </form>
               </section>
               <section class="box">
@@ -64,13 +99,29 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="row 50%">
               <article class="post">
                 <div id="graphdiv3"></div>
-                <br>
-                <p><b>Show: </b>
-                  <input type=checkbox id=0 onClick="change(this)" checked>
+                <br />
+                <p>
+                  <b>Show: </b>
+                  <input
+                    type="checkbox"
+                    id="0"
+                    onClick="change(this)"
+                    checked
+                  />
                   <label for="0"> Interest</label>
-                  <input type=checkbox id=1 onClick="change(this)" checked>
+                  <input
+                    type="checkbox"
+                    id="1"
+                    onClick="change(this)"
+                    checked
+                  />
                   <label for="1"> Equity</label>
-                  <input type=checkbox id=2 onClick="change(this)" checked>
+                  <input
+                    type="checkbox"
+                    id="2"
+                    onClick="change(this)"
+                    checked
+                  />
                   <label for="2"> Payment</label>
                 </p>
               </article>
