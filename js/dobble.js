@@ -187,7 +187,7 @@ function gameOver(){
   PlayerLabels[1].innerHTML = "Reference";
   PlayerLabels[2].innerHTML = "Player 2";
   if (noHighScore) return; //don't records if P2 has played
-  setTimeout(() => {saveScores(score)}, 1000);;
+  setTimeout(() => {saveScores(score)}, 1000);
 }
 
 
