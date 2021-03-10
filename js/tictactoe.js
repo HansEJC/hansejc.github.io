@@ -132,18 +132,14 @@ function minimax(reboard, player) {
 
 // winning combinations
 function winning(board, player) {
-  if (
-    (board[0] == player && board[1] == player && board[2] == player) ||
+  return (board[0] == player && board[1] == player && board[2] == player) ||
     (board[3] == player && board[4] == player && board[5] == player) ||
     (board[6] == player && board[7] == player && board[8] == player) ||
     (board[0] == player && board[3] == player && board[6] == player) ||
     (board[1] == player && board[4] == player && board[7] == player) ||
     (board[2] == player && board[5] == player && board[8] == player) ||
     (board[0] == player && board[4] == player && board[8] == player) ||
-    (board[2] == player && board[4] == player && board[6] == player)
-  ) {
-  return true;
-  } else   return false;
+    (board[2] == player && board[4] == player && board[6] == player) ? true : false;
 }
 
 const toggleMode = () => mode.textContent = mode.textContent === "Hard" ? 'Easy' : 'Hard';
