@@ -7,108 +7,108 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-5QF2LGP');</script>
 <!-- End Google Tag Manager -->
 <html>
-	<head>
-		<title>Railway Faults</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="Railway Faults" />
-		<meta name="keywords" content="Railway Faults" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-		<link rel="stylesheet" href="css/main-style.css"/>
-		<script defer src="js/init.js"></script>
-		<script defer src="js/ext/html2canvas.min.js"></script>
-		<link rel="stylesheet" href="css/dygraph.css"/>		
-		<script defer src="js/ext/dygraph.min.js"></script>
-		<script defer src="js/fault.js"></script>
-	</head>
-	<body class="left-sidebar">
-		<!-- Google Tag Manager (noscript) -->
-		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-		<!-- End Google Tag Manager (noscript) -->
-		<!-- Header -->
-		<div id="header">
-			<div class="topnav" id="myTopnav"></div>
-			<!-- Logo -->
-			<div id="logo">
-					<h1><a href="#">Railway Faults</a></h1><br>									 							
-				</div>
-		</div>
-		<!-- Main -->
-		<div id="main" class="container">
-			<div class="row 50%">
-				<div >
-					<!-- Content -->
-					<div id="content">
-						<div class="row 50%" id="Lhide">
-							<section class="box">
-								<form>
-									Fault Current (kA)<input type="number" placeholder=6 min=0 id="FC" onkeyup='saveValue(this);'/>
-									Catenery Impedance (Ω/km)<input step=0.01 placeholder=0.43 min=0 type="number" id="CI" onkeyup='saveValue(this);'/>
-									Contact W Impedance (Ω/km)<input step=0.01 placeholder=0.15 min=0 type="number" id="CW" onkeyup='saveValue(this);'/>
-								</form>
-							</section>
-							<section class="box">
-								<form> 
-									Rail Impedance (Ω/km)<input step=0.01 placeholder=0.2 min=0 type="number" id="RI" onkeyup='saveValue(this);'/>
-									AEW Impedance (Ω/km)<input step=0.01 placeholder=0.18 min=0 type="number" id="AEW" onkeyup='saveValue(this);'/>
-									RSC Impedance (Ω/km)<input step=0.01 placeholder=0.11 min=0 type="number" id="RSC" onkeyup='saveValue(this);'/>
-									<input type="radio" name="RailR" id="SRR" onchange="calculations();" checked>Single RR
-									<input type="radio" name="RailR" id="DRR" onchange="calculations();">Double RR
-								</form>
-							</section>
-							<section class="box">
-								<form> 
-									Number of Locations<input type="number" min=2 id="NumLocs" onkeyup='saveValue(this);quantities();'/> 
-									Cross Bonding Distance (m) <input min=0 type="number" id="CRBD" onkeyup='saveValue(this);'/>
-									<input type="radio" name="Feeding" id="CLASS" onchange="calculations();" checked>Classic
-									<input type="radio" name="Feeding" id="BOOST" onchange="calculations();">Booster
-									<input type="radio" name="Feeding" id="ATFEED" onchange="calculations();">ATF<br>
-									<div id="Bstuff">Booster Impedance (Ω)<input step=0.01 placeholder=0.21 min=0 type="number" id="BIMP" onkeyup='saveValue(this);'/></div>
-									<div id="ATFstuff">ATF Impedance (Ω/km)<input step=0.01 placeholder=0.07 min=0 type="number" id="ATF" onkeyup='saveValue(this);'/></div>
-								</form>
-							</section>
-						</div>	
-						<header><hr>
-								<br>
-						</header>
-						<div class="row 50%">
-							<section class="box"><pre>    Location Name</pre>
-								<form id="Substation">
-								</form>
-							</section>
-							<section class="box"><pre>    Location (km)</pre>
-								<form id="Location">
-								</form>
-							</section>	
-							<section class="box"><pre>    Track Number</pre>
-								<form id="Tracks">
-									<input step=1 placeholder=2 type="number" id="TRNU" min=1 onkeyup='saveValue(this);'/>
-								</form>
-							</section>				
-						</div>		
-						<div class="row 50%">
-							<article class="post">
-								<style>.dygraph-legend {width: inherit}</style>
-								<div id="graphdiv3"></div>	
-								Copy to Clipboard: <a href="javascript:clippy(700,400)">A4 Normal</a>
-								<a href="javascript:clippy(700,300)">A4 Narrow</a>
-								<a href="javascript:clippy(1000,500)">A3 Normal</a>
-								<a href="javascript:clippy(1000,400)">A3 Narrow</a>
-							</article>
-						</div>
-						<div class="row 50%">
-							<form>
-								<br><button class ="button" type="button" onclick="exportToCsv('faults.csv', calculations())">Export</button>
-							</form>						
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="copyright">
-			<ul>
-				<li>&copy; Hans Juneby</li>
-			</ul>
-		</div>
-	</body>
+  <head>
+    <title>Railway Faults</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Railway Faults" />
+    <meta name="keywords" content="Railway Faults" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="css/main-style.css"/>
+    <script defer src="js/init.js"></script>
+    <script defer src="js/ext/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="css/dygraph.css"/>
+    <script defer src="js/ext/dygraph.min.js"></script>
+    <script defer src="js/fault.js"></script>
+  </head>
+  <body class="left-sidebar">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- Header -->
+    <div id="header">
+      <div class="topnav" id="myTopnav"></div>
+      <!-- Logo -->
+      <div id="logo">
+          <h1><a href="#">Railway Faults</a></h1><br>
+        </div>
+    </div>
+    <!-- Main -->
+    <div id="main" class="container">
+      <div class="row 50%">
+        <div >
+          <!-- Content -->
+          <div id="content">
+            <div class="row 50%" id="Lhide">
+              <section class="box">
+                <form>
+                  Fault Current (kA)<input type="number" placeholder=6 min=0 id="FC" onkeyup='saveValue(this);'/>
+                  Catenery Impedance (Ω/km)<input step=0.01 placeholder=0.43 min=0 type="number" id="CI" onkeyup='saveValue(this);'/>
+                  Contact W Impedance (Ω/km)<input step=0.01 placeholder=0.15 min=0 type="number" id="CW" onkeyup='saveValue(this);'/>
+                </form>
+              </section>
+              <section class="box">
+                <form>
+                  Rail Impedance (Ω/km)<input step=0.01 placeholder=0.2 min=0 type="number" id="RI" onkeyup='saveValue(this);'/>
+                  AEW Impedance (Ω/km)<input step=0.01 placeholder=0.18 min=0 type="number" id="AEW" onkeyup='saveValue(this);'/>
+                  RSC Impedance (Ω/km)<input step=0.01 placeholder=0.11 min=0 type="number" id="RSC" onkeyup='saveValue(this);'/>
+                  <input type="radio" name="RailR" id="SRR" onchange="calculations();" checked>Single RR
+                  <input type="radio" name="RailR" id="DRR" onchange="calculations();">Double RR
+                </form>
+              </section>
+              <section class="box">
+                <form>
+                  Number of Locations<input type="number" min=2 id="NumLocs" onkeyup='saveValue(this);quantities();'/>
+                  Cross Bonding Distance (m) <input min=0 type="number" id="CRBD" onkeyup='saveValue(this);'/>
+                  <input type="radio" name="Feeding" id="CLASS" onchange="calculations();" checked>Classic
+                  <input type="radio" name="Feeding" id="BOOST" onchange="calculations();">Booster
+                  <input type="radio" name="Feeding" id="ATFEED" onchange="calculations();">ATF<br>
+                  <div id="Bstuff">Booster Impedance (Ω)<input step=0.01 placeholder=0.21 min=0 type="number" id="BIMP" onkeyup='saveValue(this);'/></div>
+                  <div id="ATFstuff">ATF Impedance (Ω/km)<input step=0.01 placeholder=0.07 min=0 type="number" id="ATF" onkeyup='saveValue(this);'/></div>
+                </form>
+              </section>
+            </div>
+            <header><hr>
+                <br>
+            </header>
+            <div class="row 50%">
+              <section class="box"><pre>    Location Name</pre>
+                <form id="Substation">
+                </form>
+              </section>
+              <section class="box"><pre>    Location (km)</pre>
+                <form id="Location">
+                </form>
+              </section>
+              <section class="box"><pre>    Track Number</pre>
+                <form id="Tracks">
+                  <input step=1 placeholder=2 type="number" id="TRNU" min=1 onkeyup='saveValue(this);'/>
+                </form>
+              </section>
+            </div>
+            <div class="row 50%">
+              <article class="post">
+                <style>.dygraph-legend {width: inherit}</style>
+                <div id="graphdiv3"></div>
+                Copy to Clipboard: <a href="javascript:clippy(700,400)">A4 Normal</a>
+                <a href="javascript:clippy(700,300)">A4 Narrow</a>
+                <a href="javascript:clippy(1000,500)">A3 Normal</a>
+                <a href="javascript:clippy(1000,400)">A3 Narrow</a>
+              </article>
+            </div>
+            <div class="row 50%">
+              <form>
+                <br><button class ="button" type="button" onclick="exportToCsv('faults.csv', calculations())">Export</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="copyright">
+      <ul>
+        <li>&copy; Hans Juneby</li>
+      </ul>
+    </div>
+  </body>
 </html>

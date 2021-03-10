@@ -10,7 +10,7 @@ $tabl = $data['tabl'];
 $conn = new mysqli($servername, $username, $password, $dbname); // Create connection
 if ($conn->connect_error) {     // Check connection
     die("Problem with the database :("/*"Connection failed: " . $conn->connect_error*/);
-} 
+}
 
 // sql to create table
 $sql = "CREATE TABLE $tabl (
@@ -28,10 +28,10 @@ $distance = $data['distance'];
 $res = $data['res'];
 
 for ($i = 0; $i < count($distance); $i++) {
-	$sql = "INSERT INTO $tabl (distance,res)
-	VALUES ('$distance[$i]', '$res[$i]') ON DUPLICATE KEY UPDATE    
-	distance='$distance[$i]', res='$res[$i]'";
-	$conn->query($sql);
+  $sql = "INSERT INTO $tabl (distance,res)
+  VALUES ('$distance[$i]', '$res[$i]') ON DUPLICATE KEY UPDATE
+  distance='$distance[$i]', res='$res[$i]'";
+  $conn->query($sql);
 }
 
 if ($conn->query($sql) === TRUE) {

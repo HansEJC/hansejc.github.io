@@ -7,126 +7,126 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-5QF2LGP');</script>
 <!-- End Google Tag Manager -->
 <html>
-	<head>
-		<title>Earthing Calculation Tools</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="Earthing Calculation Tools" />
-		<meta name="keywords" content="Earthing Calculation Tools" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-		<link rel="stylesheet" href="css/main-style.css"/>
-		<script defer src="js/init.js"></script>
-		<script defer id="MathJax-script" async
-			src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_HTML-full">
-		</script>
-		<script defer src="js/earthing.js"></script>
-	</head>
-	<body class="left-sidebar">
-		<!-- Google Tag Manager (noscript) -->
-		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-		<!-- End Google Tag Manager (noscript) -->
-		<!-- Header -->
-		<div id="header">
-			<div class="topnav" id="myTopnav"></div>
-			<!-- Logo -->
-			<div id="logo">
-					<h1><a href="#">Earthing Calculation Tools</a></h1>									 							
-				</div>
-		</div>
-		<!-- Main -->
-		<div id="main" class="container">
-			<div class="row 50%">
-				<div>
-					<!-- Content -->
-					<div id="content">
-						<header>
-								<h1>EPR and Fault Current Split</h1>
-						</header>
-						<div class="row 50%">
-							<section class="box">
-								<form>
-									Earth Impedance	(Ω)<input type="number" id="ER" value="2" onkeyup='saveValue(this);' /> 
-									Return Impedance (Ω)<input type="number" id="RR" value="0.18" onkeyup='saveValue(this);'/> 
-									Parallel Impedance (Ω)<span id="PR" class="label "></span>
-								</form>
-							</section>
-							<section class="box">
-								<form>
-									Fault Current (kA)<input type="number" id="FC" value="8" onkeyup='saveValue(this);'/>
-									Return Current (kA)<span id="IR" class="label "></span> 
-									Ground Return Current (kA)<span id="IG" class="label "></span> 													
-								</form>
-							</section>	
-							<section class="box">
-								<form>
-									Earth Potential Rise (EPR)<span id="EPR" class="label"></span>
-									Return Current (%)<span id="IRp" class="label "></span> 
-									Ground Return Current (%)<span id="IGp" class="label "></span> 													
-								</form>
-							</section>						
-						</div>
-						<header>
-								<h1>Earth Grid Calculations</h1>
-						</header>
-						<div class="row 50%">
-							<section class="box">
-								<form>
-									Ground Resistivity \(\rho\) (mΩ)<input type="number" id="P" onkeyup='saveValue(this);'/> 
-									\(Area\) (m<sup>2</sup>)<input type="number" id="AREA" onkeyup='saveValue(this);'/> 
-									Radius of Circular Plate<br>  of Same Area as Grid \(r\) (m)<span id="R" class="label "></span> 
-									<p class="Math" style="visibility: hidden;">$$ r = \sqrt{Area \over \pi} $$</p>
-								</form>
-							</section>
-							<section class="box">
-								<form>	
-									Tape Depth \(h\) (m)<input type="number" id="H" onkeyup='saveValue(this);'/>
-									Total Tape Length \(L\) (m)<input type="number" id="L" onkeyup='saveValue(this);'/>
-									<!--Simplest Formula for <br>Earth Resistance \(R_e\) (Ω):-->
-									<style>#RE {display: none}</style>
-									<span hidden id="RE" class="label "></span>	<br>			
-									Rod Factor \(K_R\)<span id="KR" class="label "></span> 	
-									<p class="Math" style="display: none;">$$ K_R= 1 + {{n_R \times {l_R}^2} \over {10r^2}} $$</p>
-								</form>
-							</section>	
-							<section class="box">
-								<form>
-									Rod Number \(n_R\) <input type="number" id="NR" onkeyup='saveValue(this);'/>	
-									Rod Length \(l_R\) (m)<input type="number" id="LR" onkeyup='saveValue(this);'/>	
-									Earth Resistance Calculated <br>with Rods \(R_G\) (Ω):
-									<span id="RG" class="label "></span>												
-									<p class="Math" style="display: none;"><!--$$ R_e = {\rho \over 4r} + {\rho \over {1 + n_R \times l_R}} $$<br>-->
-									\[R_G=\rho  {\left({1+ {\left(r \over {r+2.5h}\right)} \over 8r \times K_R}+{1 \over L}\right)}\]</p>											
-								</form>
-							</section>		
-						</div>
-						<header>
-							<h1>Ground Resistivity Correction</h1>
-						</header>
-						<div class="row 50%">
-							<section class="box">
-								<form>
-									Earth Resistance \(R\) (Ω)<input type="number" id="ERA" onkeyup='saveValue(this);'/> 											
-								</form>
-							</section>
-							<section class="box">
-								<form>
-									Corrected Resistivity \(\rho_A\) (mΩ)<span id="PA" class="label "></span> 													
-								</form>
-							</section>		
-							<section class="box">
-								<form>
-									<p class="Math" style="display: none;">$$ \rho_A = {R \times \rho \over R_G} $$</p>												
-								</form>
-							</section>	
-						</div>						
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="copyright">
-			<ul>
-				<li>&copy; Hans Juneby</li>
-			</ul>
-		</div>
-	</body>
+  <head>
+    <title>Earthing Calculation Tools</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Earthing Calculation Tools" />
+    <meta name="keywords" content="Earthing Calculation Tools" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="css/main-style.css"/>
+    <script defer src="js/init.js"></script>
+    <script defer id="MathJax-script" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-AMS_HTML-full">
+    </script>
+    <script defer src="js/earthing.js"></script>
+  </head>
+  <body class="left-sidebar">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- Header -->
+    <div id="header">
+      <div class="topnav" id="myTopnav"></div>
+      <!-- Logo -->
+      <div id="logo">
+          <h1><a href="#">Earthing Calculation Tools</a></h1>
+        </div>
+    </div>
+    <!-- Main -->
+    <div id="main" class="container">
+      <div class="row 50%">
+        <div>
+          <!-- Content -->
+          <div id="content">
+            <header>
+                <h1>EPR and Fault Current Split</h1>
+            </header>
+            <div class="row 50%">
+              <section class="box">
+                <form>
+                  Earth Impedance  (Ω)<input type="number" id="ER" value="2" onkeyup='saveValue(this);' />
+                  Return Impedance (Ω)<input type="number" id="RR" value="0.18" onkeyup='saveValue(this);'/>
+                  Parallel Impedance (Ω)<span id="PR" class="label "></span>
+                </form>
+              </section>
+              <section class="box">
+                <form>
+                  Fault Current (kA)<input type="number" id="FC" value="8" onkeyup='saveValue(this);'/>
+                  Return Current (kA)<span id="IR" class="label "></span>
+                  Ground Return Current (kA)<span id="IG" class="label "></span>
+                </form>
+              </section>
+              <section class="box">
+                <form>
+                  Earth Potential Rise (EPR)<span id="EPR" class="label"></span>
+                  Return Current (%)<span id="IRp" class="label "></span>
+                  Ground Return Current (%)<span id="IGp" class="label "></span>
+                </form>
+              </section>
+            </div>
+            <header>
+                <h1>Earth Grid Calculations</h1>
+            </header>
+            <div class="row 50%">
+              <section class="box">
+                <form>
+                  Ground Resistivity \(\rho\) (mΩ)<input type="number" id="P" onkeyup='saveValue(this);'/>
+                  \(Area\) (m<sup>2</sup>)<input type="number" id="AREA" onkeyup='saveValue(this);'/>
+                  Radius of Circular Plate<br>  of Same Area as Grid \(r\) (m)<span id="R" class="label "></span>
+                  <p class="Math" style="visibility: hidden;">$$ r = \sqrt{Area \over \pi} $$</p>
+                </form>
+              </section>
+              <section class="box">
+                <form>
+                  Tape Depth \(h\) (m)<input type="number" id="H" onkeyup='saveValue(this);'/>
+                  Total Tape Length \(L\) (m)<input type="number" id="L" onkeyup='saveValue(this);'/>
+                  <!--Simplest Formula for <br>Earth Resistance \(R_e\) (Ω):-->
+                  <style>#RE {display: none}</style>
+                  <span hidden id="RE" class="label "></span>  <br>
+                  Rod Factor \(K_R\)<span id="KR" class="label "></span>
+                  <p class="Math" style="display: none;">$$ K_R= 1 + {{n_R \times {l_R}^2} \over {10r^2}} $$</p>
+                </form>
+              </section>
+              <section class="box">
+                <form>
+                  Rod Number \(n_R\) <input type="number" id="NR" onkeyup='saveValue(this);'/>
+                  Rod Length \(l_R\) (m)<input type="number" id="LR" onkeyup='saveValue(this);'/>
+                  Earth Resistance Calculated <br>with Rods \(R_G\) (Ω):
+                  <span id="RG" class="label "></span>
+                  <p class="Math" style="display: none;"><!--$$ R_e = {\rho \over 4r} + {\rho \over {1 + n_R \times l_R}} $$<br>-->
+                  \[R_G=\rho  {\left({1+ {\left(r \over {r+2.5h}\right)} \over 8r \times K_R}+{1 \over L}\right)}\]</p>
+                </form>
+              </section>
+            </div>
+            <header>
+              <h1>Ground Resistivity Correction</h1>
+            </header>
+            <div class="row 50%">
+              <section class="box">
+                <form>
+                  Earth Resistance \(R\) (Ω)<input type="number" id="ERA" onkeyup='saveValue(this);'/>
+                </form>
+              </section>
+              <section class="box">
+                <form>
+                  Corrected Resistivity \(\rho_A\) (mΩ)<span id="PA" class="label "></span>
+                </form>
+              </section>
+              <section class="box">
+                <form>
+                  <p class="Math" style="display: none;">$$ \rho_A = {R \times \rho \over R_G} $$</p>
+                </form>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="copyright">
+      <ul>
+        <li>&copy; Hans Juneby</li>
+      </ul>
+    </div>
+  </body>
 </html>

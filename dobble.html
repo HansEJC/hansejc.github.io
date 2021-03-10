@@ -7,113 +7,113 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-5QF2LGP');</script>
 <!-- End Google Tag Manager -->
 <html>
-	<head>
-		<title>Dobble</title>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<meta name="description" content="Dobble" />
-		<meta name="keywords" content="Dobble" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-		<link rel="stylesheet" href="css/main-style.css"/>
-		<script defer src="js/init.js"></script>
-		<script defer src="js/scores.js"></script>
-		<script defer src="js/dobble.js"></script>
-		<link rel="stylesheet" href="css/dobble.css" />
-	</head>
-	<body class="left-sidebar">
-		<!-- Google Tag Manager (noscript) -->
-		<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
-		height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-		<!-- End Google Tag Manager (noscript) -->
-		<!-- Header -->
-		<div id="header">
-			<div class="topnav" id="myTopnav"></div>
-			<!-- Logo -->
-			<div id="logo">
-					<h1><a href="#">Dobble</a></h1><br>							
-				</div>
-		</div>
-		<!-- Main -->				
-		<div id="main" class="container">
-			<div class="row 50%">				
-				<div>				
-					<!-- Content -->
-					<div id="content"><br>
-						<div class="row 50%">
-							<section class="box">
-								<form>		<br>										
-									<button class="button label" onClick="startGame(); event.preventDefault()">Start!</button>	
-								</form>
-							</section>	
-							<section class="box">
-								<form>
-									P1 Score:
-									 <span class="score label">0</span>	
-								</form>
-							</section>										
-							<section class="box">
-								<form>
-									Cards left:
-									 <span class="cardsLeft label">0</span>
-								</form>
-							</section>	
-							<section class="box" id="Score2" style="display: none;">
-								<form>
-									P2 Score:
-									 <span class="score2 label">0</span>
-								</form>
-							</section>											
-							<section class="box" id="GameTimer">
-								<form>
-									Time left:
-									 <span class="timeLeft label">0</span>
-								</form>
-							</section>								
-							<br><b><span id="TempScore"></span></b>																					
-						</div>	
-						<div class="row 50%">	
-							<div class="dobble"><h1 class="Player">Player 1</h1>
-								<div class="P1"></div><div class="P1"></div><div class="P1"></div><div class="P1"></div>
-								<div class="P1"></div><div class="P1"></div><div class="P1"></div><div class="P1"></div>
-							</div>
-							<div class="dobble dobbReference"><h1 class="Player">Reference</h1>
-								<div class="House"></div><div class="House"></div><div class="House"></div><div class="House"></div>
-								<div class="House"></div><div class="House"></div><div class="House"></div><div class="House"></div>
-							</div>
-							<div class="dobble" id="Player2" style="display: none;"><h1 class="Player">Player 2</h1>
-								<div class="P2"></div><div class="P2"></div><div class="P2"></div><div class="P2"></div>
-								<div class="P2"></div><div class="P2"></div><div class="P2"></div><div class="P2"></div>
-							</div>
-						</div>				  
-					</div>
-				</div>
-			</div><br>	
-			<div class="row 50%">
-				<section class="box">
-					<form class="scores">
-						<label for "userName"></label>
-						<input type="text" name="fname" autocomplete="given-name" id="userName" onkeyup='saveValue(this);' placeholder="Name"/> 
-					</form>
-					<form>
-						<label for "SingleP"><input type="radio" name="players" id="SingleP" checked>Single Player</label>
-						<label for "TwoP"><input type="radio" name="players" id="TwoP">Two Players</label>
-					</form>
-				</section>				
-				<section class="box">
-					<form class="scores">
-						<table id="board" class="scores">
-							<tr>
-								<th>Name</th>
-								<th>High <br>Score</th>
-							</tr>
-						</table>
-					</form>					
-				</section>
-			</div>		
-		</div>
-		<div id="copyright">
-			<ul>
-				<li>&copy; <a href=javascript:fullscores();>Hans Juneby</a></li>
-			</ul>
-		</div>
-	</body>
+  <head>
+    <title>Dobble</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Dobble" />
+    <meta name="keywords" content="Dobble" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="stylesheet" href="css/main-style.css"/>
+    <script defer src="js/init.js"></script>
+    <script defer src="js/scores.js"></script>
+    <script defer src="js/dobble.js"></script>
+    <link rel="stylesheet" href="css/dobble.css" />
+  </head>
+  <body class="left-sidebar">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <!-- Header -->
+    <div id="header">
+      <div class="topnav" id="myTopnav"></div>
+      <!-- Logo -->
+      <div id="logo">
+          <h1><a href="#">Dobble</a></h1><br>
+        </div>
+    </div>
+    <!-- Main -->
+    <div id="main" class="container">
+      <div class="row 50%">
+        <div>
+          <!-- Content -->
+          <div id="content"><br>
+            <div class="row 50%">
+              <section class="box">
+                <form>    <br>
+                  <button class="button label" onClick="startGame(); event.preventDefault()">Start!</button>
+                </form>
+              </section>
+              <section class="box">
+                <form>
+                  P1 Score:
+                   <span class="score label">0</span>
+                </form>
+              </section>
+              <section class="box">
+                <form>
+                  Cards left:
+                   <span class="cardsLeft label">0</span>
+                </form>
+              </section>
+              <section class="box" id="Score2" style="display: none;">
+                <form>
+                  P2 Score:
+                   <span class="score2 label">0</span>
+                </form>
+              </section>
+              <section class="box" id="GameTimer">
+                <form>
+                  Time left:
+                   <span class="timeLeft label">0</span>
+                </form>
+              </section>
+              <br><b><span id="TempScore"></span></b>
+            </div>
+            <div class="row 50%">
+              <div class="dobble"><h1 class="Player">Player 1</h1>
+                <div class="P1"></div><div class="P1"></div><div class="P1"></div><div class="P1"></div>
+                <div class="P1"></div><div class="P1"></div><div class="P1"></div><div class="P1"></div>
+              </div>
+              <div class="dobble dobbReference"><h1 class="Player">Reference</h1>
+                <div class="House"></div><div class="House"></div><div class="House"></div><div class="House"></div>
+                <div class="House"></div><div class="House"></div><div class="House"></div><div class="House"></div>
+              </div>
+              <div class="dobble" id="Player2" style="display: none;"><h1 class="Player">Player 2</h1>
+                <div class="P2"></div><div class="P2"></div><div class="P2"></div><div class="P2"></div>
+                <div class="P2"></div><div class="P2"></div><div class="P2"></div><div class="P2"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><br>
+      <div class="row 50%">
+        <section class="box">
+          <form class="scores">
+            <label for "userName"></label>
+            <input type="text" name="fname" autocomplete="given-name" id="userName" onkeyup='saveValue(this);' placeholder="Name"/>
+          </form>
+          <form>
+            <label for "SingleP"><input type="radio" name="players" id="SingleP" checked>Single Player</label>
+            <label for "TwoP"><input type="radio" name="players" id="TwoP">Two Players</label>
+          </form>
+        </section>
+        <section class="box">
+          <form class="scores">
+            <table id="board" class="scores">
+              <tr>
+                <th>Name</th>
+                <th>High <br>Score</th>
+              </tr>
+            </table>
+          </form>
+        </section>
+      </div>
+    </div>
+    <div id="copyright">
+      <ul>
+        <li>&copy; <a href=javascript:fullscores();>Hans Juneby</a></li>
+      </ul>
+    </div>
+  </body>
 </html>

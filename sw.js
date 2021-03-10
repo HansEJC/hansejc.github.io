@@ -20,7 +20,7 @@ registerRoute(
   new CacheFirst({
     cacheName: 'images',
     plugins: [
-		{cacheKeyWillBeUsed},
+    {cacheKeyWillBeUsed},
       new CacheableResponsePlugin({
         statuses: [200],
       }),
@@ -37,7 +37,7 @@ registerRoute(
   new StaleWhileRevalidate({
     cacheName: 'css',
     plugins: [
-		{cacheKeyWillBeUsed}, //just while I update
+    {cacheKeyWillBeUsed}, //just while I update
       new CacheableResponsePlugin({
         statuses: [200],
       }),
@@ -50,7 +50,7 @@ registerRoute(
   new StaleWhileRevalidate({
     cacheName: 'scripts',
     plugins: [
-		{cacheKeyWillBeUsed}, //same as above
+    {cacheKeyWillBeUsed}, //same as above
       new CacheableResponsePlugin({
         statuses: [200],
       }),
@@ -63,7 +63,7 @@ registerRoute(
   new NetworkFirst({
     cacheName: 'html',
     plugins: [
-		{cacheKeyWillBeUsed},
+    {cacheKeyWillBeUsed},
       new CacheableResponsePlugin({
         statuses: [200],
       }),
@@ -76,7 +76,7 @@ registerRoute(
   new StaleWhileRevalidate({
     cacheName: 'spreadsheets',
     plugins: [
-		{cacheKeyWillBeUsed},
+    {cacheKeyWillBeUsed},
       new CacheableResponsePlugin({
         statuses: [200],
       }),
@@ -89,7 +89,7 @@ registerRoute(
   new NetworkFirst({
     cacheName: 'json',
     plugins: [
-		{cacheKeyWillBeUsed},
+    {cacheKeyWillBeUsed},
       new CacheableResponsePlugin({
         statuses: [200],
       }),
@@ -108,7 +108,7 @@ precache([{"revision":"c7cef26d0d15d3d2e90fa66b06c5cc9c","url":"css/dobble.css"}
 var defaultStrategy = new CacheFirst({
     cacheName: workbox.core.cacheNames.precache,//'workbox-precache-v2',//
     plugins: [
-		{cacheKeyWillBeUsed},
+    {cacheKeyWillBeUsed},
         new ExpirationPlugin({
             maxEntries: 128,
             maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
