@@ -116,7 +116,7 @@ function plotFop() {
   }
 
   try {
-    if (g3) g3.destroy();
+    if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
   if (foparr.length == 0) return;
   g3 = new Dygraph(

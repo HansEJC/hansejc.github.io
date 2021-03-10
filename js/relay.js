@@ -309,12 +309,10 @@ function FaultZone(stuff){
   let {faultarray,Z1pol,Z2pol,Z3pol,fst,z2del,z3del} = stuff;
   var Z3time = 0;
   var Z2time = 0;
-  var Z1trip,Z2trip,Z3trip; //In zone booleans
   for (let i = 0; i < faultarray.length; i++) { //check through fault if in zone
     if (inside(faultarray[i],Z3pol)){
       Z3time = Z3time + 1*fst;
       if (Z3time > z3del){
-        Z3trip = true;
         document.getElementById("FaultLoc").textContent = "Zone 3 trip";
         break;
       }
@@ -322,13 +320,11 @@ function FaultZone(stuff){
     if (inside(faultarray[i],Z2pol)){
       Z2time = Z2time + 1*fst;
       if (Z2time > z2del){
-        Z2trip = true;
         document.getElementById("FaultLoc").textContent = "Zone 2 trip";
         break;
       }
     }
     if (inside(faultarray[i],Z1pol)){
-      Z1trip = true;
       document.getElementById("FaultLoc").textContent = "Zone 1 trip";
       break;
     }
@@ -338,7 +334,7 @@ function FaultZone(stuff){
 
 async function dygPlot(total,Z3lim)
   {try {
-    if (g3) g3.destroy();
+    if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),

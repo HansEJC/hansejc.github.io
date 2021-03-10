@@ -41,7 +41,7 @@ function calculations(){
   spanToMoney("AP",pn*tp);
 
   try {
-    if (g3) g3.destroy();
+    if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
   if (mortgage.length < 2) return;
   const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals

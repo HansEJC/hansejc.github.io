@@ -107,7 +107,7 @@ async function calculations(){
   let freqStuff = {earray,c,tf,EField,eirp,eo,q,uo,cu,fi,...stuff}
 
   try {
-    if (g3) g3.destroy();
+    if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
 
   if (HiFreq && tf*eirp == 0) return; //return if plotting nothing
@@ -180,16 +180,16 @@ function dygPlot(earray){
       xlabel: "Distance (m)",
       connectSeparatedPoints: true,
       axes: {
-              x: {
-        axisLabelFormatter: function(y) {
-                  return  killthemeter(smoothdec(y));
-                },
-              },
-              y: {
-                axisLabelFormatter: function(y) {
-                  return  kill(smoothdec(y));
-                },
-              }
+        x: {
+          axisLabelFormatter: function(y) {
+            return  killthemeter(smoothdec(y));
+          },
+        },
+        y: {
+          axisLabelFormatter: function(y) {
+            return  kill(smoothdec(y));
+          },
+        }
       }
     }          // options
   );

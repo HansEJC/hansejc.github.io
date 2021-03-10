@@ -1,10 +1,10 @@
 function firstMortgage(info){
   const sd = new Date(2017,4,1); //start of mortgage
   const iir = 4.09/12/100; //initial interest rate
-  let {intr,eqp,teq,mortgage,rl,tpa,tp,pn} = info;
+  let {teq,mortgage,rl,tpa} = info;
   for (let i = 0; i < 13; i++) { //first year
-    intr = rl*iir;
-    eqp = 1000-intr;
+    let intr = rl*iir; //interest
+    let eqp = 1000-intr; //equity payment
     teq = teq + eqp;
     mortgage.push([new Date(2017,sd.getMonth()+i,sd.getDay()), intr, eqp, intr+eqp]);
     rl = rl-eqp;
@@ -18,16 +18,16 @@ function firstMortgage(info){
     rl = rl-eqp;
     tpa = tpa +1100;
   }
-  return {intr,eqp,teq,mortgage,rl,tpa,tp,pn};
+  return {teq,mortgage,rl,tpa};
 }
 
 function secondMortgage(info){
   let today = new Date();
   const monthd = (today-new Date(2020,7,1))/1000/60/60/24/365.25*12; //difference in month
   const nir = 1.84/12/100; //remortgage rate
-  let {intr,eqp,teq,mortgage,rl,tpa,tp,pn} = info;
-  intr = rl*nir;
-  eqp = 1100-intr-995; //the 995 was te remortgage fee
+  let {teq,mortgage,rl,tpa} = info;
+  let intr = rl*nir;
+  let eqp = 1100-intr-995; //the 995 was te remortgage fee
   teq = teq + eqp;
   mortgage.push([new Date(2019,4,1), intr, eqp, intr+eqp]);
   rl = rl-eqp;
@@ -48,11 +48,12 @@ function secondMortgage(info){
     rl = rl-eqp;
     tpa = tpa +1500;
   }
-  return {intr,eqp,teq,mortgage,rl,tpa,tp,pn,monthd};
+  return {teq,mortgage,rl,tpa,monthd};
 }
 
 function futureMortgage(info){
-  let {intr,eqp,teq,mortgage,rl,tpa,tp,pn} = info;
+  let {intr,eqp,mortgage,rl,tp} = info;
+  let pn = 0; //payment number
   const nir = 1.84/12/100; //remortgage rate
   var start = 0; var max = 10000;
   for (let i = 0; rl > 0; i++) {
@@ -69,7 +70,7 @@ function futureMortgage(info){
 function calculations(){
   const il = 176225; //initial loan
   let mortgage = [];
-  let intr, eqp, rl, pn, teq, ltv, tpa; //interest, equity payment,remaining loan, payment number, total equity, total payed
+  let rl, teq, ltv, tpa; //remaining loan, total equity, total payed
   const mpc = 555.07;  //current mortgage payment
   var op = Number(getSavedValue("OP"));
   var tp = op+mpc; // total payment
@@ -81,10 +82,10 @@ function calculations(){
   teq = hpi - il; //initial deposit plus HPI
   rl = il; pn  = tpa = 0;
 
-  let info = {intr,eqp,teq,mortgage,rl,tpa,tp,pn};
+  let info = {teq,mortgage,rl,tpa,tp};
   info = firstMortgage(info);
-  info = {monthd} = secondMortgage(info);
-  ({mortgage,tp,pn} = futureMortgage(info));
+  info = {monthd,tpa,rl,teq} = secondMortgage(info);  
+  ({pn} = futureMortgage({tp,...info}));
 
   ltv = 100 - teq / (teq + rl) * 100;
 
@@ -105,7 +106,7 @@ function calculations(){
 
 function dygPlot(mortgage){
   try {
-    if (g3) g3.destroy();
+    if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
@@ -118,12 +119,12 @@ function dygPlot(mortgage){
       fillGraph: true,
       connectSeparatedPoints: true,
       axes: {
-              y: {
-                axisLabelFormatter: function(y) {
-                  return  y + ' £';
-                },
-                axisLabelWidth: 60
-              }
+        y: {
+          axisLabelFormatter: function(y) {
+            return  y + ' £';
+          },
+          axisLabelWidth: 60
+        }
       }
     }          // options
   );

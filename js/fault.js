@@ -57,7 +57,7 @@ function calculations(){
   let rsc = +(getSavedValue("RSC")) || Number.MAX_SAFE_INTEGER; rsc = boost && rsc>1 ? 0.11 : rsc; //if booster, RSC is required
   let crbd = +(getSavedValue("CRBD")); crbd = crbd == 0 ? Number.MAX_SAFE_INTEGER : Math.max(+(crbd)/1000,0.1); //convert to km and set to minimum of 100m
   let railR = document.querySelector("#SRR").checked ? 1 : 2;
-  let earray = [] ,infoarray = [], subarray = [];
+  let earray = [] , subarray = [];
   let vol = 25; //25kV
   let imp = vol/fc; //fault limit impedance
   let ole = 1/(1/ci+1/cw);
@@ -87,7 +87,7 @@ function calculations(){
       let stuff = {ole,lcc,lc,trnu,bimp,lch,bdist,lxb,aew,ri,railR,nxbnd,rsc,atf};
       oleimp = oleFun(stuff);
       if (trnu<1) oleimp = ole*lcc;
-      if (boost) ({oleimp,returnimp} = boosterCalc({oleimp,returnimp,...stuff}));
+      if (boost) ({oleimp,returnimp} = boosterCalc({oleimp,...stuff}));
       else returnimp = (atfeed) ? atCalc(stuff): normalCalc(stuff);
       oleimp = ind == 0 ? 0 : oleimp; //set FS impedance to 0
       returnimp = ind == 0 ? 0 : returnimp; //set FS impedance to 0
@@ -141,11 +141,11 @@ function atCalc(stuff){
 function boosterCalc(stuff){
 //nxbnd = nxbnd > bdist ? bdist : nxbnd; //if booster is greater than sub distance, set to sub distance
 //lxb = smoothdec(lcc % nxbnd) == 0 ? nxbnd : smoothdec(lcc % nxbnd) || 0;//location after last xbond
-  let {oleimp,returnimp,ole,lcc,lc,trnu,bimp,lch,bdist,lxb,aew} = stuff;
-  if (trnu<1) oleimp = ole*lcc;
+  let {oleimp,ole,lcc,trnu,bimp,lch,bdist,lxb,aew} = stuff;
   oleimp += 2*bimp*Math.floor(Math.abs(lch)/bdist);
+  if (trnu<1) oleimp = ole*lcc;
   //returnimp = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
-  returnimp = aew*lxb; //bonds at cross bond location
+  let returnimp = aew*lxb; //bonds at cross bond location
   //prevole += oleimp;// -oleFun(stuff);
   //previmp += returnimp;// -1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb)));;
   return {oleimp,returnimp}
@@ -153,7 +153,7 @@ function boosterCalc(stuff){
 
 function dygPlot(earray,subarray){
   try {
-    if (g3) g3.destroy();
+    if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
   if (earray.length == 0) return;
   g3 = new Dygraph(

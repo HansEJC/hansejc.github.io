@@ -60,7 +60,7 @@ function poladd() {
   if (npr<2) npr = 2;
   var num = 0; var ang = 0;
   var nums, angs, real, imag;
-  var reals = 0; imags = 0;
+  var reals = 0, imags = 0;
   for(var i = 0; i < npr; i++){
       nums = Number(document.getElementById(i+npr).value);
       angs = Number(document.getElementById(i+npr*2).value);

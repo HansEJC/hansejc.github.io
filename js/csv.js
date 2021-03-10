@@ -5,7 +5,7 @@ function addLoader(html,err){
   if (err) {
     document.querySelectorAll("#error").forEach(x => x.parentNode.removeChild(x));
     errdiv.insertBefore(div,errdiv.firstChild);
-    div.innerHTML="<center>"+html+"</center>";
+    div.innerHTML=`<center>${html}</center>`;
     div.id="error";
     _('#error').fade('in', 300);
         setTimeout(() => {
@@ -13,7 +13,7 @@ function addLoader(html,err){
     }, 3000);
   }
   if (!err) {
-    graphdiv.innerHTML="<center>"+html+"</center>";
+    graphdiv.innerHTML=`<center>${html}</center>`;
     div.classList.add("loader");
     graphdiv.appendChild(div);
   }
@@ -167,7 +167,6 @@ function read(db) {
     addLoader("Reading Data from Variable");
     var arr = heh.map(x => [...x]);
     plotexp(arr);
-    arr = [];
   }
   catch(err){
     addLoader("Reading and Loading Data from IndexDB");
@@ -247,7 +246,7 @@ function plotexp(file){
 
   var csv = file;
 
-  var dat = new Date(), datb = false;
+  var dat = new Date()/*, datb = false*/;
   var datrate = 1000;  //one second
   if (document.getElementById("dat").value != "") dat = new Date(document.getElementById("dat").value);
   if (document.getElementById("datR").value != "") datrate = Number(document.getElementById("datR").value)*1000;
@@ -267,7 +266,7 @@ function plotexp(file){
 
   //add equation inputs
   var eqh = document.getElementById('equa');
-  var equ = [], /*eqw = [],*/ eqb = false;
+  var equ = []/*, eqw = [], eqb = false*/;
   for (let i=1;i<csv[0].length;i++){
     equ[i] = document.createElement('input');
     equ[i].type = 'text';
@@ -288,7 +287,7 @@ function plotexp(file){
     }
   }
   document.getElementById("eqcheck").checked = (getSavedValue("eqcheck") == "true");
-  if (document.getElementById("eqcheck").checked){ eqb = true;
+  if (document.getElementById("eqcheck").checked){ //eqb = true;
     addLoader("Calculating Equations");
     setTimeout(() => {arrayequations()},1);
   }
@@ -319,7 +318,7 @@ function dyg(csv) {
     }
   }catch(err){console.log(e);}
   try {
-    if (g3) g3.destroy();
+    if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
   const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
   g3 = new Dygraph(
