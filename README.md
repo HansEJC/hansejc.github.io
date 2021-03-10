@@ -4,6 +4,7 @@
 [![DeepSource](https://deepsource.io/gh/HansEJC/hansejc.github.io.svg/?label=active+issues&show_trend=true)](https://deepsource.io/gh/HansEJC/hansejc.github.io/?ref=repository-badge)
 
 # hansejc.github.io
+
 Hobby website I use to simplify my life
 
 <header id="dobble"><hr>
@@ -102,31 +103,31 @@ Hobby website I use to simplify my life
 	</p>
 </div>
 
-Variable | Description
--------- | -----------
-I<sub>F</sub> | Fault Current 
-I<sub>S</sub> | Source Fault Current 
-K<sub>RR</sub> | 1 for single rail return, 2 for DRR
-K<sub>T</sub> | Number of tracks minus 1 (If one track, this is set to infinite)
-L<sub>BT</sub> | Distance Between BTs
-L<sub>C</sub> | Current Location
-L<sub>S</sub> | Distance between substations
-L<sub>XB</sub> | Cross Bonding Distance (if L<sub>XB</sub> = 0 or L<sub>XB</sub> > LL<sub>S</sub> then L<sub>XB</sub> is set to L<sub>S</sub>)
-L<sub>XBP</sub> | Distance since last Cross Bond
-V<sub>S</sub> | System Voltage
-Z<sub>AEW</sub> | AEW Impedance
-Z<sub>ATF</sub> | ATF Impedance
-Z<sub>BT</sub> | BT Impedance
-Z<sub>CAT</sub> | Catenary Impedance
-Z<sub>CW</sub> | Contact Wire Impedance
-Z<sub>DEP</sub> | Departing Impedance
-Z<sub>F</sub> | Fault Impedance
-Z<sub>OLE</sub> | Z<sub>CAT</sub> // Z<sub>CW</sub>
-Z<sub>R</sub> | Rail Impedance
-Z<sub>RET</sub> | Return Impedance
-Z<sub>RSC</sub> | RSC Impedance
-Z<sub>S</sub> | Source Impedance
-Z<sub>T</sub> | Telecoms Impedance
+| Variable        | Description                                                                                                                   |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| I<sub>F</sub>   | Fault Current                                                                                                                 |
+| I<sub>S</sub>   | Source Fault Current                                                                                                          |
+| K<sub>RR</sub>  | 1 for single rail return, 2 for DRR                                                                                           |
+| K<sub>T</sub>   | Number of tracks minus 1 (If one track, this is set to infinite)                                                              |
+| L<sub>BT</sub>  | Distance Between BTs                                                                                                          |
+| L<sub>C</sub>   | Current Location                                                                                                              |
+| L<sub>S</sub>   | Distance between substations                                                                                                  |
+| L<sub>XB</sub>  | Cross Bonding Distance (if L<sub>XB</sub> = 0 or L<sub>XB</sub> > LL<sub>S</sub> then L<sub>XB</sub> is set to L<sub>S</sub>) |
+| L<sub>XBP</sub> | Distance since last Cross Bond                                                                                                |
+| V<sub>S</sub>   | System Voltage                                                                                                                |
+| Z<sub>AEW</sub> | AEW Impedance                                                                                                                 |
+| Z<sub>ATF</sub> | ATF Impedance                                                                                                                 |
+| Z<sub>BT</sub>  | BT Impedance                                                                                                                  |
+| Z<sub>CAT</sub> | Catenary Impedance                                                                                                            |
+| Z<sub>CW</sub>  | Contact Wire Impedance                                                                                                        |
+| Z<sub>DEP</sub> | Departing Impedance                                                                                                           |
+| Z<sub>F</sub>   | Fault Impedance                                                                                                               |
+| Z<sub>OLE</sub> | Z<sub>CAT</sub> // Z<sub>CW</sub>                                                                                             |
+| Z<sub>R</sub>   | Rail Impedance                                                                                                                |
+| Z<sub>RET</sub> | Return Impedance                                                                                                              |
+| Z<sub>RSC</sub> | RSC Impedance                                                                                                                 |
+| Z<sub>S</sub>   | Source Impedance                                                                                                              |
+| Z<sub>T</sub>   | Telecoms Impedance                                                                                                            |
 
 <div class="row 50%">
 	<p>
