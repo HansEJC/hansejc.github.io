@@ -260,7 +260,7 @@ function checkForCollision(obstacle, tRex, opt_canvasCtx) {
     }
     }
     return false;
-};
+}
     /**
     * Adjust the collision box.
     * @param {!CollisionBox} box The original box.
@@ -273,7 +273,7 @@ function createAdjustedCollisionBox(box, adjustment) {
     box.y + adjustment.y,
     box.width,
     box.height);
-};
+}
     /**
     * Draw the collision boxes for debug.
     */
@@ -286,7 +286,7 @@ function drawCollisionBoxes(canvasCtx, tRexBox, obstacleBox) {
     canvasCtx.strokeRect(obstacleBox.x, obstacleBox.y,
     obstacleBox.width, obstacleBox.height);
     canvasCtx.restore();
-};
+}
     /**
     * Compare two collision boxes for a collision.
     * @param {CollisionBox} tRexBox
@@ -304,7 +304,7 @@ function boxCompare(tRexBox, obstacleBox) {
     crashed = true;
     }
     return crashed;
-};
+}
     //******************************************************************************
     /**
     * Collision box object.
@@ -318,7 +318,7 @@ function CollisionBox(x, y, w, h) {
     this.y = y;
     this.width = w;
     this.height = h;
-};
+}
     //******************************************************************************
     /**
     * Obstacle.
@@ -344,7 +344,7 @@ function Obstacle(canvasCtx, type, obstacleImg, dimensions,
     this.collisionBoxes = [];
     this.gap = 0;
     this.init(speed);
-};
+}
 
 
     //******************************************************************************
@@ -378,7 +378,7 @@ function Trex(canvas, image) {
     this.jumpCount = 0;
     this.jumpspotX = 0;
     this.init();
-};
+}
 
 
     //******************************************************************************
@@ -406,7 +406,7 @@ function DistanceMeter(canvas, spriteSheet, canvasWidth) {
     this.flashIterations = 0;
     this.config = DistanceMeter.config;
     this.init(canvasWidth);
-};
+}
 
 
     //******************************************************************************
@@ -428,7 +428,7 @@ function Cloud(canvas, cloudImg, containerWidth) {
     this.cloudGap = getRandomNum(Cloud.config.MIN_CLOUD_GAP,
     Cloud.config.MAX_CLOUD_GAP);
     this.init();
-};
+}
 
 
     //******************************************************************************
@@ -451,7 +451,7 @@ function HorizonLine(canvas, bgImg) {
     this.bumpThreshold = 0.5;
     this.setSourceDimensions();
     this.draw();
-};
+}
 
 
     //******************************************************************************
@@ -485,7 +485,7 @@ function Horizon(canvas, images, dimensions, gapCoefficient) {
     CACTUS_LARGE: images.CACTUS_LARGE
     };
     this.init();
-};
+}
 
 function trekt(imgs1,imgs2) {
 
