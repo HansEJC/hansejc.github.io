@@ -11,8 +11,8 @@ function firstMortgage(info){
     tpa = tpa +1000;
   }
   for (let i = 0; i < 11; i++) { // changed overpayment to £1100
-    intr = rl*iir;
-    eqp = 1100-intr;
+    let intr = rl*iir;
+    let eqp = 1100-intr;
     teq = teq + eqp;
     mortgage.push([new Date(2018,5+i,1), intr, eqp, intr+eqp]);
     rl = rl-eqp;
