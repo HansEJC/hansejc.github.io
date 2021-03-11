@@ -91,16 +91,16 @@ function fullscores(){
 // gain, frequency, duration
 function k(w,x,y){
   try {
-    v=a.createOscillator()
-    u=a.createGain()
-    v.connect(u)
-    v.frequency.value=x
-    v.type="square"
-    u.connect(a.destination)
-    u.gain.value=w*0.01
-    v.start(a.currentTime)
-    v.stop(a.currentTime+y*0.001)
-  }catch(err){console.log(err+"not supported")}
+    let v = a.createOscillator();
+    let u = a.createGain();
+    v.connect(u);
+    v.frequency.value = x;
+    v.type="square";
+    u.connect(a.destination);
+    u.gain.value = w*0.01;
+    v.start(a.currentTime);
+    v.stop(a.currentTime+y*0.001);
+  }catch(err){console.log(err+"not supported");}
 }
 
 const ip = () => "obsolete";

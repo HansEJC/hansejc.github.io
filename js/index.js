@@ -19,16 +19,17 @@ function initiate(){
     new Runner('.interstitial-wrapper');
     document.getElementById("TempScore").textContent="This game doesn't work on Internet Explorer. Get off it you dinosaur!";
   }
-  document.onkeydown = function(e) {
-    var keyCode = e.which || e.keyCode;
-    var handled = false;
-    if (keyCode == 38 || keyCode == 40|| keyCode == 32) { //up or down or spacebar
-      //do something fun
-      e.preventDefault();
-      handled = true;
-    }
-    return !handled; //return false if the event was handled
+  document.onkeydown = keys;
+}
+
+function keys(e) {
+  var keyCode = e.which || e.keyCode;
+  var handled = false;
+  if (keyCode == 38 || keyCode == 40|| keyCode == 32) { //up or down or spacebar
+    e.preventDefault();
+    handled = true;
   }
+  return !handled; //return false if the event was handled  
 }
 
 function gameMode(){

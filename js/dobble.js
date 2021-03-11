@@ -43,7 +43,6 @@ function startGame() {
 function createDeck(){
 //The number of symbols on a card has to be a prime number + 1
   const numberOfSymbolsOnCard = 8;   //(7 + 1);
-  let shuffleSymbolsOnCard = false;
   let cards = [];
 
   //Work out the prime number

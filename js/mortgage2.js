@@ -80,7 +80,7 @@ function calculations(){
   let hpi = Number(getSavedValue("HPI"));    // set the value to this input
   if (hpi < 100000) hpi = il + 9275;
   teq = hpi - il; //initial deposit plus HPI
-  rl = il; pn  = tpa = 0;
+  rl = il; tpa = 0;
 
   let info = {teq,mortgage,rl,tpa,tp};
   info = firstMortgage(info);
