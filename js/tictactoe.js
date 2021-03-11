@@ -92,17 +92,17 @@ function minimax(reboard, player) {
     return {score: 0};
   }
 
-  let moves = [];
+  let moves = [], g;
   for (let i = 0; i < array.length; i++) {
     var move = {};
     move.index = reboard[array[i]];
     reboard[array[i]] = player;
 
     if (player == 'O') {
-      var g = minimax(reboard, 'X');
+      g = minimax(reboard, 'X');
       move.score = g.score;
     } else {
-      var g = minimax(reboard, 'O');
+      g = minimax(reboard, 'O');
       move.score = g.score;
     }
     reboard[array[i]] = move.index;

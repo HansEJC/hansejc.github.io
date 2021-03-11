@@ -37,10 +37,10 @@ function labls(num) {
 
 function checkit() {
   this.checked = true;
-  if (this.id == 'LF') var x = document.getElementById("Lhide"), y = document.getElementById("Hhide");
-  else var x = document.getElementById("Hhide"), y = document.getElementById("Lhide");
-    x.style.display = "block";
-    y.style.display = "none";
+  var x = document.getElementById("Lhide"), y = document.getElementById("Hhide");
+  if (this.id === 'HF') [x,y] = [y,x];
+  x.style.display = "block";
+  y.style.display = "none";
   calculations();
 }
 
@@ -48,15 +48,15 @@ function multipliers(){
   //Change multiplier if over 1000
   let multy = document.getElementById("MUL");
   let tf = document.getElementById("TF");
-  if (multy.value == "H" && getSavedValue("TF") > 999) {
+  if (multy.value === "H" && getSavedValue("TF") > 999) {
     localStorage.setItem(tf.id, tf.value/1000);
     localStorage.setItem(multy.id, "K");
   }
-  if (multy.value == "K" && getSavedValue("TF") > 999) {
+  if (multy.value === "K" && getSavedValue("TF") > 999) {
     localStorage.setItem(tf.id, tf.value/1000);
     localStorage.setItem(multy.id, "M");
   }
-  if (multy.value == "M" && getSavedValue("TF") > 999) {
+  if (multy.value === "M" && getSavedValue("TF") > 999) {
     localStorage.setItem(tf.id, tf.value/1000);
     localStorage.setItem(multy.id, "G");
   }
@@ -93,9 +93,9 @@ async function calculations(){
   let eirp = Number(getSavedValue("EIRP"));
   const c = 299792458; //speed of light
 
-  if (document.getElementById("MUL").value == "K") tf=tf*1000;
-  if (document.getElementById("MUL").value == "M") tf=tf*1000000;
-  if (document.getElementById("MUL").value == "G") tf=tf*1000000000;
+  if (document.getElementById("MUL").value === "K") tf=tf*1000;
+  if (document.getElementById("MUL").value === "M") tf=tf*1000000;
+  if (document.getElementById("MUL").value === "G") tf=tf*1000000000;
 
   let fi = c/(2*Math.PI*tf);
   document.getElementById("FI").innerHTML = killthemeter(fi);
@@ -109,7 +109,7 @@ async function calculations(){
     if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
 
-  if (HiFreq && tf*eirp == 0) return; //return if plotting nothing
+  if (HiFreq && tf*eirp === 0) return; //return if plotting nothing
   let freqObj = {};
   freqObj = HiFreq ? HiFreqFun(freqStuff) : LowFreqFun(freqStuff);
   try{
@@ -149,8 +149,8 @@ function HiFreqFun(stuff){
 function LowFreqFun(stuff){
   let {fields,earray,EField,eo,q,uo,cu} = stuff;
   let d,ran,range,distrange;
-  if (EField && q == 0) return; //return if plotting nothing
-  if (fields[1].checked && cu == 0) return;
+  if (EField && q === 0) return; //return if plotting nothing
+  if (fields[1].checked && cu === 0) return;
   const lowfreqrange = 51000;
   for (let i = 0; i < lowfreqrange; i++) {
     d = i/1000;

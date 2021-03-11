@@ -98,7 +98,7 @@ function search(arrheh){
       <th>Location</th>
       <th>PO #</th></tr>`;
 
-    for(var i = 0; i < sArray.length; i++){
+    for(let i = 0; i < sArray.length; i++){
       myTable+=`<tr><td>${sArray[i][0]}</td>
         <td>${sArray[i][1]}</td>
         <td>${sArray[i][2]}</td>
