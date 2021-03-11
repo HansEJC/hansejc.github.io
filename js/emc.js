@@ -92,7 +92,6 @@ async function calculations(){
   let tf = Number(getSavedValue("TF"));    // set the value to this input
   let eirp = Number(getSavedValue("EIRP"));
   const c = 299792458; //speed of light
-  let d = 0;
 
   if (document.getElementById("MUL").value == "K") tf=tf*1000;
   if (document.getElementById("MUL").value == "M") tf=tf*1000000;
@@ -104,7 +103,7 @@ async function calculations(){
   var earray = [];
   //var range = 0, ran = 0, distrange = 0;
   let stuff = {radios,fields};
-  let freqStuff = {earray,c,tf,EField,eirp,eo,q,uo,cu,fi,...stuff}
+  let freqStuff = {earray,c,tf,EField,eirp,eo,q,uo,cu,fi,...stuff};
 
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
@@ -115,7 +114,7 @@ async function calculations(){
   freqObj = HiFreq ? HiFreqFun(freqStuff) : LowFreqFun(freqStuff);
   try{
     ({earray,ran,range,distrange} = freqObj);
-  }catch(err) {return}
+  }catch(err) {return;}
 
   dygPlot(earray);
   dygUpdate({...stuff,...freqObj});

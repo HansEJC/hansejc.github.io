@@ -13,20 +13,13 @@ function checkit() {
     y.style.display = "block";
 }
 
-var idbSupported = false;
-var db;
- if("indexedDB" in window) {
-  idbSupported = true;
-}
-
-
 function save(data) {
-    var transaction = db.transaction(["plots"], "readwrite");
-    var objectStore = transaction.objectStore("plots");
-    var request = objectStore.put({id:1,'data':data});
-      request.onsuccess = function(event) {
-        //console.log(event.target)
-      };
+  var transaction = db.transaction(["plots"], "readwrite");
+  var objectStore = transaction.objectStore("plots");
+  var request = objectStore.put({id:1,'data':data});
+  request.onsuccess = function(event) {
+    //console.log(event.target)
+  };
 }
 
 function read() {
@@ -39,11 +32,10 @@ function read() {
     }catch(err){
       let DRcsv = await fetch('uploads/fault.csv').then(result => result.text());
       // code below here will only execute when await fetch() finished loading
-      DR = Papa.parse(DRcsv).data;
+      let DR = Papa.parse(DRcsv).data;
       plotProtection(DR);
     }
   }
-  //plotexp(objectStore.get('data'));
 }
 
 function javaread(){
@@ -81,7 +73,7 @@ function javaread(){
       request.onerror = function(event) {
       };
       request.onsuccess = function(event) {
-        read();
+        try{read();}catch(e){console.log(e);}
       };
     }
     openRequest.onerror = function(e) {
@@ -97,7 +89,7 @@ async function startup() {
   var DR = [];
   plotProtection(DR);
   document.onkeyup = function() {
-    read();
+    try{read();}catch(e){console.log(e);}
   };
   document.getElementById("Prim").onchange = function(){read();};
   document.getElementById("Sec").onchange = function(){checkit();read();};
@@ -117,14 +109,13 @@ function inside(point, vs) {
 
     var inside = false;
     for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-        var xi = vs[i][0], yi = vs[i][1];
-        var xj = vs[j][0], yj = vs[j][1];
+      var xi = vs[i][0], yi = vs[i][1];
+      var xj = vs[j][0], yj = vs[j][1];
 
-        var intersect = ((yi > y) != (yj > y))
-            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
-        if (intersect) inside = !inside;
+      var intersect = ((yi > y) != (yj > y))
+        && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+      if (intersect) inside = !inside;
     }
-
     return inside;
 }
 
@@ -241,7 +232,7 @@ function Zone3(tr){
   var pcr3 = prr3+(Z3+Z3rev)*Math.cos(Z3A);
   let Z3pol = [[pgr3,pgx3],[pkr3,pkx3],[pcr3,pcx3],[prr3,prx3],[pgr3,pgx3]];
   let Z3el = [[-Z3rev*Math.cos(Z3A),,,,,-Z3rev*xmul1],[Z3*Math.cos(Z3A),,,,,Z3*xmul1],
-        [pgr3,,,,pgx3],[pkr3,,,,pkx3],[pcr3,,,,pcx3],[prr3,,,,prx3],[pgr3,,,,pgx3]];
+    [pgr3,,,,pgx3],[pkr3,,,,pkx3],[pcr3,,,,pcx3],[prr3,,,,prx3],[pgr3,,,,pgx3]];
   let Z3lim = Z3>100 ? Z3 : 100;
   return [Z3pol,Z3el, Z3lim];
 }
@@ -273,7 +264,7 @@ async function plotProtection(csvarr){
   let [Z1pol, Z1el] = Zone1(tr);
   let [Z2pol, Z2el] = Zone2(tr);
   let [Z3pol, Z3el, Z3lim] = Zone3(tr);
-  elements2 = [...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
+  let elements2 = [...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
 
   var DR = []; DR = csvarr;
   let calcStuff = {DR,trdr,vtrdr};
@@ -285,7 +276,7 @@ async function plotProtection(csvarr){
   for (let i = 0; i < DR.length; i++) {
     total.push(faultarray[i]);
   }
-  dygPlot(total,Z3lim)
+  dygPlot(total,Z3lim);
 }
 
 function addCSVtoArray(stuff){
@@ -373,5 +364,7 @@ async function dygPlot(total,Z3lim)
 
   });
 }
+var idbSupported = ("indexedDB" in window) ? true : false;
+var db;
 //startup
 startup();
