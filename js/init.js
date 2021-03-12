@@ -12,6 +12,7 @@
   spanny.classList.add('slider', 'round');
   toggLabel.innerText = "Dark Mode";
   toggLabel.classList.add('toggLabel');
+  toggLabel.htmlFor = "DarkToggle";
   switchLabel.appendChild(checkBox);
   switchLabel.appendChild(spanny);
   document.querySelector("#header").appendChild(switchLabel);
@@ -54,7 +55,7 @@ document.addEventListener('click',toggleNav);
 function navBar(){
   const navbar = document.querySelector('#myTopnav');
     navbar.innerHTML =`
-      <a href="javascript:void(0);" style="font-size:15px;" class="icon">&#9776;</a>
+      <a href="#" style="font-size:15px;" class="icon">&#9776;</a>
       <div class="dropdown">
         <a href='#' class="dropbtn heh">Games</a>
         <div class="dropdown-content">

@@ -58,8 +58,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="row 50%">
               <p> This game can be played by one or two players. You can only get a high score in one player mode. Try to find a matching symbol
                 between the reference and player card. Every card has one match. Click on the match to gain a point and receive a new card.
-                If you click on the wrong match, one point will be deducted. This is to avoid cheating by spamming click. The math used to create this game
-                can be found <a href="https://www.petercollingridge.co.uk/blog/mathematics-toys-and-games/dobble/">here</a>.
+                If you click on the wrong match, one point will be deducted. This is to avoid cheating by spamming click. 
+                <a href="https://www.petercollingridge.co.uk/blog/mathematics-toys-and-games/dobble/">The math used to create this game
+                can be found here</a>.
               </p>
             </div>
             <header id="csv"><hr>
@@ -73,7 +74,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 original dates in the csv. The original dates usually don't survive the processing, due to so many different formats existing for dates.
                 <br><br>The enable equations options is used for data manipulation. Every column of data is represented by a letter. The default shows just the letters, "a", "b", "c", etc.
                 Equations can be applied to individual columns. For example "a*b" will multiply the first two columns. Any form of javascript math can be applied to
-                the columns. For more information about javascript equations see <a href="https://www.w3schools.com/js/js_math.asp">here</a>.
+                the columns. For more information about javascript equations see the<a href="https://www.w3schools.com/js/js_math.asp">W3school's JavaScript Math Object Tutorial</a>.
 
               <br><br> When using "CSV Formatted":<br>
                 For the csv file to load correctly, delete all unneeded rows and columns. The first row can be left to be used as labels. The other rows
@@ -119,7 +120,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 a is the spacing between electrodes, in metres (m)<br>
                 R is the resistance measured between the middle electrodes, in ohms (Ω)<br><br>
                 See the figure below to get a better idea.<br>
-                <img class="helpImg" src="images/soil-resistivity.svg" style="max-width:600px; width:100%; display: block; margin-left: auto; margin-right: auto;"/>
+                <img alt="Soil Resistivity" class="helpImg" src="images/soil-resistivity.svg" style="max-width:600px; width:90vw; max-height:360px; height:54vw; display: block; margin-left: auto; margin-right: auto;"/>
                 <br><br><b>Fall of Potential</b><br>
                 The outer test electrode, or current test stake, is driven into the ground 30 to 50 metres away from the earth system,
                 and the inner electrode, or voltage test stake, is then driven into the ground mid-way between the earth electrode and the current
@@ -130,7 +131,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 measurements are in agreement with the original measurement, within the required level of accuracy, then the test stakes have been correctly positioned
                 and the DC resistance figure can be obtained by averaging the three results. There is a label which shows if the results of the 62% test are valid or not.
                 See the figure below to get a better idea.
-                <img class="helpImg" src="images/fall-of-potential.svg" style="max-width:400px; width:100%; display: block; margin-left: auto; margin-right: auto;"/>
+                <img class="helpImg" alt="Fall of Potential" src="images/fall-of-potential.svg" style="max-width:400px; max-height:270px; width:90vw; height:61vw; display: block; margin-left: auto; margin-right: auto;"/>
               </p>
             </div>
             <header id="tools"><hr>
@@ -147,20 +148,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <p> The railway faults page was put together using a bunch of made of equations and basic electrical engineering principles. The following variables were used
                 for the calculations:
               </p>
-              <ul style="padding: 0 0 0 3em; list-style-type: none; zoom:1; line-height:1.6em">
+              <ul style="padding: 0 0 0 3em; list-style-type: none; zoom:1; line-height:1.8em">
                 <li>I<sub>F</sub></li>
                 <li>I<sub>S</sub></li>
                 <li>K<sub>RR</sub></li>
-                <li>K<sub>T</sub></li>
-                <br>
+                <li style="padding: 0 0 1.8em 0">K<sub>T</sub></li>                
                 <li>L<sub>BT</sub></li>
                 <li>L<sub>C</sub></li>
                 <li>L<sub>S</sub></li>
-                <li>L<sub>XB</sub></li>
-                <br>
+                <li style="padding: 0 0 1.8em 0">L<sub>XB</sub></li>               
                 <li>L<sub>XBP</sub></li>
                 <li>V<sub>S</sub></li>
-                <li>Z<sub>AEW</sub>  </li>
+                <li>Z<sub>AEW</sub></li>
                 <li>Z<sub>ATF</sub></li>
                 <li>Z<sub>BT</sub></li>
                 <li>Z<sub>CAT</sub></li>
@@ -174,7 +173,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <li>Z<sub>S</sub></li>
                 <li>Z<sub>T</sub></li>
               </ul>
-              <ul style="padding: 0 0 0 1em; list-style-type: none; zoom:1; line-height:1.7em">
+              <ul style="padding: 0 0 0 1em; list-style-type: none; zoom:1; line-height:1.8em">
                 <li>Fault Current </li>
                 <li>Source Fault Current </li>
                 <li>1 for single rail return, 2 for DRR</li>
@@ -194,7 +193,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <li>Contact Wire Impedance</li>
                 <li>Departing Impedance</li>
                 <li>Fault Impedance</li>
-                <li>Z<sub>CAT</sub> // Z<sub>CW</sub>/li>
+                <li>Z<sub>CAT</sub> // Z<sub>CW</sub></li>
                 <li>Rail Impedance</li>
                 <li>Return Impedance</li>
                 <li>RSC Impedance</li>
