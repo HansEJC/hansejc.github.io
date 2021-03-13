@@ -3,30 +3,18 @@ function startup() {
     localStorage.setItem(y,x);
   });
   const measurements = 11;    // set the value to this input
-  var cb = []; var cb2 = []; var cb3 = [];
-  var cbh = document.getElementById(`Dist`); var cbh2 = document.getElementById(`Stan`); var cbh3 = document.getElementById(`Stiv`);
+  let cb = [], cb2 = [], cb3 = [];
+  var cbh = document.getElementById(`Dist`), cbh2 = document.getElementById(`Stan`), cbh3 = document.getElementById(`Stiv`);
 
-  document.querySelectorAll(`button`)[0].addEventListener(`click`, function() {
-    document.cookie=`test=soil`;
-    let filename = `${document.getElementById(`TLOC`).value}_soil.csv`;
-    exportToCsv(filename,soil());
-    //exportToDB(filename,soil()); MySQL no longer needed!
-    saveResults(filename,soil());
-  });
-  document.querySelectorAll(`button`)[1].addEventListener(`click`, function() {
-    document.cookie=`test=fop`;
-    let filename = `${document.getElementById(`TLOC`).value}_FOP.csv`;
-    exportToCsv(filename,fop());
-    //exportToDB(filename,fop());
-    saveResults(filename,fop());
-  });
+  buttonFun(0,`soil`,soil);
+  buttonFun(1,`fop`,fop);
 
   for(var i = 0; i < measurements; i++){
-    cb[i] = document.createElement(`span`); cb2[i] = document.createElement(`input`); cb3[i] = document.createElement(`span`);
-    cb2[i].type = `number`; cb2[i].step = `0.01`;
-    cbh.appendChild(cb[i]); cbh2.appendChild(cb2[i]); cbh3.appendChild(cb3[i]);
-    cb[i].id = `dis${i}`; cb2[i].id = `stan${i}`; cb3[i].id = `stiv${i}`;  
-    cb[i].className = `label`; cb3[i].className = `label`;
+    cb[i] = document.createElement(`span`), cb2[i] = document.createElement(`input`), cb3[i] = document.createElement(`span`);
+    cb2[i].type = `number`, cb2[i].step = `0.01`;
+    cbh.appendChild(cb[i]), cbh2.appendChild(cb2[i]), cbh3.appendChild(cb3[i]);
+    cb[i].id = `dis${i}`, cb2[i].id = `stan${i}`, cb3[i].id = `stiv${i}`;  
+    cb[i].className = `label`, cb3[i].className = `label`;
     cb2[i].value = getSavedValue(cb2[i].id);
     cb2[i].onkeyup = function(){saveValue(this);};
   }
@@ -41,15 +29,25 @@ function startup() {
   };
 }
 
+function buttonFun(but,str,fun) {
+  document.querySelectorAll(`button`)[but].addEventListener(`click`, function() {
+    document.cookie=`test=${str}`;
+    let filename = `${document.getElementById("TLOC").value}_${str}.csv`;
+    exportToCsv(filename,fun());
+    //exportToDB(filename,fun()); MySQL no longer needed!
+    saveResults(filename,fun());
+  });
+}
+
 function def2() {
   document.getElementById(`FOPDis`).value = getSavedValue(`FOPDis`);    // set the value to this input 
-  var cb = []; var cb2 = [];
-  var cbh = document.getElementById(`Dist2`); var cbh2 = document.getElementById(`Meas`);
-  for(var i = 0; i < 10; i++){
-    cb[i] = document.createElement(`span`); cb2[i] = document.createElement(`input`);
-    cb[i].className = `label`; cb2[i].type = `number`; cb2[i].step = `0.01`;
-    cbh.appendChild(cb[i]); cbh2.appendChild(cb2[i]);
-    cb[i].id = `fopdis${i}`; cb2[i].id = `fopmeas${i}`;
+  let cb = [], cb2 = [];
+  let cbh = document.getElementById(`Dist2`), cbh2 = document.getElementById(`Meas`);
+  for(let i = 0; i < 10; i++){
+    cb[i] = document.createElement(`span`), cb2[i] = document.createElement(`input`);
+    cb[i].className = `label`, cb2[i].type = `number`, cb2[i].step = `0.01`;
+    cbh.appendChild(cb[i]), cbh2.appendChild(cb2[i]);
+    cb[i].id = `fopdis${i}`, cb2[i].id = `fopmeas${i}`;
     cb2[i].value = getSavedValue(cb2[i].id);
     cb2[i].onkeyup = function(){saveValue(this);};
   }
@@ -59,10 +57,10 @@ function soil() {
   def();
   document.getElementById(`TLOC`).value = getSavedValue(`TLOC`);    // set the value to this input
   const measurements = 11;
-  var stiv = 0;
-  var dis,stan;
-  var soilarr = [];
-  for(var i = 0; i < measurements; i++){
+  let stiv = 0;
+  let dis,stan;
+  let soilarr = [];
+  for(let i = 0; i < measurements; i++){
     dis = +(document.getElementById(`dis${i}`).innerText);
     stan = +(document.getElementById(`stan${i}`).value);
     stiv = dis*stan*2*Math.PI;
@@ -95,28 +93,26 @@ function fop() {
     fopdis = 50;
     document.getElementById(`FOPDis`).value = 50;
   }
-  var foparr = [];
-  for(var i = 0; i < 10; i++){
+  let foparr = [];
+  for(let i = 0; i < 10; i++){
     dis = document.getElementById(`fopdis${i}`).innerText = +(fopdis*((i)/10)).toFixed(1);
     meas = +(document.getElementById(`fopmeas${i}`).value);
     if (meas != 0) foparr.push([dis,meas]);
   }
   document.getElementById(`fopdis6`).innerText = `${+(fopdis*0.62).toFixed(1)}m`;
   
-  var fir = +(document.getElementById(`fopmeas5`).value),
+  const fir = +(document.getElementById(`fopmeas5`).value),
   sec = +(document.getElementById(`fopmeas6`).value),
   thir = +(document.getElementById(`fopmeas7`).value);
-  document.getElementById(`fopmeas5`).className = `info`;document.getElementById(`fopmeas6`).className = `info`;
+  document.getElementById(`fopmeas5`).className = `info`;
+  document.getElementById(`fopmeas6`).className = `info`;
   document.getElementById(`fopmeas7`).className = `info`;
 
-  if ((fir*1.05>=sec&&sec>=fir*0.95)&&(thir*1.05>=sec&&sec>=thir*0.95)) {
-    document.getElementById(`Meth`).className = `label safe`;
-    document.getElementById(`Meth`).textContent = `Valid`;
-  }
-  else {
-    document.getElementById(`Meth`).className = `label danger`;
-    document.getElementById(`Meth`).textContent = `Invalid`;
-  }
+  const meth = document.getElementById(`Meth`);
+  const valid = (fir*1.05 >= sec && sec >= fir*0.95) && (thir*1.05 >= sec && sec>=thir*0.95);
+  meth.className = valid ? `label safe` : `label danger`;
+  meth.textContent = valid ? `Valid` : `Invalid`;
+
   dygPlot(foparr);
   return foparr;
 }
@@ -151,81 +147,49 @@ function dygPlot(foparr) {
         }
       }
     }          // options
-    );
-    g3.ready(function() {
+  );
+  g3.ready(function() {
     setTimeout(function(){
       window.dispatchEvent(new Event(`resize`));
     }, 500);
   });
 }
 
-function rem2() {
-  const myNode = document.getElementById(`dist2`);
-  myNode.innerHTML = ``;
-  const myNode2 = document.getElementById(`Meas`);
-  myNode2.innerHTML = ``;
-}
-
 //Export to database
 function exportToDB(filename,rows) {
-  let db =(filename.includes(`FOP`)) ? `fop` :  `soil`;
+  let db =(filename.includes(`fop`)) ? `fop` :  `soil`;
   let tloc = document.getElementById(`TLOC`).value.split(` `).join(`_`);
 
-    post(`./soildb.php`,
-    {
+  post(`./soildb.php`,
+  {
     datab: db,
     tabl: tloc,
-        distance: transpose(rows)[0],
-        res: transpose(rows)[1],
-    },sucPost);
-  function sucPost(data){
-        if (filename.includes(`FOP`)) {
-      document.getElementById(`span2`).innerHTML = data;
-      _(`#span2`).fade(`in`, 200);
-      setTimeout(function(){
-        _(`#span2`).fade(`out`, 500);
-      }, 3000);
-    }
-    else {
-      document.getElementById(`span1`).innerHTML = data;
-      _(`#span1`).fade(`in`, 200);
-      setTimeout(function(){
-        _(`#span1`).fade(`out`, 500);
-      }, 3000);
-    }
-  }
+    distance: transpose(rows)[0],
+    res: transpose(rows)[1],
+  },sucPost);
 }
 
 //Save to json
 function saveResults(filename,rows){
   let tloc = document.getElementById(`TLOC`).value;
-
+  if (rows.length === 0) return;
   post(`./saveSoil.php`,
   {
     site: tloc,
     results: rows,
     delete: (document.querySelector(`#FOPDis`).value == `69`),
-   },sucPost);
-  function sucPost(data){
-        if (filename.includes(`FOP`)) {
-      document.getElementById(`span2`).innerHTML = data;
-      _(`#span2`).fade(`in`, 200);
-      setTimeout(function(){
-        _(`#span2`).fade(`out`, 500);
-        location.reload();
-        return false;
-      }, 3000);
-    }
-    else {
-      document.getElementById(`span1`).innerHTML = data;
-      _(`#span1`).fade(`in`, 200);
-      setTimeout(function(){
-        _(`#span1`).fade(`out`, 500);
-        location.reload();
-        return false;
-      }, 3000);
-    }
-    }
+  },sucPost);
+}
+
+function sucPost(data){
+  let span = (document.cookie.includes(`test=fop`)) ? `#span2` : `#span1`
+  document.querySelector(span).innerHTML = data;
+  _(span).fade(`in`, 200);
+  setTimeout(function(){
+    _(span).fade(`out`, 500);
+    location.reload();
+    return false;
+  }, 3000);
 }
 
 function fetchResults(){
@@ -280,7 +244,7 @@ function table(rows,target){
 //flip array
 function transpose(a) {
   return Object.keys(a[0]).map(function(c) {
-      return a.map(function(r) { return r[c]; });
+    return a.map(function(r) { return r[c]; });
   });
 }
 
