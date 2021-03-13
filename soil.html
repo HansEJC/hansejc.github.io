@@ -53,16 +53,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </section>
         </div>
         <div class="row 50%">
-          <section class="box"><br><pre>    Distance (m)</pre>
+          <section class="box" style="min-width: 22ch">
             <form id="Dist">
+              <label>Distance (m) (Rod Positions)</label>
             </form>
           </section>
-          <section class="box"><br><pre>    Soil Resistance (Ω)</pre>
+          <section class="box">
             <form id="Stan">
+              <label>Soil Resistance (Ω)</label>
             </form>
           </section>
-          <section class="box"><br><pre>    Soil Resistivity (Ωm)</pre>
+          <section class="box">
             <form id="Stiv">
+              <label>Soil Resistivity (Ωm)</label>
             </form>
           </section>
         </div>
@@ -73,7 +76,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <div class="row 50%">
           <section class="box">
             <form>
-              Distance (m)<input type="number" id="FOPDis" onkeyup='saveValue(this);' />
+              <label for="FOPDis">Distance (m)</label>
+              <input type="number" id="FOPDis" onkeyup='saveValue(this);' />
             </form>
           </section>
           <section class="box">
@@ -88,12 +92,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </section>
         </div>
         <div class="row 50%">
-          <section class="box"><br><pre>    Distance (m)</pre>
+          <section class="box">
             <form id="Dist2">
+              <label>Distance (m)</label>
             </form>
           </section>
-          <section class="box"><br><pre>    Measurement (Ω)</pre>
+          <section class="box" style="min-width: 18ch">
             <form id="Meas">
+              <label>Measurement (Ω)</label>
             </form>
           </section>
         </div>
