@@ -13,7 +13,7 @@ function mortgageLoop(loopInfo) {
 
 function firstMortgage(){
   const il = 176225; //initial loan
-  let rl, teq, ltv, tpa; //remaining loan, total equity, total payed
+  let rl, teq, tpa; //remaining loan, total equity, total payed
 
   document.getElementById("HPI").value = getSavedValue("HPI");    // set the value to this input
   document.getElementById("OP").value = getSavedValue("OP");
@@ -81,8 +81,7 @@ function calculations(){
   info = {teq,mortgage,rl,tpa} = currentMortgage(info); 
   let pn = futureMortgage({tp,...info});
 
-  ltv = 100 - teq / (teq + rl) * 100;
-
+  let ltv = 100 - teq / (teq + rl) * 100; //Loan to value
   spanMon("TPA",tpa);
   spanMon("TEQ",teq);
   spanMon("MPN",mpc);
@@ -91,9 +90,8 @@ function calculations(){
   spanMon("MOP",rl/120);
   document.getElementById("LTV").textContent = ltv.toFixed(0)+" %";
 
-  if ((rl/120)<op) document.getElementById("MOP").className = 'label danger';
-  else document.getElementById("MOP").className = 'label safe';
-
+  const oplabel = document.getElementById("MOP");
+  oplabel.className = ((rl/120)<op) ? `label danger` : `label safe`;
   document.getElementById("RT").textContent = `${Math.floor((pn)/12)} y ${(12*((pn)/12-Math.floor(pn/12))).toFixed(0)} m`;
   dygPlot(mortgage);
 }
