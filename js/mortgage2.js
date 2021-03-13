@@ -1,52 +1,40 @@
+function mortgageLoop(loopInfo) {
+  let {num,pay,year,month,teq,mortgage,rl,tpa,ir} = loopInfo;
+  for (let i = 0; i < num; i++) { // changed overpayment to $pay
+    let intr = rl*ir; //interest
+    let eqp = pay-intr; //equity payment
+    teq += eqp; //total equity
+    mortgage.push([new Date(year,month+i,1), intr, eqp, intr+eqp]);
+    rl = rl-eqp; //remaining loan
+    tpa +=pay; //total payed
+  }
+  return {teq,mortgage,rl,tpa};
+}
+
 function firstMortgage(info){
   const ir = 4.09/12/100; //initial interest rate
   let {teq,mortgage,rl,tpa} = info;
-  for (let i = 0; i < 13; i++) { //first year
-    let intr = rl*ir; //interest
-    let eqp = 1000-intr; //equity payment
-    teq += eqp;
-    mortgage.push([new Date(2017,3+i,1), intr, eqp, intr+eqp]); //start of mortgage
-    rl = rl-eqp;
-    tpa +=1000;
-  }
-  for (let i = 0; i < 11; i++) { // changed overpayment to £1100
-    let intr = rl*ir;
-    let eqp = 1100-intr;
-    teq += eqp;
-    mortgage.push([new Date(2018,4+i,1), intr, eqp, intr+eqp]);
-    rl = rl-eqp;
-    tpa +=1100;
-  }
-  return {teq,mortgage,rl,tpa};
+  let loopInfo = {num: 13, pay: 1000, year: 2017, month: 3,ir,...info};
+  info = {teq,mortgage,rl,tpa} = mortgageLoop(loopInfo);  
+  
+  loopInfo = {num: 11, pay: 1100, year: 2018, month: 4,ir,...info}; // changed overpayment to £1100
+  return mortgageLoop(loopInfo);
 }
 
 function secondMortgage(info){
   let today = new Date();
   const ir = 1.84/12/100; //remortgage rate
   let {teq,mortgage,rl,tpa} = info;
-  let intr = rl*ir;
-  let eqp = 1100-intr-995; //the 995 was te remortgage fee
-  teq += eqp;
-  mortgage.push([new Date(2019,3,1), intr, eqp, intr+eqp]);
-  rl = rl-eqp;
-  tpa += 1100;
-  for (let i = 0; i < 14; i++) { // changed overpayment to £1200
-    intr = rl*ir;
-    eqp = 1200-intr;
-    teq += eqp;
-    mortgage.push([new Date(2019,4+i,1), intr, eqp, intr+eqp]);
-    rl = rl-eqp;
-    tpa +=1200;
-  }
-  for (let i = 0; i < 9; i++) { // changed overpayment to £1500
-    intr = rl*ir;
-    eqp = 1500-intr;
-    teq += eqp;
-    mortgage.push([new Date(2020,6+i,1), intr, eqp, intr+eqp]);
-    rl = rl-eqp;
-    tpa +=1500;
-  }
-  return {teq,mortgage,rl,tpa};
+  
+  let pay = 1100-995; //the 995 was te remortgage fee
+  let loopInfo = {num: 1, pay, year: 2019, month: 3,ir,...info}; // First month
+  info = {teq,mortgage,rl,tpa} = mortgageLoop(loopInfo);
+
+  loopInfo = {num: 14, pay: 1200, year: 2019, month: 4,ir,...info}; // changed overpayment to £1200
+  info = {teq,mortgage,rl,tpa} = mortgageLoop(loopInfo);
+
+  loopInfo = {num: 9, pay: 1500, year: 2020, month: 6,ir,...info}; // changed overpayment to £1500
+  return mortgageLoop(loopInfo);
 }
 
 function currentMortgage(info){
@@ -54,35 +42,25 @@ function currentMortgage(info){
   const monthd = (today-new Date(2021,3,1))/1000/60/60/24/365.25*12; //difference in month
   const ir = 1.59/12/100; //remortgage rate
   let {teq,mortgage,rl,tpa} = info;
-  let intr = rl*ir;
-  let eqp = 459.89-intr+5814.12+250-66; //the 5748 was the shortfall since we borrowed £135k, the £250 is cashback, £66 fees
-  teq += eqp;
-  mortgage.push([new Date(2021,3,1), intr, eqp, intr+eqp]);
-  rl = rl-eqp;
-  tpa += 459.89;
-  for (let i = 0; i < monthd; i++) { // changed overpayment to £1500
-    intr = rl*ir;
-    eqp = 1500-intr;
-    teq += eqp;
-    mortgage.push([new Date(2021,4+i,1), intr, eqp, intr+eqp]);
-    rl = rl-eqp;
-    tpa +=1500;
-  }
-  return {teq,mortgage,rl,tpa,monthd};
+
+  let pay = 459.89+5814.12+250-66; //the £5814.12 was the shortfall since we borrowed £135k, the £250 is cashback, £66 fees
+  let loopInfo = {num: 1, pay, year: 2021, month: 3,ir,...info}; // First month
+  info = {teq,mortgage,rl,tpa} = mortgageLoop(loopInfo);
+  
+  loopInfo = {num: monthd, pay: 1500, year: 2021, month: 4,ir,...info}; // changed overpayment to £1500
+  return {monthd,...mortgageLoop(loopInfo)};
 }
 
 function futureMortgage(info){
   let {intr,eqp,mortgage,rl,tp} = info;
   let pn = 0; //payment number
   const ir = 1.59/12/100; //remortgage rate
-  var start = 0; var max = 10000;
   for (let i = 0; rl > 0; i++) {
     intr = rl*ir;
     eqp = tp-intr;
     mortgage.push([new Date(2021,5+i+monthd,1), intr, eqp, intr+eqp]);
     rl = rl-eqp;
     pn++;
-    start+=1;if(start>max)break;
   }
   return pn;
 }
@@ -92,13 +70,12 @@ function calculations(){
   let mortgage = [];
   let rl, teq, ltv, tpa; //remaining loan, total equity, total payed
   const mpc = 459.89;  //current mortgage payment
-  var op = Number(getSavedValue("OP"));
+  var op = +(getSavedValue("OP"));
   var tp = op+mpc; // total payment
 
   document.getElementById("HPI").value = getSavedValue("HPI");    // set the value to this input
   document.getElementById("OP").value = getSavedValue("OP");
-  let hpi = Number(getSavedValue("HPI"));    // set the value to this input
-  if (hpi < 100000) hpi = il + 9275;
+  let hpi = Math.max(il + 9275, +(getSavedValue("HPI")));    // set the value to this input
   teq = hpi - il; //initial deposit plus HPI
   rl = il; tpa = 0;
 
