@@ -90,7 +90,7 @@ function def() {
 
 function fop() {
   let dis,meas;
-  const fopdis = +(getSavedValue(`FOPDis`));    // set the value to this input
+  let fopdis = +(getSavedValue(`FOPDis`));    // set the value to this input
   if (fopdis==0) {
     fopdis = 50;
     document.getElementById(`FOPDis`).value = 50;
