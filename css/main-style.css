@@ -101,7 +101,7 @@
     transition: color .25s ease-in-out;
   }
 
-    a:hover
+    a:is(:hover,:focus)
     {
       text-decoration: none;
     }
@@ -503,12 +503,12 @@
       transition: all .25s ease-in-out;
     }
 
-    input[type="button"]:hover,
-    input[type="submit"]:hover,
-    input[type="reset"]:hover,
-    .button:hover
+    input[type="button"]:is(:hover,:focus),
+    input[type="submit"]:is(:hover,:focus),
+    input[type="reset"]:is(:hover,:focus),
+    .button:is(:hover,:focus)
     {
-      background-color: #3f434b;
+      box-shadow: 0 0 8pt 2pt #800080;
     }
 
     input[type="button"]:active,
@@ -621,17 +621,17 @@
   text-align: left;
 }
 
-.topnav a:hover, .dropdown:hover .dropbtn {
-  background-color: #555;
-  color: white;
+.topnav a:is(:hover,:focus), 
+.dropdown:is(:hover,:focus) 
+.dropbtn 
+.dropdown-content a:is(:hover,:focus) {
+  background-color: #666;
 }
 
-.dropdown-content a:hover {
-  background-color: #ddd;
-  color: black;
-}
-
-.dropdown:hover .dropdown-content {
+.dropbtn:is(:hover,:focus) + .dropdown-content,
+.dropdown-content:is(:hover,:focus),
+.dropdown-content:focus-within
+{
   visibility: visible;
   opacity: 1;
 }
@@ -770,6 +770,10 @@
   display: inline-block;
   width: 52px;
   height: 20px;
+}
+.switch:focus-within {
+  box-shadow: 0 0 20pt 0pt;
+  border-radius: 34px;
 }
 .toggLabel {
   position: absolute;
