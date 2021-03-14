@@ -162,83 +162,49 @@
   }
 
   /* Table */
-    table {
-      font-family: arial, sans-serif;
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 10pt;
-    }
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
 
-    .scores{
-      width: 100px !important;
-      margin: 0 auto;
-      table-layout: auto;
-      border-collapse: collapse;
-    }
+  .scores{
+    width: 100px !important;
+    margin: 0 auto;
+    table-layout: auto;
+    border-collapse: collapse;
+  }
 
-    tr {
-        width: 80%;
-    }
+  tr {
+    width: 80%;
+  }
 
-    th {
-      border: 1px solid black;
-      text-align: left;
-      padding: 0 8px;
-      background-color: #984806;
-      color: white;
-      font-weight: bold;
-      white-space: nowrap;
-    }
+  th {
+    border: 1px solid black;
+    text-align: left;
+    padding: 0 8px;
+    background-color: #984806;
+    color: white;
+    font-weight: bold;
+    white-space: nowrap;
+  }
 
-    td {
-      border: 1px solid black;
-      text-align: left;
-      padding: 0 8px;
-      color: black;
-      white-space: nowrap;
-    }
+  td {
+    border: 1px solid black;
+    text-align: left;
+    padding: 0 8px;
+    color: black;
+    white-space: nowrap;
+  }
 
-    table
-    {
-      width: 100%;
-    }
-
-      table.default
-      {
-        width: 100%;
-      }
-
-        table.default tbody tr:nth-child(2n+2)
-        {
-          background: #f4f4f4;
-        }
-
-        table.default td
-        {
-          padding: 0.5em 1em 0.5em 1em;
-        }
-
-        table.default th
-        {
-          text-align: left;
-          font-weight: 400;
-          padding: 0.5em 1em 0.5em 1em;
-        }
-
-        table.default thead
-        {
-          background: #484d55;
-          color: #fff;
-        }
-
-        table.default tfoot
-        {
-          background: #eee;
-        }
-
-        table.default tbody
-        {
-        }
+  .orionPark { 
+    max-width: 150ch;
+  }
+  .orionPark td { 
+    word-wrap: break-word; 
+    white-space: normal;
+    width: min-content;
+  } 
 
   /* Form */
 
@@ -518,19 +484,6 @@
     {
       background-color: #1f232b;
     }
-
-  /* List */
-
-    ul.default
-    {
-      list-style: disc;
-      padding-left: 1em;
-    }
-
-      ul.default li
-      {
-        padding-left: 0.5em;
-      }
 
 /*********************************************************************************/
 /* Wrappers                                                                      */

@@ -73,7 +73,8 @@ function search(arrheh){
     });
 
   if(document.getElementById("Del").checked){
-    myTable= `<table><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><tr><th>Date</th>
+    myTable= `<table class="orionPark">
+      <tr><th>Date</th>
       <th>Time</th>
       <th>Supplier</th>
       <th>Comments</th>
@@ -91,12 +92,13 @@ function search(arrheh){
   }
 
   else{ //create table
-    myTable= `<table><col width='10'><col width='10'><col width='10'><col width='10'><col width='10'><tr><th>Part #</th>
+    myTable= `<table class="orionPark">
+      <tr><th>Part #</th>
       <th>Description</th>
       <th>Quantity</th>
       <th>Date</th>
       <th>Location</th>
-      <th>PO #</th></tr>`;
+      <th>Comment</th></tr>`;
 
     for(let i = 0; i < sArray.length; i++){
       myTable+=`<tr><td>${sArray[i][0]}</td>
