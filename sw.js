@@ -61,6 +61,7 @@ registerRoute(
 registerRoute(
   ({url}) => url.pathname.endsWith('.html') || url.pathname.endsWith('.php'),
   new NetworkFirst({
+    networkTimeoutSeconds: 2,
     cacheName: 'html',
     plugins: [
     {cacheKeyWillBeUsed},
@@ -87,6 +88,7 @@ registerRoute(
 registerRoute(
   ({url}) => url.pathname.endsWith('.json'),
   new NetworkFirst({
+    networkTimeoutSeconds: 2,
     cacheName: 'json',
     plugins: [
     {cacheKeyWillBeUsed},
