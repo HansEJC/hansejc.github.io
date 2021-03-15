@@ -82,11 +82,13 @@ function search(arrheh){
       <th>PO #</th></tr>`;
 
     for(let i = 0; i < sArray.length; i++){
+      let comm = (sArray[i][8].length > 3) ? `${sArray[i][7]} ${sArray[i][8]}` : sArray[i][7];
+      let proj = (sArray[i][8].length > 3) ? `` : sArray[i][8].substring(0,3);
       myTable+=`<tr><td>${sArray[i][0]}</td>
         <td>${sArray[i][1]}</td>
         <td>${sArray[i][4]}</td>
-        <td>${sArray[i][7]}</td>
-        <td>${sArray[i][8]}</td>
+        <td>${comm}</td>
+        <td>${proj}</td>
         <td>${sArray[i][9]}</td></tr>`;
     }
   }
