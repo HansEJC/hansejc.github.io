@@ -88,7 +88,7 @@ function navBar(){
 function helpPage(){
   let hashy = location.pathname.split(".")[0].split("/");
   hashy=hashy[hashy.length-1];
-  location = 'help.html#'+hashy;
+  location = `help.html#${hashy}`;
 }
 
 navBar();
@@ -159,7 +159,7 @@ if ("serviceWorker" in navigator) {
 //function to resize plot and copy to clipboard
 function clippy (x,y) {
   let offset = document.querySelector('#graphdiv3').offsetTop;
-  document.querySelector('#graphdiv3').setAttribute('style', 'height:'+y+'px !important; width:'+x+'px !important; margin: 0px 0px 10px 10px;');
+  document.querySelector('#graphdiv3').setAttribute(`style`, `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
   window.dispatchEvent(new Event('resize'));
   for (var j = 0; j < 3; j++) {  //weird way to make it actually work
     html2canvas(document.querySelector("#graphdiv3"), {
@@ -167,8 +167,8 @@ function clippy (x,y) {
       //scrollY: -window.scrollY,
       scrollX:0,
       scrollY:0,
-      height: y+30,
-      //width: x+30,
+      height: y+17,
+      width: x+10,
     }).then(canvas => {
       if (typeof(navigator.clipboard)!='undefined'){
         canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]));
