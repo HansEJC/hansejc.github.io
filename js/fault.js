@@ -14,12 +14,12 @@ function quantities() {
   var cb = []; var cb2 = []; var cb3 = [];
   if (NumLocs < 20){
     for(let i = 0; i < NumLocs; i++){
-        cb[i] = document.createElement('input'); cb2[i] = document.createElement('input'); cb3[i] = document.createElement('input');
-        cb[i].type = 'text'; cb2[i].type = 'number'; cb3[i].type = 'number';
-        cb[i].onkeyup = function(){saveValue(this);}; cb2[i].onkeyup = function(){saveValue(this);}; cb3[i].onkeyup = function(){saveValue(this);};
-        myNode.appendChild(cb[i]); myNode2.appendChild(cb2[i]); if (i < NumLocs-1) myNode3.appendChild(cb3[i]);
-        cb[i].id = i+200; cb2[i].id = i+100; cb3[i].id = i+300;
-        cb[i].classList.add("sub"); cb2[i].classList.add("loc"); cb3[i].classList.add("sub");
+      cb[i] = document.createElement('input'); cb2[i] = document.createElement('input'); cb3[i] = document.createElement('input');
+      cb[i].type = 'text'; cb2[i].type = 'number'; cb3[i].type = 'number';
+      cb[i].onkeyup = function(){saveValue(this);}; cb2[i].onkeyup = function(){saveValue(this);}; cb3[i].onkeyup = function(){saveValue(this);};
+      myNode.appendChild(cb[i]); myNode2.appendChild(cb2[i]); if (i < NumLocs-1) myNode3.appendChild(cb3[i]);
+      cb[i].id = i+200; cb2[i].id = i+100; cb3[i].id = i+300;
+      cb[i].classList.add("sub"); cb2[i].classList.add("loc"); cb3[i].classList.add("sub");
     }
   }
   else{
@@ -57,7 +57,7 @@ function calculations(){
   let rsc = +(getSavedValue("RSC")) || Number.MAX_SAFE_INTEGER; rsc = boost && rsc>1 ? 0.11 : rsc; //if booster, RSC is required
   let crbd = +(getSavedValue("CRBD")); crbd = crbd == 0 ? Number.MAX_SAFE_INTEGER : Math.max(+(crbd)/1000,0.1); //convert to km and set to minimum of 100m
   let railR = document.querySelector("#SRR").checked ? 1 : 2;
-  let earray = [] , subarray = [];
+  let earray = [] , subarray = [], faultarray = [], subfault;
   let vol = 25; //25kV
   let imp = vol/fc; //fault limit impedance
   let ole = 1/(1/ci+1/cw);
@@ -92,7 +92,7 @@ function calculations(){
       oleimp = ind == 0 ? 0 : oleimp; //set FS impedance to 0
       returnimp = ind == 0 ? 0 : returnimp; //set FS impedance to 0
       faultimp = oleimp+returnimp;
-      let subfault = vol/(faultimp+imp+previmp+prevole);
+      subfault = vol/(faultimp+imp+previmp+prevole);
 
       if (getSavedValue(loc.id) < 0) { //negative sub locs
         subfault = vol/(faultimp+imp+previmp+prevole+previmpneg+prevoleneg);
@@ -107,7 +107,7 @@ function calculations(){
         textlc = totlc;
         prevoleneg = previmpneg = 0;
       }
-      bloc = bloc >= bdist ? 0 : smoothdec(bloc+lc/res); //booster location
+      bloc = bloc >= bdist ? 0 : smoothdec(bloc+lc/res); //booster location      
     }
 
     totlc += +getSavedValue(loc.id) < 0 ? 0 : lc; //total length
@@ -122,8 +122,9 @@ function calculations(){
       tickColor: "white",
       shortText: sub
     };
+    faultarray.push([sub,smoothdec(subfault.toFixed(2))]);
   });
-
+  table(faultarray);
   dygPlot(earray,subarray);
   return earray;
 }
@@ -166,16 +167,16 @@ function dygPlot(earray,subarray){
       colors: ["red"],
       pointSize: 0.1,
       axes: {
-              x: {
-        axisLabelFormatter: function(y) {
-                  return  y + ' km';
-                },
-              },
-              y: {
-        axisLabelFormatter: function(y) {
-                  return  smoothdec(y) + ' kA';
-                },
-              },
+        x: {
+          axisLabelFormatter: function(y) {
+            return  y + ' km';
+          },
+        },
+        y: {
+          axisLabelFormatter: function(y) {
+            return  smoothdec(y) + ' kA';
+          },
+        },
       }
     }          // options
   );
@@ -193,6 +194,26 @@ function dygPlot(earray,subarray){
       dateWindow: [min-adj,max+adj]
     });
   });
+}
+
+function table(rows){
+  const tabdiv = document.querySelector(`#FaultTable`);
+  const myTable = document.createElement(`table`);
+  myTable.classList.add(`scores`);
+  let row = myTable.insertRow(-1);
+  row.insertCell(0).outerHTML = `<th>Location Name</th>`;
+  row.insertCell(1).outerHTML = `<th>Fault Current (kA)</th>`;
+
+  try{
+    rows.forEach(arr => {
+      let row = myTable.insertRow(-1);
+      row.insertCell(0).innerHTML = arr[0];
+      row.insertCell(1).innerHTML = arr[1];
+    });
+  }catch(err){console.log(err)}
+  
+  tabdiv.innerHTML = ``;
+  tabdiv.appendChild(myTable);
 }
 
 //startup
