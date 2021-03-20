@@ -8,7 +8,7 @@ function addLoader(html,err){
     div.innerHTML=`<center>${html}</center>`;
     div.id="error";
     _('#error').fade('in', 300);
-        setTimeout(() => {
+    setTimeout(() => {
       _('#error').fade('out', 500);
     }, 3000);
   }
@@ -17,11 +17,6 @@ function addLoader(html,err){
     div.classList.add("loader");
     graphdiv.appendChild(div);
   }
-}
-
-function labels(){
-  document.getElementById("xaxis").value = getSavedValue("xaxis");    // set the value to this input
-  document.getElementById("yaxis").value = getSavedValue("yaxis");   // set the value to this input
 }
 
 function checkit() {
@@ -61,22 +56,25 @@ function addOption(opt, desc, bool, plotter) {
   const label = document.createElement("Label");label.setAttribute("for",opt);label.innerHTML = desc;
   options.appendChild(label);  label.appendChild(newopt);
   function updateOps (e){
-    eval('g3.updateOptions({'+e.target.id+':'+e.target.checked+'});');
+    eval(`g3.updateOptions({${e.target.id}: ${e.target.checked}});`);
   }
   function updatePlotter (e){
-    if (e.target.checked) eval('g3.updateOptions({'+e.target.id+':'+plotter+'});');
-    else eval('g3.updateOptions({'+e.target.id+': Dygraph.Plotters.linePlotter});');
+    if (e.target.checked) eval(`g3.updateOptions({${e.target.id}: ${plotter}});`);
+    else eval(`g3.updateOptions({${e.target.id}: Dygraph.Plotters.linePlotter});`);
   }
   if (plotter != undefined) newopt.addEventListener('change', updatePlotter);
   else newopt.addEventListener('change', updateOps);
 }
 
 function inputsNfunc(db){
+  document.getElementById("xaxis").value = getSavedValue("xaxis");    // set the value to this input
+  document.getElementById("yaxis").value = getSavedValue("yaxis");   // set the value to this input
   document.getElementById("99").checked = (getSavedValue("99") == "true"); //remember if start date is checked
   document.getElementById("99").onchange = function(){saveRadio(this);read(db);};
   document.getElementById("dat").onblur = function(){saveValue(this);read(db);};
   document.getElementById("datR").onblur = function(){saveValue(this);read(db);};
   document.getElementById("eqcheck").onchange = function(){saveRadio(this);read(db);};
+  document.getElementById("calcext").onclick = () => {findExtremes();};
   document.getElementById("LabR").value = getSavedValue("Labr");
   document.getElementById("dat").value = getSavedValue("dat");
   document.getElementById("datR").value = getSavedValue("datR");
@@ -105,20 +103,12 @@ function startup(bool){
       var transaction = db.transaction(["plots"]);
       var objectStore = transaction.objectStore("plots");
       var request = objectStore.get("2");
-      request.onerror = function(event) {
-        // Handle errors!
-      };
       request.onsuccess = function(event) {
-        //console.log(request);
         uploadcsv(db);
         if (bool) return;
         inputsNfunc(db);
         read(db);
       };
-    }
-    openRequest.onerror = function(e) {
-      console.log("Error");
-      console.dir(e);
     }
   }
 }
@@ -165,35 +155,47 @@ function uploadcsv(db){
 function read(db) {
   try{
     addLoader("Reading Data from Variable");
-    var arr = heh.map(x => [...x]);
-    plotexp(arr);
+    let arr = heh.map(x => [...x]);
+    plotexp(arr,db);
   }
   catch(err){
     addLoader("Reading and Loading Data from IndexDB");
-    var transaction = db.transaction(["plots"], "readonly");
-    var objectStore = transaction.objectStore("plots");
+    const transaction = db.transaction(["plots"], "readonly");
+    const objectStore = transaction.objectStore("plots");
     objectStore.openCursor(null, "prev").onsuccess = async function(event) {
       try{
-        var cursor = event.target.result.value.data;
+        const cursor = event.target.result.value.data;
         heh =[];
         heh = cursor.map(x => [...x]);
         plotexp(cursor);
       }catch(err){
         console.log(err);
-        addLoader("Calculations or Data Error. Uploading Default Graph.",true);
-        var csv = await fetch('uploads/graph.csv').then(result => result.text());
-        plotcalcs(csv,db);
+        defaultPlot(db);
       }
     }
   }
 }
-function plotcalcs(file,db) {
-  var csv = file;
-  csv = Papa.parse(csv).data
+
+async function defaultPlot(db) {
+  addLoader("Calculations or Data Error. Uploading Default Graph.",true);
+  const csv = await fetch('uploads/graph.csv').then(result => result.text());
+  plotcalcs(csv,db);  
+}
+
+function plotcalcs(csv,db) {
   addLoader("Formatting Data");
+  localStorage.setItem(document.getElementById("eqcheck").id,false); //uncheck equations with new file
+  document.getElementById("69").checked = true; //checkbox "Show" with new file
+  csv = parseCSV(csv);
+  save(csv,db);
+  //setTimeout(dyg,1,(csv));
+  plotexp(csv);
+}
+
+function parseCSV(csv) {
+  csv = Papa.parse(csv).data;
   try{
     while (csv[csv.length-1].length != csv[csv.length-5].length){
-    //while (csv[csv.length-1] == ""){
       csv.splice(csv.length-1,1)// remove empty ends
     }
   }catch(e){console.log(e);}
@@ -205,27 +207,23 @@ function plotcalcs(file,db) {
     }
   }
   csv = csv.map(i => i.map(j =>{
-      return j == "null" ? null : +j;
-    })); //loop through 2D array and map individual items
-  for (var i=0;i<csv.length;i++){    //eliminate not numbers
-    for (var j=0;j<csv[i].length;j++){    //eliminate not numbers
+    return j == "null" ? null : +j;
+  })); //loop through 2D array and map individual items
+  for (let i=0;i<csv.length;i++){    //eliminate not numbers
+    for (let j=0;j<csv[i].length;j++){    //eliminate not numbers
       if (isNaN(csv[i][j])){
         csv[i].splice(j,1);
         j--;
       }
     }
-    if (csv[i] === undefined || csv[i].length == 0){
+    if (csv[i] === undefined || csv[i].length === 0){
       csv.splice(i,1);
       i--;
     }
-  }
-  localStorage.setItem(document.getElementById("eqcheck").id,false); //uncheck equations with new file
-  document.getElementById("69").checked = true; //checkbox "Show" with new file
-
-  save(csv,db);
-  //setTimeout(dyg,1,(csv));
-  plotexp(csv);
+  }  
+  return csv;
 }
+
   //save to database
 function save(data,db) {
   heh = [];
@@ -233,18 +231,12 @@ function save(data,db) {
   var transaction = db.transaction(["plots"], "readwrite");
   var objectStore = transaction.objectStore("plots");
   var request = objectStore.put({id:1,'data':data});
-  request.onsuccess = function(event) {
-  //console.log(event.target)
-  };
 }
 
-
-function plotexp(file){
+function plotexp(csv,db){
   //show hidden options
   var y = document.getElementById("hide");
   y.style.display = "block";
-
-  var csv = file;
 
   var dat = new Date()/*, datb = false*/;
   var datrate = 1000;  //one second
@@ -259,37 +251,17 @@ function plotexp(file){
   }
 
   try{
-    while (document.getElementById("equa").childElementCount>2) { //don't remove the firstborn children
-      document.getElementById("equa").removeChild(document.getElementById("equa").lastChild);
+    const equadiv = document.getElementById("equa");
+    while (equadiv.childElementCount>2) { //don't remove the firstborn children
+      equadiv.removeChild(equadiv.lastChild);
     }
   }catch(err){console.log(e);}
-
-  //add equation inputs
-  var eqh = document.getElementById('equa');
-  var equ = []/*, eqw = [], eqb = false*/;
-  for (let i=1;i<csv[0].length;i++){
-    equ[i] = document.createElement('input');
-    equ[i].type = 'text';
-    equ[i].value = getSavedValue(String.fromCharCode(96+i)) == "" ? String.fromCharCode(96+i) : getSavedValue(String.fromCharCode(96+i));
-    //eqw[i-1] = equ[i].value;
-    equ[i].id = String.fromCharCode(96+i);
-    equ[i].onkeyup = function(){saveValue(this);};
-    eqh.appendChild(equ[i]);
-  }
-
-  //column equations
-  function arrayequations() {
-    for (let i=0;i<csv.length;i++){
-      for (let j=1;j<csv[i].length;j++){
-        window[String.fromCharCode(96+j)] = csv[i][j];
-        csv[i][j] = eval(document.getElementById(String.fromCharCode(96+j)).value);
-      }
-    }
-  }
-  document.getElementById("eqcheck").checked = (getSavedValue("eqcheck") == "true");
-  if (document.getElementById("eqcheck").checked){ //eqb = true;
+  
+  equationInputs(csv[0].length);
+  const eqychecky = document.getElementById("eqcheck").checked = (getSavedValue("eqcheck") == "true");
+  if (eqychecky){ //eqb = true;
     addLoader("Calculating Equations");
-    setTimeout(() => {arrayequations()},1);
+    setTimeout(() => {csv = arrayequations(csv,db)},1);
   }
 
   setTimeout(() => {dyg(csv)},1);
@@ -306,21 +278,47 @@ function plotexp(file){
   };*/
 }
 
+function equationInputs(len) {//add equation inputs  
+  const eqh = document.getElementById('equa');
+  let equ = []/*, eqw = [], eqb = false*/;
+  for (let i=1;i<len;i++){
+    equ[i] = document.createElement('input');
+    equ[i].type = 'text';
+    equ[i].value = getSavedValue(String.fromCharCode(96+i)) == "" ? String.fromCharCode(96+i) : getSavedValue(String.fromCharCode(96+i));
+    //eqw[i-1] = equ[i].value;
+    equ[i].id = String.fromCharCode(96+i);
+    equ[i].onkeyup = function(){saveValue(this);};
+    eqh.appendChild(equ[i]);
+  }
+}
+
+function arrayequations(csv,db) {//column equations
+  try{
+    for (let i=0;i<csv.length;i++){
+      for (let j=1;j<csv[i].length;j++){
+        window[String.fromCharCode(96+j)] = csv[i][j];
+        csv[i][j] = eval(document.getElementById(String.fromCharCode(96+j)).value);
+      }
+    }
+    return csv;
+  }catch(err){defaultPlot(db);}
+}
+  
+const smoothdec = (a) => +(parseFloat(a).toFixed(2)); //fix broken decimals
 function dyg(csv) {
   /*Remove unused checkboxes*/
   try{
     const myNode = document.getElementById("MyForm");
     while (myNode.childElementCount>3) { //don't remove the firstborn children
       myNode.removeChild(myNode.lastChild);
-    while (document.getElementById("ColorForm").childElementCount>1) { //don't remove the firstborn children
-      document.getElementById("ColorForm").removeChild(document.getElementById("ColorForm").lastChild);
-    }
+      while (document.getElementById("ColorForm").childElementCount>1) { //don't remove the firstborn children
+        document.getElementById("ColorForm").removeChild(document.getElementById("ColorForm").lastChild);
+      }
     }
   }catch(err){console.log(e);}
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
-  const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     csv,
@@ -332,16 +330,16 @@ function dyg(csv) {
       includeZero: true,
       showRoller: true,
       axes: {
-              x: {
-        axisLabelFormatter: function(y, gran, opts) {
-          return  y instanceof Date ? Dygraph.dateAxisLabelFormatter(y, gran, opts) : smoothdec(y);
-                },
-              },
-              y: {
-        axisLabelFormatter: function(y) {
-                  return  smoothdec(y);
-                },
-              },
+        x: {
+          axisLabelFormatter: function(y, gran, opts) {
+            return  y instanceof Date ? Dygraph.dateAxisLabelFormatter(y, gran, opts) : smoothdec(y);
+          },
+        },
+        y: {
+          axisLabelFormatter: function(y) {
+            return  smoothdec(y);
+          },
+        },
       }
     }          // options
   );
@@ -359,7 +357,7 @@ function dygReady(){
     cb[i] = document.createElement('input');cb2[i] = document.createElement('input'); col[i] = document.createElement('input');
     cb[i].type = 'checkbox';cb2[i].type = 'text'; col[i].type = 'color';
     cbh.appendChild(cb[i]);cbh.appendChild(cb2[i]); colF.appendChild(col[i]);
-    cb[i].id = 'csvcheckbox '+i; cb2[i].id = 'csvlabel'+i; col[i].id = 'csvcolor'+i;
+    cb[i].id = `csvcheckbox ${i}`; cb2[i].id = `csvlabel${i}`; col[i].id = `csvcolor${i}`;
     cb2[i].value = lbs[i];
     col[i].value = rgbToHex(colors[i]);
     cb2[i].className = "idents";
@@ -391,8 +389,8 @@ yaxis.onblur = () => { saveValue(this);
 
 function rgbToHex(rgb) {
   const col = rgb.split(/[,)(]/);
-  const ToHex = (c) => {const hex = c.toString(16);return hex.length == 1 ? "0" + hex : hex;}
-  return "#" + ToHex(+col[1]) + ToHex(+col[2]) + ToHex(+col[3]);
+  const ToHex = (c) => {const hex = c.toString(16);return hex.length == 1 ? `0${hex}` : hex;}
+  return `#${ToHex(+col[1])}${ToHex(+col[2])}${ToHex(+col[3])}`;
 }
 
 function change(el) {
@@ -419,20 +417,19 @@ function idents(len){
   labl.push("boobs");
 
   for (var i=0; i < len;i++){
-    labd = document.getElementById('csvlabel'+i);
-    colors = document.getElementById('csvcolor'+i);
-    labd.value = getSavedValue('csvlabel'+i) == "" ? labd.value : getSavedValue('csvlabel'+i);
+    labd = document.getElementById(`csvlabel${i}`);
+    colors = document.getElementById(`csvcolor${i}`);
+    labd.value = getSavedValue(`csvlabel${i}`) == "" ? labd.value : getSavedValue(`csvlabel${i}`);
     labl.push(labd.value);
     if (labd.value.length>0) {
-      labd.style['width'] = (labd.value.length*8)+'px';
-      colors.style['width'] = (Math.max(40,20+labd.value.length*8))+'px';
+      labd.style['width'] = `${labd.value.length+1}ch`;
+      colors.style['width'] = `${Math.max(5.5,3.5+labd.value.length)}ch`;
     }
   }
   g3.updateOptions({
     labels: labl
   });
 }
-
 
 //below code was taken from <script src="https://dygraphs.com/src/extras/smooth-plotter.js"></script>
 function getControlPoints(p0, p1, p2, opt_alpha, opt_allowFalseExtrema) {
@@ -498,21 +495,22 @@ function smoothPlotter(e) {
 
   for (var i = 1; i < points.length; i++) {
     var p0 = points[i - 1],
-        p1 = points[i],
-        p2 = points[i + 1];
+      p1 = points[i],
+      p2 = points[i + 1];
     p0 = p0 && isOK(p0.canvasy) ? p0 : null;
     p1 = p1 && isOK(p1.canvasy) ? p1 : null;
     p2 = p2 && isOK(p2.canvasy) ? p2 : null;
     if (p0 && p1) {
-      var controls = getControlPoints({x: p0.canvasx, y: p0.canvasy},
-                                      {x: p1.canvasx, y: p1.canvasy},
-                                      p2 && {x: p2.canvasx, y: p2.canvasy},
-                                      smoothPlotter.smoothing);
+      var controls = getControlPoints(
+        {x: p0.canvasx, y: p0.canvasy},
+        {x: p1.canvasx, y: p1.canvasy},
+        p2 && {x: p2.canvasx, y: p2.canvasy},
+        smoothPlotter.smoothing);
       lastRightX = (lastRightX !== null) ? lastRightX : p0.canvasx;
       lastRightY = (lastRightY !== null) ? lastRightY : p0.canvasy;
       ctx.bezierCurveTo(lastRightX, lastRightY,
-                        controls[0], controls[1],
-                        p1.canvasx, p1.canvasy);
+        controls[0], controls[1],
+        p1.canvasx, p1.canvasy);
       lastRightX = controls[2];
       lastRightY = controls[3];
     } else if (p1) {
@@ -524,14 +522,55 @@ function smoothPlotter(e) {
       lastRightX = lastRightY = null;
     }
   }
-
   ctx.stroke();
 }
+
+function findExtremes(){
+  let extremeArr = []
+  file = g3.rolledSeries_;
+  let labls = g3.getLabels();
+
+  for (let i=1; i<file.length; i++) {
+    let max = 0, av = 0, min = Number.MAX_SAFE_INTEGER;
+    for (let j=0; j<file[1].length; j++) {
+      max = Math.max(max,file[i][j][1]);
+      min = Math.min(min,file[i][j][1]);
+      av += +file[i][j][1];
+    }
+    av = av/file[1].length;
+    extremeArr.push([labls[i],smoothdec(min),smoothdec(av),smoothdec(max)])
+  }
+  table(extremeArr);
+}
+
+function table(rows){
+  const tabdiv = document.querySelector(`#ExtremesTable`);
+  const myTable = document.createElement(`table`);
+  myTable.classList.add(`scores`);
+  let row = myTable.insertRow(-1);
+  row.insertCell(0).outerHTML = `<th>Series</th>`;
+  row.insertCell(1).outerHTML = `<th>Min</th>`;
+  row.insertCell(2).outerHTML = `<th>Average</th>`;
+  row.insertCell(3).outerHTML = `<th>Max</th>`;
+
+  try{
+    rows.forEach(arr => {
+      let row = myTable.insertRow(-1);
+      row.insertCell(0).innerHTML = arr[0];
+      row.insertCell(1).innerHTML = arr[1];
+      row.insertCell(2).innerHTML = arr[2];
+      row.insertCell(3).innerHTML = arr[3];
+    });
+  }catch(err){console.log(err)}
+  
+  while (tabdiv.childElementCount>1) tabdiv.removeChild(tabdiv.lastChild);
+  tabdiv.appendChild(myTable);
+}
+
 smoothPlotter.smoothing = 1/3;
 smoothPlotter._getControlPoints = getControlPoints;  // for testing
 window.smoothPlotter = smoothPlotter;
 Dygraph.smoothPlotter = smoothPlotter;
 
 //startup
-labels();
 startup();
