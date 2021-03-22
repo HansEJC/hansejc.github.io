@@ -167,7 +167,7 @@ function clippy (x,y) {
       //scrollY: -window.scrollY,
       scrollX:0,
       scrollY:0,
-      height: y+17,
+      height: y+10,
       width: x+10,
     }).then(canvas => {
       if (typeof(navigator.clipboard)!='undefined'){
