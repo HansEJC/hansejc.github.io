@@ -484,6 +484,26 @@
     {
       background-color: #1f232b;
     }
+    
+    /* List */
+
+    ol {
+      counter-reset: item;
+      padding: 0;
+    }
+
+    ol > li {
+      counter-increment: item;
+    }
+
+    ol ol > li {
+      display: flex;
+    }
+
+    ol ol > li:before {
+      content: counters(item, ".") ". ";
+      min-width: 6ch;
+    }
 
 /*********************************************************************************/
 /* Wrappers                                                                      */
@@ -840,45 +860,6 @@ input:checked + .slider:before {
       height: 4em;
       line-height: 4em;
     }
-
-  /* List */
-
-    ul
-    {
-    }
-
-      ul.actions
-      {
-        margin: 3em 0 0 0;
-      }
-
-        form ul.actions
-        {
-          margin-top: 0;
-        }
-
-        ul.actions li
-        {
-          display: inline-block;
-          margin: 0 0.75em 0 0.75em;
-        }
-
-        ul.actions li:first-child
-        {
-          margin-left: 0;
-        }
-
-        ul.actions li:last-child
-        {
-          margin-right: 0;
-        }
-
-        ul.actions-centered
-        {
-          text-align: center;
-        }
-
-
 
 /*********************************************************************************/
 /* Logo                                                                          */
