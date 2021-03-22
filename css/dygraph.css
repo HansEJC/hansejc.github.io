@@ -58,7 +58,7 @@ canvas:hover ~ .dygraph-roller {
   /* padding-left is set based on the stroke pattern */
 }
 
-.dygraph-roller:hover {
+.dygraph-roller:is(:hover,:focus) {
 	opacity:1;
 }
 
