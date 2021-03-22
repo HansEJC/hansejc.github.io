@@ -74,7 +74,6 @@ function inputsNfunc(db){
   document.getElementById("dat").onblur = function(){saveValue(this);read(db);};
   document.getElementById("datR").onblur = function(){saveValue(this);read(db);};
   document.getElementById("eqcheck").onchange = function(){saveRadio(this);read(db);};
-  document.getElementById("calcext").onclick = () => {findExtremes();};
   document.getElementById("LabR").value = getSavedValue("Labr");
   document.getElementById("dat").value = getSavedValue("dat");
   document.getElementById("datR").value = getSavedValue("datR");
@@ -179,7 +178,7 @@ function read(db) {
 async function defaultPlot(db) {
   addLoader("Calculations or Data Error. Uploading Default Graph.",true);
   const csv = await fetch('uploads/graph.csv').then(result => result.text());
-  plotcalcs(csv,db);  
+  plotcalcs(csv,db);
 }
 
 function plotcalcs(csv,db) {
@@ -220,7 +219,7 @@ function parseCSV(csv) {
       csv.splice(i,1);
       i--;
     }
-  }  
+  }
   return csv;
 }
 
@@ -256,7 +255,7 @@ function plotexp(csv,db){
       equadiv.removeChild(equadiv.lastChild);
     }
   }catch(err){console.log(e);}
-  
+
   equationInputs(csv[0].length);
   const eqychecky = document.getElementById("eqcheck").checked = (getSavedValue("eqcheck") == "true");
   if (eqychecky){ //eqb = true;
@@ -278,7 +277,7 @@ function plotexp(csv,db){
   };*/
 }
 
-function equationInputs(len) {//add equation inputs  
+function equationInputs(len) {//add equation inputs
   const eqh = document.getElementById('equa');
   let equ = []/*, eqw = [], eqb = false*/;
   for (let i=1;i<len;i++){
@@ -303,7 +302,7 @@ function arrayequations(csv,db) {//column equations
     return csv;
   }catch(err){defaultPlot(db);}
 }
-  
+
 const smoothdec = (a) => +(parseFloat(a).toFixed(2)); //fix broken decimals
 function dyg(csv) {
   /*Remove unused checkboxes*/
@@ -346,6 +345,7 @@ function dyg(csv) {
   g3.ready(dygReady);
 }
 function dygReady(){
+  findExtremes();
   const lbs = g3.getLabels();
   const colors = g3.getColors();
   //lbs.pop();
@@ -562,7 +562,7 @@ function table(rows){
       row.insertCell(3).innerHTML = arr[3];
     });
   }catch(err){console.log(err)}
-  
+
   while (tabdiv.childElementCount>1) tabdiv.removeChild(tabdiv.lastChild);
   tabdiv.appendChild(myTable);
 }
