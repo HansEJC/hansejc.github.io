@@ -1,4 +1,7 @@
 "use strict";
+(new URL(document.location)).searchParams.forEach((x, y) => {
+  localStorage.setItem(y,x);
+});
 //Toggle Dark Mode
 (function () {
   //Add toggle to page
@@ -37,7 +40,6 @@
     document.body.classList.toggle('dark', shouldAdd);
     darkToggle.checked = shouldAdd;
   }
-
 })();
 
 function toggleNav(e) {
@@ -194,16 +196,17 @@ function saveValue(e){
 
   let url ='';
   let params = {};
-  document.querySelectorAll('input').forEach((element) => {
-    if (element.value.length > 0) params[element.id] = element.value;
+  document.querySelectorAll('input').forEach((el) => {
+    if (el.value.length > 0) params[el.id] = el.value;
+    if (el.type === `checkbox` || el.type === `radio`) params[el.id] = el.checked;
   });
   let esc = encodeURIComponent;
   let query = Object.keys(params)
-    .map(k => esc(k) + '=' + esc(params[k]))
+    .map(k => `${esc(k)}=${esc(params[k])}`)
     .join('&');
-  url += '?' + query;
+  url += `?${query}`;
 
-  let newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + url;
+  let newurl = `${window.location.protocol}//${window.location.host+window.location.pathname+url}`;
   window.history.pushState({ path: newurl }, '', newurl);
 }
 
