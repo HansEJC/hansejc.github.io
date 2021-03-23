@@ -146,6 +146,15 @@
   {
     margin-bottom: 2em;
   }
+  
+  progress {
+    height: 3em;
+    width: inherit;
+    max-width: inherit;
+    opacity: 0.3;
+    position: relative;
+    top: -9.2em;
+  }
 
   /* Table */
   table {
@@ -1071,6 +1080,9 @@ input:checked + .slider:before {
         {
           margin-top: 0;
         }
+  progress {
+    top: -10.6em;
+  }
 }
 
 /* Resets (http://meyerweb.com/eric/tools/css/reset/ | v2.0 | 20110126 | License: none (public domain)) */

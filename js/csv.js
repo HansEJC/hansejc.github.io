@@ -1,5 +1,7 @@
-function addLoader(html,err){
+function addLoader(html,err,val){
   let div = document.createElement('div');
+  let prog = document.createElement(`progress`);
+  prog.max = 100, prog.value = val || 50;
   let graphdiv = document.getElementById("graphdiv3");
   let errdiv = document.getElementById("err");
   if (err) {
@@ -16,6 +18,7 @@ function addLoader(html,err){
     graphdiv.innerHTML=`<center>${html}</center>`;
     div.classList.add("loader");
     graphdiv.appendChild(div);
+    graphdiv.appendChild(prog);
   }
 }
 
@@ -114,7 +117,7 @@ function startup(bool){
 
 function uploadcsv(db){
   document.forms['myForm'].elements['my_upload'].onchange = function(evt) {
-    addLoader("Uploading csv");
+    addLoader("Uploading csv",false,33);
     if(!window.FileReader) return; // Browser is not compatible
 
     var reader = new FileReader();
@@ -152,13 +155,14 @@ function uploadcsv(db){
 }
 
 function read(db) {
+  let prog = ((getSavedValue("99") == "true") || (getSavedValue("eqcheck") == "true")) ? 33 : 66;
   try{
-    addLoader("Reading Data from Variable");
+    addLoader("Reading Data from Variable",false,prog);
     let arr = heh.map(x => [...x]);
     plotexp(arr,db);
   }
   catch(err){
-    addLoader("Reading and Loading Data from IndexDB");
+    addLoader("Reading and Loading Data from IndexDB",false,prog);
     const transaction = db.transaction(["plots"], "readonly");
     const objectStore = transaction.objectStore("plots");
     objectStore.openCursor(null, "prev").onsuccess = async function(event) {
@@ -182,7 +186,7 @@ async function defaultPlot(db) {
 }
 
 function plotcalcs(csv,db) {
-  addLoader("Formatting Data");
+  addLoader("Formatting Data",false,66);
   localStorage.setItem(document.getElementById("eqcheck").id,false); //uncheck equations with new file
   document.getElementById("69").checked = true; //checkbox "Show" with new file
   csv = parseCSV(csv);
@@ -242,7 +246,7 @@ function plotexp(csv,db){
   if (document.getElementById("dat").value != "") dat = new Date(document.getElementById("dat").value);
   if (document.getElementById("datR").value != "") datrate = Number(document.getElementById("datR").value)*1000;
   if (document.getElementById("99").checked) { //set own start date and increment
-    addLoader("Adding Custom Dates");
+    addLoader("Adding Custom Dates",false,80);
     for (let i=0;i<csv.length;i++){
       csv[i].unshift(new Date(dat.setTime(dat.getTime()+datrate)));
       //dat.setTime(dat.getTime()+1000
@@ -259,7 +263,7 @@ function plotexp(csv,db){
   equationInputs(csv[0].length);
   const eqychecky = document.getElementById("eqcheck").checked = (getSavedValue("eqcheck") == "true");
   if (eqychecky){ //eqb = true;
-    addLoader("Calculating Equations");
+    addLoader("Calculating Equations",false,90);
     setTimeout(() => {csv = arrayequations(csv,db)},1);
   }
 
