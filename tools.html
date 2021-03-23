@@ -37,21 +37,24 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <!-- Content -->
           <div id="content">
             <header>
-                <h1>Parallel Impedance Calculator</h1>
+              <h1>Parallel Impedance Calculator</h1>
             </header>
             <div class="row 50%">
               <section class="box">
                 <form>
-                  Quantity<input type="number" id="NPR" onkeyup='saveValue(this);remParallel();calculations();' />
+                  <label for="NumPar">Quantity</label>
+                  <input type="number" id="NumPar"/>
                 </form>
               </section>
-              <section class="box"><pre>    Resistances (Ω)</pre>
+              <section class="box">
+                  <label for="Parallel">Resistances (Ω)</label>
                 <form id="Parallel">
                 </form>
               </section>
               <section class="box">
                 <form>
-                  Parallel Resistance (Ω)<span id="PR" class="label"></span>
+                  <label for="PR">Parallel Resistance (Ω)</label>
+                  <span id="PR" class="label"></span>
                 </form>
               </section>
             </div>
@@ -61,16 +64,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="row 50%">
               <section class="box">
                 <form>
-                  Number<input type="number" id="PN" onkeyup='saveValue(this);polrec();' />
-                  Angle (°)<input type="number" id="PA" onkeyup='saveValue(this);polrec();' />
-                  Rectangular<span id="PTR" class="label"></span>
+                  <label for="PN">Number</label>
+                  <input type="number" id="PN"/>
+                  <label for="PA">Angle (°)</label>
+                  <input type="number" id="PA"/>
+                  <label for="PTR">Rectangular</label>
+                  <span id="PTR" style="min-width: 16ch;" class="label"></span>
                 </form>
               </section>
               <section class="box">
                 <form>
-                  Real<input type="number" id="RR" onkeyup='saveValue(this);polrec();' />
-                  Imaginary <input type="number" id="IR" onkeyup='saveValue(this);polrec();' />
-                  Polar<span id="RTP" class="label"></span>
+                  <label for="RR">Real</label>
+                  <input type="number" id="RR"/>
+                  <label for="IR">Imaginary</label>
+                   <input type="number" id="IR"/>
+                  <label for="RTP">Polar</label>
+                  <span id="RTP" style="min-width: 17ch;" class="label"></span>
                 </form>
               </section>
             </div>
@@ -78,17 +87,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <h1>Polar Addition</h1>
             </header>
             <div class="row 50%">
-              <section class="box"><br><pre>    Numbers</pre>
+              <section class="box"><br>
+                <label for="Nums">Numbers</label>
                 <form id="Nums">
                 </form>
               </section>
-              <section class="box"><br><pre>    Angles</pre>
+              <section class="box"><br>
+                <label for="Angs">Angles</label>
                 <form id="Angs">
                 </form>
               </section>
-              <section class="box"><br>Polar Sum
+              <section class="box">
                 <form>
-                  <span id="PSUM" class="label"></span>
+                  <label for="PSUM">Polar Sum</label>
+                  <span id="PSUM" style="min-width: 17ch;" class="label"></span>
                 </form>
               </section>
             </div>
@@ -98,30 +110,42 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="row 50%">
               <section class="box">
                 <form>
-                  Line Voltage (V)<input type="number" id="ILV" onkeyup='saveValue(this);loadcalc();' />
-                  L1 Load (A)<input type="number" id="L1L" onkeyup='saveValue(this);loadcalc();' />
-                  L2 Load (A)<input type="number" id="L2L" onkeyup='saveValue(this);loadcalc();' />
-                  L3 Load (A)<input type="number" id="L3L" onkeyup='saveValue(this);loadcalc();' />
+                  <label for="ILV">Line Voltage (V)</label>
+                  <input type="number" id="ILV" />
+                  <label for="L1L">L1 Load (A)</label>
+                  <input type="number" id="L1L"/>
+                  <label for="L2L">L2 Load (A)</label>
+                  <input type="number" id="L2L"/>
+                  <label for="L3L">L3 Load (A)</label>
+                  <input type="number" id="L3L"/>
                 </form>
               </section>
               <section class="box">
                 <form>
-                  L1-L2 Load (A)<input type="number" id="L12L" onkeyup='saveValue(this);loadcalc();' />
-                  L1-L3 Load (A)<input type="number" id="L13L" onkeyup='saveValue(this);loadcalc();' />
-                  L2-L3 Load (A)<input type="number" id="L23L" onkeyup='saveValue(this);loadcalc();' />
+                  <label for="L12L">L1-L2 Load (A)</label>
+                  <input type="number" id="L12L"/>
+                  <label for="L13L">L1-L3 Load (A)</label>
+                  <input type="number" id="L13L"/>
+                  <label for="L23L">L2-L3 Load (A)</label>
+                  <input type="number" id="L23L"/>
                 </form>
               </section>
               <section class="box">
                 <form>
-                  L1 Load (A)<span id="L1T" class="label"></span>
-                  L2 Load (A)<span id="L2T" class="label"></span>
-                  L3 Load (A)<span id="L3T" class="label"></span>
-                  N Load (A)<span id="NL" class="label"></span>
+                  <label for="L1T">L1 Load (A)</label>
+                  <span id="L1T" class="label"></span>
+                  <label for="L2T">L2 Load (A)</label>
+                  <span id="L2T" class="label"></span>
+                  <label for="L3T">L3 Load (A)</label>
+                  <span id="L3T" class="label"></span>
+                  <label for="NL">N Load (A)</label>
+                  <span id="NL" class="label"></span>
                 </form>
               </section>
               <section class="box">
                 <form>
-                  Total Power <span id="TPOW" class="label"></span>
+                  <label for="TPOW">Total Power</label>
+                  <span id="TPOW" class="label"></span>
                 </form>
               </section>
             </div>
@@ -131,20 +155,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="row 50%">
               <section class="box">
                 <form>
-                  Load (W)<input type="number" id="CONL" onkeyup='saveValue(this);consum();' />
-                  Rate (£/kWh)<input type="number" id="CONR" onkeyup='saveValue(this);consum();' />
+                  <label for="CONL">Load (W)</label>
+                  <input type="number" id="CONL"/>
+                  <label for="CONR">Rate (£/kWh)</label>
+                  <input type="number" id="CONR"/>
                 </form>
               </section>
               <section class="box">
                 <form>
-                  Time (h)<input type="number" id="CONH" onkeyup='saveValue(this);consum();' />
-                  Days <span id="COND" class="label"></span>
+                  <label for="CONH">Time (h)</label>
+                  <input type="number" id="CONH"/>
+                  <label for="COND">Days</label>
+                  <span id="COND" class="label"></span>
                 </form>
               </section>
               <section class="box">
                 <form>
-                  Consumption (kWh)<span id="CONK" class="label"></span>
-                  Cost (£) <span id="CONC" class="label"></span>
+                  <label for="CONK">Consumption (kWh)</label>
+                  <span id="CONK" class="label"></span>
+                  <label for="CONC">Cost (£) </label>
+                  <span id="CONC" class="label"></span>
                 </form>
               </section>
               <section class="box">
