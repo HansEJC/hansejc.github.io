@@ -36,9 +36,8 @@ function labls(num) {
 }
 
 function checkit() {
-  this.checked = true;
   var x = document.getElementById("Lhide"), y = document.getElementById("Hhide");
-  if (this.id === 'HF') [x,y] = [y,x];
+  if (document.querySelector('#HF').checked) [x,y] = [y,x];
   x.style.display = "block";
   y.style.display = "none";
   calculations();
@@ -63,9 +62,6 @@ function multipliers(){
 }
 
 async function calculations(){
-  (new URL(document.location)).searchParams.forEach((x, y) => {
-    localStorage.setItem(y,x);
-  });
   multipliers();
 
   const radios = document.querySelectorAll("input[name=drive]");
@@ -224,7 +220,13 @@ function dygReady(){
 
 //startup
 window.addEventListener("load", function() {
-  calculations();
+  document.querySelectorAll('input[type="radio"]').forEach(rad => {
+    rad.checked = (getSavedValue(rad.id) == "true");
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(box => {
+    box.checked = (getSavedValue(box.id) == "true");
+  });
+  checkit();
   document.onkeyup = function() {
     calculations();
   };

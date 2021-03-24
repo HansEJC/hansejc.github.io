@@ -23,9 +23,8 @@ function addLoader(html,err,val){
 }
 
 function checkit() {
-  this.checked = true;
-  if (this.id == 'CSVF') document.getElementById("hide").style.display = "none";
-  else document.getElementById("hide").style.display = "block";
+  const hide = document.getElementById("hide");
+  hide.style.display = this.id == 'CSVF' ? "none" : "block";
 }
 
 function colorUpdate() {
@@ -55,7 +54,9 @@ function chooseOptions(){
 }
 
 function addOption(opt, desc, bool, plotter) {
-  const newopt = document.createElement('input');newopt.id=opt;newopt.type='checkbox';newopt.checked=bool;
+  const newopt = document.createElement('input');newopt.id=opt;newopt.type='checkbox';
+  if (bool) localStorage.setItem(opt,bool);
+  checked = (getSavedValue(newopt.id) === `true`);newopt.checked=checked;
   const label = document.createElement("Label");label.setAttribute("for",opt);label.innerHTML = desc;
   options.appendChild(label);  label.appendChild(newopt);
   function updateOps (e){
@@ -65,8 +66,8 @@ function addOption(opt, desc, bool, plotter) {
     if (e.target.checked) eval(`g3.updateOptions({${e.target.id}: ${plotter}});`);
     else eval(`g3.updateOptions({${e.target.id}: Dygraph.Plotters.linePlotter});`);
   }
-  if (plotter != undefined) newopt.addEventListener('change', updatePlotter);
-  else newopt.addEventListener('change', updateOps);
+  if (plotter != undefined) newopt.addEventListener('change', updatePlotter),updatePlotter({target: {checked: checked, id: opt}});
+  else newopt.addEventListener('change', updateOps),updateOps({target: {checked: checked, id: opt}});
 }
 
 function inputsNfunc(db){
@@ -86,6 +87,12 @@ function inputsNfunc(db){
 }
 
 function startup(bool){
+  document.querySelectorAll('input[type="radio"]').forEach(rad => {
+    rad.checked = (getSavedValue(rad.id) == "true");
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(box => {
+    box.checked = (getSavedValue(box.id) == "true");
+  });
   var idbSupported = ("indexedDB" in window);
   var db;
 

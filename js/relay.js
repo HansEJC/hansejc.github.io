@@ -1,16 +1,13 @@
 function hider() {
-  var x = document.getElementById("hide");
-  if (x.style.display === "none")
-    x.style.display = "block";
-   else
-    x.style.display = "none";
+  const chbox = document.querySelector(`#advanced`).checked;
+  const x = document.getElementById("hide")
+  x.style.display = chbox ? `block` : `none`;
 }
 
 function checkit() {
-  var x = document.getElementById("advanced");
-  x.checked = true;
-  var y = document.getElementById("hide");
-    y.style.display = "block";
+  const x = document.getElementById(`Sec`).checked;
+  const y = document.getElementById("hide");
+  y.style.display = x ? `block` : `none`;
 }
 
 function save(data) {
@@ -84,7 +81,15 @@ function javaread(){
 }
 
 async function startup() {
+  document.querySelectorAll('input[type="radio"]').forEach(rad => {
+    rad.checked = (getSavedValue(rad.id) == "true");
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(box => {
+    box.checked = (getSavedValue(box.id) == "true");
+  });
   javaread();
+  checkit();
+  hider();
   // await code here
   var DR = [];
   plotProtection(DR);
@@ -238,10 +243,6 @@ function Zone3(tr){
 }
 
 async function plotProtection(csvarr){
-  (new URL(document.location)).searchParams.forEach((x, y) => {
-    localStorage.setItem(y,x);
-  });
-
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
   const secdr = document.getElementById("SecDR");
@@ -343,17 +344,17 @@ async function dygPlot(total,Z3lim)
       connectSeparatedPoints: true,
       includeZero: true,
       axes: {
-              x: {
-        axisLabelFormatter: function(y) {
-                  return  y + ' Ω';
-                },
-              },
-              y: {
-                axisLabelFormatter: function(y) {
-                  return  y + ' Ω';
-                },
-                axisLabelWidth: 60
-              }
+        x: {
+          axisLabelFormatter: function(y) {
+            return  y + ' Ω';
+          },
+        },
+        y: {
+          axisLabelFormatter: function(y) {
+            return  y + ' Ω';
+          },
+          axisLabelWidth: 60
+        }
       }
     }          // options
     );

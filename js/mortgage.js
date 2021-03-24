@@ -1,7 +1,4 @@
 function calculations(){
-  (new URL(document.location)).searchParams.forEach((x, y) => {
-    localStorage.setItem(y,x);
-  });
   document.getElementById("AB").value = getSavedValue("AB");    // set the value to this input
   document.getElementById("IR").value = getSavedValue("IR");
   document.getElementById("MT").value = getSavedValue("MT");

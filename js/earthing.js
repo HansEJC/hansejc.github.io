@@ -2,10 +2,7 @@ function volts(v) {
   return v > 1000 ? +(v/1000).toFixed(2)+" kV" : +v.toFixed(2)+" V";
 }
 
-function earthing() {
-  (new URL(document.location)).searchParams.forEach((x, y) => {
-    localStorage.setItem(y,x);
-  });
+function earthing() {  
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   var er = Number(getSavedValue("ER"));    // set the value to this input
   var rr = Number(getSavedValue("RR"));

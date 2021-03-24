@@ -1,6 +1,9 @@
 function quantities() {
-  (new URL(document.location)).searchParams.forEach((x, y) => {
-    localStorage.setItem(y,x);
+  document.querySelectorAll('input[type="radio"]').forEach(rad => {
+    rad.checked = (getSavedValue(rad.id) == "true");
+  });
+  document.querySelectorAll('input[type="checkbox"]').forEach(box => {
+    box.checked = (getSavedValue(box.id) == "true");
   });
   const myNode = document.getElementById("Substation");
   myNode.innerHTML = '';
