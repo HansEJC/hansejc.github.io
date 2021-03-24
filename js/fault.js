@@ -22,7 +22,7 @@ function quantities() {
       cb[i].onkeyup = function(){saveValue(this);}; cb2[i].onkeyup = function(){saveValue(this);}; cb3[i].onkeyup = function(){saveValue(this);};
       myNode.appendChild(cb[i]); myNode2.appendChild(cb2[i]); if (i < NumLocs-1) myNode3.appendChild(cb3[i]);
       cb[i].id = i+200; cb2[i].id = i+100; cb3[i].id = i+300;
-      cb[i].classList.add("sub"); cb2[i].classList.add("loc"); cb3[i].classList.add("sub");
+      cb2[i].classList.add("loc"); cb3[i].classList.add("trac");
     }
   }
   else{
@@ -68,28 +68,30 @@ function calculations(){
   let oleimp = 0, returnimp = 0;
   let totlc = 0, previmp = 0, prevole = 0, previmpneg = 0, prevoleneg = 0, textlc = 0; //total length, previous impedance, prev OLE
   let res = 1000; //resolution
-  let bloc = 0; //booster location
   let bdist = 3; //booster distance of 3km
+  let once = true; 
 
-  document.querySelectorAll(".sub").forEach(sub => sub.value = getSavedValue(sub.id));
+  let {extra,index,insert} = negTrack(subarray);
   document.querySelectorAll(".loc").forEach((loc,ind) => {
     let trnu = +(getSavedValue(+loc.id+199)) || 2; trnu = trnu == 1 ? 1/Number.MAX_SAFE_INTEGER : trnu-1;
-    loc.value = getSavedValue(loc.id);
-    let lc = getSavedValue(loc.id);
+    let dist = getSavedValue(loc.id);
+    loc.value = dist;
+    let lc = ind === index ? +dist + extra : dist; //add extra for non parallel subs
     lc = lc == "" ? 5 : Math.abs(lc); //set to 5km if it's empty to avoid lag
-
+    
     for (let i=1;i<=res;i++){
       i = ind == 0 ? res : i; //shift the first sub to its km point
       let lcc = smoothdec(lc*i/res); //current location
-      let lch = getSavedValue(loc.id) < 0 ? totlc-lcc : totlc+lcc; //current total location
+      let lch = dist < 0 ? totlc-lcc : totlc+lcc; //current total location
       let nxbnd = lcd(lc/res,crbd); //next bond location
       nxbnd = nxbnd > lc ? lc : nxbnd; //if cross bonding is greater than sub distance, set to sub distance
+      /*nxbnd = trnu<0 
+        ? nxbnd + +getSavedValue(+loc.id+1)
+        : nxbnd;
+      trnu = trnu<0 ? 1 : trnu;*/
       let lxb = smoothdec(lcc % nxbnd) == 0 ? nxbnd : smoothdec(lcc % nxbnd) || 0;//location after last xbond
-      //if (boost && bloc >= bdist) previmp += bimp;
-      //if (boost && bloc >= bdist){
       let stuff = {ole,lcc,lc,trnu,bimp,lch,bdist,lxb,aew,ri,railR,nxbnd,rsc,atf};
       oleimp = oleFun(stuff);
-      if (trnu<1) oleimp = ole*lcc;
       if (boost) ({oleimp,returnimp} = boosterCalc({oleimp,...stuff}));
       else returnimp = (atfeed) ? atCalc(stuff): normalCalc(stuff);
       oleimp = ind == 0 ? 0 : oleimp; //set FS impedance to 0
@@ -97,7 +99,7 @@ function calculations(){
       faultimp = oleimp+returnimp;
       subfault = vol/(faultimp+imp+previmp+prevole);
 
-      if (getSavedValue(loc.id) < 0) { //negative sub locs
+      if (dist < 0) { //negative sub locs
         subfault = vol/(faultimp+imp+previmp+prevole+previmpneg+prevoleneg);
         earray.push([textlc-lcc,, subfault]);
         if ((lxb >= nxbnd || lcc >= lc) && nxbnd > 0) previmpneg += returnimp; //previous impedance
@@ -110,26 +112,55 @@ function calculations(){
         textlc = totlc;
         prevoleneg = previmpneg = 0;
       }
-      bloc = bloc >= bdist ? 0 : smoothdec(bloc+lc/res); //booster location      
+      if (once && lch >= insert) {
+        faultarray.push([getSavedValue(99+(+loc.id)),smoothdec(subfault.toFixed(2))]); //insert non parallel sub
+        once = false;
+        subarray.sort((a,b) => a.x - b.x); //makes it easier to find the non parallel location in the index
+        subarray[ind].x = lch;
+      }
     }
-
-    totlc += +getSavedValue(loc.id) < 0 ? 0 : lc; //total length
-    textlc += +getSavedValue(loc.id); //total length
+    totlc += +dist < 0 ? 0 : lc; //total length
+    textlc += +dist; //total length
     let sub = getSavedValue(100+(+loc.id));
-    //let nextlc = +(getSavedValue(1+(+loc.id)))*0.1;
-    subarray[ind] = {
-      series: getSavedValue(loc.id) < 0 ? "Fault Current (kA)." : "Fault Current (kA)",
-      x: /*textlc == 0 ? nextlc :*/ getSavedValue(loc.id) < 0 ? textlc : totlc,
-      width: sub.length*8,
-      height: 24,
-      tickColor: "white",
-      shortText: sub
-    };
+    let lblStuff = {dist,textlc,totlc,subarray,sub};
+    subLabels(lblStuff);
     faultarray.push([sub,smoothdec(subfault.toFixed(2))]);
   });
   table(faultarray);
   dygPlot(earray,subarray);
   return earray;
+}
+
+function negTrack(subarray) { //this is for locations that don't parallel
+  const tracks = document.querySelectorAll(".trac");
+  let extra = 0, index, textlc, insert;
+  let dist = 0, totlc = 0;
+  tracks.forEach((trac,ind) => {
+    const locs = document.getElementById(trac.id-199);
+    locs.classList.toggle(`loc`,!(trac.value < 0));
+    let sub = getSavedValue(trac.id-99);
+    totlc += +locs.value;
+    if (trac.value < 0) {
+      let lblStuff = {dist,textlc,totlc,subarray,sub};
+      subLabels(lblStuff);
+      insert = totlc;
+      extra = +locs.value;
+      index = ind+1;
+    };    
+  });
+  return {extra,index,insert};
+}
+
+function subLabels(stuff) {
+  let {dist,textlc,totlc,subarray,sub} = stuff;
+  subarray.push({
+    series: dist < 0 ? "Fault Current (kA)." : "Fault Current (kA)",
+    x: dist < 0 ? textlc : totlc,
+    width: sub.length*8,
+    height: 24,
+    tickColor: "white",
+    shortText: sub
+  });
 }
 
 function normalCalc(stuff){
