@@ -1,6 +1,6 @@
 version = 1
 
-exclude_patterns = ["*.min.js","js/ext/*","Orion Park/*"]
+exclude_patterns = ["*.min.js","js/ext/**","Orion Park/*"]
 
 [[analyzers]]
 name = "javascript"
