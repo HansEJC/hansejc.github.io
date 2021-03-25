@@ -5,8 +5,7 @@ const {registerRoute, setCatchHandler, setDefaultHandler} = workbox.routing;
 const {CacheFirst, StaleWhileRevalidate, NetworkFirst} = workbox.strategies;
 const {CacheableResponse, CacheableResponsePlugin} = workbox.cacheableResponse;
 const {ExpirationPlugin} = workbox.expiration;
-const googleAnalytics = workbox.googleAnalytics;
-
+//const googleAnalytics = workbox.googleAnalytics;
 //googleAnalytics.initialize(); //"Uses too much storage, not worth it.
 
 async function cacheKeyWillBeUsed({request, mode}) {
@@ -15,89 +14,45 @@ async function cacheKeyWillBeUsed({request, mode}) {
   // Any search params or hash will be left out.
 }
 
-registerRoute(
-  ({request}) => request.destination === 'image',
-  new CacheFirst({
-    cacheName: 'images',
-    plugins: [
-    {cacheKeyWillBeUsed},
-      new CacheableResponsePlugin({
-        statuses: [200],
-      }),
-      new ExpirationPlugin({
-        maxEntries: 60,
-        maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
-      }),
-    ],
-  })
-);
+const plugExp = [
+  {cacheKeyWillBeUsed},
+  new CacheableResponsePlugin({
+    statuses: [200],
+  }),
+  new ExpirationPlugin({
+    maxEntries: 60,
+    maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+  }),
+];
 
-registerRoute(
-  ({request}) => request.destination === 'style',
-  new StaleWhileRevalidate({
-    cacheName: 'css',
-    plugins: [
-    {cacheKeyWillBeUsed}, //just while I update
-      new CacheableResponsePlugin({
-        statuses: [200],
-      }),
-    ],
-  })
-);
+const plugStand = [
+  {cacheKeyWillBeUsed}, //same as above
+  new CacheableResponsePlugin({
+    statuses: [200],
+  }),
+];
 
-registerRoute(
-  ({request}) => request.destination === 'script',
-  new StaleWhileRevalidate({
-    cacheName: 'scripts',
-    plugins: [
-    {cacheKeyWillBeUsed}, //same as above
-      new CacheableResponsePlugin({
-        statuses: [200],
-      }),
-    ],
-  })
-);
+function newRoute(inputs) {
+  let {str,name,plugs,strat,typ} = inputs;
+  let straTegy = strat === `cache`
+    ? new CacheFirst({cacheName: name,plugins: plugs,})
+    : strat === `stale`
+    ? new StaleWhileRevalidate({cacheName: name,plugins: plugs,})
+    : new NetworkFirst({cacheName: name,plugins: plugs,});
+  let type = typ === `request`
+    ? ({request}) => request.destination === str
+    : typ === `url`
+    ? ({url}) => url.pathname.endsWith(str)
+    : ({url}) => url.pathname.endsWith(str[0]) || url.pathname.endsWith(str[1])
+  registerRoute(type, straTegy);
+}
 
-registerRoute(
-  ({url}) => url.pathname.endsWith('.html') || url.pathname.endsWith('.php'),
-  new NetworkFirst({
-    networkTimeoutSeconds: 2,
-    cacheName: 'html',
-    plugins: [
-    {cacheKeyWillBeUsed},
-      new CacheableResponsePlugin({
-        statuses: [200],
-      }),
-    ],
-  })
-);
-
-registerRoute(
-  ({url}) => url.pathname.endsWith('.csv') || url.pathname.endsWith('.xlsx'),
-  new StaleWhileRevalidate({
-    cacheName: 'spreadsheets',
-    plugins: [
-    {cacheKeyWillBeUsed},
-      new CacheableResponsePlugin({
-        statuses: [200],
-      }),
-    ],
-  })
-);
-
-registerRoute(
-  ({url}) => url.pathname.endsWith('.json'),
-  new NetworkFirst({
-    networkTimeoutSeconds: 2,
-    cacheName: 'json',
-    plugins: [
-    {cacheKeyWillBeUsed},
-      new CacheableResponsePlugin({
-        statuses: [200],
-      }),
-    ],
-  })
-);
+newRoute({str: `image`, name: `images`, plugs: plugExp, strat: `cache`, typ: `request`});
+newRoute({str: `style`, name: `css`, plugs: plugStand, strat: `stale`, typ: `request`});
+newRoute({str: `script`, name: `scripts`, plugs: plugStand, strat: `stale`, typ: `request`});
+newRoute({str: [`.html`,`.php`], name: `html`, plugs: plugStand, strat: `net`, typ: `url2`});
+newRoute({str: [`.csv`,`.xlsx`], name: `spreadsheets`, plugs: plugStand, strat: `stale`, typ: `url2`});
+newRoute({str: `.json`, name: `json`, plugs: plugStand, strat: `net`, typ: `url`});
 
 // Use the imported Workbox libraries to implement caching,
 // routing, and other logic:
@@ -108,26 +63,29 @@ precache([{"revision":"c7cef26d0d15d3d2e90fa66b06c5cc9c","url":"css/dobble.css"}
 
 // Register 'default'
 var defaultStrategy = new CacheFirst({
-    cacheName: workbox.core.cacheNames.precache,//'workbox-precache-v2',//
-    plugins: [
-    {cacheKeyWillBeUsed},
-        new ExpirationPlugin({
-            maxEntries: 128,
-            maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
-            purgeOnQuotaError: true, // Opt-in to automatic cleanup
-        }),
-        new CacheableResponsePlugin({
-            statuses: [0, 200] // for opague requests
-        }),
-    ],
+  cacheName: workbox.core.cacheNames.precache,//'workbox-precache-v2',//
+  plugins: [
+  {cacheKeyWillBeUsed},
+    new ExpirationPlugin({
+      maxEntries: 128,
+      maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
+      purgeOnQuotaError: true, // Opt-in to automatic cleanup
+    }),
+    new CacheableResponsePlugin({
+      statuses: [0, 200] // for opague requests
+    }),
+  ],
 });
 setDefaultHandler(
-    (args) => {
-        if (args.event.request.method === 'GET') {
-            return defaultStrategy.handle(args); // use default strategy
-        }
-        return fetch(args.event.request);
+  (args) => {
+    
+    if (args.event.request.method === 'GET') {
+      try {
+        return defaultStrategy.handle(args); // use default strategy
+      }catch(e) {console.log(e);}
     }
+    return fetch(args.event.request);
+  }
 );
 
 // Catch routing errors, like if the user is offline
@@ -136,6 +94,5 @@ setCatchHandler(async ({ event }) => {
   if (event.request.destination === 'document') {
     return matchPrecache('/help.html');
   }
-
   return Response.error();
 });
