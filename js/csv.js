@@ -73,26 +73,32 @@ function addOption(opt, desc, bool, plotter) {
 function inputsNfunc(db){
   document.getElementById("xaxis").value = getSavedValue("xaxis");    // set the value to this input
   document.getElementById("yaxis").value = getSavedValue("yaxis");   // set the value to this input
-  document.getElementById("99").checked = (getSavedValue("99") == "true"); //remember if start date is checked
-  document.getElementById("99").onchange = function(){saveRadio(this);read(db);};
+  document.getElementById("99").checked = getSavedValue("99") === "true"; //remember if start date is checked
+  document.getElementById("99").onchange = function(){read(db);};
   document.getElementById("dat").onblur = function(){saveValue(this);read(db);};
   document.getElementById("datR").onblur = function(){saveValue(this);read(db);};
-  document.getElementById("eqcheck").onchange = function(){saveRadio(this);read(db);};
+  document.getElementById("eqcheck").onchange = function(){read(db);};
   document.getElementById("LabR").value = getSavedValue("Labr");
   document.getElementById("dat").value = getSavedValue("dat");
   document.getElementById("datR").value = getSavedValue("datR");
   localStorage.setItem(document.getElementById("eqcheck").id,false); //uncheck equations with new file
   const radios = document.querySelectorAll("input[name=ArrayOrCSV]");
   radios.forEach(rad => rad.addEventListener('change',checkit));
+  let prup = document.querySelector("#PrUp"); 
+  prup.checked = getSavedValue("PrUp") === "true" || getSavedValue("PrUp") === "";
+  saveRadio(prup);
 }
 
 function startup(bool){
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.checked = (getSavedValue(rad.id) == "true");
+    rad.addEventListener('change',saveRadio);
   });
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) == "true");
+    box.addEventListener('change',saveRadio);
   });
+  document.getElementById("69").checked = getSavedValue("69") === "true" || getSavedValue("69") === ""; //checkbox "Show" with new file
   var idbSupported = ("indexedDB" in window);
   var db;
 
@@ -195,7 +201,6 @@ async function defaultPlot(db) {
 function plotcalcs(csv,db) {
   addLoader("Formatting Data",false,66);
   localStorage.setItem(document.getElementById("eqcheck").id,false); //uncheck equations with new file
-  document.getElementById("69").checked = true; //checkbox "Show" with new file
   csv = parseCSV(csv);
   save(csv,db);
   //setTimeout(dyg,1,(csv));
@@ -372,7 +377,8 @@ function dygReady(){
     cb2[i].value = lbs[i];
     col[i].value = rgbToHex(colors[i]);
     cb2[i].className = "idents";
-    cb[i].checked = true;
+    cb[i].checked = getSavedValue(cb[i].id) === "" || getSavedValue(cb[i].id) === "true";
+    saveRadio(cb[i]);
     cb[i].onchange = function(){change(this);}; cb2[i].onblur = function(){saveValue(this); idents(lbs.length);};
   }
   const colorNode = document.querySelectorAll("input[type=color]");

@@ -63,12 +63,11 @@ function multipliers(){
 
 async function calculations(){
   multipliers();
-
   const radios = document.querySelectorAll("input[name=drive]");
-  radios.forEach(rad => rad.addEventListener('change',checkit));
   const fields = document.querySelectorAll("input[name=field]");
-  fields.forEach(rad => rad.addEventListener('change',calculations));
-  let HiFreq = radios[1].checked, EField = fields[0].checked;
+  let HiFreq = radios[1].checked;
+  let EField = fields[0].checked = fields[1].checked ? false : true;
+  radios[0].checked = !HiFreq;
 
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
@@ -222,10 +221,12 @@ function dygReady(){
 window.addEventListener("load", function() {
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.checked = (getSavedValue(rad.id) == "true");
+    rad.addEventListener('change',saveRadio);
   });
-  document.querySelectorAll('input[type="checkbox"]').forEach(box => {
-    box.checked = (getSavedValue(box.id) == "true");
-  });
+  const radios = document.querySelectorAll("input[name=drive]");
+  const fields = document.querySelectorAll("input[name=field]");
+  radios.forEach(rad => rad.addEventListener('change',checkit));
+  fields.forEach(rad => rad.addEventListener('change',calculations));
   checkit();
   document.onkeyup = function() {
     calculations();

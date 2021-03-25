@@ -83,12 +83,13 @@ function javaread(){
 async function startup() {
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.checked = (getSavedValue(rad.id) == "true");
+    rad.addEventListener('change',saveRadio);
   });
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) == "true");
   });
+  for (let i = 0; i < 4; i++) document.getElementById(i).checked = true;
   javaread();
-  checkit();
   hider();
   // await code here
   var DR = [];
@@ -96,10 +97,15 @@ async function startup() {
   document.onkeyup = function() {
     try{read();}catch(e){console.log(e);}
   };
-  document.getElementById("Prim").onchange = function(){read();};
+  let prim = document.getElementById("Prim");
+  prim.onchange = function(){read();};
+  prim.checked = getSavedValue(prim.id) == "true" || getSavedValue(prim.id) == "";
   document.getElementById("Sec").onchange = function(){checkit();read();};
-  document.getElementById("PrimDR").onchange = function(){read();};
+  let primDR = document.getElementById("PrimDR");
+  primDR.onchange = function(){read();};
+  primDR.checked = getSavedValue(primDR.id) == "true" || getSavedValue(primDR.id) == "";
   document.getElementById("SecDR").onchange = function(){read();};
+  checkit();
 }
 
 function change(el) {
