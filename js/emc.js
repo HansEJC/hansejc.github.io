@@ -219,10 +219,7 @@ function dygReady(){
 
 //startup
 window.addEventListener("load", function() {
-  document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) == "true");
-    rad.addEventListener('change',saveRadio);
-  });
+  funkyRadio();
   const radios = document.querySelectorAll("input[name=drive]");
   const fields = document.querySelectorAll("input[name=field]");
   radios.forEach(rad => rad.addEventListener('change',checkit));

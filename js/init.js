@@ -225,6 +225,13 @@ function saveCheckbox(e){
   saveParameter();
 }
 
+function funkyRadio(){  
+  document.querySelectorAll('input[type="radio"]').forEach(rad => {
+    rad.checked = (getSavedValue(rad.id) == "true");
+    rad.addEventListener('change',saveRadio);
+  });
+}
+
 //get the saved value function - return the value of "v" from localStorage.
 function getSavedValue  (v){
   if (!localStorage.getItem(v)) {
@@ -274,6 +281,18 @@ function exportToCsv(filename, rows) {
       document.body.removeChild(link);
     }
   }
+}
+
+function dbUpgrade (db) { 
+  const onupgradeneeded = function(e) {
+    console.log("Upgrading...");
+    db = e.target.result;
+
+    if(!db.objectStoreNames.contains("plots")) {
+      db.createObjectStore("plots", { keyPath: "id",autoIncrement:true});
+    }
+  }
+  return onupgradeneeded;
 }
 
 window.post = function(url, data, sucPost) {

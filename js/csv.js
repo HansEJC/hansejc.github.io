@@ -90,10 +90,7 @@ function inputsNfunc(db){
 }
 
 function startup(bool){
-  document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) == "true");
-    rad.addEventListener('change',saveRadio);
-  });
+  funkyRadio();
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) == "true");
     box.addEventListener('change',saveRadio);
@@ -104,15 +101,7 @@ function startup(bool){
 
   if(idbSupported) {
     var openRequest = indexedDB.open("graph",1);
-
-    openRequest.onupgradeneeded = function(e) {
-      console.log("Upgrading...");
-      db = e.target.result;
-
-      if(!db.objectStoreNames.contains("plots")) {
-        db.createObjectStore("plots", { keyPath: "id",autoIncrement:true});
-      }
-    }
+    openRequest.onupgradeneeded = dbUpgrade(db);
     openRequest.onsuccess = function(e) {
       db = e.target.result;
       var transaction = db.transaction(["plots"]);
