@@ -1,42 +1,43 @@
 function calculations(){
-  document.getElementById("AB").value = getSavedValue("AB");    // set the value to this input
-  document.getElementById("IR").value = getSavedValue("IR");
-  document.getElementById("MT").value = getSavedValue("MT");
-  document.getElementById("OP").value = getSavedValue("OP");
+  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   var ab = Number(getSavedValue("AB"));    // set the value to this input
   var ir = Number(getSavedValue("IR"))/12/100;
   var mt = Number(getSavedValue("MT"))*12;
   var mp = ab*((ir*Math.pow((1+ir),mt))/(Math.pow((1+ir),mt)-1));
 
   spanToMoney("MP",mp);
-
   var today = new Date();
 
-  var mortgage = [];
-  var intr,eqp, pn, i; //interest, equity payment,remaining loan, payment number
+  let mortgage = [];
+  let intr,eqp, pn, i, data; //interest, equity payment,remaining loan, payment number
   pn = 0;
 
   var op = Number(getSavedValue("OP"));
   var tp = op+mp;
   spanToMoney("TP",tp);
   spanToMoney("MOP",ab/120);
+  
+  const mop = document.getElementById("MOP");
+  mop.className = (ab/120)<op ? 'label danger' : 'label safe';
 
-  if ((ab/120)<op) document.getElementById("MOP").className = 'label danger';
-  else document.getElementById("MOP").className = 'label safe';
-
-  var start = 0; var max = 10000;
+  let start = 0, max = 10000;
   for (i = 0; ab > 0; i++) {
     intr = ab*ir;
     eqp = tp-intr;
-    mortgage.push([new Date(today.getFullYear(),today.getMonth()+i,today.getDate()), intr, eqp, intr+eqp]);
+    data = [new Date(today.getFullYear(),today.getMonth()+i,today.getDate()), intr, eqp, intr+eqp];
+    mortgage.push(data);
     ab = ab-eqp;
     pn++;
-    start+=1;if(start>max)break;
+    start+=1;
+    if(start>max)break;
   }
 
-  document.getElementById("RT").textContent = Math.floor((pn)/12)+" y " + (12*((pn)/12-Math.floor(pn/12))).toFixed(0)+" m";
+  document.getElementById("RT").textContent = `${Math.floor((pn)/12)} y ${(12*((pn)/12-Math.floor(pn/12))).toFixed(0)} m`;
   spanToMoney("AP",pn*tp);
+  dygPlot(mortgage);  
+}
 
+function dygPlot(mortgage) {
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
@@ -53,12 +54,12 @@ function calculations(){
       fillGraph: true,
       connectSeparatedPoints: true,
       axes: {
-              y: {
-                axisLabelFormatter: function(y) {
-                  return  smoothdec(y) + ' £';
-                },
-                axisLabelWidth: 60
-              }
+        y: {
+          axisLabelFormatter: function(y) {
+            return  smoothdec(y) + ' £';
+          },
+          axisLabelWidth: 60
+        }
       }
     }          // options
   );
