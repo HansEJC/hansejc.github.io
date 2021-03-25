@@ -41,15 +41,23 @@ function oleFun(stuff){
   return 1/(1/(ole*lcc)+1/((ole*lc)/trnu + ole*(lc-lcc)));
 }
 
-function calculations(){
+function inits() {
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
-
+  document.querySelectorAll('input[type="radio"]').forEach(rad => {
+    rad.checked = (getSavedValue(rad.id) == "true");
+  });
   let boost = document.querySelector("#BOOST").checked;
   let atfeed = document.querySelector("#ATFEED").checked;
+  let doublrr = document.querySelector("#DRR").checked;
+  if (!doublrr) document.querySelector("#SRR").checked = true;
   document.querySelector("#Bstuff").style.display = boost ? "block" : "none";
   document.querySelector("#ATFstuff").style.display = atfeed ? "block" : "none";
+  return {boost,atfeed,doublrr};
+}
 
+function calculations(){
+  const {boost,atfeed,doublrr} = inits();
   let fc = +(getSavedValue("FC")) || 6;
   let ci = +(getSavedValue("CI"))|| 0.43;
   let cw = +(getSavedValue("CW")) || 0.15;
@@ -57,9 +65,11 @@ function calculations(){
   let bimp = +(getSavedValue("BIMP"))/2 || 0.21/2; //booster impedance diveded by two for OLE and RSC
   let atf = +(getSavedValue("ATF")) || 0.07;
   let aew = +(getSavedValue("AEW")) || Number.MAX_SAFE_INTEGER;
-  let rsc = +(getSavedValue("RSC")) || Number.MAX_SAFE_INTEGER; rsc = boost && rsc>1 ? 0.11 : rsc; //if booster, RSC is required
-  let crbd = +(getSavedValue("CRBD")); crbd = crbd == 0 ? Number.MAX_SAFE_INTEGER : Math.max(+(crbd)/1000,0.1); //convert to km and set to minimum of 100m
-  let railR = document.querySelector("#SRR").checked ? 1 : 2;
+  let rsc = +(getSavedValue("RSC")) || Number.MAX_SAFE_INTEGER; 
+  rsc = boost && rsc>1 ? 0.11 : rsc; //if booster, RSC is required
+  let crbd = +(getSavedValue("CRBD")); 
+  crbd = crbd == 0 ? Number.MAX_SAFE_INTEGER : Math.max(+(crbd)/1000,0.1); //convert to km and set to minimum of 100m
+  let railR = doublrr ? 2 : 1;
   let earray = [] , subarray = [], faultarray = [], subfault;
   let vol = 25; //25kV
   let imp = vol/fc; //fault limit impedance
@@ -73,7 +83,8 @@ function calculations(){
 
   let {extra,index,insert} = negTrack(subarray);
   document.querySelectorAll(".loc").forEach((loc,ind) => {
-    let trnu = +(getSavedValue(+loc.id+199)) || 2; trnu = trnu == 1 ? 1/Number.MAX_SAFE_INTEGER : trnu-1;
+    let trnu = +(getSavedValue(+loc.id+199)) || 2; 
+    trnu = trnu == 1 ? 1/Number.MAX_SAFE_INTEGER : trnu-1;
     let dist = getSavedValue(loc.id);
     loc.value = dist;
     let lc = ind === index ? +dist + extra : dist; //add extra for non parallel subs
@@ -85,10 +96,6 @@ function calculations(){
       let lch = dist < 0 ? totlc-lcc : totlc+lcc; //current total location
       let nxbnd = lcd(lc/res,crbd); //next bond location
       nxbnd = nxbnd > lc ? lc : nxbnd; //if cross bonding is greater than sub distance, set to sub distance
-      /*nxbnd = trnu<0 
-        ? nxbnd + +getSavedValue(+loc.id+1)
-        : nxbnd;
-      trnu = trnu<0 ? 1 : trnu;*/
       let lxb = smoothdec(lcc % nxbnd) == 0 ? nxbnd : smoothdec(lcc % nxbnd) || 0;//location after last xbond
       let stuff = {ole,lcc,lc,trnu,bimp,lch,bdist,lxb,aew,ri,railR,nxbnd,rsc,atf};
       oleimp = oleFun(stuff);
@@ -136,9 +143,14 @@ function negTrack(subarray) { //this is for locations that don't parallel
   let extra = 0, index, textlc, insert;
   let dist = 0, totlc = 0;
   tracks.forEach((trac,ind) => {
-    const locs = document.getElementById(trac.id-199);
+    let posID = trac.id;
+    let locs = document.getElementById(posID-199);
+    while (locs.value < 0) { //find the last positive direction location
+      posID--;
+      locs = document.getElementById(posID-199);
+    }
     locs.classList.toggle(`loc`,!(trac.value < 0));
-    let sub = getSavedValue(trac.id-99);
+    let sub = getSavedValue(posID-99);
     totlc += +locs.value;
     if (trac.value < 0) {
       let lblStuff = {dist,textlc,totlc,subarray,sub};
@@ -164,6 +176,7 @@ function subLabels(stuff) {
 }
 
 function normalCalc(stuff){
+  document.querySelector("#CLASS").checked = true;;
   let {trnu,lxb,aew,ri,railR,nxbnd,rsc} = stuff;
   return 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
 }

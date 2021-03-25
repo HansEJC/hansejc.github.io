@@ -58,9 +58,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <input step=0.01 placeholder=0.18 min=0 type="number" id="AEW" onkeyup='saveValue(this);'/>
                   <label for="RSC">RSC Impedance (Ω/km)</label>
                   <input step=0.01 placeholder=0.11 min=0 type="number" id="RSC" onkeyup='saveValue(this);'/>
-                  <input type="radio" name="RailR" id="SRR" onchange="calculations();" checked>
+                  <input type="radio" name="RailR" id="SRR" onchange="saveRadio(this); calculations();" checked>
                   <label for="SRR" style="display: inline-block;">Single RR</label>
-                  <input type="radio" name="RailR" id="DRR" onchange="calculations();">
+                  <input type="radio" name="RailR" id="DRR" onchange="saveRadio(this); calculations();">
                   <label for="DRR" style="display: inline-block;">Double RR</label>
                 </form>
               </section>
@@ -70,11 +70,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <input type="number" min=2 id="NumLocs" onkeyup='saveValue(this);quantities();'/>
                   <label for="CRBD">Cross Bonding Distance (m)</label>
                   <input min=0 type="number" id="CRBD" onkeyup='saveValue(this);'/>
-                  <input type="radio" name="Feeding" id="CLASS" onchange="calculations();" checked>
+                  <input type="radio" name="Feeding" id="CLASS" onchange="saveRadio(this); calculations();" checked>
                   <label for="CLASS" style="display: inline-block;">Classic</label>
-                  <input type="radio" name="Feeding" id="BOOST" onchange="calculations();">
+                  <input type="radio" name="Feeding" id="BOOST" onchange="saveRadio(this); calculations();">
                   <label for="BOOST" style="display: inline-block;">Booster</label>
-                  <input type="radio" name="Feeding" id="ATFEED" onchange="calculations();">
+                  <input type="radio" name="Feeding" id="ATFEED" onchange="saveRadio(this); calculations();">
                   <label for="ATFEED" style="display: inline-block;">ATF</label>
                   <div id="Bstuff">
                   <label for="BIMP">Booster Impedance (Ω)</label>
