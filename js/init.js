@@ -193,7 +193,10 @@ function saveValue(e){
   var id = e.id;  // get the sender's id to save it .
   var val = e.value; // get the value.
   localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override .
+  saveParameter();
+}
 
+function saveParameter() {
   let url ='';
   let params = {};
   document.querySelectorAll('input').forEach((el) => {
@@ -205,9 +208,8 @@ function saveValue(e){
     .map(k => `${esc(k)}=${esc(params[k])}`)
     .join('&');
   url += `?${query}`;
-
   let newurl = `${window.location.protocol}//${window.location.host+window.location.pathname+url}`;
-  window.history.pushState({ path: newurl }, '', newurl);
+  window.history.pushState({ path: newurl }, '', newurl);  
 }
 
 //Save the value function - save it to localStorage as (ID, VALUE)
@@ -215,10 +217,12 @@ function saveRadio(e){
   e.checkbox = true;
   document.querySelectorAll('input[type="radio"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
   document.querySelectorAll('input[type="checkbox"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
+  saveParameter();
 }
 function saveCheckbox(e){
   e.checkbox = true;
   document.querySelectorAll('input[type="checkbox"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
+  saveParameter();
 }
 
 //get the saved value function - return the value of "v" from localStorage.
