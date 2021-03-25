@@ -13,7 +13,7 @@ function initiate(){
     ip();
     try {
       speech();
-      getScores('uploads/rexscores.json',"jumpScores");
+      getScores();
     }catch(e){console.log(e);}
   } else {
     new Runner('.interstitial-wrapper');

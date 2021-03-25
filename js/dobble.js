@@ -203,21 +203,21 @@ function shuffleArray(array) {
 }
 
 function startTimer(duration) {
-    let timer = duration, minutes, seconds;
-    interval = setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
+  let timer = duration, minutes, seconds;
+  interval = setInterval(function () {
+    minutes = parseInt(timer / 60, 10);
+    seconds = parseInt(timer % 60, 10);
 
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
 
-        timeLeft.textContent = minutes + ":" + seconds;
+    timeLeft.textContent = minutes + ":" + seconds;
 
-        if (--timer < 0) {
+    if (--timer < 0) {
       clearInterval(interval);
       gameOver();
-        }
-    }, 1000);
+    }
+  }, 1000);
 }
 
 function numPlayers(){
@@ -227,12 +227,11 @@ function numPlayers(){
   else x.style.display = "flex", y.style.display = "block", z.style.display = "none";
 }
 
-try {
-  getScores('uploads/dobblescores.json',"dobbleScores");
-}catch(err){console.log(e);}
-
 
 //startup
 document.cookie="game=dobble";
 document.getElementById("userName").value = getSavedValue("userName");
+try {
+  getScores();
+}catch(err){console.log(e);}
 ip();

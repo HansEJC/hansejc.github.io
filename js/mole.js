@@ -7,10 +7,6 @@ let timeUpE = false, timeUpN = false, timeUpH = false, gamesStarted = false;
 let score = 0;
 let time = 0;
 
-try {
-  getScores('uploads/molescores.json',"moleScores");
-}catch(err){console.log(err);}
-
 function randomTime(min, max) {
   return Math.round(Math.random() * (max - min) + min);
 }
@@ -101,4 +97,7 @@ moles.forEach(mole => mole.addEventListener('click', bonk));
 //startup
 document.cookie="game=mole";
 document.getElementById("userName").value = getSavedValue("userName");
+try {
+  getScores();
+}catch(err){console.log(err);}
 ip();

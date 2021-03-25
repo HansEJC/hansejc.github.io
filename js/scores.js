@@ -10,10 +10,7 @@ function saveScores(scr) {
     },sucPost);
   }
   else {
-    let scoreID = "jumpScores";
-    scoreID = document.cookie.includes('game=mole') ? "moleScores" : scoreID;
-    scoreID = document.cookie.includes('game=simon') ? "simonScores" : scoreID;
-    scoreID = document.cookie.includes('game=dobble') ? "dobbleScores" : scoreID;
+    let scoreID = `${readCookie("game")}Scores`;
     let scoreArr = [];
     const name = document.getElementById("userName");
     let exists = false;
@@ -40,6 +37,17 @@ function saveScores(scr) {
   }
 }
 
+function readCookie(name) {
+  const nameEQ = `${name}=`;
+  const ca = document.cookie.split(';');
+  for(let i=0;i < ca.length;i++) {
+    var c = ca[i];
+    while (c.charAt(0)==' ') c = c.substring(1,c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+  }
+  return null;
+}
+
 function sucPost(data){
   document.getElementById("TempScore").innerHTML = data;
   _('#TempScore').fade('in', 100);
@@ -49,7 +57,9 @@ function sucPost(data){
   }, 1000);
 }
 
-async function getScores(file,storage){
+async function getScores(full){
+  let file = `uploads/${readCookie("game")}scores.json`;
+  let storage = `${readCookie("game")}Scores`;
   const serverScore = await fetch(file)
     .then(result => result.json());
   const localScore = JSON.parse(localStorage.getItem(storage));
@@ -60,6 +70,10 @@ async function getScores(file,storage){
     let row = table.insertRow(-1);
     row.insertCell(0).innerHTML = val[0];
     row.insertCell(1).innerHTML = val[1];
+    if (full) {
+      row.insertCell(2).innerHTML = val[2];
+      row.insertCell(3).innerHTML = val[3];      
+    }
   });
 }
 
@@ -81,11 +95,6 @@ function speech() {
     };
     recognition.start();
   } catch(err) {console.log(err+" speech recognition not supported")}
-}
-
-//Scores redirect
-function fullscores(){
-  document.location="fullscores.php?"+(new Date).getTime();
 }
 
 // gain, frequency, duration

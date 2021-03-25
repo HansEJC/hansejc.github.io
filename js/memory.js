@@ -119,13 +119,12 @@ var AudioContext = window.AudioContext // Default
     || false;
 if (AudioContext) {var a = new AudioContext();}
 
-try {
-  getScores('uploads/simonscores.json',"simonScores");
-}catch(err){console.log(e);}
-
 board.classList.add('waiting');
 
 //startup
 document.cookie="game=simon";
 document.getElementById("userName").value = getSavedValue("userName");
+try {
+  getScores();
+}catch(err){console.log(e);}
 ip();
