@@ -72,13 +72,19 @@ function navBar(){
         <a href='#' class="dropbtn heh">Tools</a>
         <div class="dropdown-content">
           <a href='csv.html'>CSV Plotter</a>
-          <a href='relay.html'>Distance Protection Fault Plotter</a>
           <a href='earth.html'>Earthing Calculation Tools</a>
           <a href='soil.html'>Earthing Surveys</a>
           <a href='tools.html'>Electrical Engineering Tools</a>
           <a href='emc.html'>EMC Calculations</a>
           <a href='mortgage.html'>Loan Calculator</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <a href='#' class="dropbtn heh">Railway</a>
+        <div class="dropdown-content">
+          <a href='relay.html'>Distance Protection Fault Plotter</a>
           <a href='fault.html'>Railway Faults</a>
+          <a href='railvolts.html'>Railway Voltages</a>
         </div>
       </div>
       <a href='op.html'>Orion Park</a>
@@ -95,7 +101,7 @@ function helpPage(){
 
 navBar();
 let test;
-const navs = ['Games','Tools'];
+const navs = ['Games','Tools','Railway'];
 const randomChild = function(len) {return Math.floor(Math.random()*len)};
 function randomPage(e) {
   test = e;
