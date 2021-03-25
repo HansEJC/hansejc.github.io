@@ -1,2 +1,2 @@
-js/ext/*
+js/ext/**
 js/trex.js
