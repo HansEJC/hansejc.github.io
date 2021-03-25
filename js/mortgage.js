@@ -32,7 +32,7 @@ function calculations(){
     if(start>max)break;
   }
 
-  document.getElementById("RT").textContent = `${Math.floor((pn)/12)} y ${(12*((pn)/12-Math.floor(pn/12))).toFixed(0)} m`;
+  document.getElementById("RT").textContent = Math.floor((pn)/12)+" y " + (12*((pn)/12-Math.floor(pn/12))).toFixed(0)+" m";
   spanToMoney("AP",pn*tp);
   dygPlot(mortgage);  
 }
