@@ -42,12 +42,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="row 50%" id="Lhide">
               <section class="box">
                 <form>
-                  <label for="FC">Current (A)</label>
-                  <input type="number" placeholder=6 min=0 id="FC" onkeyup='saveValue(this);'/>
+                  <label for="LoadC">Current (A)</label>
+                  <input type="number" placeholder=6000 min=0 id="LoadC" onkeyup='saveValue(this);'/>
                   <label for="CI">Catenery Impedance (Ω/km)</label>
                   <input step=0.01 placeholder=0.43 min=0 type="number" id="CI" onkeyup='saveValue(this);'/>
                   <label for="CW">Contact W Impedance (Ω/km)</label>
                   <input step=0.01 placeholder=0.15 min=0 type="number" id="CW" onkeyup='saveValue(this);'/>
+                  <label for="CRBD">Earth Return Impedance (Ω)</label>
+                  <input step=0.01 placeholder=0.18 min=0 type="number" id="ERIMP" onkeyup='saveValue(this);'/>
                 </form>
               </section>
               <section class="box">
@@ -70,20 +72,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <input type="number" min=2 id="NumLocs" onkeyup='saveValue(this);quantities();'/>
                   <label for="CRBD">Cross Bonding Distance (m)</label>
                   <input min=0 type="number" id="CRBD" onkeyup='saveValue(this);'/>
-                  <input type="radio" name="Feeding" id="CLASS" onchange="saveRadio(this); calculations();" checked>
-                  <label for="CLASS" style="display: inline-block;">Classic</label>
-                  <input type="radio" name="Feeding" id="BOOST" onchange="saveRadio(this); calculations();">
-                  <label for="BOOST" style="display: inline-block;">Booster</label>
-                  <input type="radio" name="Feeding" id="ATFEED" onchange="saveRadio(this); calculations();">
-                  <label for="ATFEED" style="display: inline-block;">ATF</label>
-                  <div id="Bstuff">
-                  <label for="BIMP">Booster Impedance (Ω)</label>
-                    <input step=0.01 placeholder=0.21 min=0 type="number" id="BIMP" onkeyup='saveValue(this);'/>
-                  </div>
-                  <div id="ATFstuff">
-                  <label for="ATF">ATF Impedance (Ω/km)</label>
-                    <input step=0.01 placeholder=0.07 min=0 type="number" id="ATF" onkeyup='saveValue(this);'/>
-                  </div>
+                  <label for="MASD">Mast Distance (m)</label>
+                  <input min=0 placeholder=40 type="number" id="MASD" onkeyup='saveValue(this);'/>
+                  <label for="MIMP">Mast Impedance (Ω)</label>
+                  <input placeholder=20 min=0 type="number" id="MIMP" onkeyup='saveValue(this);'/>
                 </form>
               </section>
             </div>
