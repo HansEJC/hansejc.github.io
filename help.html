@@ -51,6 +51,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <li><a href='#tools'>Electrical Engineering Tools</a></li>
                 <li><a href='#emc'>EMC Calculations</a></li>
                 <li><a href='#fault'>Railway Faults</a></li>
+                <li><a href='#railvolts'>Railway Voltages</a></li>
+                <p><b>Note.</b><br> If a page is not working for you, it's probably because an update has broken your cached version.
+                  To fix this, refresh the cache by pressing <b>Ctr+Shift+R</b>.
+                </p>
               </ol></div>
             </div>
             <ol>
@@ -195,7 +199,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <li>Z<sub>RET</sub></li>
                   <li>Z<sub>RSC</sub></li>
                   <li>Z<sub>S</sub></li>
-                  <li>Z<sub>T</sub></li>
                 </ul>
                 <ul style="padding: 0 0 0 1em; list-style-type: none; zoom:1; line-height:1.8em">
                   <li>Fault Current </li>
@@ -222,7 +225,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <li>Return Impedance</li>
                   <li>RSC Impedance</li>
                   <li>Source Impedance</li>
-                  <li>Telecoms Impedance</li>
                 </ul>
                 <p>
                   Source Impedance:<br>
@@ -248,6 +250,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
                   Fault Current:<br>
                   $$ I_F = {V_S \over Z_F}  $$
+                </p>
+              </div></li>
+              <li><header id="railvolts"><hr>
+                <h1>Railway Voltages</h1>
+              </header>
+              <div class="row 50%">
+                <p> Like the railway faults tab, this was also put together using a bunch of made of equations and basic electrical engineering principles. 
+                  The calculations are a continuation of the equations in the previous section. The fault current from the previous equation is used to calculate
+                  the railway voltages. To get the voltage of the rail, the calculated current is multiplied by the return impedance. This return impedance has 
+                  to take the return impedance via earth into account. This impedance path is via the rail leakage to earth, as well as the mast connections.
                 </p>
               </div></li>
             </ol>
