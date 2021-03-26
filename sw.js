@@ -38,18 +38,21 @@ function newRoute(inputs) {
     ? new CacheFirst({cacheName: name,plugins: plugs,})
     : strat === `stale`
     ? new StaleWhileRevalidate({cacheName: name,plugins: plugs,})
-    : new NetworkFirst({cacheName: name,plugins: plugs,});
+    : new NetworkFirst({networkTimeoutSeconds: 3,cacheName: name,plugins: plugs,});
   let type = typ === `request`
     ? ({request}) => request.destination === str
     : typ === `url`
     ? ({url}) => url.pathname.endsWith(str)
+    : typ === `urlStart`
+    ? ({url}) => url.pathname.startsWith(str)
     : ({url}) => url.pathname.endsWith(str[0]) || url.pathname.endsWith(str[1])
   registerRoute(type, straTegy);
 }
 
 newRoute({str: `image`, name: `images`, plugs: plugExp, strat: `cache`, typ: `request`});
-newRoute({str: `style`, name: `css`, plugs: plugStand, strat: `stale`, typ: `request`});
-newRoute({str: `script`, name: `scripts`, plugs: plugStand, strat: `stale`, typ: `request`});
+newRoute({str: `style`, name: `css`, plugs: plugStand, strat: `net`, typ: `request`});
+newRoute({str: `/js/ext/`, name: `exScripts`, plugs: plugExp, strat: `cache`, typ: `urlStart`});
+newRoute({str: `script`, name: `scripts`, plugs: plugStand, strat: `net`, typ: `request`});
 newRoute({str: [`.html`,`.php`], name: `html`, plugs: plugStand, strat: `net`, typ: `url2`});
 newRoute({str: [`.csv`,`.xlsx`], name: `spreadsheets`, plugs: plugStand, strat: `stale`, typ: `url2`});
 newRoute({str: `.json`, name: `json`, plugs: plugStand, strat: `net`, typ: `url`});
