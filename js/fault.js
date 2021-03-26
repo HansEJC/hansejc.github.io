@@ -108,12 +108,12 @@ function calculations(){
 
       if (dist < 0) { //negative sub locs
         subfault = vol/(faultimp+imp+previmp+prevole+previmpneg+prevoleneg);
-        earray.push([textlc-lcc,, subfault]);
+        earray.push([textlc-lcc,null, subfault]);
         if ((lxb >= nxbnd || lcc >= lc) && nxbnd > 0) previmpneg += returnimp; //previous impedance
         if (lcc >= lc) prevoleneg += oleimp; //previous impedance
       }
       else { //positive sub locs
-        earray.push([lch, subfault,undefined]);
+        earray.push([lch, subfault,null]);
         if ((lxb >= nxbnd || lcc >= lc) && nxbnd > 0) previmp += returnimp; //previous impedance
         if (lcc >= lc) prevole += oleimp; //previous impedance
         textlc = totlc;
