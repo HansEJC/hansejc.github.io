@@ -210,7 +210,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <li>Current Location</li>
                   <li>Distance between substations</li>
                   <li>Cross Bonding Distance</li>
-                  <li>(if L<sub>XB</sub> = 0 or L<sub>XB</sub> > LL<sub>S</sub> then L<sub>XB</sub> is set to L<sub>S</sub>)</li>
+                  <li>(if L<sub>XB</sub> = 0 or L<sub>XB</sub> > L<sub>S</sub> then L<sub>XB</sub> is set to L<sub>S</sub>)</li>
                   <li>Distance since last Cross Bond</li>
                   <li>System Voltage</li>
                   <li>AEW Impedance</li>
@@ -259,7 +259,46 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <p> Like the railway faults tab, this was also put together using a bunch of made of equations and basic electrical engineering principles. 
                   The calculations are a continuation of the equations in the previous section. The fault current from the previous equation is used to calculate
                   the railway voltages. To get the voltage of the rail, the calculated current is multiplied by the return impedance. This return impedance has 
-                  to take the return impedance via earth into account. This impedance path is via the rail leakage to earth, as well as the mast connections.
+                  to take the return impedance via earth into account. This impedance path is via the rail leakage to earth, as well as the mast connections. <br><br>
+                  The following variables were needed, in addition to the previous variables in the above section. 
+                </p>
+                <ul style="padding: 0 0 0 3em; list-style-type: none; zoom:1; line-height:1.8em">
+                  <li>L<sub>M</sub></li>
+                  <li>V<sub>R</sub></li>
+                  <li>Z<sub>ER</sub></li>
+                  <li>Z<sub>M</sub></li>
+                  <li>Z<sub>MT</sub></li>
+                </ul>
+                <ul style="padding: 0 0 0 1em; list-style-type: none; zoom:1; line-height:1.8em">
+                  <li>Distance between OLE masts</li>
+                  <li>Rail Voltage</li>
+                  <li>Earth Return Impedance</li>
+                  <li>Mast Impedance</li>
+                  <li>Mast Impedance Paralleled</li>
+                </ul>
+                <p>
+                  I've currently attempted to calculate the rail voltages three different ways. The calculations for these attempts are below.<br><br>
+
+                  Rail Voltage (without the masts):<br>
+                  $$ V_R = I_F \times \left({1 \over Z_{RET}} + {1 \over Z_{ER}} \right)^{-1} $$<br><br>
+
+                  Rail Voltage with the masts in series:<br>
+                  $$ V_R = I_F \times \left({1 \over Z_{RET}} + {1 \over Z_{ER} + Z_{MT}} \right)^{-1} $$<br><br>
+
+                  Where if L<sub>C</sub> is divisible by L<sub>M</sub> without a remainder:
+
+                  $$ Z_{MT} = \left({1 \over Z_{MT}} + {1 \over {Z_M \over L_C/L_M}}  \right)^{-1}  $$
+
+                  <b>Note.</b> Z<sub>MT</sub> starts of as an infinite number, reducing each time it is parallelled.<br><br>
+
+                  The last approach is probably the closest to being correct. The return impedance calculation from the previous section has a slight modification.
+                  The mast impedance Z<sub>MT</sub> is parallalled with the AEW impedance Z<sub>AEW</sub>.<br>
+
+                  $$ {Z_{RET} =} \left({1 \over Z_R \times L_{XBP}} + \left( \left({K_{RR} \times K_T \over Z_R \times L_{XB}} + {1 \over \color{red}{\left((Z_{AEW} \times L_{XB})^{-1} + (1 / Z_{MT}) \right)^{-1}}} + {1 \over Z_{RSC} \times L_{XB}} \right)^{-1} + Z_R \times (L_{XBP} - L_{XB}) \right)^{-1} \right)^{-1} $$
+
+                  <br>The rail voltage then uses the same equation as the first one, using the updated Z<sub>RET</sub> value.
+
+                 
                 </p>
               </div></li>
             </ol>
