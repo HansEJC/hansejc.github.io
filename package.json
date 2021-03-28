@@ -1,0 +1,31 @@
+{
+  "name": "hansejc.github.io",
+  "version": "1.0.0",
+  "description": "Hobby website I made to simplify my life.",
+  "main": "sw.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "csv2array": "^0.0.4",
+    "dygraphs": "^2.1.0",
+    "html2canvas": "^1.0.0-rc.7",
+    "mathjax": "^2.7.2",
+    "papaparse": "^5.0.2",
+    "workbox-sw": "^6.1.1",
+    "xlsx": "^0.7.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HansEJC/hansejc.github.io.git"
+  },
+  "keywords": [
+    "railway"
+  ],
+  "author": "HansEJC",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HansEJC/hansejc.github.io/issues"
+  },
+  "homepage": "https://github.com/HansEJC/hansejc.github.io#readme"
+}
