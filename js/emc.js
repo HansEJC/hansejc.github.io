@@ -165,7 +165,6 @@ function LowFreqFun(stuff){
 }
 
 function dygPlot(earray){
-  const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     earray,
@@ -176,12 +175,12 @@ function dygPlot(earray){
       axes: {
         x: {
           axisLabelFormatter: function(y) {
-            return  killthemeter(smoothdec(y));
+            return  killthemeter(smoothdec(y,6));
           },
         },
         y: {
           axisLabelFormatter: function(y) {
-            return  kill(smoothdec(y));
+            return  kill(smoothdec(y,6));
           },
         }
       }

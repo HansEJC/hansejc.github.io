@@ -1,46 +1,3 @@
-function quantities() {
-  document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) == "true");
-  });
-  document.querySelectorAll('input[type="checkbox"]').forEach(box => {
-    box.checked = (getSavedValue(box.id) == "true");
-  });
-  const myNode = document.getElementById("Substation");
-  myNode.innerHTML = '';
-  const myNode2 = document.getElementById("Location");
-  myNode2.innerHTML = '';
-  const myNode3 = document.getElementById("Tracks");
-  myNode3.innerHTML = '';
-
-  let NumLocs = +(getSavedValue("NumLocs"));     // set the value to this input
-  NumLocs = NumLocs < 2 ? 2 : NumLocs;
-  var cb = []; var cb2 = []; var cb3 = [];
-  if (NumLocs < 20){
-    for(let i = 0; i < NumLocs; i++){
-      cb[i] = document.createElement('input'); cb2[i] = document.createElement('input'); cb3[i] = document.createElement('input');
-      cb[i].type = 'text'; cb2[i].type = 'number'; cb3[i].type = 'number';
-      cb[i].onkeyup = function(){saveValue(this);}; cb2[i].onkeyup = function(){saveValue(this);}; cb3[i].onkeyup = function(){saveValue(this);};
-      myNode.appendChild(cb[i]); myNode2.appendChild(cb2[i]); if (i < NumLocs-1) myNode3.appendChild(cb3[i]);
-      cb[i].id = i+200; cb2[i].id = i+100; cb3[i].id = i+300;
-      cb2[i].classList.add("loc"); cb3[i].classList.add("trac");
-    }
-  }
-  else{
-    cb[0] = document.createElement('input'); cb2[0] = document.createElement('input');
-    cb[0].type = 'text'; cb2[0].type = 'text';
-    cb[0].value = 'bad human!'; cb2[0].value = 'bad human!';
-    myNode.appendChild(cb[0]); myNode2.appendChild(cb2[0]);
-  }
-}
-
-const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
-const lcd = (a,b) => smoothdec(a*Math.round(b/a)) || 0; //lowest commom multiplier
-
-function oleFun(stuff){
-  let {ole,lcc,lc,trnu} = stuff;
-  return 1/(1/(ole*lcc)+1/((ole*lc)/trnu + ole*(lc-lcc)));
-}
-
 function inits() {
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
@@ -92,11 +49,11 @@ function calculations(){
     
     for (let i=1;i<=res;i++){
       i = ind == 0 ? res : i; //shift the first sub to its km point
-      let lcc = smoothdec(lc*i/res); //current location
+      let lcc = smoothdec(lc*i/res,6); //current location
       let lch = dist < 0 ? totlc-lcc : totlc+lcc; //current total location
       let nxbnd = lcd(lc/res,crbd); //next bond location
       nxbnd = nxbnd > lc ? lc : nxbnd; //if cross bonding is greater than sub distance, set to sub distance
-      let lxb = smoothdec(lcc % nxbnd) == 0 ? nxbnd : smoothdec(lcc % nxbnd) || 0;//location after last xbond
+      let lxb = smoothdec(lcc % nxbnd,6) == 0 ? nxbnd : smoothdec(lcc % nxbnd,6) || 0;//location after last xbond
       let stuff = {ole,lcc,lc,trnu,bimp,lch,bdist,lxb,aew,ri,railR,nxbnd,rsc,atf};
       oleimp = oleFun(stuff);
       if (boost) ({oleimp,returnimp} = boosterCalc({oleimp,...stuff}));
@@ -120,7 +77,7 @@ function calculations(){
         prevoleneg = previmpneg = 0;
       }
       if (once && lch >= insert) {
-        faultarray.push([getSavedValue(99+(+loc.id)),smoothdec(subfault.toFixed(2))]); //insert non parallel sub
+        faultarray.push([getSavedValue(99+(+loc.id)),smoothdec(subfault)]); //insert non parallel sub
         once = false;
         subarray.sort((a,b) => a.x - b.x); //makes it easier to find the non parallel location in the index
         subarray[ind].x = lch;
@@ -131,36 +88,11 @@ function calculations(){
     let sub = getSavedValue(100+(+loc.id));
     let lblStuff = {dist,textlc,totlc,subarray,sub};
     subLabels(lblStuff);
-    faultarray.push([sub,smoothdec(subfault.toFixed(2))]);
+    faultarray.push([sub,smoothdec(subfault)]);
   });
   table(faultarray);
   dygPlot(earray,subarray);
   return earray;
-}
-
-function negTrack(subarray) { //this is for locations that don't parallel
-  const tracks = document.querySelectorAll(".trac");
-  let extra = 0, index, textlc, insert;
-  let dist = 0, totlc = 0;
-  tracks.forEach((trac,ind) => {
-    let posID = trac.id;
-    let locs = document.getElementById(posID-199);
-    while (locs.value < 0) { //find the last positive direction location
-      posID--;
-      locs = document.getElementById(posID-199);
-    }
-    locs.classList.toggle(`loc`,!(trac.value < 0));
-    let sub = getSavedValue(posID-99);
-    totlc += +locs.value;
-    if (trac.value < 0) {
-      let lblStuff = {dist,textlc,totlc,subarray,sub};
-      subLabels(lblStuff);
-      insert = totlc;
-      extra = +locs.value;
-      index = ind+1;
-    };    
-  });
-  return {extra,index,insert};
 }
 
 function subLabels(stuff) {
@@ -168,7 +100,7 @@ function subLabels(stuff) {
   subarray.push({
     series: dist < 0 ? "Fault Current (kA)." : "Fault Current (kA)",
     x: dist < 0 ? textlc : totlc,
-    width: sub.length*8,
+    width: sub.length*9,
     height: 24,
     tickColor: "white",
     shortText: sub
@@ -229,7 +161,6 @@ function dygPlot(earray,subarray){
   );
 
   g3.ready(function() {
-
     setTimeout(function(){
       window.dispatchEvent(new Event('resize'));
     }, 500);

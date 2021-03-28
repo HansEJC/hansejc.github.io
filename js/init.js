@@ -301,7 +301,7 @@ function dbUpgrade (db) {
   return onupgradeneeded;
 }
 
-window.post = function(url, data, sucPost) {
+const post = function(url, data, sucPost) {
   return fetch(url, {method: "POST", body: JSON.stringify(data)})
   .then(response => response.text())
   .then(sucPost)
@@ -340,5 +340,7 @@ _.prototype.fade = function fade(type, ms) {
   }
   var fading = window.setInterval(func, interval);
 }
+
+const smoothdec = (a,b=2) => +(parseFloat(a).toFixed(b)); //fix broken decimals
 
 document.documentElement.setAttribute('lang', navigator.language); //add language to html

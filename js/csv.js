@@ -308,7 +308,6 @@ function arrayequations(csv,db) {//column equations
   }catch(err){defaultPlot(db);}
 }
 
-const smoothdec = (a) => +(parseFloat(a).toFixed(2)); //fix broken decimals
 function dyg(csv) {
   /*Remove unused checkboxes*/
   try{

@@ -42,7 +42,6 @@ function dygPlot(mortgage) {
     if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){console.log(e);}
   if (mortgage.length < 2) return;
-  const smoothdec = (a) => +(parseFloat(a).toFixed(6)); //fix broken decimals
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     mortgage,
