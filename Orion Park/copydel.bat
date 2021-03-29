@@ -8,4 +8,6 @@ rem More commands after copying file with newest last modification date.
 
 .\ExcelConverter.js
 
-powershell -Command "& {(Get-Item 'C:\xampp\htdocs\dashboard\Orion Park\op.xlsx').LastWriteTime > mod.txt;}"
+powershell -Command "& {(Get-Item 'C:\xampp\htdocs\dashboard\Orion Park\op.xlsx').LastWriteTime > temp.txt;}"
+powershell -Command "& {Get-Content temp.txt | out-file -encoding UTF8 mod.txt;}"
+del temp.txt
