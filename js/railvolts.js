@@ -29,7 +29,7 @@ function calculations(){
   let ole = 1/(1/ci+1/cw);
   let faultimp = ole/2+1/(2/ri+1/aew+1/rsc); //in ohm/km
   let oleimp = 0, returnimp = 0, returnimp2 = 0;
-  let totlc = 0, previmp = 0, prevole = 0, previmpneg = 0, prevoleneg = 0, textlc = 0, totmimp = Number.MAX_SAFE_INTEGER; //total length, previous impedance, prev OLE
+  let totlc = 0, previmp = 0, prevole = 0, previmpneg = 0, prevoleneg = 0, totmimp = Number.MAX_SAFE_INTEGER; //total length, previous impedance, prev OLE
   let res = 1000; //resolution
   let once = true;
 
@@ -72,7 +72,6 @@ function calculations(){
       earray.push([lch, voltage,voltage2,voltage3,null]);
       if ((lxb >= nxbnd || lcc >= lc) && nxbnd > 0) previmp += returnimp; //previous impedance
       if (lcc >= lc) prevole += oleimp; //previous impedance
-      textlc = totlc;
       prevoleneg = previmpneg = 0;
         
       if (once && lch >= insert) {
@@ -82,9 +81,8 @@ function calculations(){
       }
     }
     totlc += +dist < 0 ? 0 : lc; //total length
-    textlc += +dist; //total length
     let sub = getSavedValue(100+(+loc.id));
-    let lblStuff = {dist,textlc,totlc,subarray,sub};
+    let lblStuff = {dist,totlc,subarray,sub};
     subLabels(lblStuff);
   });
   let limit = fc > 0.999 ? 645 : 60;
