@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+<!-- created with Free Online Sitemap Generator www.xml-sitemaps.com 
+     To create it, I had to first copy over the nav to index.html-->
+
+
+<url>
+  <loc>https://hansejc.ddns.net/</loc>
+  <lastmod>2021-03-29T09:44:28+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/dobble.html</loc>
+  <lastmod>2021-03-25T18:21:23+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/memory.html</loc>
+  <lastmod>2021-03-25T18:21:23+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/index.html</loc>
+  <lastmod>2021-03-29T09:44:28+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/tictactoe.html</loc>
+  <lastmod>2021-03-11T09:54:45+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/mole.html</loc>
+  <lastmod>2021-03-25T18:21:23+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/csv.html</loc>
+  <lastmod>2021-03-22T11:05:09+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/earth.html</loc>
+  <lastmod>2021-03-25T11:34:52+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/soil.html</loc>
+  <lastmod>2021-03-13T21:15:51+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/tools.html</loc>
+  <lastmod>2021-03-23T19:36:38+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/emc.html</loc>
+  <lastmod>2021-03-25T11:37:36+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/mortgage.html</loc>
+  <lastmod>2021-03-11T09:54:45+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/relay.html</loc>
+  <lastmod>2021-03-24T09:53:02+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/fault.html</loc>
+  <lastmod>2021-03-28T17:02:53+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/railvolts.html</loc>
+  <lastmod>2021-03-28T17:02:30+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/op.html</loc>
+  <lastmod>2021-03-11T09:54:45+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://hansejc.ddns.net/fullscores.html</loc>
+  <lastmod>2021-03-25T18:20:22+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+
+
+</urlset>

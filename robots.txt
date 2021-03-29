@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.hansejc.ddns.net/sitemap.xml
+Sitemap: https://hansejc.ddns.net/sitemap.xml
