@@ -294,11 +294,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   The last approach is probably the closest to being correct. The return impedance calculation from the previous section has a slight modification.
                   The mast impedance Z<sub>MT</sub> is parallalled with the AEW impedance Z<sub>AEW</sub>.<br>
 
-                  $$ {Z_{RET} =} \left({1 \over Z_R \times L_{XBP}} + \left( \left({K_{RR} \times K_T \over Z_R \times L_{XB}} + {1 \over \color{red}{\left((Z_{AEW} \times L_{XB})^{-1} + (1 / Z_{MT}) \right)^{-1}}} + {1 \over Z_{RSC} \times L_{XB}} \right)^{-1} + Z_R \times (L_{XBP} - L_{XB}) \right)^{-1} \right)^{-1} $$
+                  $$ {Z_{RET} =} \left({1 \over Z_R \times L_{XBP}} + \left( \left({K_{RR} \times K_T \over Z_R \times L_{XB}} + {1 \over \color{red}{\left((Z_{AEW} \times L_{XB})^{-1} + (1 / Z_{MT}) \right)^{-1}}} \\ 
+                  + {1 \over Z_{RSC} \times L_{XB}} \right)^{-1} + Z_R \times (L_{XBP} - L_{XB}) \right)^{-1} \right)^{-1} $$
 
-                  <br>The rail voltage then uses the same equation as the first one, using the updated Z<sub>RET</sub> value.
-
-                 
+                  <br>The rail voltage then uses the same equation as the first one, using the updated Z<sub>RET</sub> value.                 
                 </p>
               </div></li>
             </ol>
