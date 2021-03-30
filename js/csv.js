@@ -192,7 +192,6 @@ function plotcalcs(csv,db) {
   localStorage.setItem(document.getElementById("eqcheck").id,false); //uncheck equations with new file
   csv = parseCSV(csv);
   save(csv,db);
-  //setTimeout(dyg,1,(csv));
   plotexp(csv);
 }
 
@@ -246,20 +245,13 @@ function plotexp(csv,db){
   var datrate = 1000;  //one second
   if (document.getElementById("dat").value != "") dat = new Date(document.getElementById("dat").value);
   if (document.getElementById("datR").value != "") datrate = Number(document.getElementById("datR").value)*1000;
-  if (document.getElementById("99").checked) { //set own start date and increment
+  if (document.getElementById("99").checked && !(csv[0][0] instanceof Date)) { //set own start date and increment
     addLoader("Adding Custom Dates",false,80);
     for (let i=0;i<csv.length;i++){
       csv[i].unshift(new Date(dat.setTime(dat.getTime()+datrate)));
       //dat.setTime(dat.getTime()+1000
     }
   }
-
-  try{
-    const equadiv = document.getElementById("equa");
-    while (equadiv.childElementCount>2) { //don't remove the firstborn children
-      equadiv.removeChild(equadiv.lastChild);
-    }
-  }catch(err){console.log(e);}
 
   equationInputs(csv[0].length);
   const eqychecky = document.getElementById("eqcheck").checked = (getSavedValue("eqcheck") == "true");
@@ -282,27 +274,48 @@ function plotexp(csv,db){
   };*/
 }
 
-function equationInputs(len) {//add equation inputs
+function equationInputs(len,res) {//add equation inputs
   const eqh = document.getElementById('equa');
+  let reset = false;
+  try{
+    //const equadiv = document.getElementById("equa");
+    while (eqh.childElementCount>2) { //don't remove the firstborn children
+      eqh.removeChild(eqh.lastChild);
+    }
+  }catch(err){console.log(e);}
   let equ = []/*, eqw = [], eqb = false*/;
   for (let i=1;i<len;i++){
     equ[i] = document.createElement('input');
     equ[i].type = 'text';
-    equ[i].value = getSavedValue(String.fromCharCode(96+i)) == "" ? String.fromCharCode(96+i) : getSavedValue(String.fromCharCode(96+i));
+    let ch = String.fromCharCode(96+i);
+    if (getSavedValue(ch) === "0" && res) localStorage.setItem(ch,ch);
+    reset = getSavedValue(ch) === "";
+    equ[i].value = reset ? ch : getSavedValue(ch);
     //eqw[i-1] = equ[i].value;
-    equ[i].id = String.fromCharCode(96+i);
+    equ[i].id = ch;
     equ[i].onkeyup = function(){saveValue(this);};
     eqh.appendChild(equ[i]);
   }
 }
 
 function arrayequations(csv,db) {//column equations
+  let mod = false;
   try{
     for (let i=0;i<csv.length;i++){
       for (let j=1;j<csv[i].length;j++){
-        window[String.fromCharCode(96+j)] = csv[i][j];
-        csv[i][j] = eval(document.getElementById(String.fromCharCode(96+j)).value);
+        let ch = String.fromCharCode(96+j);
+        let eq = document.getElementById(ch).value;
+        window[ch] = csv[i][j];
+        if (eq === "0") {
+          csv[i].splice(j,1);
+          mod = true;
+        }
+        else if (ch !== eq) csv[i][j] = eval(eq); //only eval if there is an equation
       }
+    }
+    if (mod) {
+      equationInputs(csv[0].length,true);
+      save(csv,db);
     }
     return csv;
   }catch(err){defaultPlot(db);}
