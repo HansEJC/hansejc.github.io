@@ -301,16 +301,19 @@ function equationInputs(len,res) {//add equation inputs
 function arrayequations(csv,db) {//column equations
   let mod = false;
   try{
-    for (let i=0;i<csv.length;i++){
-      for (let j=1;j<csv[i].length;j++){
-        let ch = String.fromCharCode(96+j);
-        let eq = document.getElementById(ch).value;
-        window[ch] = csv[i][j];
+    for (let i=1;i<csv[0].length;i++){
+      let ch = String.fromCharCode(96+i);
+      let eq = document.getElementById(ch).value;
+      if (ch === eq) continue; //only eval if there is an equation
+      for (let j=0;j<csv.length;j++){
         if (eq === "0") {
-          csv[i].splice(j,1);
+          csv[j].splice(i,1);
           mod = true;
         }
-        else if (ch !== eq) csv[i][j] = eval(eq); //only eval if there is an equation
+        else {
+          window[ch] = csv[j][i];
+          csv[j][i] = eval(eq); 
+        }
       }
     }
     if (mod) {
