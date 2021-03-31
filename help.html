@@ -15,9 +15,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <link rel="stylesheet" href="css/main-style.css"/>
     <script defer src="js/init.js"></script>
-    <script defer id="MathJax-script" async
-      src="js/ext/MathJax.js?config=TeX-MML-AM_CHTML">
-    </script>
+    <link rel="stylesheet" href="css/ext/katex.min.css">
+    <script defer src="js/ext/katex.min.js"></script>
+    <script defer src="js/ext/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
   </head>
   <body class="left-sidebar">
     <!-- Google Tag Manager (noscript) -->
@@ -37,7 +37,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <div class="row 50%">
         <div>
           <!-- Content -->
-          <div id="content" style="max-width:70ch">
+          <div class="help" id="content">
             <header id="#"><hr>
               <h1>Contents</h1>
             </header>
@@ -116,7 +116,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 <ol>
                 <p>  This page can be used to document the results of Soil Resistivity and Fall of Potential surveys. Enter the test location to save
                   the results with the specified site name.
+                </p>
                   <li><b>Soil Resistivity</b><br></li>
+                <p>
                   Enter the soil resistance values and check that the soil resistivity values are consistent.
                   Soil resistivity can be tested using the Wenner test as described in section 10.2.2 of BS 7430 and below.
                   Drive four equally spaced test electrodes to a depth of not greater 5% of their spacing apart.
@@ -128,7 +130,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   R is the resistance measured between the middle electrodes, in ohms (Ω)<br><br>
                   See the figure below to get a better idea.<br>
                   <img alt="Soil Resistivity" class="helpImg" src="images/soil-resistivity.svg" style="max-width:600px; width:90vw; max-height:360px; height:54vw; display: block; margin-left: auto; margin-right: auto;"/>
+                </p>
                   <br><li><b>Fall of Potential</b></li>
+                <p>
                   The outer test electrode, or current test stake, is driven into the ground 30 to 50 metres away from the earth system,
                   and the inner electrode, or voltage test stake, is then driven into the ground mid-way between the earth electrode and the current
                   test stake, and in a direct line between them.<br><br>
@@ -294,24 +298,13 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   The last approach is probably the closest to being correct. The return impedance calculation from the previous section has a slight modification.
                   The mast impedance Z<sub>MT</sub> is parallalled with the AEW impedance Z<sub>AEW</sub>.<br>
 
-                  $$ {Z_{RET} =} \left({1 \over Z_R \times L_{XBP}} + \left( \left({K_{RR} \times K_T \over Z_R \times L_{XB}} + {1 \over \color{red}{\left((Z_{AEW} \times L_{XB})^{-1} + (1 / Z_{MT}) \right)^{-1}}} \\ 
+                  $$ {Z_{RET} =} \left({1 \over Z_R \times L_{XBP}} + \left( \left({K_{RR} \times K_T \over Z_R \times L_{XB}} + {1 \over \color{red}{\left((Z_{AEW} \times L_{XB})^{-1} + (1 / Z_{MT}) \right)^{-1}}}
                   + {1 \over Z_{RSC} \times L_{XB}} \right)^{-1} + Z_R \times (L_{XBP} - L_{XB}) \right)^{-1} \right)^{-1} $$
 
                   <br>The rail voltage then uses the same equation as the first one, using the updated Z<sub>RET</sub> value.                 
                 </p>
               </div></li>
             </ol>
-            <script defer type="text/x-mathjax-config">
-               MathJax.Hub.Config({
-                extensions: ["tex2jax.js"],
-                tex2jax: {
-                  inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-                  displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-                  processEscapes: true
-                },
-                "CommonHTML": { linebreaks: { automatic: true } }
-                });
-            </script>
           </div>
         </div>
       </div>

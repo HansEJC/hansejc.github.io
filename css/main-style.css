@@ -444,7 +444,13 @@
   {
     padding: 0 0 2em 1em;
   }
-  
+
+  .help p,
+  .help hr,
+  .help .row {
+    max-width:70ch;
+  }
+
    /* Grid */
 
   .row {
@@ -982,24 +988,6 @@ input:checked + .slider:before {
       width: 30% !important;
     }
 
-      .box.post-excerpt
-      {
-      }
-
-        .box.post-excerpt .image.left
-        {
-          position: relative;
-          top: 0.25em;
-          width: 25%;
-          margin: 0;
-        }
-
-        .box.post-excerpt h3,
-        .box.post-excerpt p
-        {
-          margin-left: 32.5%;
-        }
-
 /*********************************************************************************/
 /* Logo                                                                          */
 /*********************************************************************************/
@@ -1032,19 +1020,15 @@ input:checked + .slider:before {
     padding: 1em 0 0 0;
   }
 
-/*********************************************************************************/
-/* Content                                                                       */
-/*********************************************************************************/
-
-  #content
-  {
-    padding: 0 0 2em 1em;
+  .help p,
+  .help hr,
+  .help .row {
+    max-width:95vw;
   }
-
-    #content header.style1
-    {
-      padding-bottom: 2.5em;
-    }
+  
+  .katex-display {
+    overflow: auto;
+  }
 
 /*********************************************************************************/
 /* Footer                                                                        */

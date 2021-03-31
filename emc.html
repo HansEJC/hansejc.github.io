@@ -18,9 +18,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <script defer src="js/ext/html2canvas.min.js"></script>
     <link rel="stylesheet" href="css/dygraph.css"/>
     <script defer src="js/ext/dygraph.min.js"></script>
-    <script defer id="MathJax-script" async
-      src="js/ext/MathJax.js?config=TeX-MML-AM_CHTML">
-    </script>
+    <link rel="stylesheet" href="css/ext/katex.min.css">
+    <script defer src="js/ext/katex.min.js"></script>
+    <script defer src="js/ext/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     <script defer src="js/emc.js"></script>
   </head>
   <body class="left-sidebar">
@@ -61,17 +61,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <section class="box">
                 <form>
                   Electric Field:
-                  <p class="Math" style="visibility: hidden;"> \[E = {q \over 2\pi \times \epsilon_0 \times d}\]</p>
-                  Air Permittivity : <p class="Math" style="visibility: hidden;">\(\epsilon_0 = 8.55\times 10^{-12} \ F/m\) </p>
-                  Charge (q): <p class="Math" style="visibility: hidden;">\(C\times V=\)
+                  <p> \[E = {q \over 2\pi \times \epsilon_0 \times d}\]</p>
+                  Air Permittivity : <p>\(\epsilon_0 = 8.55\times 10^{-12} \ F/m\) </p>
+                  Charge (q): <p>\(C\times V=\)
                   <small id="CH"></small></p>
                 </form>
               </section>
               <section class="box">
                 <form>
                   Magnetic Field:
-                  <p class="Math" style="visibility: hidden;"> \[B = {μ_0 \times I \over 2\pi \times d}\]</p>
-                  Air Permeability : <p class="Math" style="visibility: hidden;">\(μ_0 = 4\pi \times 10^{-7} \ Tm/A\) </p>
+                  <p> \[B = {μ_0 \times I \over 2\pi \times d}\]</p>
+                  Air Permeability : <p>\(μ_0 = 4\pi \times 10^{-7} \ Tm/A\) </p>
                 </form>
               </section>
             </div>
@@ -90,22 +90,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <option value="M" selected>Megahertz</option>
                     <option value="G">Gigahertz</option>
                   </select><br>
-                  Field Indication: <p class="Math" style="visibility: hidden;">\(c/2\pi f=\)
+                  Field Indication: <p>\(c/2\pi f=\)
                   <small id="FI"></small></p>
                 </form>
               </section>
               <section class="box">
                 <form>
                   Near Field: \(d\le c/2\pi f\)
-                  <p class="Math" style="visibility: hidden;"> \[E \approx {c^2 \sqrt{EIRP} \over 7.2 f^2 d^3}\]</p>
-                  <p class="Math" style="visibility: hidden;"> \[H \approx {c \sqrt{EIRP} \over 434fd^2}\]</p>
+                  <p> \[E \approx {c^2 \sqrt{EIRP} \over 7.2 f^2 d^3}\]</p>
+                  <p> \[H \approx {c \sqrt{EIRP} \over 434fd^2}\]</p>
                 </form>
               </section>
               <section class="box">
                 <form>
                   Far Field: \(d\ge c/2\pi f\)
-                  <p class="Math" style="visibility: hidden;"> \[E \approx {5.48 \sqrt{EIRP} \over d}\]</p>
-                  <p class="Math" style="visibility: hidden;"> \[H \approx { \sqrt{EIRP} \over 68.8d}\]</p>
+                  <p> \[E \approx {5.48 \sqrt{EIRP} \over d}\]</p>
+                  <p> \[H \approx { \sqrt{EIRP} \over 68.8d}\]</p>
                 </form>
               </section>
             </div>

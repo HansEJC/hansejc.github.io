@@ -15,9 +15,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <link rel="stylesheet" href="css/main-style.css"/>
     <script defer src="js/init.js"></script>
-    <script defer id="MathJax-script" async
-      src="js/ext/MathJax.js?config=TeX-MML-AM_CHTML">
-    </script>
+    <link rel="stylesheet" href="css/ext/katex.min.css">
+    <script defer src="js/ext/katex.min.js"></script>
+    <script defer src="js/ext/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
     <script defer src="js/earthing.js"></script>
   </head>
   <body class="left-sidebar">
@@ -74,7 +74,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   Ground Resistivity \(\rho\) (mΩ)<input type="number" id="P" onkeyup='saveValue(this);'/>
                   \(Area\) (m<sup>2</sup>)<input type="number" id="AREA" onkeyup='saveValue(this);'/>
                   Radius of Circular Plate<br>  of Same Area as Grid \(r\) (m)<span id="R" class="label "></span>
-                  <p class="Math" style="visibility: hidden;">$$ r = \sqrt{Area \over \pi} $$</p>
+                  <p>$$ r = \sqrt{Area \over \pi} $$</p>
                 </form>
               </section>
               <section class="box">
@@ -85,7 +85,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   <style>#RE {display: none}</style>
                   <span hidden id="RE" class="label "></span>  <br>
                   Rod Factor \(K_R\)<span id="KR" class="label "></span>
-                  <p class="Math" style="display: none;">$$ K_R= 1 + {{n_R \times {l_R}^2} \over {10r^2}} $$</p>
+                  <p">$$ K_R= 1 + {{n_R \times {l_R}^2} \over {10r^2}} $$</p>
                 </form>
               </section>
               <section class="box">
@@ -94,7 +94,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                   Rod Length \(l_R\) (m)<input type="number" id="LR" onkeyup='saveValue(this);'/>
                   Earth Resistance Calculated <br>with Rods \(R_G\) (Ω):
                   <span id="RG" class="label "></span>
-                  <p class="Math" style="display: none;"><!--$$ R_e = {\rho \over 4r} + {\rho \over {1 + n_R \times l_R}} $$<br>-->
+                  <p"><!--$$ R_e = {\rho \over 4r} + {\rho \over {1 + n_R \times l_R}} $$<br>-->
                   \[R_G=\rho  {\left({1+ {\left(r \over {r+2.5h}\right)} \over 8r \times K_R}+{1 \over L}\right)}\]</p>
                 </form>
               </section>
@@ -115,7 +115,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               </section>
               <section class="box">
                 <form>
-                  <p class="Math" style="display: none;">$$ \rho_A = {R \times \rho \over R_G} $$</p>
+                  <p">$$ \rho_A = {R \times \rho \over R_G} $$</p>
                 </form>
               </section>
             </div>

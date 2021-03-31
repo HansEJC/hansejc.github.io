@@ -227,13 +227,4 @@ window.addEventListener("load", function() {
   document.onkeyup = function() {
     calculations();
   };
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [["$","$"],["\\(","\\)"]]
-    }
-  });
-  MathJax.Hub.Queue(
-  function () {
-    document.querySelectorAll(".Math").forEach(math => math.style.visibility = "");
-  });
 });
