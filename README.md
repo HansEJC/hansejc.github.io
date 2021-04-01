@@ -8,14 +8,14 @@
 Hobby website I use to simplify my life
 
 - [Dobble](#dobble)
-- [CSV Plotter](#csv)
-- [Distance Protection Fault Plotter](#relay)
-- [Earthing Calculation Tools](#earth)
-- [Earthing Surveys](#soil)
-- [Electrical Engineering Tools](#tools)
-- [EMC Calculations](#emc)
-- [Railway Faults](#fault)
-- [Railway Voltages](#railvolts)
+- [CSV Plotter](#csv-plotter)
+- [Distance Protection Fault Plotter](#distance-protection-fault-plotter)
+- [Earthing Calculation Tools](#earthing-calculation-tools)
+- [Earthing Surveys](#earthing-surveys)
+- [Electrical Engineering Tools](#electrical-engineering-tools)
+- [EMC Calculations](#emc-calculations)
+- [Railway Faults](#railway-faults)
+- [Railway Voltages](#railway-voltages)
 <p><b>Note.</b><br> If a page is not working for you, it's probably because an update has broken your cached version.
   To fix this, refresh the cache by pressing <b>Ctr+Shift+R</b>.
 </p>
@@ -105,7 +105,28 @@ Hobby website I use to simplify my life
 <div class="row 50%">
 	<p><a href="downloads/Polar Addition.xlsx">Polar Additions</a>
 	</p>
-</div>	
+</div>
+<header id="emc"><hr>
+	<h1>EMC Calculations</h1>
+</header>
+<div class="row 50%">
+<p> The electric fields get mostly blocked out by solid and conductive objects.
+The links below contain the references for the equations and very useful information about electric and magnetic fields. 
+</p>
+<ol>
+	<li><a href="https://www.nationalgrid.com/sites/default/files/documents/13791-Electric%20and%20Magnetic%20Fields%20-%20The%20facts.pdf">ENA Facts</a></li>
+	<li><a href="https://folk.uio.no/arntvi/LowFreqFields2.pdf">Very informative on low frequency fields</a></li>
+	<li><a href="http://www.emfs.info/sources/transport/trains/">EMF from electric trains</a></li>
+	<li><a href="http://www.emfs.info/limits/limits-organisations/icnirp-1998/">Limits stated in the International Commission on Non-Ionizing Radiation Protection (ICNIRP)</a></li>
+	<li><a href="http://www.dcode.org.uk/assets/uploads/ENA_ER_P24_Issue_1__1990_.pdf">Railway capacitance p.39</a></li>
+	<li><a href="https://nepis.epa.gov/Exe/ZyPDF.cgi/9100FL3V.PDF?Dockey=9100FL3V.PDF">Electric field equation p. 7</a></li>
+	<li><a href="https://www.ijareeie.com/upload/2015/august/87_Analytical.pdf">Electric field equation alternative reference</a></li>
+	<li><a href="https://www.softschools.com/formulas/physics/magnetic_field_formula/343/">Magnetic field equation</a></li>
+	<li><a href="http://www.emfs.info/wp-content/uploads/2014/07/Howtocalculatethemagneticfieldfromathree.pdf">Magnetic field equation alternative reference</a></li>
+	<li><a href="http://www.emfs.info/what/measuring/finite/">Effect of finite length on magnetic field calculations</a></li>
+	<li><a href="http://www.emfs.info/what/measuring/">Information about calculations</a></li>
+</ol>
+</div>
 <header id="fault"><hr>
 	<h1>Railway Faults</h1>
 </header>
