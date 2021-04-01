@@ -7,6 +7,7 @@ async function delivery() {
   });
 
   // await code here
+  let ARegcsv =  await fetch("Orion Park/assets-Asset List.csv").then(result => result.text());
   let DRpcsv =  await fetch("Orion Park/op-Project Stock.csv").then(result => result.text());
   let DRwcsv = await fetch("Orion Park/op-Warehouse Stock .csv").then(result => result.text());
   let DRcsv = await fetch("Orion Park/op-Delivery.csv").then(result => result.text());
@@ -15,9 +16,16 @@ async function delivery() {
   // code below here will only execute when await fetch() finished loading
   document.getElementById("p").textContent =`Last Updated: ${new Date (lastmod)}`;
   document.getElementById("pp").textContent =`Last Checked: ${new Date(lastfetch)}`;
-  let DRp = Papa.parse(DRpcsv).data.reverse();
-  let DRw = Papa.parse(DRwcsv).data;
-  let DR = Papa.parse(DRcsv).data.reverse();
+  AReg = Papa.parse(ARegcsv).data.reverse();
+  DRp = Papa.parse(DRpcsv).data.reverse();
+  DRw = Papa.parse(DRwcsv).data;
+  DR = Papa.parse(DRcsv).data.reverse();
+  for(let i = 0; i < AReg.length; i++){
+    if(AReg[i][0] == "" || new RegExp("asset","i").test(AReg[i][0]) || new RegExp("undefined","i").test(AReg[i][0])){
+      AReg.splice(i,1);
+      i--;
+    }
+  }
   for(let i = 0; i < DRp.length; i++){
     if(DRp[i][5] == "" || new RegExp("date","i").test(DRp[i][5]) || new RegExp("undefined","i").test(DRp[i][5])){
       DRp.splice(i,1);
@@ -36,12 +44,13 @@ async function delivery() {
       i--;
     }
   }
-  ifsy(DRp,DRw,DR);
-  return {DRp,DRw,DR};
+  ifsy(AReg,DRp,DRw,DR);
+  return {AReg,DRp,DRw,DR};
 }
 
-function ifsy(DRp,DRw,DR){
-  if (document.getElementById("PStock").checked) search(DRp);
+function ifsy(AReg,DRp,DRw,DR){
+  if (document.getElementById("AReg").checked) search(AReg);
+  else if (document.getElementById("PStock").checked) search(DRp);
   else if (document.getElementById("WStock").checked) search(DRw);
   else {search(DR); document.getElementById("Del").checked = true;}
 }
@@ -51,7 +60,6 @@ function search(arrheh){
   var pw = document.getElementById("PASS").value;
   pn = pn.toLowerCase().split(" ");
   var myArray = arrheh;
-  var myTable;
   myArray = myArray.map(e => e.join(','));//remove undefined row
   var npr = myArray.length; //number of rows
   var sArray = [];
@@ -71,60 +79,85 @@ function search(arrheh){
       if(pn[0].length>0) e = e.replace(new RegExp(RegExp.quote(pn.join('|')),'gi'), x => `<mark>${x}</mark>`);
       return e.split(',');
     });
-
-  if(document.getElementById("Del").checked){
-    myTable= `<table class="orionPark">
-      <tr><th>Date</th>
-      <th>Time</th>
-      <th>Supplier</th>
-      <th>Comments</th>
-      <th>Project</th>
-      <th>PO #</th></tr>`;
-
-    for(let i = 0; i < sArray.length; i++){
-      let len = sArray[i][8].includes(`</`) ? 16 : 3;
-      let shifty = sArray[i][8].length > len;
-      let comm = shifty ? `${sArray[i][7]} ${sArray[i][8]}` : sArray[i][7];
-      let proj = shifty ? `` : sArray[i][8].substring(0,len);
-      myTable+=`<tr><td>${sArray[i][0]}</td>
-        <td>${sArray[i][1]}</td>
-        <td>${sArray[i][4]}</td>
-        <td>${comm}</td>
-        <td>${proj}</td>
-        <td>${sArray[i][9]}</td></tr>`;
-    }
-  }
-
-  else{ //create table
-    myTable= `<table class="orionPark">
-      <tr><th>Part #</th>
-      <th>Description</th>
-      <th>Quantity</th>
-      <th>Date</th>
-      <th>Location</th>
-      <th>Comment</th></tr>`;
-
-    for(let i = 0; i < sArray.length; i++){
-      myTable+=`<tr><td>${sArray[i][0]}</td>
-        <td>${sArray[i][1]}</td>
-        <td>${sArray[i][2]}</td>
-        <td>${sArray[i][5]}</td>
-        <td>${sArray[i][7]}</td>
-        <td>${sArray[i][8]}</td></tr>`;
-    }
-  }
+  
+  let myTable = document.getElementById("Del").checked
+  ? searchDel(sArray)
+  : document.getElementById("AReg").checked
+  ? searchAsset(sArray)
+  : searchOther(sArray);
 
   myTable+="</table>";
   if(pw == "asdfasdf") document.getElementById('tab').innerHTML = myTable;
   else document.getElementById('tab').innerHTML = "";
 }
 
+function searchAsset(sArray) {
+  let myTable= `<table class="orionPark">
+    <tr><th>Description</th>
+    <th>ID</th>
+    <th>Purchase Date</th>
+    <th>Price</th>
+    <th>Supplier</th>
+    <th>Comment</th></tr>`;
+  for(let i = 0; i < Math.min(50,sArray.length); i++){
+    myTable+=`<tr><td>${sArray[i][0]}</td>
+      <td>${sArray[i][1]}</td>
+      <td>${sArray[i][3]}</td>
+      <td>${sArray[i][4]}</td>
+      <td>${sArray[i][5]}</td>
+      <td>${sArray[i][6]}</td></tr>`;
+  }
+  return myTable;
+}
+
+function searchDel(sArray) {
+  let myTable= `<table class="orionPark">
+    <tr><th>Date</th>
+    <th>Time</th>
+    <th>Supplier</th>
+    <th>Comments</th>
+    <th>Project</th>
+    <th>PO #</th></tr>`;
+  for(let i = 0; i < Math.min(50,sArray.length); i++){
+    let len = sArray[i][8].includes(`</`) ? 16 : 3;
+    let shifty = sArray[i][8].length > len;
+    let comm = shifty ? `${sArray[i][7]} ${sArray[i][8]}` : sArray[i][7];
+    let proj = shifty ? `` : sArray[i][8].substring(0,len);
+    myTable+=`<tr><td>${sArray[i][0]}</td>
+      <td>${sArray[i][1]}</td>
+      <td>${sArray[i][4]}</td>
+      <td>${comm}</td>
+      <td>${proj}</td>
+      <td>${sArray[i][9]}</td></tr>`;
+  }
+  return myTable;
+}
+
+function searchOther(sArray) {
+  let myTable= `<table class="orionPark">
+    <tr><th>Part #</th>
+    <th>Description</th>
+    <th>Quantity</th>
+    <th>Date</th>
+    <th>Location</th>
+    <th>Comment</th></tr>`;
+  for(let i = 0; i < Math.min(200,sArray.length); i++){
+    myTable+=`<tr><td>${sArray[i][0]}</td>
+      <td>${sArray[i][1]}</td>
+      <td>${sArray[i][2]}</td>
+      <td>${sArray[i][5]}</td>
+      <td>${sArray[i][7]}</td>
+      <td>${sArray[i][8]}</td></tr>`;
+  }
+  return myTable;
+}
+
 //startup
-let DRp,DRw,DR;
+let AReg,DRp,DRw,DR;
 (async function() {({DRp,DRw,DR} = await delivery())})();
 document.onkeyup = function() {
-  ifsy(DRp,DRw,DR);
+  ifsy(AReg,DRp,DRw,DR);
 };
 document.onchange = function() {
-  ifsy(DRp,DRw,DR);
+  ifsy(AReg,DRp,DRw,DR);
 };

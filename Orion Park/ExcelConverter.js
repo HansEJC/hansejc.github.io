@@ -49,6 +49,7 @@ try {
       // Save each worksheet as a CSV file.
       for(var e2 = new Enumerator(wb.Sheets); !e2.atEnd(); e2.moveNext()) {
         var ws = e2.item();
+        ws.UsedRange.replace(",", " "); //Replace commas to not create more columns
         if(removeLf) {
           ws.UsedRange.Replace("\n", "");
         }
