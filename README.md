@@ -7,6 +7,20 @@
 
 Hobby website I use to simplify my life
 
+# Contents
+- [hansejc.github.io](#hansejcgithubio)
+- [Dobble](#dobble)
+- [CSV Plotter](#csv)
+- [Distance Protection Fault Plotter](#relay)
+- [Earthing Calculation Tools](#earth)
+- [Earthing Surveys](#soil)
+- [Electrical Engineering Tools](#tools)
+- [EMC Calculations](#emc)
+- [Railway Faults](#fault)
+- [Railway Voltages](#railvolts)
+<p><b>Note.</b><br> If a page is not working for you, it's probably because an update has broken your cached version.
+  To fix this, refresh the cache by pressing <b>Ctr+Shift+R</b>.
+</p>
 <header id="dobble"><hr>
 	<h1>Dobble</h1>
 </header>
