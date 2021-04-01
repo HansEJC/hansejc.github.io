@@ -40,6 +40,14 @@ function oleFun(stuff){
   return 1/(1/(ole*lcc)+1/((ole*lc)/trnu + ole*(lc-lcc)));
 }
 
+function normalCalc(stuff,volt){
+  let {trnu,lxb,aew,ri,railR,nxbnd,rsc,totmimp} = stuff;
+  let returnimp = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
+  let returnimp2 = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/parall([aew*nxbnd,totmimp])+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
+  if (volt) return {returnimp, returnimp2};
+  return returnimp;
+}
+
 const parall = (array) => {
   let par = 0;
   array.forEach(num => par += 1/num);

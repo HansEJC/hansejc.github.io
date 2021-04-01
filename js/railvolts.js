@@ -58,7 +58,7 @@ function calculations(){
 
       let stuff = {ole,lcc,lc,trnu,lch,lxb,aew,ri,railR,nxbnd,rsc,totmimp};
       oleimp = oleFun(stuff);
-      ({returnimp, returnimp2} = normalCalc(stuff));
+      ({returnimp, returnimp2} = normalCalc(stuff,true));
       oleimp = ind == 0 ? 0 : oleimp; //set FS impedance to 0
       returnimp = ind == 0 ? 0 : returnimp; //set FS impedance to 0
       faultimp = oleimp+returnimp;
@@ -69,7 +69,7 @@ function calculations(){
       let voltage2 = current*(parall([returnimp+previmp,erimp+totmimp]));
       let voltage3 = current2*(parall([returnimp2+previmp,erimp]));
 
-      earray.push([lch, voltage,voltage2,voltage3,null]);
+      earray.push([lch, voltage,voltage2,voltage3,null,null]);
       if ((lxb >= nxbnd || lcc >= lc) && nxbnd > 0) previmp += returnimp; //previous impedance
       if (lcc >= lc) prevole += oleimp; //previous impedance
       prevoleneg = previmpneg = 0;
@@ -86,8 +86,9 @@ function calculations(){
     subLabels(lblStuff);
   });
   let limit = fc > 0.999 ? 645 : 60;
-  earray.push([0-totlc*0.1, null, null, null, limit]);
-  earray.push([totlc*1.1, null, null, null, limit]);
+  let limit2 = fc > 0.999 ? 650 : 25;
+  earray.push([0-totlc*0.1, null, null, null, limit, limit2]);
+  earray.push([totlc*1.1, null, null, null, limit, limit2]);
   dygPlot(earray,subarray);
   return earray;
 }
@@ -104,13 +105,6 @@ function subLabels(stuff) {
   });
 }
 
-function normalCalc(stuff){
-  let {trnu,lxb,aew,ri,railR,nxbnd,rsc,totmimp} = stuff;
-  let returnimp = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
-  let returnimp2 = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/parall([aew*nxbnd,totmimp])+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
-  return {returnimp, returnimp2};
-}
-
 function dygPlot(earray,subarray){
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
@@ -123,7 +117,7 @@ function dygPlot(earray,subarray){
       xlabel: "Location (km)",
       ylabel: "Railway Voltages (V)",
       //labels:  ["Distance (km)", "Rail Voltage (V)", "Rail Voltage (V)."],
-      labels:  ["Distance (km)", "Rail Voltage (V)","Masts in series",  "Masts in parallel", "BS EN 50122 Limit"],
+      labels:  ["Distance (km)", "Rail Voltage (V)","Masts in series",  "Masts in parallel", "BS EN 50122-1 Limit", "G12/4 Limit"],
       //colors: ["blue"],
       connectSeparatedPoints: true,
       labelsSeparateLines: true,
@@ -144,8 +138,8 @@ function dygPlot(earray,subarray){
   );
   g3.ready(function() {
     const colors = g3.getColors();
-    colors.pop();
-    colors.push(`red`);
+    colors.pop(), colors.pop();
+    colors.push(`orange`,`red`);
     setTimeout(function(){
       window.dispatchEvent(new Event('resize'));
     }, 500);
@@ -162,7 +156,7 @@ function findExtremes(){
   let file = g3.rolledSeries_;
   let labls = g3.getLabels();
 
-  for (let i=1; i<file.length-1; i++) {
+  for (let i=1; i<file.length-2; i++) {
     let max = 0, av = 0;
     for (let j=0; j<file[1].length; j++) {
       max = Math.max(max,file[i][j][1]);

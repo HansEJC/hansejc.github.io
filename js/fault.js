@@ -107,12 +107,6 @@ function subLabels(stuff) {
   });
 }
 
-function normalCalc(stuff){
-  document.querySelector("#CLASS").checked = true;;
-  let {trnu,lxb,aew,ri,railR,nxbnd,rsc} = stuff;
-  return 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
-}
-
 function atCalc(stuff){
   let {lxb,ri,nxbnd,atf} = stuff;
   return 1/(1/(ri*lxb)+1/((atf*nxbnd)+ri*(nxbnd-lxb))); //bonds at cross bond location
