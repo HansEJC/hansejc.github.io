@@ -7,8 +7,6 @@
 
 Hobby website I use to simplify my life
 
-# Contents
-- [hansejc.github.io](#hansejcgithubio)
 - [Dobble](#dobble)
 - [CSV Plotter](#csv)
 - [Distance Protection Fault Plotter](#relay)
