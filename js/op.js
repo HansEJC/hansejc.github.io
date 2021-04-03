@@ -10,7 +10,7 @@ async function delivery() {
   let DRpcsv = await fetch("Orion Park/op-Project Stock.csv").then(result => result.text());
   let DRwcsv = await fetch("Orion Park/op-Warehouse Stock .csv").then(result => result.text());
   let DRcsv = await fetch("Orion Park/op-Delivery.csv").then(result => result.text());
-  let lastmod = new Date(await fetch("Orion Park/mod.txt").then(result => result.text()));
+  let lastmod = await fetch("Orion Park/mod.txt").then(result => result.text());
   let lastfetch = await fetch("Orion Park/op-Delivery.csv").then(result => result.headers.get('Last-Modified'));
   // code below here will only execute when await fetch() finished loading
   document.getElementById("p").textContent = `Last Updated: ${new Date(lastmod)}`;
