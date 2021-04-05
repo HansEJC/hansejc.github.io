@@ -44,7 +44,8 @@ function normalCalc(stuff,volt){
   let {trnu,lxb,aew,ri,railR,nxbnd,rsc,totmimp} = stuff;
   let returnimp = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
   let returnimp2 = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/parall([aew*nxbnd,totmimp])+1/(rsc*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
-  if (volt) return {returnimp, returnimp2};
+  let returnaew = returnimp2+aew*lxb;
+  if (volt) return {returnimp, returnimp2, returnaew};
   return returnimp;
 }
 
@@ -56,8 +57,8 @@ const parall = (array) => {
 
 function negTrack(subarray) { //this is for locations that don't parallel
   const tracks = document.querySelectorAll(".trac");
-  let extra = 0, index, textlc, insert;
-  let dist = 0, totlc = 0;
+  let extra = 0, index, insert;
+  let totlc = 0;
   tracks.forEach((trac,ind) => {
     let posID = trac.id;
     let locs = document.getElementById(posID-199);

@@ -182,7 +182,7 @@ function table(rows){
       row.insertCell(0).innerHTML = arr[0];
       row.insertCell(1).innerHTML = arr[1];
     });
-  }catch(err){console.log(err)}
+  }catch(err){console.log(err);}
   
   tabdiv.innerHTML = ``;
   tabdiv.appendChild(myTable);
