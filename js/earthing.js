@@ -1,54 +1,62 @@
 function volts(v) {
-  return v > 1000 ? +(v/1000).toFixed(2)+" kV" : +v.toFixed(2)+" V";
+  return v > 1000 ? `${+(v / 1000).toFixed(2)} kV` : `${+v.toFixed(2)} V`;
 }
 
-function earthing() {  
+function earthing() {
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-  var er = Number(getSavedValue("ER"));    // set the value to this input
-  var rr = Number(getSavedValue("RR"));
-  var fc = Number(getSavedValue("FC"));
-  var pr = er*rr/(er+rr);
-  var epr = 1000*pr*fc;
-  var ir = epr/rr/1000;
-  var ig = epr/er/1000;
-  var irp = 100*ir/fc;
-  var igp = 100*ig/fc;
+  eprCalc();
+  earthGrid();
+}
 
-  document.getElementById("PR").textContent = +pr.toFixed(2)+" Ω";
+function eprCalc() {
+  let er = +(getSavedValue("ER"));    // set the value to this input
+  let rr = +(getSavedValue("RR"));
+  let fc = +(getSavedValue("FC"));
+  let pr = er * rr / (er + rr);
+  let epr = 1000 * pr * fc;
+  let ir = epr / rr / 1000;
+  let ig = epr / er / 1000;
+  let irp = 100 * ir / fc;
+  let igp = 100 * ig / fc;
+
   document.getElementById("EPR").textContent = volts(epr);
-  document.getElementById("IR").textContent = +ir.toFixed(2)+" kA";
-  document.getElementById("IG").textContent = +ig.toFixed(2)+" kA";
-  document.getElementById("IRp").textContent = +irp.toFixed(0)+"%";
-  document.getElementById("IGp").textContent = +igp.toFixed(0)+"%";
+  document.getElementById("EPR").className = epr > 645 ? 'label danger' : 'label safe';
+  texty(`PR`, pr, `Ω`);
+  texty(`IR`, ir, `kA`);
+  texty(`IG`, ig, `kA`);
+  texty(`IRp`, irp, `%`, 0);
+  texty(`IGp`, igp, `%`, 0);
+}
 
-  if (epr>645) document.getElementById("EPR").className = 'label danger';
-  else document.getElementById("EPR").className = 'label safe';
+function earthGrid() {
+  let p = +(getSavedValue("P"));    // set the value to this input
+  let area = +(getSavedValue("AREA"));
+  let h = +(getSavedValue("H"));
+  let l = +(getSavedValue("L"));
+  let nr = +(getSavedValue("NR"));
+  let lr = +(getSavedValue("LR"));
+  let r = Math.sqrt(area / Math.PI);
+  let kr = 1 + nr * lr * lr / (10 * r * r);
+  let re = p / (4 * r) + p / (l + nr * lr);
+  let rg = p * ((1 + r / (r + 2.5 * h)) / (8 * r * kr) + 1 / l);
+  let era = +(getSavedValue("ERA"));
+  let pa = era * p / rg;
 
-  var p = Number(getSavedValue("P"));    // set the value to this input
-  var area = Number(getSavedValue("AREA"));
-  var h = Number(getSavedValue("H"));
-  var l = Number(getSavedValue("L"));
-  var nr = Number(getSavedValue("NR"));
-  var lr = Number(getSavedValue("LR"));
-  var r = Math.sqrt(area/Math.PI);
-  var kr = 1+nr*lr*lr/(10*r*r);
-  var re = p/(4*r)+p/(l+nr*lr);
-  var rg = p*((1+r/(r+2.5*h))/(8*r*kr)+1/l);
+  texty(`R`, r, `m`);
+  texty(`KR`, kr, ``);
+  texty(`RE`, re, `Ω`);
+  texty(`RG`, rg, `Ω`);
+  texty(`PA`, pa, `Ωm`);
+}
 
-  document.getElementById("R").textContent = +r.toFixed(2)+" m";
-  document.getElementById("KR").textContent = +kr.toFixed(2);
-  document.getElementById("RE").textContent = +re.toFixed(2)+" Ω";
-  document.getElementById("RG").textContent = +rg.toFixed(2)+" Ω";
-
-  var era = Number(getSavedValue("ERA"));
-  var pa = era*p/rg;
-  document.getElementById("PA").textContent = +pa.toFixed(2)+" Ωm";
+const texty = (id, num, sym, dec = 2) => {
+  document.querySelector(`#${id}`).textContent = `${+num.toFixed(dec)} ${sym}`;
 }
 
 //startup
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
   earthing();
-  document.onkeyup = function() {
+  document.onkeyup = function () {
     earthing();
   };
 });
