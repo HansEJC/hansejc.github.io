@@ -71,6 +71,7 @@ function navBar(){
       <div class="dropdown">
         <a href='#' class="dropbtn heh">Tools</a>
         <div class="dropdown-content">
+          <a href='circuit.html'>Circuit Simulator</a>
           <a href='csv.html'>CSV Plotter</a>
           <a href='earth.html'>Earthing Calculation Tools</a>
           <a href='soil.html'>Earthing Surveys</a>
