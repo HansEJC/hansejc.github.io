@@ -2,6 +2,7 @@
 <html>
 
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="stylesheet" href="../../../css/ext/circuitjs.css" />
 </head>
 
@@ -11,6 +12,26 @@
 
   <script language="javascript" src="lz-string.min.js"></script>
   <script language="javascript" src="circuitjs1.js"></script>
+  <script>
+    const mobileMode = () => {
+      if (window.innerWidth < 600) {
+        const divy = document.querySelector("body > div:nth-child(6) > div:nth-child(2) > div > div:nth-child(4)");
+        divy.style.overflow = "hidden";
+        try { clearTimeout(cid); } catch (err) { console.log(err); }
+        cid = setTimeout(() => divy.style.overflow = `visible`, 3000);
+      }
+    }
+    window.addEventListener("load", function () {
+      setTimeout(() => {
+        document.addEventListener(`click`, mobileMode);
+        document.addEventListener(`mouseover`, mobileMode);
+        if (window.innerWidth < 600) document.querySelector("body > div:nth-child(6) > div:nth-child(2) > div > div:nth-child(4)").style.overflow = `visible`;
+        const pulldiv = document.createElement('div');
+        pulldiv.classList.add(`pullout`);
+        document.body.appendChild(pulldiv);
+      }, 3000);
+    });
+  </script>
 </body>
 
 </html>

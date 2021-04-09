@@ -64,8 +64,6 @@ iframe {
     color: LightGray;
 }
 
-.gwt-Label-current {}
-
 .gwt-Button.chbut {
     padding: 3px;
     margin: 3px;
@@ -171,13 +169,8 @@ iframe {
     /* Animation center compensation - margins should be symmetric */
     /* remove if not needed */
     margin-left: .2em;
-    /* you can be more comfortable with increased icons size */
-    /* font-size: 120%; */
-    /* Font smoothing. That was taken from TWBS */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* Uncomment for 3D effect */
-    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
 .cirjsicon-floppy:before {
@@ -338,4 +331,17 @@ iframe {
 
 .cirjsicon-dropbox:before {
     content: '\f330';
+}
+
+@media only screen and (max-width: 600px) {
+    .pullout {
+        background-color: white;
+        opacity: 0.5;
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        right: -25px;
+        top: 75%;
+        border-radius: 12px;
+    }
 }
