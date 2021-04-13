@@ -1,17 +1,21 @@
-async function delivery() {
+function startup() {
+  fireBase();
   document.getElementById("SEAR").value = getSavedValue("SEAR");    // set the value to this input
   document.getElementById("PASS").value = getSavedValue("PASS");    // set the value to this input
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.checked = (getSavedValue(rad.id) == "true");
   });
+}
 
+async function delivery() {
+  startup();
   // await code here
-  let ARegcsv = await fetch("Orion Park/assets-Asset List.csv").then(result => result.text());
-  let DRpcsv = await fetch("Orion Park/op-Project Stock.csv").then(result => result.text());
-  let DRwcsv = await fetch("Orion Park/op-Warehouse Stock .csv").then(result => result.text());
-  let DRcsv = await fetch("Orion Park/op-Delivery.csv").then(result => result.text());
-  let lastmod = await fetch("Orion Park/mod.txt").then(result => result.text());
-  let lastfetch = await fetch("Orion Park/op-Delivery.csv").then(result => result.headers.get('Last-Modified'));
+  let ARegcsv = await fireFetch(`op/assets-Asset List.csv`);
+  let DRpcsv = await fireFetch(`op/op-Project Stock.csv`);
+  let DRwcsv = await fireFetch(`op/op-Warehouse Stock .csv`);
+  let DRcsv = await fireFetch(`op/op-Delivery.csv`);
+  let lastmod = await fireFetch(`op/mod.txt`);
+  let lastfetch = await fireFetch(`op/op-Delivery.csv`, true);
   // code below here will only execute when await fetch() finished loading
   document.getElementById("p").textContent = `Last Updated: ${new Date(lastmod)}`;
   document.getElementById("pp").textContent = `Last Checked: ${new Date(lastfetch)}`;
@@ -24,7 +28,17 @@ async function delivery() {
   splicer(DRw, `location`, 7);
   splicer(DR, `date`, 0);
   ifsy(AReg, DRp, DRw, DR);
+  listeners();
   return { AReg, DRp, DRw, DR };
+}
+
+function listeners() {
+  document.onkeyup = function () {
+    ifsy(AReg, DRp, DRw, DR);
+  };
+  document.onchange = function () {
+    ifsy(AReg, DRp, DRw, DR);
+  };
 }
 
 function splicer(arr, str, col) {
@@ -140,12 +154,16 @@ function searchOther(sArray) {
   return myTable;
 }
 
+async function fireFetch(file, mod) {
+  const storage = firebase.storage();
+  let pathReference = storage.ref(file);
+  return await pathReference.getDownloadURL()
+    .then(async (url) => {
+      if (mod) return await fetch(url).then(result => result.headers.get('Last-Modified'));
+      return await fetch(url).then(result => result.text());
+    });
+}
+
 //startup
 let AReg, DRp, DRw, DR;
 (async function () { ({ DRp, DRw, DR } = await delivery()) })();
-document.onkeyup = function () {
-  ifsy(AReg, DRp, DRw, DR);
-};
-document.onchange = function () {
-  ifsy(AReg, DRp, DRw, DR);
-};

@@ -1,6 +1,6 @@
 "use strict";
 (new URL(document.location)).searchParams.forEach((x, y) => {
-  localStorage.setItem(y,x);
+  localStorage.setItem(y, x);
 });
 //Toggle Dark Mode
 (function () {
@@ -26,7 +26,7 @@
   const darkToggle = document.querySelector("#DarkToggle");
 
   //Toggle to change mode manually
-  darkToggle.addEventListener('change', function() {toggleDarkTheme(darkToggle.checked); saveCheckbox(this);});
+  darkToggle.addEventListener('change', function () { toggleDarkTheme(darkToggle.checked); saveCheckbox(this); });
 
   toggleDarkTheme(prefersDark.matches && (getSavedValue(darkToggle.id) != "false"));
   if (getSavedValue(darkToggle.id) == "true") toggleDarkTheme(true); //iif statement as it would turn off if false
@@ -44,19 +44,19 @@
 
 function toggleNav(e) {
   const x = document.getElementById("myTopnav");
-  try{
+  try {
     if (e.target.parentElement.className === "topnav") {
       x.className += " responsive";
     } else {
       x.className = "topnav";
     }
-  }catch(err) {x.className = "topnav"}
+  } catch (err) { x.className = "topnav" }
 }
-document.addEventListener('click',toggleNav);
+document.addEventListener('click', toggleNav);
 
-function navBar(){
+function navBar() {
   const navbar = document.querySelector('#myTopnav');
-    navbar.innerHTML =`
+  navbar.innerHTML = `
       <a href="#" style="font-size:15px;" class="icon">&#9776;</a>
       <div class="dropdown">
         <a href='#' class="dropbtn heh">Games</a>
@@ -91,22 +91,22 @@ function navBar(){
       <a href='op.html'>Orion Park</a>
       <a href='javascript:helpPage()'>Help</a>
     `;
-  document.querySelectorAll('.heh').forEach(function(item) {return item.addEventListener('click',randomPage)});
+  document.querySelectorAll('.heh').forEach(function (item) { return item.addEventListener('click', randomPage) });
 }
 
-function helpPage(){
+function helpPage() {
   let hashy = location.pathname.split(".")[0].split("/");
-  hashy=hashy[hashy.length-1];
+  hashy = hashy[hashy.length - 1];
   location = `help.html#${hashy}`;
 }
 
 navBar();
 let test;
-const navs = ['Games','Tools','Railway'];
-const randomChild = function(len) {return Math.floor(Math.random()*len)};
+const navs = ['Games', 'Tools', 'Railway'];
+const randomChild = function (len) { return Math.floor(Math.random() * len) };
 function randomPage(e) {
   test = e;
-  if (navs.some(function(nav) {return e.target.innerHTML.includes(nav)})){
+  if (navs.some(function (nav) { return e.target.innerHTML.includes(nav) })) {
     let nodeLen = randomChild(e.target.parentElement.children[1].querySelectorAll('a').length)
     e.target.parentElement.children[1].querySelectorAll('a')[nodeLen].click();
   }
@@ -122,7 +122,7 @@ if ("serviceWorker" in navigator) {
   head.appendChild(mani); head.appendChild(apple); head.appendChild(theme);
 
   //Makes website available offline
-  window.addEventListener("load", function() {
+  window.addEventListener("load", function () {
     navigator.serviceWorker
       .register("sw.js")
       .then(res => console.log("service worker registered"))
@@ -131,7 +131,7 @@ if ("serviceWorker" in navigator) {
     let deferredPrompt;
     let body = document.querySelector("#main");
     let btn = document.createElement("button");
-    btn.classList.add("add-button","button");
+    btn.classList.add("add-button", "button");
     btn.innerText = "Add to home screen";
     body.appendChild(btn);
     const addBtn = document.querySelector('.add-button');
@@ -147,18 +147,18 @@ if ("serviceWorker" in navigator) {
       addBtn.style.display = 'block';
 
       addBtn.addEventListener('click', (e) => {
-      // hide our user interface that shows our A2HS button
-      addBtn.style.display = 'none';
-      // Show the prompt
-      deferredPrompt.prompt();
-      // Wait for the user to respond to the prompt
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted the A2HS prompt');
-        } else {
-          console.log('User dismissed the A2HS prompt');
-        }
-        deferredPrompt = null;
+        // hide our user interface that shows our A2HS button
+        addBtn.style.display = 'none';
+        // Show the prompt
+        deferredPrompt.prompt();
+        // Wait for the user to respond to the prompt
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+          } else {
+            console.log('User dismissed the A2HS prompt');
+          }
+          deferredPrompt = null;
         });
       });
     });
@@ -166,7 +166,7 @@ if ("serviceWorker" in navigator) {
 }
 
 //function to resize plot and copy to clipboard
-function clippy (x,y) {
+function clippy(x, y) {
   let offset = document.querySelector('#graphdiv3').offsetTop;
   document.querySelector('#graphdiv3').setAttribute(`style`, `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
   window.dispatchEvent(new Event('resize'));
@@ -174,29 +174,29 @@ function clippy (x,y) {
     html2canvas(document.querySelector("#graphdiv3"), {
       y: offset,
       //scrollY: -window.scrollY,
-      scrollX:0,
-      scrollY:0,
-      height: y+10,
-      width: x+10,
+      scrollX: 0,
+      scrollY: 0,
+      height: y + 10,
+      width: x + 10,
     }).then(canvas => {
-      if (typeof(navigator.clipboard)!='undefined'){
-        canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]));
+      if (typeof (navigator.clipboard) != 'undefined') {
+        canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]));
       }
-      else{
-        document.querySelector("#graphdiv3").innerHTML='';
+      else {
+        document.querySelector("#graphdiv3").innerHTML = '';
         document.querySelector("#graphdiv3").appendChild(canvas);
       }
     });
   }
-  if (typeof(navigator.clipboard)=='undefined') {
+  if (typeof (navigator.clipboard) == 'undefined') {
     let htmltext = (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes("Edg")) ? "<br><br><a href=chrome://flags/#unsafely-treat-insecure-origin-as-secure>Auto copy to clipboard not supported in http. Copy this link and open in new tab to add this site as trusted to enable.</a>" : "<br><br><a>Auto copy to clipboard not supported. Right click plot and copy as image.</a>";
     let article = document.querySelector('article');
-    if (article.lastChild.nodeName != "A") article.innerHTML+=htmltext;
+    if (article.lastChild.nodeName != "A") article.innerHTML += htmltext;
   }
 }
 
 //Save the value function - save it to localStorage as (ID, VALUE)
-function saveValue(e){
+function saveValue(e) {
   var id = e.id;  // get the sender's id to save it .
   var val = e.value; // get the value.
   localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override .
@@ -204,7 +204,7 @@ function saveValue(e){
 }
 
 function saveParameter() {
-  let url ='';
+  let url = '';
   let params = {};
   document.querySelectorAll('input').forEach((el) => {
     if (el.value.length > 0) params[el.id] = el.value;
@@ -215,32 +215,32 @@ function saveParameter() {
     .map(k => `${esc(k)}=${esc(params[k])}`)
     .join('&');
   url += `?${query}`;
-  let newurl = `${window.location.protocol}//${window.location.host+window.location.pathname+url}`;
-  window.history.pushState({ path: newurl }, '', newurl);  
+  let newurl = `${window.location.protocol}//${window.location.host + window.location.pathname + url}`;
+  window.history.pushState({ path: newurl }, '', newurl);
 }
 
 //Save the value function - save it to localStorage as (ID, VALUE)
-function saveRadio(e){
+function saveRadio(e) {
   e.checkbox = true;
-  document.querySelectorAll('input[type="radio"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
-  document.querySelectorAll('input[type="checkbox"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
+  document.querySelectorAll('input[type="radio"]').forEach(rad => localStorage.setItem(rad.id, rad.checked));
+  document.querySelectorAll('input[type="checkbox"]').forEach(rad => localStorage.setItem(rad.id, rad.checked));
   saveParameter();
 }
-function saveCheckbox(e){
+function saveCheckbox(e) {
   e.checkbox = true;
-  document.querySelectorAll('input[type="checkbox"]').forEach(rad => localStorage.setItem(rad.id,rad.checked));
+  document.querySelectorAll('input[type="checkbox"]').forEach(rad => localStorage.setItem(rad.id, rad.checked));
   saveParameter();
 }
 
-function funkyRadio(){  
+function funkyRadio() {
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.checked = (getSavedValue(rad.id) == "true");
-    rad.addEventListener('change',saveRadio);
+    rad.addEventListener('change', saveRadio);
   });
 }
 
 //get the saved value function - return the value of "v" from localStorage.
-function getSavedValue  (v){
+function getSavedValue(v) {
   if (!localStorage.getItem(v)) {
     return "";// You can change this to your defualt value.
   }
@@ -290,25 +290,25 @@ function exportToCsv(filename, rows) {
   }
 }
 
-function dbUpgrade (db) { 
-  const onupgradeneeded = function(e) {
+function dbUpgrade(db) {
+  const onupgradeneeded = function (e) {
     console.log("Upgrading...");
     db = e.target.result;
 
-    if(!db.objectStoreNames.contains("plots")) {
-      db.createObjectStore("plots", { keyPath: "id",autoIncrement:true});
+    if (!db.objectStoreNames.contains("plots")) {
+      db.createObjectStore("plots", { keyPath: "id", autoIncrement: true });
     }
   }
   return onupgradeneeded;
 }
 
-const post = function(url, data, sucPost) {
-  return fetch(url, {method: "POST", body: JSON.stringify(data)})
-  .then(response => response.text())
-  .then(sucPost)
-  .catch((error) => {
-    console.log('Error:', data);
-  });
+const post = function (url, data, sucPost) {
+  return fetch(url, { method: "POST", body: JSON.stringify(data) })
+    .then(response => response.text())
+    .then(sucPost)
+    .catch((error) => {
+      console.log('Error:', data);
+    });
 }
 
 //fade in and fadeout
@@ -327,7 +327,7 @@ _.prototype.fade = function fade(type, ms) {
     gap = interval / duration,
     self = this;
 
-  if(isIn) {
+  if (isIn) {
     self.el.style.display = 'inline';
     self.el.style.opacity = opacity;
   }
@@ -336,12 +336,28 @@ _.prototype.fade = function fade(type, ms) {
     opacity = isIn ? opacity + gap : opacity - gap;
     self.el.style.opacity = opacity;
 
-    if(opacity <= 0) self.el.style.display = 'none'
-    if(opacity <= 0 || opacity >= 1) window.clearInterval(fading);
+    if (opacity <= 0) self.el.style.display = 'none'
+    if (opacity <= 0 || opacity >= 1) window.clearInterval(fading);
   }
   var fading = window.setInterval(func, interval);
 }
 
-const smoothdec = (a,b=2) => +(parseFloat(a).toFixed(b)); //fix broken decimals
+//Firebase
+function fireBase() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyDCkBJF86uahqeTdIiy_zotYBD5-1aJ1TE",
+    authDomain: "hansejc-fff7f.firebaseapp.com",
+    databaseURL: "https://hansejc-fff7f-default-rtdb.firebaseio.com",
+    projectId: "hansejc-fff7f",
+    storageBucket: "hansejc-fff7f.appspot.com",
+    messagingSenderId: "204800601174",
+    appId: "1:204800601174:web:1b9f5d4804a94171471ff7",
+    measurementId: "G-7DCTFGC4YP"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+};
+
+const smoothdec = (a, b = 2) => +(parseFloat(a).toFixed(b)); //fix broken decimals
 
 document.documentElement.setAttribute('lang', navigator.language); //add language to html

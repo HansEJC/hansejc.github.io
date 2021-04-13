@@ -50,11 +50,11 @@ function newRoute(inputs) {
 newRoute({ str: `image`, name: `images`, plugs: plugExp, strat: `cache`, typ: `request` });
 newRoute({ str: `style`, name: `css`, plugs: plugStand, strat: `net`, typ: `request` });
 newRoute({ str: `document`, name: `html`, plugs: plugStand, strat: `net`, typ: `request` });
+newRoute({ str: `font`, name: `fonts`, plugs: plugExp, strat: `cache`, typ: `request` });
 newRoute({ str: `js/ext/`, name: `exScripts`, plugs: plugExp, strat: `cache`, typ: `urlInc` });
-newRoute({ str: `/Orion%20Park/`, name: `OP`, plugs: plugStand, strat: `net`, typ: `urlInc` });
 newRoute({ str: `script`, name: `scripts`, plugs: plugStand, strat: `net`, typ: `request` });
-newRoute({ str: `.csv`, name: `csv`, plugs: plugExp, strat: `cache`, typ: `url` });
 newRoute({ str: `.json`, name: `json`, plugs: plugStand, strat: `net`, typ: `url` });
+newRoute({ str: `uploads/`, name: `csv`, plugs: plugExp, strat: `cache`, typ: `urlInc` });
 
 // Use the imported Workbox libraries to implement caching,
 // routing, and other logic:
@@ -62,33 +62,6 @@ precache([{ "revision": "4f8ce79846e8e1584d9abbe106bf43f6", "url": "favicon.ico"
   // Ignore all URL parameters.
   ignoreURLParametersMatching: [/.*/] //taking this out for now since I want to use ?beta
 });
-
-// Register 'default'
-var defaultStrategy = new CacheFirst({
-  cacheName: workbox.core.cacheNames.precache,//'workbox-precache-v2',//
-  plugins: [
-    { cacheKeyWillBeUsed },
-    new ExpirationPlugin({
-      maxEntries: 128,
-      maxAgeSeconds: 7 * 24 * 60 * 60, // 1 week
-      purgeOnQuotaError: true, // Opt-in to automatic cleanup
-    }),
-    new CacheableResponsePlugin({
-      statuses: [0, 200] // for opague requests
-    }),
-  ],
-});
-setDefaultHandler(
-  (args) => {
-
-    if (args.event.request.method === 'GET') {
-      try {
-        return defaultStrategy.handle(args); // use default strategy
-      } catch (e) { console.log(e); }
-    }
-    return fetch(args.event.request);
-  }
-);
 
 // Catch routing errors, like if the user is offline
 setCatchHandler(async ({ event }) => {
