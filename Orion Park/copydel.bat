@@ -21,3 +21,5 @@ del temp.txt
 del op.xlsx
 del assets.xlsx
 del "assets-Asset Disposals.csv"
+
+python firebase.py
