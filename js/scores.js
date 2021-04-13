@@ -1,41 +1,33 @@
-var ipString = "removeMe?";
 fireBase();
 function saveScores(scr) {
-  if (!window.location.hostname.includes("github")) {
-    post("./savesettings.php?=v1.0",
-      {
-        name: document.querySelector("#userName").value,
-        ip: ipString,
-        score: scr,
-        date: new Date().toLocaleString("en-GB", { timeZone: "Europe/London" }),
-      }, sucPost);
-  }
-  else {
-    let scoreID = `${readCookie("game")}Scores`;
-    let scoreArr = [];
-    const name = document.getElementById("userName");
-    let exists = false;
-
-    try {
-      scoreArr = JSON.parse(localStorage.getItem(scoreID));
-      scoreArr.forEach(val => {
-        if (val[0] == name.value) {
-          val[1] = scr > val[1] ? scr : val[1];
-          exists = true;
-        }
-      });
-    } catch (err) {
-      console.log("no highscores yet");
-      scoreArr = [];
+  let game = readCookie("game");
+  const name = document.querySelector("#userName").value;
+  let scores = JSON.parse(localStorage.getItem(game));
+  let date = new Date().toLocaleString("en-GB", { timeZone: "Europe/London" });
+  let exists = false;
+  try {
+    if (scores[name] != undefined) {
+      let score = scores[name].score;
+      let oldDate = scores[name].date;
+      oldDate = scr > score ? date : oldDate;
+      scores[name].lastdate = date;
+      score = Math.max(score, scr);
+      exists = true;
     }
-
-    if (!exists) scoreArr.push([name.value, scr]);
-
-    localStorage.setItem(scoreID, JSON.stringify(scoreArr));
-    setTimeout(function () {
-      document.location = "?" + (new Date).getTime();
-    }, 1000);
+  } catch (err) {
+    console.log(err);
   }
+
+  if (!exists) {
+    scores[name] = {
+      score: scr,
+      date: date,
+      lastdate: date,
+    }
+  }
+  sendData(name, scores[name]);
+  localStorage.setItem(game, JSON.stringify(scores));
+  sucPost(`Updating scores. Using cheats won't get you a high score!`);
 }
 
 const readCookie = (name) => (document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || '');
@@ -45,44 +37,42 @@ function sucPost(data) {
   _('#TempScore').fade('in', 100);
   setTimeout(function () {
     _('#TempScore').fade('out', 500);
-    document.location = "?" + (new Date).getTime();
   }, 1000);
 }
 
-async function getScores(full) {
-  let file = `uploads/${readCookie("game")}scores.json`;
-  let storage = `${readCookie("game")}Scores`;
-  const serverScore = await fetch(file)
-    .then(result => result.json());
-  const localScore = JSON.parse(localStorage.getItem(storage));
-  const allScore = (!localScore) ? serverScore : [...serverScore, ...localScore];
-  allScore.sort((a, b) => b[1] - a[1]);
-  sendData(allScore);
+function getScores(full) {
+  let game = readCookie("game");
+  let dbObj = firebase.database().ref(game);
+  dbObj.on(`value`, snap => {
+    let scores = snap.val();
+    localStorage.setItem(game, JSON.stringify(scores));
+    scoreTable(scores, full);
+  });
+}
+
+function scoreTable(scores, full) {
   const table = document.getElementById('board');
-  allScore.forEach(val => {
+  while (table.firstElementChild.childElementCount > 1) { //don't remove the firstborn children
+    table.firstElementChild.removeChild(table.firstElementChild.lastChild);
+  }
+  scores = Object.entries(scores);
+  scores.sort((a, b) => b[1].score - a[1].score);
+  scores.forEach(val => {
     let row = table.insertRow(-1);
-    row.insertCell(0).innerHTML = val[0];
-    row.insertCell(1).innerHTML = val[1];
+    row.insertCell(0).innerHTML = val[0] === `empty` ? `` : val[0];
+    row.insertCell(1).innerHTML = val[1].score;
     if (full) {
-      row.insertCell(2).innerHTML = val[2];
-      row.insertCell(3).innerHTML = val[3];
+      row.insertCell(2).innerHTML = val[1].date;
+      row.insertCell(3).innerHTML = val[1].lastdate;
     }
   });
 }
 
-function getData() {
-  let dbName = readCookie("game");
-  let dbObj = firebase.database().ref().child(dbName);
-  dbObj.on(`value`, snap => {
-    let data = JSON.stringify(snap.val());
-    console.log(data);
-  });
-}
-
-function sendData(data) {
-  let dbName = readCookie("game");
-  let dbObj = firebase.database().ref().child(dbName);
-  dbObj.set(data);
+function sendData(name, data) {
+  name = name === `` ? `empty` : name;
+  let game = readCookie("game");
+  let dbObj = firebase.database().ref(`${game}/${name}`);
+  dbObj.update(data);
 }
 
 //Speach recognition commands
@@ -119,5 +109,3 @@ function k(w, x, y) {
     v.stop(a.currentTime + y * 0.001);
   } catch (err) { console.log(err + "not supported"); }
 }
-
-const ip = () => "obsolete";

@@ -234,4 +234,3 @@ document.getElementById("userName").value = getSavedValue("userName");
 try {
   getScores();
 }catch(err){console.log(e);}
-ip();

@@ -10,7 +10,6 @@ function initiate(){
   document.getElementById("userName").value = getSavedValue("userName");
   if (!navigator.userAgent.match(/Trident\/7\./)) {
     Rexy = new Runner('.interstitial-wrapper');
-    ip();
     try {
       speech();
       getScores();
