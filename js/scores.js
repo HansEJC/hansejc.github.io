@@ -9,9 +9,9 @@ function saveScores(scr) {
     if (scores[name] != undefined) {
       let score = scores[name].score;
       let oldDate = scores[name].date;
-      oldDate = scr > score ? date : oldDate;
+      scores[name].date = scr > score ? date : oldDate;
       scores[name].lastdate = date;
-      score = Math.max(score, scr);
+      scores[name].score = Math.max(score, scr);
       exists = true;
     }
   } catch (err) {
