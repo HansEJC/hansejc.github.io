@@ -103,7 +103,7 @@ Hobby website I use to simplify my life
 	<h1>Electrical Engineering Tools</h1>
 </header>
 <div class="row 50%">
-	<p><a href="downloads/Polar Addition.xlsx">Polar Additions</a>
+	<p><a href="uploads/Polar Addition.xlsx">Polar Additions</a>
 	</p>
 </div>
 <header id="emc"><hr>

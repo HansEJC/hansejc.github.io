@@ -30,8 +30,6 @@ function saveScores(scr) {
   sucPost(`Updating scores. Using cheats won't get you a high score!`);
 }
 
-const readCookie = (name) => (document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || '');
-
 function sucPost(data) {
   document.getElementById("TempScore").innerHTML = data;
   _('#TempScore').fade('in', 100);

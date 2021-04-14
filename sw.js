@@ -53,7 +53,6 @@ newRoute({ str: `document`, name: `html`, plugs: plugStand, strat: `net`, typ: `
 newRoute({ str: `font`, name: `fonts`, plugs: plugExp, strat: `cache`, typ: `request` });
 newRoute({ str: `js/ext/`, name: `exScripts`, plugs: plugExp, strat: `cache`, typ: `urlInc` });
 newRoute({ str: `script`, name: `scripts`, plugs: plugStand, strat: `net`, typ: `request` });
-newRoute({ str: `.json`, name: `json`, plugs: plugStand, strat: `net`, typ: `url` });
 newRoute({ str: `uploads/`, name: `csv`, plugs: plugExp, strat: `cache`, typ: `urlInc` });
 
 // Use the imported Workbox libraries to implement caching,
