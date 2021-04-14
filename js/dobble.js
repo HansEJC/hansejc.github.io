@@ -229,7 +229,7 @@ function numPlayers(){
 
 
 //startup
-document.cookie="game=dobble";
+localStorage.setItem(`game`,`dobble`);
 document.getElementById("userName").value = getSavedValue("userName");
 try {
   getScores();

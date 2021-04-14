@@ -359,6 +359,6 @@ function fireBase() {
 };
 
 const smoothdec = (a, b = 2) => +(parseFloat(a).toFixed(b)); //fix broken decimals
-const readCookie = (name) => (document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || '');
+//const readCookie = (name) => (document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''); //changed to use localstorage instead
 
 document.documentElement.setAttribute('lang', navigator.language); //add language to html

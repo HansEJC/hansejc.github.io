@@ -32,7 +32,7 @@ function startup() {
 
 function buttonFun(but, str, fun) {
   document.querySelectorAll(`button`)[but].addEventListener(`click`, function () {
-    document.cookie = `test=${str}`;
+    localStorage.setItem(`test`,str);
     let filename = `${document.getElementById("TLOC").value}_${str}.csv`;
     exportToCsv(filename, fun());
     saveResults(fun());
@@ -157,7 +157,7 @@ function dygPlot(foparr) {
 
 function saveResults(rows) {
   let tloc = document.getElementById(`TLOC`).value;
-  let test = readCookie("test");
+  let test = getSavedValue("test");
   let removal = (document.querySelector(`#FOPDis`).value == `69`);
   if (tloc === `` || test === ``) return;
   let dbObj = firebase.database().ref(`${test}/${tloc}`);
@@ -167,7 +167,7 @@ function saveResults(rows) {
 }
 
 function sucPost(data) {
-  let span = (document.cookie.includes(`test=fop`)) ? `#span2` : `#span1`
+  let span = (getSavedValue(`test`).includes(`fop`)) ? `#span2` : `#span1`;
   document.querySelector(span).innerHTML = data;
   _(span).fade(`in`, 200);
   setTimeout(function () {
@@ -177,7 +177,7 @@ function sucPost(data) {
 }
 
 function fetchResults() {
-  let game = readCookie("test");
+  let game = getSavedValue("test");
   let dbSoil = firebase.database().ref(`soil`);
   let dbFop = firebase.database().ref(`fop`);
   dbSoil.on(`value`, snap => {

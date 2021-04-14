@@ -1,5 +1,5 @@
 function initiate(){
-  document.cookie="game=rex";
+  localStorage.setItem(`game`,`rex`);
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.addEventListener('change', saveRadio);
     rad.checked = (getSavedValue(rad.id) == "true");

@@ -122,7 +122,7 @@ if (AudioContext) {var a = new AudioContext();}
 board.classList.add('waiting');
 
 //startup
-document.cookie="game=simon";
+localStorage.setItem(`game`,`simon`);
 document.getElementById("userName").value = getSavedValue("userName");
 try {
   getScores();

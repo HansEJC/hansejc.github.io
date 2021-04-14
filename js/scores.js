@@ -1,6 +1,6 @@
 fireBase();
 function saveScores(scr) {
-  let game = readCookie("game");
+  let game = getSavedValue("game");
   const name = document.querySelector("#userName").value;
   let scores = JSON.parse(localStorage.getItem(game));
   let date = new Date().toLocaleString("en-GB", { timeZone: "Europe/London" });
@@ -39,7 +39,7 @@ function sucPost(data) {
 }
 
 function getScores(full) {
-  let game = readCookie("game");
+  let game = getSavedValue("game");
   let dbObj = firebase.database().ref(game);
   dbObj.on(`value`, snap => {
     let scores = snap.val();
@@ -68,7 +68,7 @@ function scoreTable(scores, full) {
 
 function sendData(name, data) {
   name = name === `` ? `empty` : name;
-  let game = readCookie("game");
+  let game = getSavedValue("game");
   let dbObj = firebase.database().ref(`${game}/${name}`);
   dbObj.update(data);
 }
