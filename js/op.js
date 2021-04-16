@@ -1,9 +1,20 @@
 function startup() {
   fireBase();
+  getModDates();
   document.getElementById("SEAR").value = getSavedValue("SEAR");    // set the value to this input
   document.getElementById("PASS").value = getSavedValue("PASS");    // set the value to this input
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.checked = (getSavedValue(rad.id) == "true");
+  });
+}
+
+function getModDates() {
+  let dbObj = firebase.database().ref(`op`);
+  dbObj.on(`value`, snap => {
+    let dates = snap.val();
+    let {lastmod, lastfetch} = dates;
+    document.getElementById("p").textContent = `Last Updated: ${new Date(lastmod)}`;
+    document.getElementById("pp").textContent = `Last Checked: ${new Date(lastfetch)}`;
   });
 }
 
@@ -12,19 +23,15 @@ function waitForAll() {
     fireFetch(`op/assets-Asset List.csv`),
     fireFetch(`op/op-Project Stock.csv`),
     fireFetch(`op/op-Warehouse Stock .csv`),
-    fireFetch(`op/op-Delivery.csv`),
-    fireFetch(`op/mod.txt`),
-    fireFetch(`op/mod.txt`, true)
+    fireFetch(`op/op-Delivery.csv`)
   ]);
 }
 
 async function delivery() {
   startup();
   // await code here
-  let [ARegcsv, DRpcsv, DRwcsv, DRcsv, lastmod, lastfetch] = await waitForAll();
+  let [ARegcsv, DRpcsv, DRwcsv, DRcsv] = await waitForAll();
   // code below here will only execute when await fetch() finished loading
-  document.getElementById("p").textContent = `Last Updated: ${new Date(lastmod)}`;
-  document.getElementById("pp").textContent = `Last Checked: ${new Date(lastfetch)}`;
   AReg = Papa.parse(ARegcsv).data.reverse();
   DRp = Papa.parse(DRpcsv).data.reverse();
   DRw = Papa.parse(DRwcsv).data;
@@ -160,12 +167,11 @@ function searchOther(sArray) {
   return myTable;
 }
 
-async function fireFetch(file, mod) {
+async function fireFetch(file) {
   const storage = firebase.storage();
   let pathReference = storage.ref(file);
   return await pathReference.getDownloadURL()
     .then(async (url) => {
-      if (mod) return await fetch(url).then(result => result.headers.get('Last-Modified'));
       return await fetch(url).then(result => result.text());
     });
 }

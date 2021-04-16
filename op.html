@@ -17,6 +17,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <script defer src="js/init.js"></script>
     <script defer src="js/ext/papaparse.min.js"></script>
     <script defer src="js/ext/firebase-app.js"></script>
+    <script defer src="js/ext/firebase-database.js"></script>
     <script defer src="js/ext/firebase-storage.js"></script>
     <script defer src="js/op.js"></script>
   </head>
@@ -45,7 +46,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <input type="radio" name ="A" id="WStock" onChange='saveRadio(this);'>Warehouse Stock<br>
               <input type="radio" name ="A" id="Del" onChange='saveRadio(this);'>Deliveries<br>
             </form>
-            <pre id ="p"></pre>  <pre id ="pp"></pre>
+            <pre id ="p">Last Updated:</pre>  
+            <pre id ="pp">Last Checked:</pre>
             <div class="row 50%">
               <section class="box">
                 <form>
