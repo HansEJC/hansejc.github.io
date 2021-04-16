@@ -13,6 +13,7 @@ function waitForAll() {
     fireFetch(`op/op-Project Stock.csv`),
     fireFetch(`op/op-Warehouse Stock .csv`),
     fireFetch(`op/op-Delivery.csv`),
+    fireFetch(`op/mod.txt`),
     fireFetch(`op/mod.txt`, true)
   ]);
 }
@@ -20,7 +21,7 @@ function waitForAll() {
 async function delivery() {
   startup();
   // await code here
-  let [ARegcsv, DRpcsv, DRwcsv, DRcsv, {lastmod, lastfetch}] = await waitForAll();
+  let [ARegcsv, DRpcsv, DRwcsv, DRcsv, lastmod, lastfetch] = await waitForAll();
   // code below here will only execute when await fetch() finished loading
   document.getElementById("p").textContent = `Last Updated: ${new Date(lastmod)}`;
   document.getElementById("pp").textContent = `Last Checked: ${new Date(lastfetch)}`;
@@ -164,10 +165,7 @@ async function fireFetch(file, mod) {
   let pathReference = storage.ref(file);
   return await pathReference.getDownloadURL()
     .then(async (url) => {
-      if (mod) return {
-        lastmod: await fetch(url).then(result => result.text()),
-        lastfetch: await fetch(url).then(result => result.headers.get('Last-Modified'))
-      };
+      if (mod) return await fetch(url).then(result => result.headers.get('Last-Modified'));
       return await fetch(url).then(result => result.text());
     });
 }
