@@ -1,7 +1,8 @@
 fireBase();
 function saveScores(scr) {
   let game = getSavedValue("game");
-  const name = document.querySelector("#userName").value;
+  let name = document.querySelector("#userName").value;
+  name = name === `` ? ` ` : name;
   let scores = JSON.parse(localStorage.getItem(game));
   let date = new Date().toLocaleString("en-GB", { timeZone: "Europe/London" });
   let exists = false;
@@ -56,7 +57,7 @@ function scoreTable(scores, full) {
   scores = Object.entries(scores);
   scores.sort((a, b) => b[1].score - a[1].score);
   scores.forEach(val => {
-    let name = val[0] === `empty` ? `` : val[0].substr(0, 10);
+    let name = val[0].substr(0, 10);
     let row = table.insertRow(-1);
     row.insertCell(0).innerHTML = name;
     row.insertCell(1).innerHTML = val[1].score;
@@ -68,7 +69,6 @@ function scoreTable(scores, full) {
 }
 
 function sendData(name, data) {
-  name = name === `` ? `empty` : name;
   let game = getSavedValue("game");
   let dbObj = firebase.database().ref(`${game}/${name}`);
   dbObj.update(data);
