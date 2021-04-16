@@ -7,15 +7,20 @@ function startup() {
   });
 }
 
+function waitForAll() {
+  return Promise.all([
+    fireFetch(`op/assets-Asset List.csv`),
+    fireFetch(`op/op-Project Stock.csv`),
+    fireFetch(`op/op-Warehouse Stock .csv`),
+    fireFetch(`op/op-Delivery.csv`),
+    fireFetch(`op/mod.txt`, true)
+  ]);
+}
+
 async function delivery() {
   startup();
   // await code here
-  let ARegcsv = await fireFetch(`op/assets-Asset List.csv`);
-  let DRpcsv = await fireFetch(`op/op-Project Stock.csv`);
-  let DRwcsv = await fireFetch(`op/op-Warehouse Stock .csv`);
-  let DRcsv = await fireFetch(`op/op-Delivery.csv`);
-  let lastmod = await fireFetch(`op/mod.txt`);
-  let lastfetch = await fireFetch(`op/op-Delivery.csv`, true);
+  let [ARegcsv, DRpcsv, DRwcsv, DRcsv, {lastmod, lastfetch}] = await waitForAll();
   // code below here will only execute when await fetch() finished loading
   document.getElementById("p").textContent = `Last Updated: ${new Date(lastmod)}`;
   document.getElementById("pp").textContent = `Last Checked: ${new Date(lastfetch)}`;
@@ -159,7 +164,10 @@ async function fireFetch(file, mod) {
   let pathReference = storage.ref(file);
   return await pathReference.getDownloadURL()
     .then(async (url) => {
-      if (mod) return await fetch(url).then(result => result.headers.get('Last-Modified'));
+      if (mod) return {
+        lastmod: await fetch(url).then(result => result.text()),
+        lastfetch: await fetch(url).then(result => result.headers.get('Last-Modified'))
+      };
       return await fetch(url).then(result => result.text());
     });
 }
