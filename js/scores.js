@@ -56,8 +56,9 @@ function scoreTable(scores, full) {
   scores = Object.entries(scores);
   scores.sort((a, b) => b[1].score - a[1].score);
   scores.forEach(val => {
+    let name = val[0] === `empty` ? `` : val[0].substr(0, 10);
     let row = table.insertRow(-1);
-    row.insertCell(0).innerHTML = val[0] === `empty` ? `` : val[0];
+    row.insertCell(0).innerHTML = name;
     row.insertCell(1).innerHTML = val[1].score;
     if (full) {
       row.insertCell(2).innerHTML = val[1].date;
