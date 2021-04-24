@@ -18,7 +18,6 @@ function saveScores(scr) {
   } catch (err) {
     console.log(err);
   }
-
   if (!exists) {
     scores[name] = {
       score: scr,
@@ -72,26 +71,6 @@ function sendData(name, data) {
   let game = getSavedValue("game");
   let dbObj = firebase.database().ref(`${game}/${name}`);
   dbObj.update(data);
-}
-
-//Speach recognition commands
-function speech() {
-  try {
-    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition = new SpeechRecognition();
-    recognition.interimResults = true;
-    recognition.continuous = true;
-    //recognition.onresult = e => {
-    recognition.onsoundstart = e => {
-      //let transcript = [...e.results].map(res => res[0].transcript).join('');
-      console.log("now");
-      /*if (transcript.includes('jump'))*/ Rexy.tRex.startJump();
-      recognition.abort();
-      //recognition.start();
-      recognition.onend = () => recognition.start();
-    };
-    recognition.start();
-  } catch (err) { console.log(err + " speech recognition not supported") }
 }
 
 // gain, frequency, duration
