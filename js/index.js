@@ -7,15 +7,10 @@ function initiate() {
   if (!document.querySelector("#Jon").checked && !document.querySelector("#Maple").checked) document.querySelector("#Jon").click(); //if none checked, make Jon default
   gameMode();
   document.getElementById("userName").value = getSavedValue("userName");
-  if (!navigator.userAgent.match(/Trident\/7\./)) {
-    Rexy = new Runner('.interstitial-wrapper');
-    try {
-      getScores();
-    } catch (e) { console.log(e); }
-  } else {
-    new Runner('.interstitial-wrapper');
-    document.getElementById("TempScore").textContent = "This game doesn't work on Internet Explorer. Get off it you dinosaur!";
-  }
+  Rexy = new Runner('.interstitial-wrapper');
+  try {
+    getScores();
+  } catch (e) { console.log(e); }
   document.onkeydown = keys;
 }
 
