@@ -20,6 +20,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <script defer src="js/ext/firebase-app.js"></script>
   <script defer src="js/ext/firebase-database.js"></script>
   <script defer src="js/ext/firebase-storage.js"></script>
+  <script defer src="js/ext/firebase-auth.js"></script>
   <script defer src="js/op.js"></script>
 </head>
 
@@ -54,15 +55,18 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           <pre id="pp">Last Checked:</pre>
           <div class="row 50%">
             <section class="box">
-              <form>
-                <label for="PASS">Password<input type="password" id="PASS" onkeyup='saveValue(this);' /></label>
-              </form>
-            </section>
-            <section class="box">
-              <form>
+              <form onsubmit="return false;">
                 <label for="SEAR">Search<input type="text" id="SEAR" onkeyup='saveValue(this);' /></label>
               </form>
             </section>
+            <section class="box">
+              <form onsubmit="return false;"><br>
+                <button id="Login" class="button">Login</button>
+                <button id="Logout" class="button" style="display: none;">Logout</button>
+                <label for="PASS"><input type="password" id="PASS" onkeyup='saveValue(this);' placeholder="Password"/></label>
+              </form>
+            </section>
+            <span id="logInfo"></span>
           </div>
           <div class="row 50%">
             </section class="box">

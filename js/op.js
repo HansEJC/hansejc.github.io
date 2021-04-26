@@ -6,13 +6,14 @@ function startup() {
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.checked = (getSavedValue(rad.id) == "true");
   });
+  fireAuth();
 }
 
 function getModDates() {
   let dbObj = firebase.database().ref(`op`);
   dbObj.on(`value`, snap => {
     let dates = snap.val();
-    let {lastmod, lastfetch} = dates;
+    let { lastmod, lastfetch } = dates;
     document.getElementById("p").textContent = `Last Updated: ${new Date(lastmod)}`;
     document.getElementById("pp").textContent = `Last Checked: ${new Date(lastfetch)}`;
   });
@@ -28,7 +29,6 @@ function waitForAll() {
 }
 
 async function delivery() {
-  startup();
   // await code here
   let [ARegcsv, DRpcsv, DRwcsv, DRcsv] = await waitForAll();
   // code below here will only execute when await fetch() finished loading
@@ -102,8 +102,7 @@ function search(arrheh) {
       : searchOther(sArray);
 
   myTable += "</table>";
-  if (pw == "asdfasdf") document.getElementById('tab').innerHTML = myTable;
-  else document.getElementById('tab').innerHTML = "";
+  document.getElementById('tab').innerHTML = myTable;
 }
 
 function searchAsset(sArray) {
@@ -176,6 +175,52 @@ async function fireFetch(file) {
     });
 }
 
+function enterLogin(e) {
+  var keyCode = e.which || e.keyCode;
+  var handled = false;
+  if (keyCode === 13) { //enter
+    e.preventDefault();
+    handled = true;
+    doLogin();
+  }
+  return !handled; //return false if the event was handled  
+}
+
+function fireAuth() {
+  document.querySelector(`#Logout`).addEventListener(`click`, () => firebase.auth().signOut());
+  document.querySelector(`#Login`).addEventListener(`click`, doLogin);
+  document.querySelector(`#PASS`).addEventListener(`keydown`, enterLogin);
+  firebase.auth().onAuthStateChanged(loginState);
+}
+
+function loginState(user) {
+  const logout = document.querySelector(`#Logout`);
+  const login = document.querySelector(`#Login`);
+  const pass = document.querySelector(`#PASS`);
+  if (user) {
+    login.style = `display: none`;
+    pass.style = `display: none`;
+    logout.style = `display: block`;
+    document.querySelector(`#logInfo`).innerHTML = ``;
+    delivery();
+  }
+  else {
+    login.style = `display: block`;
+    pass.style = `display: block`;
+    logout.style = `display: none`;
+  }
+}
+
+function doLogin() {
+  const auth = firebase.auth();
+  const user = `hans.juneby@powersupplyprojects.co.uk`;
+  const pass = document.querySelector(`input[type=password]`).value;
+  const promise = auth.signInWithEmailAndPassword(user, pass);
+  promise.catch(e => {
+    document.querySelector(`#logInfo`).innerHTML = e;
+  });
+}
+
 //startup
 let AReg, DRp, DRw, DR;
-(async function () { ({ DRp, DRw, DR } = await delivery()) })();
+startup();
