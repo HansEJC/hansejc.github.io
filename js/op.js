@@ -16,6 +16,10 @@ function getModDates() {
     let { lastmod, lastfetch } = dates;
     document.getElementById("p").textContent = `Last Updated: ${new Date(lastmod)}`;
     document.getElementById("pp").textContent = `Last Checked: ${new Date(lastfetch)}`;
+    let refreshOP = new Date(lastmod) > new Date(getSavedValue(`lastmod`));
+    localStorage.setItem(`refreshOP`, refreshOP);
+    localStorage.setItem(`lastmod`, lastmod);
+    if (refreshOP) delivery();
   });
 }
 
@@ -42,7 +46,6 @@ async function delivery() {
   splicer(DR, `date`, 0);
   ifsy(AReg, DRp, DRw, DR);
   listeners();
-  return { AReg, DRp, DRw, DR };
 }
 
 function listeners() {
@@ -167,12 +170,18 @@ function searchOther(sArray) {
 }
 
 async function fireFetch(file) {
+  let refreshOP = getSavedValue(`refreshOP`) === `true`;
+  let data = localStorage.getItem(file);
+  if (!refreshOP && data !== null) return data;
+
   const storage = firebase.storage();
   let pathReference = storage.ref(file);
-  return await pathReference.getDownloadURL()
+  data = await pathReference.getDownloadURL()
     .then(async (url) => {
       return await fetch(url).then(result => result.text());
     });
+  localStorage.setItem(file, data);
+  return data;
 }
 
 function enterLogin(e) {
