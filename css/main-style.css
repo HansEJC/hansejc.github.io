@@ -14,7 +14,7 @@
   }
   .dark strong,.dark b,.dark a,.dark input,.dark .dygraph-axis-label,
   .dark #copyright ul,.dark th,.dark tr,.dark td,.dark .label, .dark h1, 
-  .dark form label, .dark ::placeholder{
+  .dark form label, .dark ::placeholder, .dark select{
     color: var(--greyishMagenta);
   }
   .dark form input[type="text"],.dark form input[type="number"],.dark form input[type="datetime-local"],
