@@ -369,10 +369,10 @@ function P438(tr, num, empty) {
   const a = (+(document.getElementById("Alpha").value) * Math.PI / 180);
   const b = (+(document.getElementById("Beta").value) * Math.PI / 180);
   const g = (+(document.getElementById("Gamma").value) * Math.PI / 180);
-  const Z = +(document.getElementById(`Zone${num}`).value);
-  const RH = +(document.getElementById(`Zone${num}RH`).value);
+  let Z = +(document.getElementById(`Zone${num}`).value);
+  let RH = +(document.getElementById(`Zone${num}RH`).value);
   const left = document.getElementById(`Zone${num}LH`);
-  const LH = Math.min(+left.value, Z * Math.sin(a));
+  let LH = Math.min(+left.value, Z * Math.sin(a));
   left.value = smoothdec(LH, 0);
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
