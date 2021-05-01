@@ -222,7 +222,7 @@ function loginState(user) {
 
 function doLogin() {
   const auth = firebase.auth();
-  const user = `hans.juneby@powersupplyprojects.co.uk`;
+  const user = `a@b.com`;
   const pass = document.querySelector(`input[type=password]`).value;
   const promise = auth.signInWithEmailAndPassword(user, pass);
   promise.catch(e => {
