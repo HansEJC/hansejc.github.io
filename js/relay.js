@@ -1,11 +1,5 @@
-function hider() {
-  const chbox = document.querySelector(`#advanced`).checked;
-  const x = document.getElementById("hide")
-  x.style.display = chbox ? `block` : `none`;
-}
-
 function checkit() {
-  const x = document.getElementById(`Sec`).checked;
+  const x = document.getElementById(`Sec`).checked || document.querySelector(`#advanced`).checked;
   const y = document.getElementById("hide");
   y.style.display = x ? `block` : `none`;
 }
@@ -14,8 +8,6 @@ function save(data) {
   var transaction = db.transaction(["plots"], "readwrite");
   var objectStore = transaction.objectStore("plots");
   var request = objectStore.put({ id: 1, 'data': data });
-  request.onsuccess = function (event) {
-  };
 }
 
 function read() {
@@ -67,14 +59,17 @@ function javaread() {
   }
 }
 
-async function startup() {
+function startup() {
   funkyRadio();
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) == "true");
   });
   for (let i = 0; i < 4; i++) document.getElementById(i).checked = true;
+  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
+  document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
+  let select = document.querySelector(`select`);
+  select.value = getSavedValue(select.id) || `P438`;
   javaread();
-  hider();
   // await code here
   var DR = [];
   plotProtection(DR);
@@ -82,7 +77,7 @@ async function startup() {
     try { read(); } catch (e) { console.log(e); }
   };
   let prim = document.getElementById("Prim");
-  prim.onchange = function () { read(); };
+  prim.onchange = function () { read(); checkit(); };
   prim.checked = getSavedValue(prim.id) == "true" || getSavedValue(prim.id) == "";
   document.getElementById("Sec").onchange = function () { checkit(); read(); };
   let primDR = document.getElementById("PrimDR");
@@ -113,10 +108,7 @@ function inside(point, vs) {
 }
 
 async function plotProtection(csvarr) {
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-  document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
   let select = document.querySelector(`select`);
-  select.value = getSavedValue(select.id);
   const secdr = document.getElementById("SecDR");
 
   //Advanced settings variables
@@ -372,8 +364,9 @@ function P438(tr, num, empty) {
   let Z = +(document.getElementById(`Zone${num}`).value);
   let RH = +(document.getElementById(`Zone${num}RH`).value);
   const left = document.getElementById(`Zone${num}LH`);
-  let LH = Math.min(+left.value, Z * Math.sin(a));
-  left.value = smoothdec(LH, 0);
+  const leftcalc = Z * Math.sin(a) * Math.sin(b - 0.5 * Math.PI) / Math.sin(Math.PI - b) + Z * Math.sin(0.5 * Math.PI - a);
+  let LH = Math.min(+left.value, leftcalc);
+  left.value = smoothdec(LH);
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
@@ -384,8 +377,8 @@ function P438(tr, num, empty) {
   const m2 = LH * Math.sin(a) / Math.sin(a - b);
   const r1 = m1 * Math.cos(g);
   const x1 = m1 * Math.sin(g);
-  const r2 = RH + Z * Math.cos(a);
   const x2 = Z * Math.sin(a);
+  const r2 = RH + Z * Math.cos(a);
   const r3 = 0;
   const x3 = x2;
   const x4 = Math.min(LH * Math.sin(a) / Math.sin(0.5 * Math.PI - a), x2);
@@ -407,7 +400,8 @@ function Zone2P438(tr) {
 }
 
 function Zone3P438(tr) {
-  const Zr = +(document.getElementById(`Zone3rev`).value);
+  let Zr = +(document.getElementById(`Zone3rev`).value);
+  Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
   let [Zpol, Zel, stuff] = P438(tr, `3`, [, , ,]);
   let { a, b, g, Z, LH } = stuff;
   const m1 = LH * Math.sin(a) / Math.sin(Math.PI - a + g);
