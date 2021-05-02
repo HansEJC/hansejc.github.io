@@ -147,11 +147,12 @@ async function plotProtection(csvarr) {
   let [Z2pol, Z2el] = eval(`Zone2${select.value}(tr)`);
   let [Z3pol, Z3el] = eval(`Zone3${select.value}(tr)`);
   let elements2 = [...peakLoad(), ...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
-  const polnums = [...Z1pol.flat(), ...Z2pol.flat(), ...Z3pol.flat()];
-  const polmax = (num) => Math.max(...polnums, num);
-  const polmin = (num) => Math.min(...polnums, num);
-  let xaxis = [polmin(-50), polmax(80)];
-  let yaxis = [polmin(-20), polmax(100)];
+  let polnums = [...Z1pol.flat(), ...Z2pol.flat(), ...Z3pol.flat()];
+  polnums = { max: Math.max(...polnums) * 1.2, min: Math.min(...polnums) * 1.2 }
+  const polmax = (num) => Math.max(polnums.max, num);
+  const polmin = (num) => Math.min(polnums.min, num);
+  let xaxis = [polmin(-40), polmax(50)];
+  let yaxis = [polmin(-20), polmax(70)];
   var DR = []; DR = csvarr;
   let calcStuff = { DR, trdr, vtrdr };
   let faultarray = addCSVtoArray(calcStuff);
