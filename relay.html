@@ -125,6 +125,8 @@
             <section class="box">
               <form>
                 Fault in:<span id="FaultLoc" class="label"></span>
+                <label for="PeakLoad">Peak Load (A) <input type="number" id="PeakLoad" placeholder=1000 step=100
+                    onkeyup='saveValue(this);' /></label>
               </form>
             </section>
           </div>
@@ -141,6 +143,10 @@
                 <label for="2"> Zone2</label>
                 <input type=checkbox id=3 onchange="change(this)" checked>
                 <label for="3"> Zone3</label>
+                <input type=checkbox id=4 onchange="change(this)" checked>
+                <label for="4"> Char Angle</label>
+                <input type=checkbox id=5 onchange="change(this)" checked>
+                <label for="5"> Peak Load</label>
               </p>
               Copy to Clipboard: <a href="javascript:clippy(700,400)">A4 Normal</a>
               <a href="javascript:clippy(700,300)">A4 Narrow</a>

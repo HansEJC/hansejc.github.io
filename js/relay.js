@@ -64,7 +64,7 @@ function startup() {
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) == "true");
   });
-  for (let i = 0; i < 4; i++) document.getElementById(i).checked = true;
+  for (let i = 0; i < 6; i++) document.getElementById(i).checked = true;
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
   let select = document.querySelector(`select`);
@@ -107,6 +107,23 @@ function inside(point, vs) {
   return inside;
 }
 
+function peakLoad() {
+  const load = +document.querySelector("#PeakLoad").value || 1000;
+  const Z = 25000 / load;
+  let loadarray = [];
+  let rad, r, x;
+  for (let i = 0; i < 40; i++) {
+    rad = i * Math.PI / 180;
+    r = Z * Math.cos(rad) * 0.85; //Resistive reach tolerance of 15%
+    x = Z * Math.sin(rad);
+    loadarray.push([r, , , , , , x]);
+  }
+  r = 60 * Math.cos(rad);
+  x = 60 * Math.sin(rad);
+  loadarray.push([r, , , , , , x]);
+  return loadarray;
+}
+
 async function plotProtection(csvarr) {
   let select = document.querySelector(`select`);
   const secdr = document.getElementById("SecDR");
@@ -129,8 +146,7 @@ async function plotProtection(csvarr) {
   let [Z1pol, Z1el] = eval(`Zone1${select.value}(tr)`);
   let [Z2pol, Z2el] = eval(`Zone2${select.value}(tr)`);
   let [Z3pol, Z3el] = eval(`Zone3${select.value}(tr)`);
-  let elements2 = [...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
-
+  let elements2 = [...peakLoad(), ...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
   const polnums = [...Z1pol.flat(), ...Z2pol.flat(), ...Z3pol.flat()];
   const polmax = (num) => Math.max(...polnums, num);
   const polmin = (num) => Math.min(...polnums, num);
@@ -203,13 +219,13 @@ async function dygPlot(total, xaxis, yaxis) {
     {
       dateWindow: xaxis,
       valueRange: yaxis,
-      labels: ['a', 'Fault', 'Zone 1', 'Zone 2', 'Zone 3', 'Characteristic Angle'],
+      labels: ['a', 'Fault', 'Zone 1', 'Zone 2', 'Zone 3', 'Characteristic Angle', `Peak Load`],
       xlabel: "Resistance (Ω)",
       ylabel: "Reactance (Ω)",
       legend: 'always',
       drawAxesAtZero: true,
       labelsSeparateLines: true,
-      colors: ["red", "blue", "purple", "green", "#cccc2b"],
+      colors: ["red", "blue", "purple", "green", "#cccc2b", `orange`],
       connectSeparatedPoints: true,
       includeZero: true,
       axes: {
