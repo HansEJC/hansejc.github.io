@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-5QF2LGP');</script>
+<!-- End Google Tag Manager -->
+<html>
+
+<head>
+  <title>HV Cable Calculations</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="description" content="HV Cable Calculations" />
+  <meta name="keywords" content="HV Cable Calculations" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="css/main-style.css" />
+  <script defer src="js/init.js"></script>
+  <link rel="stylesheet" href="css/ext/katex.min.css">
+  <script defer src="js/ext/katex.min.js"></script>
+  <script defer src="js/ext/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <script defer src="js/hvcalc.js"></script>
+</head>
+
+<body class="left-sidebar">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- Header -->
+  <div id="header">
+    <div class="topnav" id="myTopnav"></div>
+    <!-- Logo -->
+    <div id="logo">
+      <h1><a href="#">HV Cable Calculations</a></h1>
+    </div>
+  </div>
+  <!-- Main -->
+  <div id="main" class="container">
+    <div class="row">
+      <div>
+        <!-- Content -->
+        <div id="content">
+          <header>
+            <h1>Induced Voltages</h1>
+          </header>
+          <div class="row">
+            <section class="box">
+              <form>
+                <label for="LoadCurrent">Load Current \(I\) (A)<input type="number" id="LoadCurrent"
+                    onkeyup='saveValue(this);' /></label>
+                <label for="FaultCurrent">Fault Current \(I\) (A)<input type="number" id="FaultCurrent"
+                    onkeyup='saveValue(this);' /></label>
+                Load Induced \(U_i\) (V)<span id="LoadInduced" class="label"></span>
+                Fault Induced \(U_i\) (V)<span id="FaultInduced" class="label"></span>
+                $$ U_i = X_M \times I \times L$$
+              </form>
+            </section>
+            <section class="box">
+              <form>
+                <label for="CableWires">Wires in Conductor</label>
+                <select id="CableWires" onchange='saveValue(this);'>
+                  <option value=0.05>1 (solid)</option>
+                  <option value=0.0778>3</option>
+                  <option value=0.0642>7</option>
+                  <option value=0.0554>19</option>
+                  <option value=0.0528>37</option>
+                  <option value=0.0514>61+</option>
+                </select>
+                <label for="CableLength">Cable Length \(L\) (km)<input type="number" id="CableLength"
+                    onkeyup='saveValue(this);' /></label>
+                <label for="AxialSpacing">Axial Spacing \(S\) (mm)<input type="number" id="AxialSpacing"
+                    onkeyup='saveValue(this);' /></label>
+                <label for="SheathDiameter">Sheath Diameter \(d_M\) (mm)<input type="number" id="SheathDiameter"
+                    onkeyup='saveValue(this);' /></label>
+                \( d_M = 2 \times \sqrt{CSA \over \pi}\)
+              </form>
+            </section>
+            <section class="box">
+              <form>
+                Wire Factor \(K\)<span id="WireFactor" class="label"></span><br>
+                Inductive Reactance \(X_M\) (mΩ/km)<span id="InductiveReactance" class="label"></span>
+                $$ X_M = ω \times L_M $$
+                Core Inductance \(L_M\) (mH/km)<span id="CoreInductance" class="label"></span>
+                $$ L_M = K + 0.2 \times \ln \left( {2S \over d_M} \right) $$
+              </form>
+            </section>
+            <span>\(S\) is the axial spacing between the cable core and sheath.<br>
+              \(d_M\) is the mean sheath diameter and can be calculated using the cross section area \(CSA\) of the
+              sheath.<br></span>
+          </div>
+          <header>
+            <h1>Maximum Safe Distance</h1>
+          </header>
+          <div class="row">
+            <section class="box">
+              <form>
+                Load Distance (km)<span id="LoadDistance" class="label"></span>
+              </form>
+            </section>
+            <section class="box">
+              <form>
+                Fault Distance (km)<span id="FaultDistance" class="label"></span>
+              </form>
+            </section>
+            <section class="box">
+              <form>
+                $$ L_{max} = {U_i \over X_M \times I} $$
+              </form>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="copyright">
+    <ul>
+      <li>&copy; Hans Juneby</li>
+    </ul>
+  </div>
+</body>
+
+</html>
