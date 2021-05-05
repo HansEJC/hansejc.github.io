@@ -134,7 +134,7 @@ function uploadcsv(db) {
       if (document.getElementById("CSVF").checked) {
         try {//the for loop removes saved labels
           const len = filecontent.split("\n")[0].split(",").length;
-          for (let i = len; i < len * 2; i++) localStorage.removeItem(i);
+          for (let i = 0; i < len; i++) localStorage.removeItem(`csvlabel${i}`);
           return dyg(filecontent);
         } catch (err) { console.log(err); addLoader("CSV Formatting Error, Attempting to Process Upload.", true); }
       }
@@ -332,6 +332,7 @@ function dyg(csv) {
       myNode.removeChild(myNode.lastChild);
       while (document.getElementById("ColorForm").childElementCount > 1) { //don't remove the firstborn children
         document.getElementById("ColorForm").removeChild(document.getElementById("ColorForm").lastChild);
+        document.getElementById("LineStyles").removeChild(document.getElementById("LineStyles").lastChild);
       }
     }
   } catch (err) { console.log(err); }
@@ -370,12 +371,12 @@ function dygReady() {
   const colors = g3.getColors();
   //lbs.pop();
   lbs.shift();
-  var cb = [], cb2 = [], col = [];
+  var cb = [], cb2 = [], col = [], sty = [];
   const cbh = document.getElementById('MyForm'), colF = document.getElementById('ColorForm');
 
   for (var i = 0; i < lbs.length; i++) {
-    cb[i] = document.createElement('input'); cb2[i] = document.createElement('input'); col[i] = document.createElement('input');
-    cb[i].type = 'checkbox'; cb2[i].type = 'text'; col[i].type = 'color';
+    cb[i] = document.createElement('input'), cb2[i] = document.createElement('input'), col[i] = document.createElement('input');
+    cb[i].type = 'checkbox', cb2[i].type = 'text', col[i].type = 'color';
     cbh.appendChild(cb[i]); cbh.appendChild(cb2[i]); colF.appendChild(col[i]);
     cb[i].id = `csvcheckbox ${i}`; cb2[i].id = `csvlabel${i}`; col[i].id = `csvcolor${i}`;
     cb2[i].value = lbs[i];
@@ -383,12 +384,12 @@ function dygReady() {
     cb2[i].className = "idents";
     cb[i].checked = getSavedValue(cb[i].id) === "" || getSavedValue(cb[i].id) === "true";
     saveRadio(cb[i]);
+    lineStyles(sty, i);
     cb[i].onchange = function () { change(this); }; cb2[i].onblur = function () { saveValue(this); idents(lbs.length); };
   }
   const colorNode = document.querySelectorAll("input[type=color]");
   colorNode.forEach(col => col.addEventListener('change', colorUpdate));
   idents(lbs.length);
-
   chooseOptions();
   document.getElementById("69").onchange = (() => UncheckAll('MyForm'));
   setTimeout(function () {
@@ -397,6 +398,23 @@ function dygReady() {
     document.querySelector('#FullFile').innerText = localStorage.getItem('Filename');
     startup(true);
   }, 500);
+}
+
+function lineStyles(sty, i) {
+  const lineS = document.getElementById('LineStyles');
+  const opt1 = document.createElement("option"), opt2 = document.createElement("option"), opt3 = document.createElement("option"), opt4 = document.createElement("option");
+  sty[i] = document.createElement('select');
+  opt1.text = `Solid`, opt2.text = `Dotted`, opt3.text = `Dashed`, opt4.text = `Dotdash`;
+  opt1.value = `null`, opt2.value = `[2,2]`, opt3.value = JSON.stringify(Dygraph.DASHED_LINE), opt4.value = JSON.stringify(Dygraph.DOT_DASH_LINE);
+  sty[i].appendChild(opt1), sty[i].appendChild(opt2), sty[i].appendChild(opt3), sty[i].appendChild(opt4);
+  sty[i].id = `csvlines${i}`;
+  lineS.appendChild(sty[i]);
+  sty[i].onchange = function () { saveValue(this); styleMe(this, i + 1); };
+}
+
+function styleMe(e, i) {
+  let ser = g3.getLabels()[i];
+  g3.updateOptions({ series: { [ser]: { strokePattern: JSON.parse(e.value) } } })
 }
 
 var xaxis = document.getElementById('xaxis');
@@ -438,17 +456,19 @@ function UncheckAll(elementID) {
   }
 }
 function idents(len) {
-  let labl = [], labd, colors;
+  let labl = [], labd, colors, styles;
   labl.push("boobs");
 
   for (var i = 0; i < len; i++) {
     labd = document.getElementById(`csvlabel${i}`);
     colors = document.getElementById(`csvcolor${i}`);
+    styles = document.getElementById(`csvlines${i}`);
     labd.value = getSavedValue(`csvlabel${i}`) == "" ? labd.value : getSavedValue(`csvlabel${i}`);
     labl.push(labd.value);
     if (labd.value.length > 0) {
       labd.style['width'] = `${labd.value.length + 1}ch`;
       colors.style['width'] = `${Math.max(5.5, 3.5 + labd.value.length)}ch`;
+      styles.style['width'] = `${Math.max(5.5, 3.5 + labd.value.length)}ch`;
     }
   }
   g3.updateOptions({

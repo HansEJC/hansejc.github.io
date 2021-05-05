@@ -2,7 +2,6 @@
 :root {
   --greyishMagenta: #baaabb;
   --darkBlue: #0d1117;
-
 }
 /*********************************************************************************/
 /* Dark Mode                                                                     */
@@ -18,7 +17,7 @@
     color: var(--greyishMagenta);
   }
   .dark form input[type="text"],.dark form input[type="number"],.dark form input[type="datetime-local"],
-  .dark form input[type="email"],.dark form input[type="password"],.dark form select,.dark form textarea,
+  .dark form input[type="email"],.dark form input[type="password"],.dark select,.dark form textarea,
   .dark .dygraph-roller, .dark .idents, .dark input[type="color"] {
     background-color: #222; /*dark grey*/
     box-shadow: inset 0px 0px 1px 0px #000000;
@@ -29,7 +28,7 @@
   .dark form input[type="email"]:focus,
   .dark input[type="color"]:focus,
   .dark form input[type="password"]:focus,
-  .dark form select:focus,
+  .dark select:focus,
   .dark form textarea:focus,
   .dark .dygraph-roller:focus
   {
