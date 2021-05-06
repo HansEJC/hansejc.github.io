@@ -11,6 +11,8 @@ function induced() {
   const S = +(getSavedValue("AxialSpacing")) || 12;
   const dM = +(getSavedValue("SheathDiameter")) || 10.33;
   const K = +(getSavedValue("CableWires")) || 0.05;
+  const loadI = document.querySelector(`#LoadInduced`);
+  const faultI = document.querySelector(`#FaultInduced`);
 
   let LM = K + 0.2 * Math.log(2 * S / dM);
   let Xm = 2 * Math.PI * 50 * LM;
@@ -19,8 +21,10 @@ function induced() {
   let LL = 1000 * 60 / (Xm * IL);
   let LF = 1000 * 645 / (Xm * IF);
 
-  document.querySelector(`#LoadInduced`).textContent = `${smoothdec(UL)} V`;
-  document.querySelector(`#FaultInduced`).textContent = `${smoothdec(UF)} V`;
+  loadI.textContent = `${smoothdec(UL)} V`;
+  faultI.textContent = `${smoothdec(UF)} V`;
+  loadI.className = UL < 60 ? `label safe` : `label danger`;
+  faultI.className = UF < 645 ? `label safe` : `label danger`;
   document.querySelector(`#InductiveReactance`).textContent = `${smoothdec(Xm)} mΩ/km`;
   document.querySelector(`#CoreInductance`).textContent = `${smoothdec(LM)} mH/km`;
   document.querySelector(`#LoadDistance`).textContent = `${smoothdec(LL)} km`;
