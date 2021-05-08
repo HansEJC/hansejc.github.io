@@ -1,0 +1,128 @@
+<!DOCTYPE HTML>
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-5QF2LGP');</script>
+<!-- End Google Tag Manager -->
+<html>
+
+<head>
+  <title>LV Cable Calculations</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="description" content="LV Cable Calculations" />
+  <meta name="keywords" content="LV Cable Calculations" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="css/main-style.css" />
+  <script defer src="js/init.js"></script>
+  <script defer src="js/lvcalc.js"></script>
+</head>
+
+<body class="left-sidebar">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- Header -->
+  <div id="header">
+    <div class="topnav" id="myTopnav"></div>
+    <!-- Logo -->
+    <div id="logo">
+      <h1><a href="#">LV Cable Calculations</a></h1>
+    </div>
+  </div>
+  <!-- Main -->
+  <div id="main" class="container">
+    <div class="row">
+      <div>
+        <!-- Content -->
+        <div id="content">
+          <header>
+            <h1>Characteristics</h1>
+          </header>
+          <div class="row">
+            <section class="box">
+              <form>
+                <label for="DesignCurrent">Design Current (A)<input type="number" id="DesignCurrent"
+                    onkeyup='saveValue(this);' /></label>
+                <label for="PSCC">Maximum PSCC (kA)<input type="number" id="PSCC" onkeyup='saveValue(this);' /></label>
+                <label for="Zs">Z<sub>s</sub> (Ω)<input type="number" id="Zs" onkeyup='saveValue(this);' /></label>
+              </form>
+            </section>
+            <section class="box">
+              <form>
+                <label for="PhaseVoltage">Phase Voltage (V)<input type="number" id="PhaseVoltage"
+                    onkeyup='saveValue(this);' /></label>
+                Max Voltage (V)<span id="MaxVoltage" class="label"></span>
+                Min Voltage (V)<span id="MinVoltage" class="label"></span>
+              </form>
+            </section>
+          </div>
+          <header>
+            <hr>
+            <h1>Conductors / Protection Selection</h1>
+          </header>
+          <div class="row">
+            <section class="box">
+              <form>
+                <label for="ReferenceMethod">Reference Method</label>
+                <select id="ReferenceMethod" onchange='saveValue(this);cableDets();'>
+                  <option value="c">Clipped direct</option>
+                  <option value="e">In free air or on a perforated cable tray</option>
+                  <option value="d">Direct in ground or in ducting in ground</option>
+                </select>
+                <label for="Protection">Protection</label>
+                <select id="Protection" onchange='saveValue(this);protectionDets();'> </select>
+                <label for="ProtectionType">Type</label>
+                <select id="ProtectionType" onchange='saveValue(this);protectionDets();'>
+                  <option value="b">MCB Type B</option>
+                  <option value="c">MCB Type C</option>
+                  <option value="d">MCB Type D</option>
+                  <option value="Fc">Fuse Type C</option>
+                </select>
+                Max EF Loop Impedance Z<sub>s</sub> (Ω)<span id="ProtectionZs" class="label"></span>
+              </form>
+            </section>
+            <section class="box">
+              <form>
+                <label for="PhaseSize">Phase Size (table 4E4A)</label>
+                <select id="PhaseSize" onchange='saveValue(this);cableDets();'> </select>
+                <label for="PhaseCores">Phase Cores</label>
+                <select id="PhaseCores" onchange='saveValue(this);cableDets();'>
+                  <option value="two">Two Core</option>
+                  <option value="three">Three or Four</option>
+                </select>
+                Rated Current (A)<span id="PhaseRating" class="label"></span>
+                Voltage Drop (mV/A/m)<span id="PhaseDrop" class="label"></span>
+              </form>
+            </section>
+            <section class="box">
+              <form>
+                <label for="CPCSize">CPC Size (table 4E4A)</label>
+                <select id="CPCSize" onchange='saveValue(this);cableDets();'> </select>
+                <label for="CPCCores">Phase Cores</label>
+                <select id="CPCCores" onchange='saveValue(this);cableDets();'>
+                  <option value="two">Two Core</option>
+                  <option value="three">Three or Four</option>
+                </select>
+                Rated Current (A)<span id="CPCRating" class="label"></span>
+                Voltage Drop (mV/A/m)<span id="CPCDrop" class="label"></span>
+              </form>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="copyright">
+    <ul>
+      <li>&copy; Hans Juneby</li>
+    </ul>
+  </div>
+</body>
+
+</html>

@@ -78,6 +78,7 @@ function navBar() {
           <a href='tools.html'>Electrical Engineering Tools</a>
           <a href='emc.html'>EMC Calculations</a>
           <a href='hvcalc.html'>HV Cable Calculations</a>
+          <a href='lvcalc.html'>LV Cable Calculations</a>
           <a href='mortgage.html'>Loan Calculator</a>
         </div>
       </div>
