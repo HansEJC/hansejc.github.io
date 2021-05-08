@@ -49,7 +49,6 @@
               <form>
                 <label for="DesignCurrent">Design Current (A)<input type="number" id="DesignCurrent"
                     onkeyup='saveValue(this);' /></label>
-                <label for="PSCC">Maximum PSCC (kA)<input type="number" id="PSCC" onkeyup='saveValue(this);' /></label>
                 <label for="Zs">Z<sub>s</sub> (Ω)<input type="number" id="Zs" onkeyup='saveValue(this);' /></label>
               </form>
             </section>
@@ -90,6 +89,7 @@
                 </select>
                 Rated Current (A)<span id="PhaseRating" class="label"></span>
                 Voltage Drop (mV/A/m)<span id="PhaseDrop" class="label"></span>
+                Voltage Drop (V)<span id="VoltageDrop" class="label"></span>
               </form>
             </section>
             <section class="box">
@@ -107,18 +107,19 @@
             </section>
             <section class="box">
               <form>
-                <label for="Protection">Protection</label>
-                <select id="Protection" onchange='saveValue(this);protectionDets();'> </select>
-                <label for="ProtectionType">Type</label>
-                <select id="ProtectionType" onchange='saveValue(this);protectionDets();'>
+                <label for="ProtectionType">Protection Type</label>
+                <select id="ProtectionType" onchange='saveValue(this);protectionSelect();protectionDets();'>
                   <option value="b">MCB Type B</option>
                   <option value="c">MCB Type C</option>
                   <option value="d">MCB Type D</option>
                   <option value="Fe">Fuse Type E</option>
                   <option value="Fc">Fuse Type C</option>
                 </select>
+                <label for="Protection">Rating</label>
+                <select id="Protection" onchange='saveValue(this);protectionDets();'> </select>
                 Max EF Loop Impedance Z<sub>s</sub> (Ω)<span id="ProtectionZs" class="label"></span>
                 Trip Current (A)<span id="ProtectionTrip" class="label"></span>
+                Trip Time (s)<span id="TripTime" class="label"></span>
               </form>
             </section>
           </div>
