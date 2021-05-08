@@ -1,8 +1,11 @@
 function startup() {
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-  document.querySelectorAll('select').forEach(inp => inp.value = getSavedValue(inp.id));
   cables();
   protection();
+  document.querySelectorAll('select').forEach(inp => inp.value = getSavedValue(inp.id) || inp.value);
+  cableDets();
+  protectionDets();
+  mainCalcs();
 }
 function cables() { //cables from table 4E4A page 417
   addCable([1.5, 27, 23, 29, 25, 25, 21, 31, 27]);
@@ -75,9 +78,6 @@ function cableDets() {
 
 //table 41.3 page 62
 function protection() {
-  let rating = 10; //fuse rating
-  let type = 5; //fuse type
-  let Zs = 230 * 0.95 / (type * rating);
   addMCB(3);
   addMCB(6);
   addMCB(10);
@@ -91,6 +91,9 @@ function protection() {
   addMCB(80);
   addMCB(100);
   addMCB(125);
+  addFuse([63, 0.78, 0.68, 280, 320]);
+  addFuse([80, 0.55, 0.51, 400, 430]);
+  addFuse([100, 0.42, 0.38, 520, 580]);
   protectionSelect();
 }
 
@@ -108,9 +111,33 @@ function protectionSelect() {
 function addMCB(rating) {
   let protection = JSON.parse(localStorage.getItem(`LVProtection`)) || {};
   protection[`${rating}A MCB`] = {
-    b: zsCalc(5, rating),
-    c: zsCalc(10, rating),
-    d: zsCalc(20, rating),
+    b: {
+      zs: zsCalc(5, rating),
+      trip: rating * 5
+    },
+    c: {
+      zs: zsCalc(10, rating),
+      trip: rating * 10
+    },
+    d: {
+      zs: zsCalc(20, rating),
+      trip: rating * 20
+    }
+  }
+  localStorage.setItem(`LVProtection`, JSON.stringify(protection));
+}
+
+function addFuse(fuse) {
+  let protection = JSON.parse(localStorage.getItem(`LVProtection`)) || {};
+  protection[`${fuse[0]}A Fuse`] = {
+    Fe: {
+      zs: fuse[1],
+      trip: fuse[3]
+    },
+    Fc: {
+      zs: fuse[2],
+      trip: fuse[4]
+    }
   }
   localStorage.setItem(`LVProtection`, JSON.stringify(protection));
 }
@@ -121,43 +148,53 @@ function protectionDets() {
   const protection = document.querySelector(`#Protection`).value;
   const type = document.querySelector(`#ProtectionType`).value;
   const Zs = document.querySelector(`#ProtectionZs`);
+  const trip = document.querySelector(`#ProtectionTrip`);
   const protect = JSON.parse(localStorage.getItem(`LVProtection`));
 
-  Zs.textContent = `${protect[protection][type]} Ω`;
+  Zs.textContent = `${protect[protection][type].zs} Ω`;
+  trip.textContent = `${protect[protection][type].trip} A`;
 }
-/*
-function induced() {
-  const IL = +(getSavedValue("LoadCurrent")) || 500;
-  const IF = +(getSavedValue("FaultCurrent")) || 6000;
-  const L = +(getSavedValue("CableLength")) || 1;
-  const S = +(getSavedValue("AxialSpacing")) || 12;
-  const dM = +(getSavedValue("SheathDiameter")) || 10.33;
-  const K = +(getSavedValue("CableWires")) || 0.05;
-  const loadI = document.querySelector(`#LoadInduced`);
-  const faultI = document.querySelector(`#FaultInduced`);
 
-  let LM = K + 0.2 * Math.log(2 * S / dM);
-  let Xm = 2 * Math.PI * 50 * LM;
-  let UL = Xm * L * IL / 1000;
-  let UF = Xm * L * IF / 1000;
-  let LL = 1000 * 60 / (Xm * IL);
-  let LF = 1000 * 645 / (Xm * IF);
+function mainCalcs() {
+  const phaserating = document.querySelector(`#PhaseRating`);
+  const trip = document.querySelector(`#ProtectionTrip`);
+  const designcurrent = +document.querySelector(`#DesignCurrent`).value;
+  const phasevoltage = +document.querySelector(`#PhaseVoltage`).value;
+  const len = +document.querySelector(`#CableLength`).value;
+  const vdrop = document.querySelector(`#PhaseDrop`);
+  const Zs = +document.querySelector("#Zs").value;
+  const K = +document.querySelector(`#K`).value;
+  const proZs = document.querySelector("#ProtectionZs").textContent.split(` `)[0];
 
-  loadI.textContent = `${smoothdec(UL)} V`;
-  faultI.textContent = `${smoothdec(UF)} V`;
-  loadI.className = UL < 60 ? `label safe` : `label danger`;
-  faultI.className = UF < 645 ? `label safe` : `label danger`;
-  document.querySelector(`#InductiveReactance`).textContent = `${smoothdec(Xm)} mΩ/km`;
-  document.querySelector(`#CoreInductance`).textContent = `${smoothdec(LM)} mH/km`;
-  document.querySelector(`#LoadDistance`).textContent = `${smoothdec(LL)} km`;
-  document.querySelector(`#FaultDistance`).textContent = `${smoothdec(LF)} km`;
-  document.querySelector(`#WireFactor`).textContent = K;
+  let phasesafe = +phaserating.textContent.split(` `)[0] > +trip.textContent.split(` `)[0] && +trip.textContent.split(` `)[0] > designcurrent;
+  phaserating.className = phasesafe ? `label safe` : `label danger`;
+  trip.className = +trip.textContent.split(` `)[0] > designcurrent ? `label safe` : `label danger`;
+  const vdropped = +vdrop.textContent.split(` `)[0] / 1000 * len * designcurrent;
+  console.log(`Voltage drop: ${vdropped} V`);
+  vdrop.className = 100 * vdropped / phasevoltage < 2.5 ? `label safe` : `label danger`;
+
+  const maxv = smoothdec(phasevoltage * 1.1);
+  const minv = smoothdec(phasevoltage * 0.9);
+  document.querySelector(`#MaxVoltage`).textContent = `${maxv} V`;
+  document.querySelector(`#MinVoltage`).textContent = `${minv} V`;
+
+  const Zc = len * +vdrop.textContent.split(` `)[0] / 2 / 1000;
+  const Zel = smoothdec(Zc * 2 + Zs, 4);
+  const Zt = smoothdec(Zc + Zc / 2 + Zs, 4);
+  const mincable = smoothdec(Math.sqrt((maxv / Zt) ** 2 * proZs) / K);
+
+  document.querySelector(`#CableImpedance`).textContent = `${Zc} Ω`;
+  document.querySelector(`#ELImpedance`).textContent = `${Zel} Ω`;
+  document.querySelector(`#TotalImpedance`).textContent = `${Zt} Ω`;
+  document.querySelector(`#EarthFault`).textContent = `${smoothdec(minv / Zel)} A`;
+  document.querySelector(`#MaxFault`).textContent = `${smoothdec(maxv / Zt)} A`;
+  document.querySelector(`#MinCable`).textContent = `${mincable} mm2`;
 }
-*/
+
 //startup
 window.addEventListener("load", function () {
   startup();
   document.onkeyup = function () {
-    //induced();
+    mainCalcs();
   };
 });

@@ -212,8 +212,7 @@ function saveParameter() {
     if (el.value.length > 0) params[el.id] = el.value;
     if (el.type === `checkbox` || el.type === `radio`) params[el.id] = el.checked;
   });
-  let select = document.querySelector(`select`);
-  if (select) params[select.id] = select.value;
+  document.querySelectorAll('select').forEach((select) => params[select.id] = select.value);
   let esc = encodeURIComponent;
   let query = Object.keys(params)
     .map(k => `${esc(k)}=${esc(params[k])}`)

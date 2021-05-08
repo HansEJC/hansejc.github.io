@@ -61,12 +61,6 @@
                 Min Voltage (V)<span id="MinVoltage" class="label"></span>
               </form>
             </section>
-          </div>
-          <header>
-            <hr>
-            <h1>Conductors / Protection Selection</h1>
-          </header>
-          <div class="row">
             <section class="box">
               <form>
                 <label for="ReferenceMethod">Reference Method</label>
@@ -75,18 +69,16 @@
                   <option value="e">In free air or on a perforated cable tray</option>
                   <option value="d">Direct in ground or in ducting in ground</option>
                 </select>
-                <label for="Protection">Protection</label>
-                <select id="Protection" onchange='saveValue(this);protectionDets();'> </select>
-                <label for="ProtectionType">Type</label>
-                <select id="ProtectionType" onchange='saveValue(this);protectionDets();'>
-                  <option value="b">MCB Type B</option>
-                  <option value="c">MCB Type C</option>
-                  <option value="d">MCB Type D</option>
-                  <option value="Fc">Fuse Type C</option>
-                </select>
-                Max EF Loop Impedance Z<sub>s</sub> (Ω)<span id="ProtectionZs" class="label"></span>
+                <label for="CableLength">Cable Length (m)<input type="number" id="CableLength"
+                    onkeyup='saveValue(this);' /></label>
               </form>
             </section>
+          </div>
+          <header>
+            <hr>
+            <h1>Conductors / Protection Selection</h1>
+          </header>
+          <div class="row">
             <section class="box">
               <form>
                 <label for="PhaseSize">Phase Size (table 4E4A)</label>
@@ -111,6 +103,52 @@
                 </select>
                 Rated Current (A)<span id="CPCRating" class="label"></span>
                 Voltage Drop (mV/A/m)<span id="CPCDrop" class="label"></span>
+              </form>
+            </section>
+            <section class="box">
+              <form>
+                <label for="Protection">Protection</label>
+                <select id="Protection" onchange='saveValue(this);protectionDets();'> </select>
+                <label for="ProtectionType">Type</label>
+                <select id="ProtectionType" onchange='saveValue(this);protectionDets();'>
+                  <option value="b">MCB Type B</option>
+                  <option value="c">MCB Type C</option>
+                  <option value="d">MCB Type D</option>
+                  <option value="Fe">Fuse Type E</option>
+                  <option value="Fc">Fuse Type C</option>
+                </select>
+                Max EF Loop Impedance Z<sub>s</sub> (Ω)<span id="ProtectionZs" class="label"></span>
+                Trip Current (A)<span id="ProtectionTrip" class="label"></span>
+              </form>
+            </section>
+          </div>
+          <header>
+            <hr>
+            <h1>Fault Assessment</h1>
+          </header>
+          <div class="row">
+            <section class="box">
+              <form>
+                Cable Impedance (Ω)<span id="CableImpedance" class="label"></span>
+                Earth Loop Impedance (Ω)<span id="ELImpedance" class="label"></span>
+                Total Impedance (Ω)<span id="TotalImpedance" class="label"></span>
+              </form>
+            </section>
+            <section class="box">
+              <form>
+                Min Earth Fault (A)<span id="EarthFault" class="label"></span>
+                Max Fault (A)<span id="MaxFault" class="label"></span>
+              </form>
+            </section>
+            <section class="box">
+              <form>
+                <label for="K">K Factor</label>
+                <select id="K" onchange='saveValue(this)'>
+                  <option value="143">143</option>
+                  <option value="176">176</option>
+                  <option value="100">Add more..</option>
+                </select>
+                Min Cable Size (mm<sup>2</sup>)<span id="MinCable" class="label"></span>
               </form>
             </section>
           </div>
