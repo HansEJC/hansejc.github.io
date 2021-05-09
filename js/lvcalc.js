@@ -3,9 +3,9 @@ function startup() {
   cables();
   document.querySelectorAll('select').forEach(inp => inp.value = getSavedValue(inp.id) || inp.value);
   protection();
+  document.querySelectorAll('select').forEach(inp => inp.value = getSavedValue(inp.id) || inp.value);
   cableDets();
   protectionDets();
-  mainCalcs();
 }
 function cables() { //cables from table 4E4A page 417
   addCable([1.5, 27, 23, 29, 25, 25, 21, 31, 27]);
@@ -74,6 +74,7 @@ function cableDets() {
   phasedrop.textContent = `${cables[phasesize][phasecores]} mV/A/m`;
   cpcrating.textContent = `${cables[cpcsize][ref][cpccores]} A`;
   cpcdrop.textContent = `${cables[cpcsize][cpccores]} mV/A/m`;
+  mainCalcs();
 }
 
 //table 41.3 page 62
@@ -156,6 +157,7 @@ function protectionDets() {
 
   Zs.textContent = `${protect[protection][type].zs} Ω`;
   trip.textContent = `${protect[protection][type].trip} A`;
+  mainCalcs();
 }
 
 function mainCalcs() {
@@ -178,7 +180,7 @@ function mainCalcs() {
   phaserating.className = phasesafe ? `label safe` : `label danger`;
   trip.className = protectrating > designcurrent ? `label safe` : `label danger`;
   const vdropped = +vdrop.textContent.split(` `)[0] / 1000 * len * designcurrent;
-  document.querySelector(`#VoltageDrop`).textContent = `${vdropped} V`;
+  document.querySelector(`#VoltageDrop`).textContent = `${smoothdec(vdropped)} V`;
   vdrop.className = 100 * vdropped / phasevoltage < 2.5 ? `label safe` : `label danger`;
 
   const maxv = smoothdec(phasevoltage * 1.1);
@@ -192,7 +194,7 @@ function mainCalcs() {
   const mincable = smoothdec(Math.sqrt((maxv / Zt) ** 2 * triptime) / K); //0.4s disconnection time. The time should really be cross checked with the trip curves
   document.querySelector(`#TripTime`).textContent = `${triptime} s`;
 
-  document.querySelector(`#CableImpedance`).textContent = `${Zc} Ω`;
+  document.querySelector(`#CableImpedance`).textContent = `${smoothdec(Zc, 4)} Ω`;
   document.querySelector(`#ELImpedance`).textContent = `${Zel} Ω`;
   document.querySelector(`#TotalImpedance`).textContent = `${Zt} Ω`;
   proZs.className = Zt < proZs.textContent.split(` `)[0] ? `label safe` : `label danger`;
