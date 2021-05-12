@@ -1,5 +1,5 @@
 function killthemeter(num) {
-  if (num > 1000) return +(num/1000).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + " km";
+  if (num > 1000) return +(num/1000).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/gu, ",") + " km";
   else if (num > 1) return +num.toFixed(2) + " m";
   else if (num > 0.1) return +(num*100).toFixed(2) + " cm";
   else if (num > 0.001) return +(num*1000).toFixed(2) + " mm";

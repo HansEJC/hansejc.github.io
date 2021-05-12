@@ -59,7 +59,7 @@ function listeners() {
 
 function splicer(arr, str, col) {
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i][col] == "" || new RegExp(str, "i").test(arr[i][col]) || new RegExp("undefined", "i").test(arr[i][col])) {
+    if (arr[i][col] == "" || new RegExp(str, "iu").test(arr[i][col]) || new RegExp("undefined", "iu").test(arr[i][col])) {
       arr.splice(i, 1);
       i--;
     }
@@ -88,12 +88,12 @@ function search(arrheh) {
 
   //fix the headaches when creating a new RegExp
   RegExp.quote = function (str) {
-    return str.replace(/[.*+\-?^${}()[\]\\]/g, "\\$1");
+    return str.replace(/[.*+\-?^${}()[\]\\]/gu, "\\$1");
   };
 
   sArray = myArray.filter(s => pn.every(v => s.toLowerCase().includes(v)))
     .map(e => {
-      if (pn[0].length > 0) e = e.replace(new RegExp(RegExp.quote(pn.join('|')), 'gi'), x => `<mark>${x}</mark>`);
+      if (pn[0].length > 0) e = e.replace(new RegExp(RegExp.quote(pn.join('|')), 'giu'), x => `<mark>${x}</mark>`);
       return e.split(',');
     });
 

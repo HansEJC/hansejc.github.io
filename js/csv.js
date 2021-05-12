@@ -429,7 +429,7 @@ yaxis.onblur = () => {
 };
 
 function rgbToHex(rgb) {
-  const col = rgb.split(/[,)(]/);
+  const col = rgb.split(/[,)(]/u);
   const ToHex = (c) => { const hex = c.toString(16); return hex.length == 1 ? `0${hex}` : hex; }
   return `#${ToHex(+col[1])}${ToHex(+col[2])}${ToHex(+col[3])}`;
 }
