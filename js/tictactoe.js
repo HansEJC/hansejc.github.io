@@ -164,7 +164,7 @@ function nextMove() {
   if (checkWin()) return;
   let square;
   square = mode.textContent === "Hard" ? squares[minimax(board,'O').index].firstChild : getMove();
-  console.log(`Scenarios assessed: ${iter}`); //check how many moves where simulated
+  logError(`Scenarios assessed: ${iter}`); //check how many moves where simulated
   setTimeout(() => {
     square.classList.add('Oplay');
     checkWin();
@@ -189,7 +189,7 @@ function bonk(e) {
     if (['Xplay','Oplay'].some(ev => this.firstChild.classList.value.includes(ev))) return;
     this.firstChild.classList.add(Players());
   }catch(err){
-    console.log(err,'no children exist yet');
+    logError(err,'no children exist yet');
     return;
   }
   if (document.querySelector('#SingleP').checked){

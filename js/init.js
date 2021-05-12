@@ -125,11 +125,8 @@ if ("serviceWorker" in navigator) {
 
   //Makes website available offline
   window.addEventListener("load", function () {
-    navigator.serviceWorker
-      .register("sw.js")
-      .then(res => console.log("service worker registered"))
-      .catch(err => console.log("service worker not registered", err));
-
+    navigator.serviceWorker.register("sw.js");
+    /*
     let deferredPrompt;
     let body = document.querySelector("#main");
     let btn = document.createElement("button");
@@ -154,17 +151,12 @@ if ("serviceWorker" in navigator) {
         // Show the prompt
         deferredPrompt.prompt();
         // Wait for the user to respond to the prompt
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === 'accepted') {
-            console.log('User accepted the A2HS prompt');
-          } else {
-            console.log('User dismissed the A2HS prompt');
-          }
+        deferredPrompt.userChoice.then(() => {
           deferredPrompt = null;
         });
       });
-    });
-  })
+    });*/
+  });
 }
 
 //function to resize plot and copy to clipboard
@@ -295,9 +287,7 @@ function exportToCsv(filename, rows) {
 
 function dbUpgrade(db) {
   const onupgradeneeded = function (e) {
-    console.log("Upgrading...");
     db = e.target.result;
-
     if (!db.objectStoreNames.contains("plots")) {
       db.createObjectStore("plots", { keyPath: "id", autoIncrement: true });
     }
@@ -310,7 +300,7 @@ const post = function (url, data, sucPost) {
     .then(response => response.text())
     .then(sucPost)
     .catch((error) => {
-      console.log('Error:', data);
+      logError(error);
     });
 }
 
@@ -360,6 +350,19 @@ function fireBase() {
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 };
+
+function logError(err) {
+  let div = document.createElement('div');
+  let errdiv = document.getElementById("copyright");
+  document.querySelectorAll("#error").forEach(x => x.parentNode.removeChild(x));
+  errdiv.insertBefore(div, errdiv.lastChild);
+  div.innerHTML = `<center>${err}</center>`;
+  div.id = "error";
+  _('#error').fade('in', 300);
+  setTimeout(() => {
+    _('#error').fade('out', 1000);
+  }, 3000);
+}
 
 const smoothdec = (a, b = 2) => +(parseFloat(a).toFixed(b)); //fix broken decimals
 //const readCookie = (name) => (document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''); //changed to use localstorage instead

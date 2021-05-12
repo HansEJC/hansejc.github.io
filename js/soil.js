@@ -120,7 +120,7 @@ function fop() {
 function dygPlot(foparr) {
   try {
     if (typeof g3 !== `undefined`) g3.destroy();
-  } catch (e) { console.log(e); }
+  } catch (e) { logError(e); }
   if (foparr.length == 0) return;
   g3 = new Dygraph(
     document.getElementById(`graphdiv3`),
@@ -218,7 +218,7 @@ function table(rows, target) {
       row.insertCell(1).innerHTML = arr[1];
       if (arr.length > 2) row.insertCell(2).innerHTML = parseFloat(arr[2]).toFixed(2);
     })
-  } catch (err) { console.log(err) }
+  } catch (err) { logError(err) }
 
   if (target.checked) document.querySelector(`#tab`).appendChild(myTable);
   else document.querySelector(`#tab`).removeChild(document.querySelector(`#tab`).lastChild)

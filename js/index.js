@@ -10,7 +10,7 @@ function initiate() {
   Rexy = new Runner('.interstitial-wrapper');
   try {
     getScores();
-  } catch (e) { console.log(e); }
+  } catch (e) { logError(e); }
   document.onkeydown = keys;
 }
 
@@ -24,14 +24,13 @@ function speech() {
     //recognition.onresult = e => {
     recognition.onsoundstart = e => {
       //let transcript = [...e.results].map(res => res[0].transcript).join('');
-      console.log("now");
       /*if (transcript.includes('jump'))*/ Rexy.tRex.startJump();
       recognition.abort();
       //recognition.start();
       recognition.onend = () => recognition.start();
     };
     recognition.start();
-  } catch (err) { console.log(err + " speech recognition not supported") }
+  } catch (err) { logError(err + " speech recognition not supported") }
 }
 
 function keys(e) {

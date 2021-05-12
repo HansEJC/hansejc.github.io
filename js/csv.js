@@ -127,7 +127,7 @@ function uploadcsv(db) {
     reader.onload = function (evt) {
       if (evt.target.readyState != 2) return;
       if (evt.target.error) {
-        console.log('Error while reading file');
+        addLoader('Error while reading file', true);
         return;
       }
       var filecontent = evt.target.result;
@@ -136,7 +136,7 @@ function uploadcsv(db) {
           const len = filecontent.split("\n")[0].split(",").length;
           for (let i = 0; i < len; i++) localStorage.removeItem(`csvlabel${i}`);
           return dyg(filecontent);
-        } catch (err) { console.log(err); addLoader("CSV Formatting Error, Attempting to Process Upload.", true); }
+        } catch (err) { addLoader("CSV Formatting Error, Attempting to Process Upload.", true); }
       }
       document.getElementById("PrUp").checked = true;
       plotcalcs(filecontent, db);
@@ -174,7 +174,7 @@ function read(db) {
         heh = cursor.map(x => [...x]);
         plotexp(cursor);
       } catch (err) {
-        console.log(err);
+        addLoader(err, true);
         defaultPlot(db);
       }
     }
@@ -201,7 +201,7 @@ function parseCSV(csv) {
     while (csv[csv.length - 1].length != csv[csv.length - 5].length) {
       csv.splice(csv.length - 1, 1);// remove empty ends
     }
-  } catch (e) { console.log(e); }
+  } catch (e) { addLoader(e, true); }
 
   for (let i = 0; i < csv.length; i++) {    //make all rows have equal numbers to bottom row
     if (csv[i].length != csv[csv.length - 1].length) {
@@ -282,7 +282,7 @@ function equationInputs(len, res) {//add equation inputs
     while (eqh.childElementCount > 2) { //don't remove the firstborn children
       eqh.removeChild(eqh.lastChild);
     }
-  } catch (err) { console.log(e); }
+  } catch (err) { addLoader(e, true); }
   let equ = []/*, eqw = [], eqb = false*/;
   for (let i = 1; i < len; i++) {
     equ[i] = document.createElement('input');
@@ -335,10 +335,10 @@ function dyg(csv) {
         document.getElementById("LineStyles").removeChild(document.getElementById("LineStyles").lastChild);
       }
     }
-  } catch (err) { console.log(err); }
+  } catch (err) { addLoader(err, true); }
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
-  } catch (e) { console.log(e); }
+  } catch (e) { addLoader(e, true); }
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     csv,
@@ -606,7 +606,7 @@ function table(rows) {
       row.insertCell(2).innerHTML = arr[2];
       row.insertCell(3).innerHTML = arr[3];
     });
-  } catch (err) { console.log(err); }
+  } catch (err) { addLoader(err, true); }
 
   while (tabdiv.childElementCount > 1) tabdiv.removeChild(tabdiv.lastChild);
   tabdiv.appendChild(myTable);

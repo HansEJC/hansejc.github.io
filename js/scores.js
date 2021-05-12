@@ -16,7 +16,7 @@ function saveScores(scr) {
       exists = true;
     }
   } catch (err) {
-    console.log(err);
+    logError(err);
   }
   if (!exists) {
     scores[name] = {
@@ -85,5 +85,5 @@ function k(w, x, y) {
     u.gain.value = w * 0.01;
     v.start(a.currentTime);
     v.stop(a.currentTime + y * 0.001);
-  } catch (err) { console.log(err + "not supported"); }
+  } catch (err) { logError(err + "not supported"); }
 }

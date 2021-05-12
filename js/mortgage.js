@@ -40,7 +40,7 @@ function calculations(){
 function dygPlot(mortgage) {
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
-  }catch(e){console.log(e);}
+  }catch(e){logError(e);}
   if (mortgage.length < 2) return;
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),

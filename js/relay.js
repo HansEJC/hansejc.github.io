@@ -33,7 +33,7 @@ function javaread() {
     reader.onload = function (evt) {
       if (evt.target.readyState != 2) return;
       if (evt.target.error) {
-        console.log('Error while reading file');
+        logError('Error while reading file');
         return;
       }
       var filecontent = evt.target.result;
@@ -53,7 +53,7 @@ function javaread() {
       request.onerror = function (event) {
       };
       request.onsuccess = function (event) {
-        try { read(); } catch (e) { console.log(e); }
+        try { read(); } catch (e) { logError(e); }
       };
     }
   }
@@ -74,7 +74,7 @@ function startup() {
   var DR = [];
   plotProtection(DR);
   document.onkeyup = function () {
-    try { read(); } catch (e) { console.log(e); }
+    try { read(); } catch (e) { logError(e); }
   };
   let prim = document.getElementById("Prim");
   prim.onchange = function () { read(); checkit(); };
@@ -213,7 +213,7 @@ function FaultZone(stuff) {
 async function dygPlot(total, xaxis, yaxis) {
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
-  } catch (e) { console.log(e); }
+  } catch (e) { logError(e); }
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     total,

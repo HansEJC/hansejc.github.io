@@ -233,4 +233,4 @@ localStorage.setItem(`game`,`dobble`);
 document.getElementById("userName").value = getSavedValue("userName");
 try {
   getScores();
-}catch(err){console.log(e);}
+}catch(err){logError(e);}

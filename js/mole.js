@@ -14,10 +14,7 @@ function randomTime(min, max) {
 function randomHole(holes) {
   const idx = Math.floor(Math.random() * holes.length);
   const hole = holes[idx];
-  if (hole === lastHole) {
-    console.log('Ah nah thats the same one bud');
-    return randomHole(holes);
-  }
+  if (hole === lastHole) return randomHole(holes);
   lastHole = hole;
   return hole;
 }
@@ -78,10 +75,10 @@ function startGame() {
 }
 
 function bonk(e) {
-  if(!e.isTrusted) return; // cheater!
+  if (!e.isTrusted) return; // cheater!
   if (!timeUpE) score++;
-  else if (!timeUpN) score+=2;
-  else score+=5;
+  else if (!timeUpN) score += 2;
+  else score += 5;
   this.removeEventListener('click', bonk);
   //this.parentNode.classList.remove('up');
   this.classList.add('imp');
@@ -95,8 +92,8 @@ function bonk(e) {
 moles.forEach(mole => mole.addEventListener('click', bonk));
 
 //startup
-localStorage.setItem(`game`,`mole`);
+localStorage.setItem(`game`, `mole`);
 document.getElementById("userName").value = getSavedValue("userName");
 try {
   getScores();
-}catch(err){console.log(err);}
+} catch (err) { logError(err); }

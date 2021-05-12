@@ -108,7 +108,7 @@ function subLabels(stuff) {
 function dygPlot(earray,subarray){
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
-  }catch(e){console.log(e);}
+  }catch(e){logError(e);}
   if (earray.length == 0) return;
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
@@ -184,7 +184,7 @@ function table(rows){
       row.insertCell(1).innerHTML = arr[1];
       row.insertCell(2).innerHTML = arr[2];
     });
-  }catch(err){console.log(err)}
+  }catch(err){logError(err)}
 
   tabdiv.innerHTML = ``;
   tabdiv.appendChild(myTable);

@@ -126,4 +126,4 @@ localStorage.setItem(`game`,`simon`);
 document.getElementById("userName").value = getSavedValue("userName");
 try {
   getScores();
-}catch(err){console.log(e);}
+}catch(err){logError(e);}
