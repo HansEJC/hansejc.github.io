@@ -75,7 +75,6 @@ function ifsy(AReg, DRp, DRw, DR) {
 
 function search(arrheh) {
   var pn = document.getElementById("SEAR").value;
-  var pw = document.getElementById("PASS").value;
   pn = pn.toLowerCase().split(" ");
   var myArray = arrheh;
   myArray = myArray.map(e => e.join(','));//remove undefined row

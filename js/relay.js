@@ -7,7 +7,7 @@ function checkit() {
 function save(data) {
   var transaction = db.transaction(["plots"], "readwrite");
   var objectStore = transaction.objectStore("plots");
-  var request = objectStore.put({ id: 1, 'data': data });
+  objectStore.put({ id: 1, 'data': data });
 }
 
 function read() {

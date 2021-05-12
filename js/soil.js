@@ -177,7 +177,6 @@ function sucPost(data) {
 }
 
 function fetchResults() {
-  let game = getSavedValue("test");
   let dbSoil = firebase.database().ref(`soil`);
   let dbFop = firebase.database().ref(`fop`);
   dbSoil.on(`value`, snap => {
