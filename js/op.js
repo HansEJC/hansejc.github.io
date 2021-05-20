@@ -13,9 +13,9 @@ function getModDates() {
   let dbObj = firebase.database().ref(`op`);
   dbObj.on(`value`, snap => {
     let dates = snap.val();
-    let { lastmod, lastfetch } = dates;
-    document.getElementById("p").textContent = `Last Updated: ${new Date(lastmod)}`;
-    document.getElementById("pp").textContent = `Last Checked: ${new Date(lastfetch)}`;
+    let { lastmod, lastmodassets } = dates;
+    document.getElementById("p").textContent = `Asset Reg Last Updated:  ${new Date(lastmodassets)}`;
+    document.getElementById("pp").textContent = `Warehouse Last Updated:  ${new Date(lastmod)}`;
     let refreshOP = new Date(lastmod) > new Date(getSavedValue(`lastmod`));
     localStorage.setItem(`refreshOP`, refreshOP);
     localStorage.setItem(`lastmod`, lastmod);
