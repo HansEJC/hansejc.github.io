@@ -85,5 +85,5 @@ function k(w, x, y) {
     u.gain.value = w * 0.01;
     v.start(a.currentTime);
     v.stop(a.currentTime + y * 0.001);
-  } catch (err) { logError(err + "not supported"); }
+  } catch (err) { logError(`${err} not supported`); }
 }
