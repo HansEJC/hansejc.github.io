@@ -1,10 +1,13 @@
 <!DOCTYPE HTML>
 <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5QF2LGP');</script>
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-5QF2LGP');</script>
 <!-- End Google Tag Manager -->
 <html>
 
@@ -44,12 +47,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <!-- Content -->
         <div id="content">
           <form>
-            <label for="AReg"><input type="radio" name="A" id="AReg" onChange='saveRadio(this);'>Asset Register</label>
-            <label for="PStock"><input type="radio" name="A" id="PStock" onChange='saveRadio(this);'>Project
+            <label for="AReg"><input type="radio" name="A" id="AReg" class="op/assets-Asset List.csv"
+                onChange='saveRadio(this);'>Asset Register</label>
+            <label for="PStock"><input type="radio" name="A" id="PStock" class="op/op-Project Stock.csv" onChange='saveRadio(this);'>Project
               Stock</label>
-            <label for="WStock"><input type="radio" name="A" id="WStock" onChange='saveRadio(this);'>Warehouse
+            <label for="WStock"><input type="radio" name="A" id="WStock" class="op/op-Warehouse Stock .csv" onChange='saveRadio(this);'>Warehouse
               Stock</label>
-            <label for="Del"><input type="radio" name="A" id="Del" onChange='saveRadio(this);'>Deliveries</label>
+            <label for="Del"><input type="radio" name="A" id="Del" class="op/op-Delivery.csv"
+                onChange='saveRadio(this);'>Deliveries</label>
           </form>
           <pre id="p">Last Updated:</pre>
           <pre id="pp">Last Checked:</pre>
@@ -63,7 +68,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               <form onsubmit="return false;"><br>
                 <button id="Login" class="button">Login</button>
                 <button id="Logout" class="button" style="display: none;">Logout</button>
-                <label for="PASS"><input type="password" style="display: none;" id="PASS" onkeyup='saveValue(this);' placeholder="Password"/></label>
+                <label for="PASS"><input type="password" style="display: none;" id="PASS" onkeyup='saveValue(this);'
+                    placeholder="Password" /></label>
               </form>
             </section>
             <span id="logInfo"></span>
