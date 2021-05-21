@@ -6,6 +6,8 @@ function startup() {
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.checked = (getSavedValue(rad.id) == "true");
   });
+  const radios = document.querySelector('input[name]:checked');
+  if (!radios) document.querySelector(`#Del`).checked = true;
   fireAuth();
 }
 
@@ -19,7 +21,7 @@ function getModDates() {
     let refreshOP = new Date(lastmod) > new Date(getSavedValue(`lastmod`));
     localStorage.setItem(`refreshOP`, refreshOP);
     localStorage.setItem(`lastmod`, lastmod);
-    if (refreshOP) delivery();
+    delivery();
   });
 }
 
@@ -34,30 +36,26 @@ function waitForAll() {
 
 async function delivery() {
   // await code here
-  let [ARegcsv, DRpcsv, DRwcsv, DRcsv] = await waitForAll();
+  await waitForAll();
   // code below here will only execute when await fetch() finished loading
-  AReg = Papa.parse(ARegcsv).data.reverse();
-  DRp = Papa.parse(DRpcsv).data.reverse();
-  DRw = Papa.parse(DRwcsv).data;
-  DR = Papa.parse(DRcsv).data.reverse();
-  splicer(AReg, `asset`, 0);
-  splicer(DRp, `date`, 5);
-  splicer(DRw, `location`, 7);
-  splicer(DR, `date`, 0);
-  ifsy(AReg, DRp, DRw, DR);
+  ifsy();
   listeners();
 }
 
 function listeners() {
   document.onkeyup = function () {
-    ifsy(AReg, DRp, DRw, DR);
+    ifsy();
   };
   document.onchange = function () {
-    ifsy(AReg, DRp, DRw, DR);
+    ifsy();
   };
 }
 
-function splicer(arr, str, col) {
+function splicer(arr, file) {
+  let str = file.includes(`set`) ? `asset`
+    : file.includes(`Ware`) ? `location` : `date`;
+  let col = file.includes(`Proj`) ? 5
+    : file.includes(`Ware`) ? 7 : 0;
   for (let i = 0; i < arr.length; i++) {
     if (arr[i][col] == "" || new RegExp(str, "iu").test(arr[i][col]) || new RegExp("undefined", "iu").test(arr[i][col])) {
       arr.splice(i, 1);
@@ -66,11 +64,12 @@ function splicer(arr, str, col) {
   }
 }
 
-function ifsy(AReg, DRp, DRw, DR) {
-  if (document.getElementById("AReg").checked) search(AReg);
-  else if (document.getElementById("PStock").checked) search(DRp);
-  else if (document.getElementById("WStock").checked) search(DRw);
-  else { search(DR); document.getElementById("Del").checked = true; }
+function ifsy() {
+  let file = document.querySelector('input[name]:checked').className;
+  let data = getSavedValue(file);
+  data = file.includes(`Ware`) ? Papa.parse(data).data : Papa.parse(data).data.reverse();
+  splicer(data, file);
+  search(data);
 }
 
 function search(arrheh) {
@@ -171,7 +170,7 @@ function searchOther(sArray) {
 async function fireFetch(file) {
   let refreshOP = getSavedValue(`refreshOP`) === `true`;
   let data = localStorage.getItem(file);
-  if (!refreshOP && data !== null) return data;
+  if (!refreshOP && data !== null) return;
 
   const storage = firebase.storage();
   let pathReference = storage.ref(file);
@@ -180,7 +179,7 @@ async function fireFetch(file) {
       return await fetch(url).then(result => result.text());
     });
   localStorage.setItem(file, data);
-  return data;
+  return;
 }
 
 function enterLogin(e) {
@@ -230,5 +229,4 @@ function doLogin() {
 }
 
 //startup
-let AReg, DRp, DRw, DR;
 startup();
