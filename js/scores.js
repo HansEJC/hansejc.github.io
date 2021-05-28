@@ -71,6 +71,14 @@ function sendData(name, data) {
   let game = getSavedValue("game");
   let dbObj = firebase.database().ref(`${game}/${name}`);
   dbObj.update(data);
+  try {
+    dataLayer.push({
+      'event': 'post_score',
+      level: game,
+      character: name,
+      score: data.score
+    });
+  } catch (err) { logError(err); }
 }
 
 // gain, frequency, duration
