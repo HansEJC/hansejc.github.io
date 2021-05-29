@@ -169,6 +169,7 @@ function searchOther(sArray) {
 
 async function fireFetch(file) {
   let refreshOP = getSavedValue(`refreshOP`) === `true`;
+  gaOP(file, refreshOP);
   let data = localStorage.getItem(file);
   if (!refreshOP && data !== null) return;
 
@@ -180,6 +181,16 @@ async function fireFetch(file) {
     });
   localStorage.setItem(file, data);
   return;
+}
+
+function gaOP(file, refreshOP) {
+  try {
+    dataLayer.push({
+      'event': 'op_fetch',
+      file: file,
+      firebase: refreshOP
+    });
+  } catch (err) { logError(err); }
 }
 
 function enterLogin(e) {
