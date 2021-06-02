@@ -6,23 +6,42 @@
   "background_color": "black",
   "theme_color": "#800080",
   "orientation": "portrait-primary",
-  "icons":
-  [
+  "shortcuts": [
     {
-    "src": "favicon.ico",
-    "sizes": "32x32"
+      "name": "Dobble",
+      "short_name": "Dobble",
+      "description": "Play Dobble",
+      "url": "dobble.html"
     },
     {
-    "src": "images/manifest-icon-192.png",
-    "sizes": "192x192",
-    "type": "image/png",
-    "purpose": "maskable any"
+      "name": "Earthing Surveys",
+      "short_name": "Soil",
+      "description": "Earthing Surveys",
+      "url": "soil.html"
     },
     {
-    "src": "images/manifest-icon-512.png",
-    "sizes": "512x512",
-    "type": "image/png",
-    "purpose": "maskable any"
+      "name": "Orion Park",
+      "short_name": "OP",
+      "description": "View Warehouse stuff",
+      "url": "op.html"
+    }
+  ],
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "32x32"
+    },
+    {
+      "src": "images/manifest-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "images/manifest-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
     }
   ]
 }
