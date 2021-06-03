@@ -11,19 +11,37 @@
       "name": "Dobble",
       "short_name": "Dobble",
       "description": "Play Dobble",
-      "url": "dobble.html"
+      "url": "dobble.html",
+      "icons": [
+        {
+          "src": "images/manifest-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Earthing Surveys",
       "short_name": "Soil",
       "description": "Earthing Surveys",
-      "url": "soil.html"
+      "url": "soil.html",
+      "icons": [
+        {
+          "src": "images/manifest-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     },
     {
       "name": "Orion Park",
       "short_name": "OP",
       "description": "View Warehouse stuff",
-      "url": "op.html"
+      "url": "op.html",
+      "icons": [
+        {
+          "src": "images/manifest-icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
     }
   ],
   "icons": [

@@ -65,6 +65,11 @@ function scoreTable(scores, full) {
       row.insertCell(3).innerHTML = val[1].lastdate;
     }
   });
+  if (full) {
+    var imported = document.createElement('script');
+    imported.src = 'js/ext/sorttable.js';
+    document.head.appendChild(imported);
+  }
 }
 
 function sendData(name, data) {
