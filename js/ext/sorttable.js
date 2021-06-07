@@ -16,7 +16,7 @@
 */
 
 
-var stIsIE = /*@cc_on!@*/false;
+const stIsIE = false;
 
 sorttable = {
   init: function () {
@@ -43,7 +43,7 @@ sorttable = {
     if (table.getElementsByTagName('thead').length == 0) {
       // table doesn't have a tHead. Since it should have, create one and
       // put the first table row in it.
-      the = document.createElement('thead');
+      const the = document.createElement('thead');
       the.appendChild(table.rows[0]);
       table.insertBefore(the, table.firstChild);
     }
@@ -56,7 +56,7 @@ sorttable = {
     // "total" rows, for example). This is B&R, since what you're supposed
     // to do is put them in a tfoot. So, if there are sortbottom rows,
     // for backwards compatibility, move them to tfoot (creating it if needed).
-    sortbottomrows = [];
+    let sortbottomrows = [];
     for (var i = 0; i < table.rows.length; i++) {
       if (table.rows[i].className.search(/\bsortbottom\b/) != -1) {
         sortbottomrows[sortbottomrows.length] = table.rows[i];
@@ -71,15 +71,15 @@ sorttable = {
       for (var i = 0; i < sortbottomrows.length; i++) {
         tfo.appendChild(sortbottomrows[i]);
       }
-      delete sortbottomrows;
+      /*delete*/ sortbottomrows = [];
     }
 
     // work through each column and calculate its type
-    headrow = table.tHead.rows[0].cells;
+    let headrow = table.tHead.rows[0].cells;
     for (var i = 0; i < headrow.length; i++) {
       // manually override the type with a sorttable_type attribute
       if (!headrow[i].className.match(/\bsorttable_nosort\b/)) { // skip this col
-        mtch = headrow[i].className.match(/\bsorttable_([a-z0-9]+)\b/);
+        let mtch = headrow[i].className.match(/\bsorttable_([a-z0-9]+)\b/);
         if (mtch) { override = mtch[1]; }
         if (mtch && typeof sorttable["sort_" + override] == 'function') {
           headrow[i].sorttable_sortfunction = sorttable["sort_" + override];
@@ -98,7 +98,7 @@ sorttable = {
             this.className = this.className.replace('sorttable_sorted',
               'sorttable_sorted_reverse');
             this.removeChild(document.getElementById('sorttable_sortfwdind'));
-            sortrevind = document.createElement('span');
+            let sortrevind = document.createElement('span');
             sortrevind.id = "sorttable_sortrevind";
             sortrevind.innerHTML = stIsIE ? '&nbsp<font face="webdings">5</font>' : '&nbsp;&#x25B4;';
             this.appendChild(sortrevind);
@@ -111,7 +111,7 @@ sorttable = {
             this.className = this.className.replace('sorttable_sorted_reverse',
               'sorttable_sorted');
             this.removeChild(document.getElementById('sorttable_sortrevind'));
-            sortfwdind = document.createElement('span');
+            let sortfwdind = document.createElement('span');
             sortfwdind.id = "sorttable_sortfwdind";
             sortfwdind.innerHTML = stIsIE ? '&nbsp<font face="webdings">6</font>' : '&nbsp;&#x25BE;';
             this.appendChild(sortfwdind);
@@ -119,7 +119,7 @@ sorttable = {
           }
 
           // remove sorttable_sorted classes
-          theadrow = this.parentNode;
+          const theadrow = this.parentNode;
           forEach(theadrow.childNodes, function (cell) {
             if (cell.nodeType == 1) { // an element
               cell.className = cell.className.replace('sorttable_sorted_reverse', '');
@@ -141,23 +141,20 @@ sorttable = {
           // i.e., we "decorate" each row with the actual sort key,
           // sort based on the sort keys, and then put the rows back in order
           // which is a lot faster because you only do getInnerText once per row
-          row_array = [];
-          col = this.sorttable_columnindex;
-          rows = this.sorttable_tbody.rows;
+          let row_array = [];
+          let col = this.sorttable_columnindex;
+          let rows = this.sorttable_tbody.rows;
           for (var j = 0; j < rows.length; j++) {
             row_array[row_array.length] = [sorttable.getInnerText(rows[j].cells[col]), rows[j]];
           }
-          /* If you want a stable sort, uncomment the following line */
-          //sorttable.shaker_sort(row_array, this.sorttable_sortfunction);
-          /* and comment out this one */
           row_array.sort(this.sorttable_sortfunction);
 
-          tb = this.sorttable_tbody;
+          const tb = this.sorttable_tbody;
           for (var j = 0; j < row_array.length; j++) {
             tb.appendChild(row_array[j][1]);
           }
 
-          delete row_array;
+          /*delete*/ row_array = [];
         });
       }
     }
@@ -165,9 +162,9 @@ sorttable = {
 
   guessType: function (table, column) {
     // guess the type of a column based on its first non-blank row
-    sortfn = sorttable.sort_alpha;
+    let sortfn = sorttable.sort_alpha;
     for (var i = 0; i < table.tBodies[0].rows.length; i++) {
-      text = sorttable.getInnerText(table.tBodies[0].rows[i].cells[column]);
+      let text = sorttable.getInnerText(table.tBodies[0].rows[i].cells[column]);
       if (text != '') {
         if (text.match(/^-?[�$�]?[\d,.]+%?$/)) {
           return sorttable.sort_numeric;
@@ -176,11 +173,11 @@ sorttable = {
         // can have / or . or - as separator
         // can be mm/dd as well
         if (text.includes(`/`) && text.includes(`:`)) return sorttable.sort_hans; //modified by Hans
-        possdate = text.match(sorttable.DATE_RE);
+        const possdate = text.match(sorttable.DATE_RE);
         if (possdate) {
           // looks like a date
-          first = parseInt(possdate[1]);
-          second = parseInt(possdate[2]);
+          const first = parseInt(possdate[1]);
+          const second = parseInt(possdate[2]);
           if (first > 12) {
             // definitely dd/mm
             return sorttable.sort_ddmm;
@@ -206,7 +203,7 @@ sorttable = {
 
     if (!node) return "";
 
-    hasInputs = (typeof node.getElementsByTagName == 'function') &&
+    const hasInputs = (typeof node.getElementsByTagName == 'function') &&
       node.getElementsByTagName('input').length;
 
     if (node.getAttribute("sorttable_customkey") != null) {
@@ -246,23 +243,23 @@ sorttable = {
 
   reverse: function (tbody) {
     // reverse the rows in a tbody
-    newrows = [];
+    let newrows = [];
     for (var i = 0; i < tbody.rows.length; i++) {
       newrows[newrows.length] = tbody.rows[i];
     }
     for (var i = newrows.length - 1; i >= 0; i--) {
       tbody.appendChild(newrows[i]);
     }
-    delete newrows;
+    /*delete*/ newrows = [];
   },
 
   /* sort functions
      each sort function takes two parameters, a and b
      you are comparing a[0] and b[0] */
   sort_numeric: function (a, b) {
-    aa = parseFloat(a[0].replace(/[^0-9.-]/g, ''));
+    let aa = parseFloat(a[0].replace(/[^0-9.-]/g, ''));
     if (isNaN(aa)) aa = 0;
-    bb = parseFloat(b[0].replace(/[^0-9.-]/g, ''));
+    let bb = parseFloat(b[0].replace(/[^0-9.-]/g, ''));
     if (isNaN(bb)) bb = 0;
     return aa - bb;
   },
@@ -272,31 +269,31 @@ sorttable = {
     return 1;
   },
   sort_ddmm: function (a, b) {
-    mtch = a[0].match(sorttable.DATE_RE);
-    y = mtch[3]; m = mtch[2]; d = mtch[1];
+    let mtch = a[0].match(sorttable.DATE_RE);
+    let y = mtch[3], m = mtch[2], d = mtch[1];
     if (m.length == 1) m = '0' + m;
     if (d.length == 1) d = '0' + d;
-    dt1 = y + m + d;
+    const dt1 = y + m + d;
     mtch = b[0].match(sorttable.DATE_RE);
     y = mtch[3]; m = mtch[2]; d = mtch[1];
     if (m.length == 1) m = '0' + m;
     if (d.length == 1) d = '0' + d;
-    dt2 = y + m + d;
+    const dt2 = y + m + d;
     if (dt1 == dt2) return 0;
     if (dt1 < dt2) return -1;
     return 1;
   },
   sort_mmdd: function (a, b) {
-    mtch = a[0].match(sorttable.DATE_RE);
-    y = mtch[3]; d = mtch[2]; m = mtch[1];
+    let mtch = a[0].match(sorttable.DATE_RE);
+    let y = mtch[3], m = mtch[2], d = mtch[1];
     if (m.length == 1) m = '0' + m;
     if (d.length == 1) d = '0' + d;
-    dt1 = y + m + d;
+    const dt1 = y + m + d;
     mtch = b[0].match(sorttable.DATE_RE);
     y = mtch[3]; d = mtch[2]; m = mtch[1];
     if (m.length == 1) m = '0' + m;
     if (d.length == 1) d = '0' + d;
-    dt2 = y + m + d;
+    const dt2 = y + m + d;
     if (dt1 == dt2) return 0;
     if (dt1 < dt2) return -1;
     return 1;
@@ -308,37 +305,6 @@ sorttable = {
     b = new Date(b[2], b[1], b[0], b[3], b[4], b[5]);
     let s = a == b ? 0 : a < b ? -1 : 1;
     return s;
-  },
-
-  shaker_sort: function (list, comp_func) {
-    // A stable sort function to allow multi-level sorting of data
-    // see: http://en.wikipedia.org/wiki/Cocktail_sort
-    // thanks to Joseph Nahmias
-    var b = 0;
-    var t = list.length - 1;
-    var swap = true;
-
-    while (swap) {
-      swap = false;
-      for (var i = b; i < t; ++i) {
-        if (comp_func(list[i], list[i + 1]) > 0) {
-          var q = list[i]; list[i] = list[i + 1]; list[i + 1] = q;
-          swap = true;
-        }
-      } // for
-      t--;
-
-      if (!swap) break;
-
-      for (var i = t; i > b; --i) {
-        if (comp_func(list[i], list[i - 1]) < 0) {
-          var q = list[i]; list[i] = list[i - 1]; list[i - 1] = q;
-          swap = true;
-        }
-      } // for
-      b++;
-
-    } // while(swap)
   }
 }
 
@@ -352,18 +318,6 @@ sorttable = {
 if (document.addEventListener) {
   document.addEventListener("DOMContentLoaded", sorttable.init, false);
 }
-
-/* for Internet Explorer */
-/*@cc_on @*/
-/*@if (@_win32)
-    document.write("<script id=__ie_onload defer src=javascript:void(0)><\/script>");
-    var script = document.getElementById("__ie_onload");
-    script.onreadystatechange = function() {
-        if (this.readyState == "complete") {
-            sorttable.init(); // call the onload handler
-        }
-    };
-/*@end @*/
 
 /* for Safari */
 if (/WebKit/i.test(navigator.userAgent)) { // sniff

@@ -184,7 +184,7 @@ function table(rows){
       row.insertCell(1).innerHTML = arr[1];
       row.insertCell(2).innerHTML = arr[2];
     });
-  }catch(err){logError(err)}
+  }catch(err){ logError(err); }
 
   tabdiv.innerHTML = ``;
   tabdiv.appendChild(myTable);

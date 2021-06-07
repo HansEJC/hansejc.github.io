@@ -23,7 +23,7 @@ function saveScores(scr) {
       score: scr,
       date,
       lastdate: date,
-    }
+    };
   }
   sendData(name, scores[name]);
   localStorage.setItem(game, JSON.stringify(scores));

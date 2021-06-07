@@ -272,7 +272,7 @@ const post = function (url, data, sucPost) {
     .catch((error) => {
       logError(error);
     });
-}
+};
 
 //fade in and fadeout
 function _(el) {
@@ -303,7 +303,7 @@ _.prototype.fade = function fade(type, ms) {
     if (opacity <= 0 || opacity >= 1) window.clearInterval(fading);
   }
   var fading = window.setInterval(func, interval);
-}
+};
 
 //Firebase
 function fireBase() {

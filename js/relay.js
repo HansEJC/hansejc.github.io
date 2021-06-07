@@ -148,7 +148,7 @@ async function plotProtection(csvarr) {
   let [Z3pol, Z3el] = eval(`Zone3${select.value}(tr)`);
   let elements2 = [...peakLoad(), ...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
   let polnums = [...Z1pol.flat(), ...Z2pol.flat(), ...Z3pol.flat()];
-  polnums = { max: Math.max(...polnums) * 1.2, min: Math.min(...polnums) * 1.2 }
+  polnums = { max: Math.max(...polnums) * 1.2, min: Math.min(...polnums) * 1.2 };
   const polmax = (num) => Math.max(polnums.max, num);
   const polmin = (num) => Math.min(polnums.min, num);
   let xaxis = [polmin(-40), polmax(50)];
