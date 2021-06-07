@@ -40,7 +40,7 @@
     document.body.classList.toggle('dark', shouldAdd);
     darkToggle.checked = shouldAdd;
   }
-})();
+}());
 
 function toggleNav(e) {
   const x = document.getElementById("myTopnav");
