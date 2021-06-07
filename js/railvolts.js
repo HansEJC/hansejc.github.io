@@ -11,17 +11,17 @@ function inits() {
 
 function calculations(){
   const doublrr = inits();
-  let fc = +(getSavedValue("LoadC"))/1000 || 6;
-  let ci = +(getSavedValue("CI"))|| 0.43;
-  let cw = +(getSavedValue("CW")) || 0.15;
-  let ri = +(getSavedValue("RI")) || 0.2;
-  let aew = +(getSavedValue("AEW")) || Number.MAX_SAFE_INTEGER;
-  let rsc = +(getSavedValue("RSC")) || Number.MAX_SAFE_INTEGER;
-  let crbd = +(getSavedValue("CRBD"));
-  let erimp = +(getSavedValue("ERIMP")) || 0.18;
-  let mimp = (+(getSavedValue("MIMP")) || 20)+erimp;
-  let masd = +(getSavedValue("MASD"))/1000 || 40/1000;
-  crbd = crbd == 0 ? Number.MAX_SAFE_INTEGER : Math.max(+(crbd)/1000,0.1); //convert to km and set to minimum of 100m
+  let fc = Number(getSavedValue("LoadC"))/1000 || 6;
+  let ci = Number(getSavedValue("CI"))|| 0.43;
+  let cw = Number(getSavedValue("CW")) || 0.15;
+  let ri = Number(getSavedValue("RI")) || 0.2;
+  let aew = Number(getSavedValue("AEW")) || Number.MAX_SAFE_INTEGER;
+  let rsc = Number(getSavedValue("RSC")) || Number.MAX_SAFE_INTEGER;
+  let crbd = Number(getSavedValue("CRBD"));
+  let erimp = Number(getSavedValue("ERIMP")) || 0.18;
+  let mimp = (Number(getSavedValue("MIMP")) || 20)+erimp;
+  let masd = Number(getSavedValue("MASD"))/1000 || 40/1000;
+  crbd = crbd == 0 ? Number.MAX_SAFE_INTEGER : Math.max(Number(crbd)/1000,0.1); //convert to km and set to minimum of 100m
   let railR = doublrr ? 2 : 1;
   let earray = [] , subarray = [];
   let vol = 25; //25kV
@@ -35,11 +35,11 @@ function calculations(){
 
   let {extra,index,insert} = negTrack(subarray);
   document.querySelectorAll(".loc").forEach((loc,ind) => {
-    let trnu = +(getSavedValue(+loc.id+199)) || 2;
+    let trnu = Number(getSavedValue(+loc.id+199)) || 2;
     trnu = trnu == 1 ? 1/Number.MAX_SAFE_INTEGER : trnu-1;
     let dist = getSavedValue(loc.id);
     loc.value = dist;
-    let lc = ind === index ? +dist + extra : dist; //add extra for non parallel subs
+    let lc = ind === index ? Number(dist) + extra : dist; //add extra for non parallel subs
     lc = lc == "" ? 5 : Math.abs(lc); //set to 5km if it's empty to avoid lag
 
     for (let i=1;i<=res;i++){
@@ -80,8 +80,8 @@ function calculations(){
         subarray[ind].x = lch;
       }
     }
-    totlc += +dist < 0 ? 0 : lc; //total length
-    let sub = getSavedValue(100+(+loc.id));
+    totlc += Number(dist) < 0 ? 0 : lc; //total length
+    let sub = getSavedValue(100+(Number(loc.id)));
     let lblStuff = {dist,totlc,subarray,sub};
     subLabels(lblStuff);
   });
@@ -160,7 +160,7 @@ function findExtremes(){
     let max = 0, av = 0;
     for (let j=0; j<file[1].length; j++) {
       max = Math.max(max,file[i][j][1]);
-      av += +file[i][j][1];
+      av += Number(file[i][j][1]);
     }
     av = av/file[1].length;
     extremeArr.push([labls[i],smoothdec(av),smoothdec(max)])
