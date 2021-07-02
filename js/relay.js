@@ -5,6 +5,9 @@ function checkit() {
 }
 
 function save(data) {
+  if (typeof data[0][0] === `string`) data.forEach(x => { x.shift(), x.shift(); });
+  localStorage.setItem(`headers`, JSON.stringify(data.shift()));
+  getIndex();
   var transaction = db.transaction(["plots"], "readwrite");
   var objectStore = transaction.objectStore("plots");
   objectStore.put({ id: 1, 'data': data });
@@ -16,11 +19,12 @@ function read() {
   objectStore.openCursor(null, "prev").onsuccess = async function (event) {
     var cursor = event.target.result;
     try {
-      plotProtection(Papa.parse(cursor.value.data).data);
+      plotProtection(cursor.value.data);
     } catch (err) {
       let DRcsv = await fetch('uploads/fault.csv').then(result => result.text());
       // code below here will only execute when await fetch() finished loading
-      let DR = Papa.parse(DRcsv).data;
+      let DR = Papa.parse(DRcsv, { dynamicTyping: true }).data;
+      save(DR);
       plotProtection(DR);
     }
   }
@@ -37,8 +41,9 @@ function javaread() {
         return;
       }
       var filecontent = evt.target.result;
-      plotProtection(Papa.parse(filecontent).data);
-      save(filecontent);
+      const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
+      save(DR);
+      plotProtection(DR);
     };
     reader.readAsText(evt.target.files[0]);
   };
@@ -60,6 +65,7 @@ function javaread() {
 }
 
 function startup() {
+  getIndex();
   funkyRadio();
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) == "true");
@@ -124,7 +130,7 @@ function peakLoad() {
   return loadarray;
 }
 
-async function plotProtection(csvarr) {
+function plotProtection(csvarr) {
   let select = document.querySelector(`select`);
   const secdr = document.getElementById("SecDR");
 
@@ -160,7 +166,7 @@ async function plotProtection(csvarr) {
   FaultZone(stuff);
 
   var total = elements2.slice();
-  for (let i = 0; i < DR.length; i++) {
+  for (let i = 0; i < faultarray.length; i++) {
     total.push(faultarray[i]);
   }
   dygPlot(total, xaxis, yaxis);
@@ -168,19 +174,36 @@ async function plotProtection(csvarr) {
 
 function addCSVtoArray(stuff) {
   let { DR, trdr, vtrdr } = stuff;
-  let faultarray = [], DRdiv, DRmult;
-  for (let i = 0; i < DR.length; i++) { //add csv to array
-    faultarray[i] = [];
-    DRdiv = (DR[i][0] / DR[i][2]) / trdr;
-    DRmult = (DR[i][1] - DR[i][3]) * Math.PI / 180;
-    if (DRdiv * Math.cos(DRmult) < 90 &&
-      DRdiv * Math.sin(DRmult) < 90 &&
-      DR[i][0] * vtrdr > 1000) {
-      faultarray[i][0] = DRdiv * Math.cos(DRmult); //resistive values
-      faultarray[i][1] = DRdiv * Math.sin(DRmult);//reactive values
+  let faultarray = [], DRdiv, DRmult, res, react;
+  if (DR.length === 0) return faultarray;
+  let [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
+  for (let i = 1; i < DR.length; i++) { //add csv to array
+    DRdiv = (DR[i][v] / DR[i][c]) / trdr;
+    DRmult = (DR[i][va] - DR[i][ca]) * Math.PI / 180;
+    res = DRdiv * Math.cos(DRmult);
+    react = DRdiv * Math.sin(DRmult);
+    let isfault = res < 90 && react < 90 && react > 0 && DR[i][v] * vtrdr > 1000;
+    if (isfault) {
+      faultarray.push([
+        DRdiv * Math.cos(DRmult), //resistive values
+        DRdiv * Math.sin(DRmult) //reactive values
+      ]);
     }
   }
   return faultarray;
+}
+
+function getIndex() {
+  const data = JSON.parse(localStorage.getItem(`headers`)) || [];
+  let [v, va, c, ca] = [0, 1, 2, 3];
+  data.forEach((x, ind) => {
+    if (/check|frost|def|max/i.test(x)) return;
+    v = /v.*rms/i.test(x) ? ind : v;
+    va = /v.*a/i.test(x) ? ind : va;
+    c = /i.*rms|cur.*rms/i.test(x) ? ind : c;
+    ca = /i.*a|cur.*a/i.test(x) ? ind : ca;
+  });
+  localStorage.setItem(`indices`, `[${v},${va},${c},${ca}]`)
 }
 
 function FaultZone(stuff) {
@@ -227,7 +250,7 @@ async function dygPlot(total, xaxis, yaxis) {
       drawAxesAtZero: true,
       labelsSeparateLines: true,
       colors: ["red", "blue", "purple", "green", "#cccc2b", `orange`],
-      connectSeparatedPoints: true,
+      //connectSeparatedPoints: true,
       includeZero: true,
       axes: {
         x: {
