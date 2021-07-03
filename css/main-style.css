@@ -786,6 +786,11 @@ input:checked + .slider:before {
       height: 4em;
       line-height: 4em;
     }
+    
+  .row {
+    margin: 0 auto;
+    width: fit-content;
+  }
 
 /*********************************************************************************/
 /* Logo                                                                          */
