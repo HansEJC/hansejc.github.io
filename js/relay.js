@@ -134,7 +134,7 @@ function inside(point, vs) {
 }
 
 function peakLoad() {
-  const load = +document.querySelector("#PeakLoad").value || 1000;
+  const load = Number(document.querySelector("#PeakLoad").value) || 1000;
   const Z = 25000 / load;
   let loadarray = [];
   let rad, r, x;
@@ -155,13 +155,13 @@ function plotProtection(csvarr) {
   const secdr = document.getElementById("SecDR");
 
   //Advanced settings variables
-  var z2del = +(document.getElementById("Z2del").value);
-  var z3del = +(document.getElementById("Z3del").value);
+  var z2del = Number(document.getElementById("Z2del").value);
+  var z3del = Number(document.getElementById("Z3del").value);
   var fst, vtr, ctr;
 
-  fst = document.getElementById("FST").value == "" ? 1 : +(document.getElementById("FST").value);
-  vtr = document.getElementById("VTR").value == "" ? 1 : +(document.getElementById("VTR").value);
-  ctr = document.getElementById("CTR").value == "" ? 1 : +(document.getElementById("CTR").value);
+  fst = document.getElementById("FST").value == "" ? 1 : Number(document.getElementById("FST").value);
+  vtr = document.getElementById("VTR").value == "" ? 1 : Number(document.getElementById("VTR").value);
+  ctr = document.getElementById("CTR").value == "" ? 1 : Number(document.getElementById("CTR").value);
   var tr = ctr / vtr; //secondary ratio
 
   //Primary or Secondary Disturbance record
@@ -232,14 +232,14 @@ function FaultZone(stuff) {
   var Z2time = 0;
   for (let i = 0; i < faultarray.length; i++) { //check through fault if in zone
     if (inside(faultarray[i], Z3pol)) {
-      Z3time = Z3time + 1 * fst;
+      Z3time = Z3time + Number(fst);
       if (Z3time > z3del) {
         document.getElementById("FaultLoc").textContent = "Zone 3 trip";
         break;
       }
     }
     if (inside(faultarray[i], Z2pol)) {
-      Z2time = Z2time + 1 * fst;
+      Z2time = Z2time + Number(fst);
       if (Z2time > z2del) {
         document.getElementById("FaultLoc").textContent = "Zone 2 trip";
         break;
@@ -297,11 +297,11 @@ async function dygPlot(total, xaxis, yaxis) {
 
 function Zone1P44T(tr) {
   //%Zone 1 setting
-  var Z1 = +(document.getElementById("Zone1").value);
-  var Z1A = (+(document.getElementById("Alpha").value) * Math.PI / 180);
+  var Z1 = Number(document.getElementById("Zone1").value);
+  var Z1A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
   var Z1t = (-3 * Math.PI / 180);
-  var R1R = +(document.getElementById("Zone1RH").value);
-  var R1L = +(document.getElementById("Zone1LH").value);
+  var R1R = Number(document.getElementById("Zone1RH").value);
+  var R1L = Number(document.getElementById("Zone1LH").value);
   var Z1s = (87 * Math.PI / 180);
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
@@ -340,11 +340,11 @@ function Zone1P44T(tr) {
 
 function Zone2P44T(tr) {
   //%Zone 2 setting
-  var Z2 = +(document.getElementById("Zone2").value);
-  var Z2A = (+(document.getElementById("Alpha").value) * Math.PI / 180);
+  var Z2 = Number(document.getElementById("Zone2").value);
+  var Z2A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
   var Z2t = (-3 * Math.PI / 180);
-  var R2R = +(document.getElementById("Zone2RH").value);
-  var R2L = +(document.getElementById("Zone2LH").value);
+  var R2R = Number(document.getElementById("Zone2RH").value);
+  var R2L = Number(document.getElementById("Zone2LH").value);
   var Z2s = (87 * Math.PI / 180);
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
@@ -384,12 +384,12 @@ function Zone2P44T(tr) {
 
 function Zone3P44T(tr) {
   //%Zone 3 setting
-  var Z3 = +(document.getElementById("Zone3").value);
-  var Z3A = (+(document.getElementById("Alpha").value) * Math.PI / 180);
+  var Z3 = Number(document.getElementById("Zone3").value);
+  var Z3A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
   var Z3t = (-3 * Math.PI / 180);
-  var R3R = +(document.getElementById("Zone3RH").value);
-  var R3L = +(document.getElementById("Zone3LH").value);
-  var Z3rev = +(document.getElementById("Zone3rev").value);
+  var R3R = Number(document.getElementById("Zone3RH").value);
+  var R3L = Number(document.getElementById("Zone3LH").value);
+  var Z3rev = Number(document.getElementById("Zone3rev").value);
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
@@ -418,14 +418,14 @@ function Zone3P44T(tr) {
 
 function P438(tr, num, empty) {
   //%Zone 1 setting
-  const a = (+(document.getElementById("Alpha").value) * Math.PI / 180);
-  const b = (+(document.getElementById("Beta").value) * Math.PI / 180);
-  const g = (+(document.getElementById("Gamma").value) * Math.PI / 180);
-  let Z = +(document.getElementById(`Zone${num}`).value);
-  let RH = +(document.getElementById(`Zone${num}RH`).value);
+  const a = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
+  const b = (Number(document.getElementById("Beta").value) * Math.PI / 180);
+  const g = (Number(document.getElementById("Gamma").value) * Math.PI / 180);
+  let Z = Number(document.getElementById(`Zone${num}`).value);
+  let RH = Number(document.getElementById(`Zone${num}RH`).value);
   const left = document.getElementById(`Zone${num}LH`);
   const leftcalc = Z * Math.sin(a) * Math.sin(b - 0.5 * Math.PI) / Math.sin(Math.PI - b) + Z * Math.sin(0.5 * Math.PI - a);
-  let LH = Math.min(+left.value, leftcalc);
+  let LH = Math.min(Number(left.value), leftcalc);
   left.value = smoothdec(LH);
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
@@ -460,7 +460,7 @@ function Zone2P438(tr) {
 }
 
 function Zone3P438(tr) {
-  let Zr = +(document.getElementById(`Zone3rev`).value);
+  let Zr = Number(document.getElementById(`Zone3rev`).value);
   Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
   let [Zpol, Zel, stuff] = P438(tr, `3`, [, , ,]);
   let { a, b, g, Z, LH } = stuff;
