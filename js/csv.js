@@ -66,7 +66,7 @@ function addOption(opt, desc, bool, plotter) {
     if (e.target.checked) eval(`g3.updateOptions({${e.target.id}: ${plotter}});`);
     else eval(`g3.updateOptions({${e.target.id}: Dygraph.Plotters.linePlotter});`);
   }
-  if (plotter != undefined) newopt.addEventListener('change', updatePlotter), updatePlotter({ target: { checked: checked, id: opt } });
+  if (typeof plotter !== `undefined`) newopt.addEventListener('change', updatePlotter), updatePlotter({ target: { checked: checked, id: opt } });
   else newopt.addEventListener('change', updateOps), updateOps({ target: { checked: checked, id: opt } });
 }
 
@@ -219,7 +219,7 @@ function parseCSV(csv) {
         j--;
       }
     }
-    if (csv[i] === undefined || csv[i].length === 0) {
+    if (typeof csv[i] === `undefined` || csv[i].length === 0) {
       csv.splice(i, 1);
       i--;
     }
@@ -478,7 +478,7 @@ function idents(len) {
 
 //below code was taken from <script src="https://dygraphs.com/src/extras/smooth-plotter.js"></script>
 function getControlPoints(p0, p1, p2, opt_alpha, opt_allowFalseExtrema) {
-  let alpha = (opt_alpha !== undefined) ? opt_alpha : 1 / 3;  // 0=no smoothing, 1=crazy smoothing
+  let alpha = (typeof opt_alpha !== `undefined`) ? opt_alpha : 1 / 3;  // 0=no smoothing, 1=crazy smoothing
   let allowFalseExtrema = opt_allowFalseExtrema || false;
 
   if (!p2) {

@@ -648,7 +648,7 @@ function trekt(imgs1, imgs2) {
     * @param {*} value
     */
     updateConfigSetting: function (setting, value) {
-      if (setting in this.config && value != undefined) {
+      if (setting in this.config && typeof value !== `undefined`) {
         this.config[setting] = value;
         switch (setting) {
           case 'GRAVITY':

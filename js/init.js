@@ -152,7 +152,7 @@ function clippy(x, y) {
       }
     });
   }
-  if (typeof (navigator.clipboard) == 'undefined') {
+  if (typeof (navigator.clipboard) === 'undefined') {
     let htmltext = (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes("Edg")) ? "<br><br><a href=chrome://flags/#unsafely-treat-insecure-origin-as-secure>Auto copy to clipboard not supported in http. Copy this link and open in new tab to add this site as trusted to enable.</a>" : "<br><br><a>Auto copy to clipboard not supported. Right click plot and copy as image.</a>";
     let article = document.querySelector('article');
     if (article.lastChild.nodeName != "A") article.innerHTML += htmltext;
@@ -242,7 +242,7 @@ function exportToCsv(filename, rows) {
     navigator.msSaveBlob(blob, filename);
   } else {
     let link = document.createElement("a");
-    if (link.download !== undefined) { // feature detection
+    if (typeof link.download !== `undefined`) { // feature detection
       // Browsers that support HTML5 download attribute
       let url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
