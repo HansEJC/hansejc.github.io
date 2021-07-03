@@ -5,12 +5,12 @@ function startup() {
   fireBase();
   const measurements = 11;    // set the value to this input
   let cb = [], cb2 = [], cb3 = [];
-  var cbh = document.getElementById(`Dist`), cbh2 = document.getElementById(`Stan`), cbh3 = document.getElementById(`Stiv`);
+  let cbh = document.getElementById(`Dist`), cbh2 = document.getElementById(`Stan`), cbh3 = document.getElementById(`Stiv`);
 
   buttonFun(0, `soil`, soil);
   buttonFun(1, `fop`, fop);
 
-  for (var i = 0; i < measurements; i++) {
+  for (let i = 0; i < measurements; i++) {
     cb[i] = document.createElement(`span`), cb2[i] = document.createElement(`input`), cb3[i] = document.createElement(`span`);
     cb2[i].type = `number`, cb2[i].step = `0.01`;
     cbh.appendChild(cb[i]), cbh2.appendChild(cb2[i]), cbh3.appendChild(cb3[i]);

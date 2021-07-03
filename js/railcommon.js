@@ -14,7 +14,7 @@ function quantities() {
 
   let NumLocs = +(getSavedValue("NumLocs"));     // set the value to this input
   NumLocs = NumLocs < 2 ? 2 : NumLocs;
-  var cb = []; var cb2 = []; var cb3 = [];
+  let cb = []; let cb2 = []; let cb3 = [];
   if (NumLocs < 20){
     for(let i = 0; i < NumLocs; i++){
       cb[i] = document.createElement('input'); cb2[i] = document.createElement('input'); cb3[i] = document.createElement('input');

@@ -73,13 +73,13 @@ function ifsy() {
 }
 
 function search(arrheh) {
-  var pn = document.getElementById("SEAR").value;
+  let pn = document.getElementById("SEAR").value;
   pn = pn.toLowerCase().split(" ");
-  var myArray = arrheh;
+  let myArray = arrheh;
   myArray = myArray.map(e => e.join(','));//remove undefined row
-  var npr = myArray.length; //number of rows
-  var sArray = [];
-  for (var i = 0; i < npr; i++) {
+  let npr = myArray.length; //number of rows
+  let sArray = [];
+  for (let i = 0; i < npr; i++) {
     if (typeof myArray[i][8] === "undefined") {
       myArray[i][8] = "";
     }//search
@@ -194,8 +194,8 @@ function gaOP(file, refreshOP) {
 }
 
 function enterLogin(e) {
-  var keyCode = e.which || e.keyCode;
-  var handled = false;
+  let keyCode = e.which || e.keyCode;
+  let handled = false;
   if (keyCode === 13) { //enter
     e.preventDefault();
     handled = true;

@@ -1,7 +1,7 @@
 //God mode
 function mods() {
   document.activeElement.blur(); //remove focus from checkbox
-  var original = function () {
+  let original = function () {
     this.playSound(this.soundFx.HIT);
     vibrate(200);
     this.stop();
@@ -79,7 +79,7 @@ function trexKeyDown(e) {
 
 
 function hideClass(name) {
-  var myClasses = document.querySelectorAll(name),
+  let myClasses = document.querySelectorAll(name),
     i = 0,
     l = myClasses.length;
 
@@ -162,7 +162,7 @@ function vibrate(duration) {
 * @return {HTMLCanvasElement}
 */
 function createCanvas(container, width, height, opt_classname) {
-  var canvas = document.createElement('canvas');
+  let canvas = document.createElement('canvas');
   canvas.className = opt_classname ? Runner.classes.CANVAS + ' ' +
     opt_classname : Runner.classes.CANVAS;
   canvas.width = width;
@@ -175,11 +175,11 @@ function createCanvas(container, width, height, opt_classname) {
 * @param {string} base64String
 */
 function decodeBase64ToArrayBuffer(base64String) {
-  var len = (base64String.length / 4) * 3;
-  var str = atob(base64String);
-  var arrayBuffer = new ArrayBuffer(len);
-  var bytes = new Uint8Array(arrayBuffer);
-  for (var i = 0; i < len; i++) {
+  let len = (base64String.length / 4) * 3;
+  let str = atob(base64String);
+  let arrayBuffer = new ArrayBuffer(len);
+  let bytes = new Uint8Array(arrayBuffer);
+  for (let i = 0; i < len; i++) {
     bytes[i] = str.charCodeAt(i);
   }
   return bytes.buffer;
@@ -222,12 +222,12 @@ function GameOverPanel(canvas, textSprite, restartImg, dimensions) {
 function checkForCollision(obstacle, tRex, opt_canvasCtx) {
   // Adjustments are made to the bounding box as there is a 1 pixel white
   // border around the t-rex and obstacles.
-  var tRexBox = new CollisionBox(
+  let tRexBox = new CollisionBox(
     tRex.xPos + 1,
     tRex.yPos + 1,
     tRex.config.WIDTH - 2,
     tRex.config.HEIGHT - 2);
-  var obstacleBox = new CollisionBox(
+  let obstacleBox = new CollisionBox(
     obstacle.xPos + 1,
     obstacle.yPos + 1,
     obstacle.typeConfig.width * obstacle.size - 2,
@@ -238,17 +238,17 @@ function checkForCollision(obstacle, tRex, opt_canvasCtx) {
   }
   // Simple outer bounds check.
   if (boxCompare(tRexBox, obstacleBox)) {
-    var collisionBoxes = obstacle.collisionBoxes;
-    var tRexCollisionBoxes = Trex.collisionBoxes;
+    let collisionBoxes = obstacle.collisionBoxes;
+    let tRexCollisionBoxes = Trex.collisionBoxes;
     // Detailed axis aligned box check.
-    for (var t = 0; t < tRexCollisionBoxes.length; t++) {
-      for (var i = 0; i < collisionBoxes.length; i++) {
+    for (let t = 0; t < tRexCollisionBoxes.length; t++) {
+      for (let i = 0; i < collisionBoxes.length; i++) {
         // Adjust the box to actual positions.
-        var adjTrexBox =
+        let adjTrexBox =
           createAdjustedCollisionBox(tRexCollisionBoxes[t], tRexBox);
-        var adjObstacleBox =
+        let adjObstacleBox =
           createAdjustedCollisionBox(collisionBoxes[i], obstacleBox);
-        var crashed = boxCompare(adjTrexBox, adjObstacleBox);
+        let crashed = boxCompare(adjTrexBox, adjObstacleBox);
         // Draw boxes for debug.
         if (opt_canvasCtx) {
           drawCollisionBoxes(opt_canvasCtx, adjTrexBox, adjObstacleBox);
@@ -294,8 +294,8 @@ function drawCollisionBoxes(canvasCtx, tRexBox, obstacleBox) {
 * @return {boolean} Whether the boxes intersected.
 */
 function boxCompare(tRexBox, obstacleBox) {
-  var crashed = false;
-  var obstacleBoxX = obstacleBox.x;
+  let crashed = false;
+  let obstacleBoxX = obstacleBox.x;
   // Axis-Aligned Bounding Box method.
   if (tRexBox.x < obstacleBoxX + obstacleBox.width &&
     tRexBox.x + tRexBox.width > obstacleBoxX &&
@@ -525,14 +525,14 @@ function trekt(imgs1, imgs2) {
   * Default game width.
   * @const
   */
-  var DEFAULT_WIDTH = 600;
+  let DEFAULT_WIDTH = 600;
   /**
   * Frames per second.
   * @const
   */
   FPS = 60;
   /** @const */
-  var IS_HIDPI = window.devicePixelRatio > 1;
+  let IS_HIDPI = window.devicePixelRatio > 1;
   /** @const */
   IS_IOS =
     window.navigator.userAgent.indexOf('UIWebViewForStaticFileContent') > -1;
@@ -669,11 +669,11 @@ function trekt(imgs1, imgs2) {
     * Load and cache the image assets from the page.
     */
     loadImages: function () {
-      var imageSources = IS_HIDPI ? Runner.imageSources.HDPI :
+      let imageSources = IS_HIDPI ? Runner.imageSources.HDPI :
         Runner.imageSources.LDPI;
-      var numImages = imageSources.length;
-      for (var i = numImages - 1; i >= 0; i--) {
-        var imgSource = imageSources[i];
+      let numImages = imageSources.length;
+      for (let i = numImages - 1; i >= 0; i--) {
+        let imgSource = imageSources[i];
         this.images[imgSource.name] = document.getElementById(imgSource.id);
       }
       this.init();
@@ -684,13 +684,13 @@ function trekt(imgs1, imgs2) {
     loadSounds: function () {
       if (!IS_IOS) {
         this.audioContext = new AudioContext();
-        var resourceTemplate =
+        let resourceTemplate =
           document.getElementById(this.config.RESOURCE_TEMPLATE_ID).content;
-        for (var sound in Runner.sounds) {
-          var soundSrc =
+        for (let sound in Runner.sounds) {
+          let soundSrc =
             resourceTemplate.getElementById(Runner.sounds[sound]).src;
           soundSrc = soundSrc.substr(soundSrc.indexOf(',') + 1);
-          var buffer = decodeBase64ToArrayBuffer(soundSrc);
+          let buffer = decodeBase64ToArrayBuffer(soundSrc);
           // Async, so no guarantee of order in array.
           this.audioContext.decodeAudioData(buffer, function (index, audioData) {
             this.soundFx[index] = audioData;
@@ -703,10 +703,10 @@ function trekt(imgs1, imgs2) {
     * @param {number} opt_speed
     */
     setSpeed: function (opt_speed) {
-      var speed = opt_speed || this.currentSpeed;
+      let speed = opt_speed || this.currentSpeed;
       // Reduce the speed on smaller mobile screens.
       if (this.dimensions.WIDTH < DEFAULT_WIDTH) {
-        var mobileSpeed = speed * this.dimensions.WIDTH / DEFAULT_WIDTH *
+        let mobileSpeed = speed * this.dimensions.WIDTH / DEFAULT_WIDTH *
           this.config.MOBILE_SPEED_COEFFICIENT;
         this.currentSpeed = mobileSpeed > speed ? speed : mobileSpeed;
       } else if (opt_speed) {
@@ -769,8 +769,8 @@ function trekt(imgs1, imgs2) {
     adjustDimensions: function () {
       clearInterval(this.resizeTimerId_);
       this.resizeTimerId_ = null;
-      var boxStyles = window.getComputedStyle(this.outerContainerEl);
-      var padding = Number(boxStyles.paddingLeft.substr(0,
+      let boxStyles = window.getComputedStyle(this.outerContainerEl);
+      let padding = Number(boxStyles.paddingLeft.substr(0,
         boxStyles.paddingLeft.length - 2));
       this.dimensions.WIDTH = this.outerContainerEl.offsetWidth - padding * 2;
       // Redraw the elements back onto the canvas.
@@ -807,7 +807,7 @@ function trekt(imgs1, imgs2) {
         this.playingIntro = true;
         this.tRex.playingIntro = true;
         // CSS animation definition.
-        var keyframes = '@-webkit-keyframes intro { ' +
+        let keyframes = '@-webkit-keyframes intro { ' +
           'from { width:' + Trex.config.WIDTH + 'px }' +
           'to { width: ' + this.dimensions.WIDTH + 'px }' +
           '}';
@@ -851,8 +851,8 @@ function trekt(imgs1, imgs2) {
     */
     update: function () {
       this.drawPending = false;
-      var now = getTimeStamp();
-      var deltaTime = now - (this.time || now);
+      let now = getTimeStamp();
+      let deltaTime = now - (this.time || now);
       this.time = now;
       if (this.activated) {
         this.clearCanvas();
@@ -860,7 +860,7 @@ function trekt(imgs1, imgs2) {
           this.tRex.updateJump(deltaTime, this.config);
         }
         this.runningTime += deltaTime;
-        var hasObstacles = this.runningTime > this.config.CLEAR_TIME;
+        let hasObstacles = this.runningTime > this.config.CLEAR_TIME;
         // First jump triggers the intro.
         if (this.tRex.jumpCount == 1 && !this.playingIntro) {
           this.playIntro();
@@ -873,7 +873,7 @@ function trekt(imgs1, imgs2) {
           this.horizon.update(deltaTime, this.currentSpeed, hasObstacles);
         }
         // Check for collisions.
-        var collision = hasObstacles &&
+        let collision = hasObstacles &&
           checkForCollision(this.horizon.obstacles[0], this.tRex);
         if (!collision) {
           this.distanceRan += this.currentSpeed * deltaTime / this.msPerFrame;
@@ -887,7 +887,7 @@ function trekt(imgs1, imgs2) {
           this.distanceMeter.maxScore) {
           this.distanceRan = 0;
         }
-        var playAcheivementSound = this.distanceMeter.update(deltaTime,
+        let playAcheivementSound = this.distanceMeter.update(deltaTime,
           Math.ceil(this.distanceRan));
         if (playAcheivementSound) {
           this.playSound(this.soundFx.SCORE);
@@ -960,8 +960,8 @@ function trekt(imgs1, imgs2) {
     * @param {Event} e
     */
     onKeyUp: function (e) {
-      var keyCode = String(e.keyCode);
-      var isjumpKey = Runner.keycodes.JUMP[keyCode] ||
+      let keyCode = String(e.keyCode);
+      let isjumpKey = Runner.keycodes.JUMP[keyCode] ||
         e.type == Runner.events.TOUCHEND ||
         e.type == Runner.events.MOUSEDOWN;
       if (this.isRunning() && isjumpKey) {
@@ -970,7 +970,7 @@ function trekt(imgs1, imgs2) {
         this.tRex.speedDrop = false;
       } else if (this.crashed) {
         // Check that enough time has elapsed before allowing jump key to restart.
-        var deltaTime = getTimeStamp() - this.time;
+        let deltaTime = getTimeStamp() - this.time;
         if (Runner.keycodes.RESTART[keyCode] ||
           (e.type == Runner.events.MOUSEUP && e.target == this.canvas) ||
           (deltaTime >= this.config.GAMEOVER_CLEAR_TIME &&
@@ -1073,7 +1073,7 @@ function trekt(imgs1, imgs2) {
     */
     playSound: function (soundBuffer) {
       if (soundBuffer) {
-        var sourceNode = this.audioContext.createBufferSource();
+        let sourceNode = this.audioContext.createBufferSource();
         sourceNode.buffer = soundBuffer;
         sourceNode.connect(this.audioContext.destination);
         sourceNode.start(0);
@@ -1094,15 +1094,15 @@ function trekt(imgs1, imgs2) {
   * @return {boolean} Whether the canvas was scaled.
   */
   Runner.updateCanvasScaling = function (canvas, opt_width, opt_height) {
-    var context = canvas.getContext('2d');
+    let context = canvas.getContext('2d');
     // Query the various pixel ratios
-    var devicePixelRatio = Math.floor(window.devicePixelRatio) || 1;
-    var backingStoreRatio = Math.floor(context.webkitBackingStorePixelRatio) || 1;
-    var ratio = devicePixelRatio / backingStoreRatio;
+    let devicePixelRatio = Math.floor(window.devicePixelRatio) || 1;
+    let backingStoreRatio = Math.floor(context.webkitBackingStorePixelRatio) || 1;
+    let ratio = devicePixelRatio / backingStoreRatio;
     // Upscale the canvas if the two ratios don't match
     if (devicePixelRatio !== backingStoreRatio) {
-      var oldWidth = opt_width || canvas.width;
-      var oldHeight = opt_height || canvas.height;
+      let oldWidth = opt_width || canvas.width;
+      let oldHeight = opt_height || canvas.height;
       canvas.width = oldWidth * ratio;
       canvas.height = oldHeight * ratio;
       canvas.style.width = oldWidth + 'px';
@@ -1144,21 +1144,21 @@ function trekt(imgs1, imgs2) {
     * Draw the panel.
     */
     draw: function () {
-      var dimensions = GameOverPanel.dimensions;
-      var centerX = this.canvasDimensions.WIDTH / 2;
+      let dimensions = GameOverPanel.dimensions;
+      let centerX = this.canvasDimensions.WIDTH / 2;
       // Game over text.
-      var textSourceX = dimensions.TEXT_X;
-      var textSourceY = dimensions.TEXT_Y;
-      var textSourceWidth = dimensions.TEXT_WIDTH;
-      var textSourceHeight = dimensions.TEXT_HEIGHT;
-      var textTargetX = Math.round(centerX - (dimensions.TEXT_WIDTH / 2));
-      var textTargetY = Math.round((this.canvasDimensions.HEIGHT - 25) / 3);
-      var textTargetWidth = dimensions.TEXT_WIDTH;
-      var textTargetHeight = dimensions.TEXT_HEIGHT;
-      var restartSourceWidth = dimensions.RESTART_WIDTH;
-      var restartSourceHeight = dimensions.RESTART_HEIGHT;
-      var restartTargetX = centerX - (dimensions.RESTART_WIDTH / 2);
-      var restartTargetY = this.canvasDimensions.HEIGHT / 2;
+      let textSourceX = dimensions.TEXT_X;
+      let textSourceY = dimensions.TEXT_Y;
+      let textSourceWidth = dimensions.TEXT_WIDTH;
+      let textSourceHeight = dimensions.TEXT_HEIGHT;
+      let textTargetX = Math.round(centerX - (dimensions.TEXT_WIDTH / 2));
+      let textTargetY = Math.round((this.canvasDimensions.HEIGHT - 25) / 3);
+      let textTargetWidth = dimensions.TEXT_WIDTH;
+      let textTargetHeight = dimensions.TEXT_HEIGHT;
+      let restartSourceWidth = dimensions.RESTART_WIDTH;
+      let restartSourceHeight = dimensions.RESTART_HEIGHT;
+      let restartTargetX = centerX - (dimensions.RESTART_WIDTH / 2);
+      let restartTargetY = this.canvasDimensions.HEIGHT / 2;
       if (IS_HIDPI) {
         textSourceY *= 2;
         textSourceX *= 2;
@@ -1223,14 +1223,14 @@ function trekt(imgs1, imgs2) {
       * Draw and crop based on size.
       */
       draw: function () {
-        var sourceWidth = this.typeConfig.width;
-        var sourceHeight = this.typeConfig.height;
+        let sourceWidth = this.typeConfig.width;
+        let sourceHeight = this.typeConfig.height;
         if (IS_HIDPI) {
           sourceWidth = sourceWidth * 2;
           sourceHeight = sourceHeight * 2;
         }
         // Sprite
-        var sourceX = (sourceWidth * this.size) * (0.5 * (this.size - 1));
+        let sourceX = (sourceWidth * this.size) * (0.5 * (this.size - 1));
         this.canvasCtx.drawImage(this.image,
           sourceX, 0,
           sourceWidth * this.size, sourceHeight,
@@ -1259,9 +1259,9 @@ function trekt(imgs1, imgs2) {
       * @return {number} The gap size.
       */
       getGap: function (gapCoefficient, speed) {
-        var minGap = Math.round(this.width * speed +
+        let minGap = Math.round(this.width * speed +
           this.typeConfig.minGap * gapCoefficient);
-        var maxGap = Math.round(minGap * Obstacle.MAX_GAP_COEFFICIENT);
+        let maxGap = Math.round(minGap * Obstacle.MAX_GAP_COEFFICIENT);
         return getRandomNum(minGap, maxGap);
       },
       /**
@@ -1276,8 +1276,8 @@ function trekt(imgs1, imgs2) {
       * obstacle type and size.
       */
       cloneCollisionBoxes: function () {
-        var collisionBoxes = this.typeConfig.collisionBoxes;
-        for (var i = collisionBoxes.length - 1; i >= 0; i--) {
+        let collisionBoxes = this.typeConfig.collisionBoxes;
+        for (let i = collisionBoxes.length - 1; i >= 0; i--) {
           this.collisionBoxes[i] = new CollisionBox(collisionBoxes[i].x,
             collisionBoxes[i].y, collisionBoxes[i].width,
             collisionBoxes[i].height);
@@ -1450,10 +1450,10 @@ function trekt(imgs1, imgs2) {
     * @param {number} y
     */
     draw: function (x, y) {
-      var sourceX = x;
-      var sourceY = y;
-      var sourceWidth = this.config.WIDTH;
-      var sourceHeight = this.config.HEIGHT;
+      let sourceX = x;
+      let sourceY = y;
+      let sourceWidth = this.config.WIDTH;
+      let sourceHeight = this.config.HEIGHT;
       if (IS_HIDPI) {
         sourceX *= 2;
         sourceY *= 2;
@@ -1476,7 +1476,7 @@ function trekt(imgs1, imgs2) {
     * @param {number} time Current time in milliseconds.
     */
     blink: function (time) {
-      var deltaTime = time - this.animStartTime;
+      let deltaTime = time - this.animStartTime;
       if (deltaTime >= this.blinkDelay) {
         this.draw(this.currentAnimFrames[this.currentFrame], 0);
         if (this.currentFrame == 1) {
@@ -1512,8 +1512,8 @@ function trekt(imgs1, imgs2) {
     * @param {number} deltaTime
     */
     updateJump: function (deltaTime) {
-      var msPerFrame = Trex.animFrames[this.status].msPerFrame;
-      var framesElapsed = deltaTime / msPerFrame;
+      let msPerFrame = Trex.animFrames[this.status].msPerFrame;
+      let framesElapsed = deltaTime / msPerFrame;
       // Speed drop makes Trex fall faster.
       if (this.speedDrop) {
         this.yPos += Math.round(this.jumpVelocity *
@@ -1595,10 +1595,10 @@ function trekt(imgs1, imgs2) {
     * @param {number} width Canvas width in px.
     */
     init: function (width) {
-      var maxDistanceStr = '';
+      let maxDistanceStr = '';
       this.calcXPos(width);
       this.maxScore = this.config.MAX_DISTANCE_UNITS;
-      for (var i = 0; i < this.config.MAX_DISTANCE_UNITS; i++) {
+      for (let i = 0; i < this.config.MAX_DISTANCE_UNITS; i++) {
         this.draw(i, 0);
         this.defaultString += '0';
         maxDistanceStr += '9';
@@ -1620,13 +1620,13 @@ function trekt(imgs1, imgs2) {
     * @param {boolean} opt_highScore Whether drawing the high score.
     */
     draw: function (digitPos, value, opt_highScore) {
-      var sourceWidth = DistanceMeter.dimensions.WIDTH;
-      var sourceHeight = DistanceMeter.dimensions.HEIGHT;
-      var sourceX = DistanceMeter.dimensions.WIDTH * value;
-      var targetX = digitPos * DistanceMeter.dimensions.DEST_WIDTH;
-      var targetY = this.y;
-      var targetWidth = DistanceMeter.dimensions.WIDTH;
-      var targetHeight = DistanceMeter.dimensions.HEIGHT;
+      let sourceWidth = DistanceMeter.dimensions.WIDTH;
+      let sourceHeight = DistanceMeter.dimensions.HEIGHT;
+      let sourceX = DistanceMeter.dimensions.WIDTH * value;
+      let targetX = digitPos * DistanceMeter.dimensions.DEST_WIDTH;
+      let targetY = this.y;
+      let targetWidth = DistanceMeter.dimensions.WIDTH;
+      let targetHeight = DistanceMeter.dimensions.HEIGHT;
       // For high DPI we 2x source values.
       if (IS_HIDPI) {
         sourceWidth *= 2;
@@ -1636,7 +1636,7 @@ function trekt(imgs1, imgs2) {
       this.canvasCtx.save();
       if (opt_highScore) {
         // Left of the current score.
-        var highScoreX = this.x - (this.config.MAX_DISTANCE_UNITS * 2) *
+        let highScoreX = this.x - (this.config.MAX_DISTANCE_UNITS * 2) *
           DistanceMeter.dimensions.WIDTH;
         this.canvasCtx.translate(highScoreX, this.y);
       } else {
@@ -1665,8 +1665,8 @@ function trekt(imgs1, imgs2) {
     * @return {boolean} Whether the acheivement sound fx should be played.
     */
     update: function (deltaTime, distance) {
-      var paint = true;
-      var playSound = false;
+      let paint = true;
+      let playSound = false;
       if (!this.acheivement) {
         distance = this.getActualDistance(distance);
         if (distance > 0) {
@@ -1678,7 +1678,7 @@ function trekt(imgs1, imgs2) {
             playSound = true;
           }
           // Create a string representation of the distance with leading 0.
-          var distanceStr = (this.defaultString +
+          let distanceStr = (this.defaultString +
             distance).substr(-this.config.MAX_DISTANCE_UNITS);
           this.digits = distanceStr.split('');
         } else {
@@ -1703,7 +1703,7 @@ function trekt(imgs1, imgs2) {
       }
       // Draw the digits if not flashing.
       if (paint) {
-        for (var i = this.digits.length - 1; i >= 0; i--) {
+        for (let i = this.digits.length - 1; i >= 0; i--) {
           this.draw(i, parseInt(this.digits[i]));
         }
       }
@@ -1716,7 +1716,7 @@ function trekt(imgs1, imgs2) {
     drawHighScore: function () {
       this.canvasCtx.save();
       this.canvasCtx.globalAlpha = .8;
-      for (var i = this.highScore.length - 1; i >= 0; i--) {
+      for (let i = this.highScore.length - 1; i >= 0; i--) {
         this.draw(i, parseInt(this.highScore[i], 10), true);
       }
       this.canvasCtx.restore();
@@ -1728,7 +1728,7 @@ function trekt(imgs1, imgs2) {
     */
     setHighScore: function (distance) {
       distance = this.getActualDistance(distance);
-      var highScoreStr = (this.defaultString +
+      let highScoreStr = (this.defaultString +
         distance).substr(-this.config.MAX_DISTANCE_UNITS);
       this.highScore = ['10', '11', ''].concat(highScoreStr.split(''));
     },
@@ -1768,8 +1768,8 @@ function trekt(imgs1, imgs2) {
     */
     draw: function () {
       this.canvasCtx.save();
-      var sourceWidth = Cloud.config.WIDTH;
-      var sourceHeight = Cloud.config.HEIGHT;
+      let sourceWidth = Cloud.config.WIDTH;
+      let sourceHeight = Cloud.config.HEIGHT;
       if (IS_HIDPI) {
         sourceWidth = sourceWidth * 2;
         sourceHeight = sourceHeight * 2;
@@ -1818,7 +1818,7 @@ function trekt(imgs1, imgs2) {
     * Set the source dimensions of the horizon line.
     */
     setSourceDimensions: function () {
-      for (var dimension in HorizonLine.dimensions) {
+      for (let dimension in HorizonLine.dimensions) {
         if (IS_HIDPI) {
           if (dimension != 'YPOS') {
             this.sourceDimensions[dimension] =
@@ -1858,8 +1858,8 @@ function trekt(imgs1, imgs2) {
     * @param {number} increment
     */
     updateXPos: function (pos, increment) {
-      var line1 = pos;
-      var line2 = pos == 0 ? 1 : 0;
+      let line1 = pos;
+      let line2 = pos == 0 ? 1 : 0;
       this.xPos[line1] -= increment;
       this.xPos[line2] = this.xPos[line1] + this.dimensions.WIDTH;
       if (this.xPos[line1] <= -this.dimensions.WIDTH) {
@@ -1874,7 +1874,7 @@ function trekt(imgs1, imgs2) {
     * @param {number} speed
     */
     update: function (deltaTime, speed) {
-      var increment = Math.floor(speed * (FPS / 1000) * deltaTime);
+      let increment = Math.floor(speed * (FPS / 1000) * deltaTime);
       if (this.xPos[0] <= 0) {
         this.updateXPos(0, increment);
       } else {
@@ -1932,13 +1932,13 @@ function trekt(imgs1, imgs2) {
     * @param {number} currentSpeed
     */
     updateClouds: function (deltaTime, speed) {
-      var cloudSpeed = this.cloudSpeed / 1000 * deltaTime * speed;
-      var numClouds = this.clouds.length;
+      let cloudSpeed = this.cloudSpeed / 1000 * deltaTime * speed;
+      let numClouds = this.clouds.length;
       if (numClouds) {
-        for (var i = numClouds - 1; i >= 0; i--) {
+        for (let i = numClouds - 1; i >= 0; i--) {
           this.clouds[i].update(cloudSpeed);
         }
-        var lastCloud = this.clouds[numClouds - 1];
+        let lastCloud = this.clouds[numClouds - 1];
         // Check for adding a new cloud.
         if (numClouds < this.config.MAX_CLOUDS &&
           (this.dimensions.WIDTH - lastCloud.xPos) > lastCloud.cloudGap &&
@@ -1958,9 +1958,9 @@ function trekt(imgs1, imgs2) {
     */
     updateObstacles: function (deltaTime, currentSpeed) {
       // Obstacles, move to Horizon layer.
-      var updatedObstacles = this.obstacles.slice(0);
-      for (var i = 0; i < this.obstacles.length; i++) {
-        var obstacle = this.obstacles[i];
+      let updatedObstacles = this.obstacles.slice(0);
+      for (let i = 0; i < this.obstacles.length; i++) {
+        let obstacle = this.obstacles[i];
         obstacle.update(deltaTime, currentSpeed);
         // Clean up existing obstacles.
         if (obstacle.remove) {
@@ -1969,7 +1969,7 @@ function trekt(imgs1, imgs2) {
       }
       this.obstacles = updatedObstacles;
       if (this.obstacles.length > 0) {
-        var lastObstacle = this.obstacles[this.obstacles.length - 1];
+        let lastObstacle = this.obstacles[this.obstacles.length - 1];
         if (lastObstacle && !lastObstacle.followingObstacleCreated &&
           lastObstacle.isVisible() &&
           (lastObstacle.xPos + lastObstacle.width + lastObstacle.gap) <
@@ -1987,10 +1987,10 @@ function trekt(imgs1, imgs2) {
     * @param {number} currentSpeed
     */
     addNewObstacle: function (currentSpeed) {
-      var obstacleTypeIndex =
+      let obstacleTypeIndex =
         getRandomNum(0, Obstacle.types.length - 1);
-      var obstacleType = Obstacle.types[obstacleTypeIndex];
-      var obstacleImg = this.obstacleImgs[obstacleType.type];
+      let obstacleType = Obstacle.types[obstacleTypeIndex];
+      let obstacleImg = this.obstacleImgs[obstacleType.type];
       this.obstacles.push(new Obstacle(this.canvasCtx, obstacleType,
         obstacleImg, this.dimensions, this.gapCoefficient, currentSpeed));
     },

@@ -21,8 +21,8 @@ function save(data) {
 
 function saveIndexedDB(data) {
   getIndex();
-  var transaction = db.transaction(["plots"], "readwrite");
-  var objectStore = transaction.objectStore("plots");
+  let transaction = db.transaction(["plots"], "readwrite");
+  let objectStore = transaction.objectStore("plots");
   objectStore.put({ id: 1, data });
   plotProtection(data);
 }
@@ -37,10 +37,10 @@ function importFault() {
 }
 
 function read() {
-  var transaction = db.transaction(["plots"], "readonly");
-  var objectStore = transaction.objectStore("plots");
+  let transaction = db.transaction(["plots"], "readonly");
+  let objectStore = transaction.objectStore("plots");
   objectStore.openCursor(null, "prev").onsuccess = async function (event) {
-    var cursor = event.target.result;
+    let cursor = event.target.result;
     try {
       plotProtection(cursor.value.data);
     } catch (err) {
@@ -52,27 +52,27 @@ function read() {
 function javaread() {
   document.querySelector(`#rel_upload`).onchange = function (evt) {
     if (!window.FileReader) return; // Browser is not compatible
-    var reader = new FileReader();
+    let reader = new FileReader();
     reader.onload = function (evt) {
       if (evt.target.readyState != 2) return;
       if (evt.target.error) {
         logError('Error while reading file');
         return;
       }
-      var filecontent = evt.target.result;
+      let filecontent = evt.target.result;
       const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
       save(DR);
     };
     reader.readAsText(evt.target.files[0]);
   };
   if (idbSupported) {
-    var openRequest = indexedDB.open("graph", 1);
+    let openRequest = indexedDB.open("graph", 1);
     openRequest.onupgradeneeded = dbUpgrade(db);
     openRequest.onsuccess = function (e) {
       db = e.target.result;
-      var transaction = db.transaction(["plots"]);
-      var objectStore = transaction.objectStore("plots");
-      var request = objectStore.get("2");
+      let transaction = db.transaction(["plots"]);
+      let objectStore = transaction.objectStore("plots");
+      let request = objectStore.get("2");
       request.onerror = function (event) {
       };
       request.onsuccess = function (event) {
@@ -97,7 +97,7 @@ function startup() {
   select.value = getSavedValue(select.id) || `P438`;
   javaread();
   // await code here
-  var DR = [];
+  let DR = [];
   plotProtection(DR);
   document.onkeyup = function () {
     try { read(); } catch (e) { logError(e); }
@@ -120,13 +120,13 @@ function change(el) {
 function inside(point, vs) {
   // ray-casting algorithm based on
   // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-  var x = point[0], y = point[1];
-  var inside = false;
-  for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-    var xi = vs[i][0], yi = vs[i][1];
-    var xj = vs[j][0], yj = vs[j][1];
+  let x = point[0], y = point[1];
+  let inside = false;
+  for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+    let xi = vs[i][0], yi = vs[i][1];
+    let xj = vs[j][0], yj = vs[j][1];
 
-    var intersect = ((yi > y) != (yj > y))
+    let intersect = ((yi > y) != (yj > y))
       && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
     if (intersect) inside = !inside;
   }
@@ -155,18 +155,18 @@ function plotProtection(csvarr) {
   const secdr = document.getElementById("SecDR");
 
   //Advanced settings variables
-  var z2del = Number(document.getElementById("Z2del").value);
-  var z3del = Number(document.getElementById("Z3del").value);
-  var fst, vtr, ctr;
+  let z2del = Number(document.getElementById("Z2del").value);
+  let z3del = Number(document.getElementById("Z3del").value);
+  let fst, vtr, ctr;
 
   fst = document.getElementById("FST").value == "" ? 1 : Number(document.getElementById("FST").value);
   vtr = document.getElementById("VTR").value == "" ? 1 : Number(document.getElementById("VTR").value);
   ctr = document.getElementById("CTR").value == "" ? 1 : Number(document.getElementById("CTR").value);
-  var tr = ctr / vtr; //secondary ratio
+  let tr = ctr / vtr; //secondary ratio
 
   //Primary or Secondary Disturbance record
-  var trdr = 1;
-  var vtrdr = 1;
+  let trdr = 1;
+  let vtrdr = 1;
   if (secdr.checked) { trdr = tr; vtrdr = vtr; }
 
   let [Z1pol, Z1el] = eval(`Zone1${select.value}(tr)`);
@@ -179,13 +179,13 @@ function plotProtection(csvarr) {
   const polmin = (num) => Math.min(polnums.min, num);
   let xaxis = [polmin(-40), polmax(50)];
   let yaxis = [polmin(-20), polmax(70)];
-  var DR = []; DR = csvarr;
+  let DR = []; DR = csvarr;
   let calcStuff = { DR, trdr, vtrdr };
   let faultarray = addCSVtoArray(calcStuff);
   let stuff = { faultarray, Z1pol, Z2pol, Z3pol, fst, z2del, z3del };
   FaultZone(stuff);
 
-  var total = elements2.slice();
+  let total = elements2.slice();
   for (let i = 0; i < faultarray.length; i++) {
     total.push(faultarray[i]);
   }
@@ -228,8 +228,8 @@ function getIndex() {
 
 function FaultZone(stuff) {
   let { faultarray, Z1pol, Z2pol, Z3pol, fst, z2del, z3del } = stuff;
-  var Z3time = 0;
-  var Z2time = 0;
+  let Z3time = 0;
+  let Z2time = 0;
   for (let i = 0; i < faultarray.length; i++) { //check through fault if in zone
     if (inside(faultarray[i], Z3pol)) {
       Z3time = Z3time + Number(fst);
@@ -297,12 +297,12 @@ async function dygPlot(total, xaxis, yaxis) {
 
 function Zone1P44T(tr) {
   //%Zone 1 setting
-  var Z1 = Number(document.getElementById("Zone1").value);
-  var Z1A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
-  var Z1t = (-3 * Math.PI / 180);
-  var R1R = Number(document.getElementById("Zone1RH").value);
-  var R1L = Number(document.getElementById("Zone1LH").value);
-  var Z1s = (87 * Math.PI / 180);
+  let Z1 = Number(document.getElementById("Zone1").value);
+  let Z1A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
+  let Z1t = (-3 * Math.PI / 180);
+  let R1R = Number(document.getElementById("Zone1RH").value);
+  let R1L = Number(document.getElementById("Zone1LH").value);
+  let Z1s = (87 * Math.PI / 180);
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
@@ -313,26 +313,26 @@ function Zone1P44T(tr) {
   const xmul2 = Math.sin((180 * Math.PI / 180) - Z1A + Z1t);
   const pmul1 = R1R * xmul1 / Math.sin((90 * Math.PI / 180) + Z1s - Z1A);
   const pmul2 = (-90 * Math.PI / 180) + Z1s;
-  var x1 = xmul1 * R1L / xmul2;
-  var xx1 = xmul1 * R1R / xmul2;
-  var pkx1 = -x1 * Math.sin(Z1t) + Z1 * xmul1;
+  let x1 = xmul1 * R1L / xmul2;
+  let xx1 = xmul1 * R1R / xmul2;
+  let pkx1 = -x1 * Math.sin(Z1t) + Z1 * xmul1;
   if (-R1L * Math.sin(pmul2) > pkx1) {
-    var pgx1 = pkx1;
+    let pgx1 = pkx1;
   }
   else {
     pgx1 = -R1L * Math.sin(pmul2);
   }
-  var pcx1 = xx1 * Math.sin(Z1t) + Z1 * xmul1;
-  var prx1 = pmul1 * Math.sin(pmul2);
-  var pgr1 = -pgx1 * Math.sin(Z1s) / Math.sin((90 * Math.PI / 180) - Z1s);
+  let pcx1 = xx1 * Math.sin(Z1t) + Z1 * xmul1;
+  let prx1 = pmul1 * Math.sin(pmul2);
+  let pgr1 = -pgx1 * Math.sin(Z1s) / Math.sin((90 * Math.PI / 180) - Z1s);
   if (pgx1 == pkx1) {
-    var pkr1 = pgr1;
+    let pkr1 = pgr1;
   }
   else {
     pkr1 = -x1 * Math.cos(Z1t) + Z1 * Math.cos(Z1A);
   }
-  var pcr1 = xx1 * Math.cos(Z1t) + Z1 * Math.cos(Z1A);
-  var prr1 = pmul1 * Math.cos(pmul2);
+  let pcr1 = xx1 * Math.cos(Z1t) + Z1 * Math.cos(Z1A);
+  let prr1 = pmul1 * Math.cos(pmul2);
   let Z1pol = [[pgr1, pgx1], [pkr1, pkx1], [pcr1, pcx1], [prr1, prx1], [pgr1, pgx1]]; //Z1 polygon
   let Z1el = [[pgr1, , pgx1], [pkr1, , pkx1], [pcr1, , pcx1], [prr1, , prx1], [pgr1, , pgx1]];
   return [Z1pol, Z1el];
@@ -340,12 +340,12 @@ function Zone1P44T(tr) {
 
 function Zone2P44T(tr) {
   //%Zone 2 setting
-  var Z2 = Number(document.getElementById("Zone2").value);
-  var Z2A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
-  var Z2t = (-3 * Math.PI / 180);
-  var R2R = Number(document.getElementById("Zone2RH").value);
-  var R2L = Number(document.getElementById("Zone2LH").value);
-  var Z2s = (87 * Math.PI / 180);
+  let Z2 = Number(document.getElementById("Zone2").value);
+  let Z2A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
+  let Z2t = (-3 * Math.PI / 180);
+  let R2R = Number(document.getElementById("Zone2RH").value);
+  let R2L = Number(document.getElementById("Zone2LH").value);
+  let Z2s = (87 * Math.PI / 180);
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
@@ -356,27 +356,27 @@ function Zone2P44T(tr) {
   const pr21 = R2R * xmul1 / Math.sin((90 * Math.PI / 180) + Z2s - Z2A);
   const pr22 = (-90 * Math.PI / 180) + Z2s;
   //%Zone 2 plot
-  var x2 = xmul1 * R2L / Math.sin(xmul2);
-  var xx2 = xmul1 * R2R / Math.sin(xmul2);
-  var pkx2 = -x2 * Math.sin(Z2t) + Z2 * xmul1;
+  let x2 = xmul1 * R2L / Math.sin(xmul2);
+  let xx2 = xmul1 * R2R / Math.sin(xmul2);
+  let pkx2 = -x2 * Math.sin(Z2t) + Z2 * xmul1;
   if (-R2L * Math.sin(pr22) > pkx2) {
-    var pgx2 = pkx2;
+    let pgx2 = pkx2;
   }
   else {
     pgx2 = -R2L * Math.sin(pr22);
   }
 
-  var pcx2 = xx2 * Math.sin(Z2t) + Z2 * xmul1;
-  var prx2 = pr21 * Math.sin(pr22);
-  var pgr2 = -pgx2 * Math.sin(Z2s) / Math.sin((90 * Math.PI / 180) - Z2s);
+  let pcx2 = xx2 * Math.sin(Z2t) + Z2 * xmul1;
+  let prx2 = pr21 * Math.sin(pr22);
+  let pgr2 = -pgx2 * Math.sin(Z2s) / Math.sin((90 * Math.PI / 180) - Z2s);
   if (pgx2 == pkx2) {
-    var pkr2 = pgr2;
+    let pkr2 = pgr2;
   }
   else {
     pkr2 = -x2 * Math.cos(Z2t) + Z2 * Math.cos(Z2A);
   }
-  var pcr2 = xx2 * Math.cos(Z2t) + Z2 * Math.cos(Z2A);
-  var prr2 = pr21 * Math.cos(pr22);
+  let pcr2 = xx2 * Math.cos(Z2t) + Z2 * Math.cos(Z2A);
+  let prr2 = pr21 * Math.cos(pr22);
   let Z2pol = [[pgr2, pgx2], [pkr2, pkx2], [pcr2, pcx2], [prr2, prx2], [pgr2, pgx2]];
   let Z2el = [[pgr2, , , pgx2], [pkr2, , , pkx2], [pcr2, , , pcx2], [prr2, , , prx2], [pgr2, , , pgx2]];
   return [Z2pol, Z2el];
@@ -384,12 +384,12 @@ function Zone2P44T(tr) {
 
 function Zone3P44T(tr) {
   //%Zone 3 setting
-  var Z3 = Number(document.getElementById("Zone3").value);
-  var Z3A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
-  var Z3t = (-3 * Math.PI / 180);
-  var R3R = Number(document.getElementById("Zone3RH").value);
-  var R3L = Number(document.getElementById("Zone3LH").value);
-  var Z3rev = Number(document.getElementById("Zone3rev").value);
+  let Z3 = Number(document.getElementById("Zone3").value);
+  let Z3A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
+  let Z3t = (-3 * Math.PI / 180);
+  let R3R = Number(document.getElementById("Zone3RH").value);
+  let R3L = Number(document.getElementById("Zone3LH").value);
+  let Z3rev = Number(document.getElementById("Zone3rev").value);
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
@@ -398,18 +398,18 @@ function Zone3P44T(tr) {
   //%Zone 3 plot
   const xmul1 = Math.sin(Z3A);
   const xmul2 = (180 * Math.PI / 180) - Z3A + Z3t;
-  var x3 = xmul1 * R3L / Math.sin(xmul2);
-  var xx3 = xmul1 * R3R / Math.sin(xmul2);
-  var ox3 = -Z3rev * xmul1;
-  var pgx3 = ox3 - x3 * Math.sin(Z3t);
-  var pkx3 = pgx3 + (Z3 + Z3rev) * xmul1;
-  var prx3 = ox3 + xx3 * Math.sin(Z3t);
-  var pcx3 = prx3 + (Z3 + Z3rev) * xmul1;
-  var or3 = -Z3rev * Math.cos(Z3A);
-  var pgr3 = or3 - x3 * Math.cos(Z3t);
-  var pkr3 = pgr3 + (Z3 + Z3rev) * Math.cos(Z3A);
-  var prr3 = or3 + xx3 * Math.cos(Z3t);
-  var pcr3 = prr3 + (Z3 + Z3rev) * Math.cos(Z3A);
+  let x3 = xmul1 * R3L / Math.sin(xmul2);
+  let xx3 = xmul1 * R3R / Math.sin(xmul2);
+  let ox3 = -Z3rev * xmul1;
+  let pgx3 = ox3 - x3 * Math.sin(Z3t);
+  let pkx3 = pgx3 + (Z3 + Z3rev) * xmul1;
+  let prx3 = ox3 + xx3 * Math.sin(Z3t);
+  let pcx3 = prx3 + (Z3 + Z3rev) * xmul1;
+  let or3 = -Z3rev * Math.cos(Z3A);
+  let pgr3 = or3 - x3 * Math.cos(Z3t);
+  let pkr3 = pgr3 + (Z3 + Z3rev) * Math.cos(Z3A);
+  let prr3 = or3 + xx3 * Math.cos(Z3t);
+  let pcr3 = prr3 + (Z3 + Z3rev) * Math.cos(Z3A);
   let Z3pol = [[pgr3, pgx3], [pkr3, pkx3], [pcr3, pcx3], [prr3, prx3], [pgr3, pgx3]];
   let Z3el = [[-Z3rev * Math.cos(Z3A), , , , , -Z3rev * xmul1], [Z3 * Math.cos(Z3A), , , , , Z3 * xmul1],
   [pgr3, , , , pgx3], [pkr3, , , , pkx3], [pcr3, , , , pcx3], [prr3, , , , prx3], [pgr3, , , , pgx3]];
@@ -476,7 +476,7 @@ function Zone3P438(tr) {
   return [Zpol, Zel];
 }
 
-var idbSupported = ("indexedDB" in window) ? true : false;
-var db;
+let idbSupported = ("indexedDB" in window) ? true : false;
+let db;
 //startup
 startup();

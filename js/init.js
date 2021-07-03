@@ -134,7 +134,7 @@ function clippy(x, y) {
   let offset = document.querySelector('#graphdiv3').offsetTop;
   document.querySelector('#graphdiv3').setAttribute(`style`, `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
   window.dispatchEvent(new Event('resize'));
-  for (var j = 0; j < 3; j++) {  //weird way to make it actually work
+  for (let j = 0; j < 3; j++) {  //weird way to make it actually work
     html2canvas(document.querySelector("#graphdiv3"), {
       y: offset,
       //scrollY: -window.scrollY,
@@ -161,8 +161,8 @@ function clippy(x, y) {
 
 //Save the value function - save it to localStorage as (ID, VALUE)
 function saveValue(e) {
-  var id = e.id;  // get the sender's id to save it .
-  var val = e.value; // get the value.
+  let id = e.id;  // get the sender's id to save it .
+  let val = e.value; // get the value.
   localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override .
   saveParameter();
 }
@@ -217,14 +217,14 @@ function change(el) {
 }
 
 function exportToCsv(filename, rows) {
-  var processRow = function (row) {
-    var finalVal = '';
-    for (var j = 0; j < row.length; j++) {
-      var innerValue = row[j] === null ? '' : row[j].toString();
+  let processRow = function (row) {
+    let finalVal = '';
+    for (let j = 0; j < row.length; j++) {
+      let innerValue = row[j] === null ? '' : row[j].toString();
       if (row[j] instanceof Date) {
         innerValue = row[j].toLocaleString();
       }
-      var result = innerValue.replace(/"/gu, '""');
+      let result = innerValue.replace(/"/gu, '""');
       if (result.search(/("|,|\n)/gu) >= 0)
         result = '"' + result + '"';
       if (j > 0)
@@ -233,18 +233,18 @@ function exportToCsv(filename, rows) {
     }
     return finalVal + '\n';
   };
-  var csvFile = '';
-  for (var i = 0; i < rows.length; i++) {
+  let csvFile = '';
+  for (let i = 0; i < rows.length; i++) {
     csvFile += processRow(rows[i]);
   }
-  var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+  let blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
   if (navigator.msSaveBlob) { // IE 10+
     navigator.msSaveBlob(blob, filename);
   } else {
-    var link = document.createElement("a");
+    let link = document.createElement("a");
     if (link.download !== undefined) { // feature detection
       // Browsers that support HTML5 download attribute
-      var url = URL.createObjectURL(blob);
+      let url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
       link.setAttribute("download", filename);
       link.style.visibility = 'hidden';
@@ -283,7 +283,7 @@ function _(el) {
 }
 
 _.prototype.fade = function fade(type, ms) {
-  var isIn = type === 'in',
+  let isIn = type === 'in',
     opacity = isIn ? 0 : 1,
     interval = 50,
     duration = ms,
@@ -302,7 +302,7 @@ _.prototype.fade = function fade(type, ms) {
     if (opacity <= 0) self.el.style.display = 'none'
     if (opacity <= 0 || opacity >= 1) window.clearInterval(fading);
   }
-  var fading = window.setInterval(func, interval);
+  let fading = window.setInterval(func, interval);
 };
 
 //Firebase

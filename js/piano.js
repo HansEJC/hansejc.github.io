@@ -20,9 +20,9 @@ function keyPress(e) {
   }catch(err){k(10,+e.keyCode,200);}
 }
 
-var AudioContext = window.AudioContext // Default
+let AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
     || false;
-if (AudioContext) {var a = new AudioContext();}
+if (AudioContext) {let a = new AudioContext();}
 
 window.addEventListener('keydown', keyPress);

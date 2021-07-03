@@ -73,8 +73,8 @@ function futureMortgage(info) {
 function calculations() {
 
   const mpc = 459.89;  //current mortgage payment
-  var op = +(getSavedValue("OP"));
-  var tp = op + mpc; // total payment
+  let op = +(getSavedValue("OP"));
+  let tp = op + mpc; // total payment
 
   let info = firstMortgage();
   info = secondMortgage(info);

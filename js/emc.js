@@ -36,7 +36,7 @@ function labls(num) {
 }
 
 function checkit() {
-  var x = document.getElementById("Lhide"), y = document.getElementById("Hhide");
+  let x = document.getElementById("Lhide"), y = document.getElementById("Hhide");
   if (document.querySelector('#HF').checked) [x,y] = [y,x];
   x.style.display = "block";
   y.style.display = "none";
@@ -95,8 +95,8 @@ async function calculations(){
   let fi = c/(2*Math.PI*tf);
   document.getElementById("FI").innerHTML = killthemeter(fi);
 
-  var earray = [];
-  //var range = 0, ran = 0, distrange = 0;
+  let earray = [];
+  //let range = 0, ran = 0, distrange = 0;
   let stuff = {radios,fields};
   let freqStuff = {earray,c,tf,EField,eirp,eo,q,uo,cu,fi,...stuff};
 

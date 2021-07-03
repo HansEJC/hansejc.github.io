@@ -1,10 +1,10 @@
 onmessage = (mess) => {
-	var csv = mess.data[0];
+	let csv = mess.data[0];
 	
 	if (mess.data[3]) {
 		for (let i=0;i<csv.length;i++){		
 			for (let j=1;j<csv[i].length;j++){	
-				eval("var "+ String.fromCharCode(96+j)+"= csv[i][j]");
+				eval("let "+ String.fromCharCode(96+j)+"= csv[i][j]");
 				//window[String.fromCharCode(96+j)] = csv[i][j];
 			}
 			for (let j=1;j<csv[i].length;j++){	

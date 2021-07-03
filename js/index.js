@@ -34,8 +34,8 @@ function speech() {
 }
 
 function keys(e) {
-  var keyCode = e.which || e.keyCode;
-  var handled = false;
+  let keyCode = e.which || e.keyCode;
+  let handled = false;
   if (keyCode == 38 || keyCode == 40 || keyCode == 32) { //up or down or spacebar
     e.preventDefault();
     handled = true;

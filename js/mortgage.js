@@ -1,19 +1,19 @@
 function calculations(){
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-  var ab = Number(getSavedValue("AB"));    // set the value to this input
-  var ir = Number(getSavedValue("IR"))/12/100;
-  var mt = Number(getSavedValue("MT"))*12;
-  var mp = ab*((ir*Math.pow((1+ir),mt))/(Math.pow((1+ir),mt)-1));
+  let ab = Number(getSavedValue("AB"));    // set the value to this input
+  let ir = Number(getSavedValue("IR"))/12/100;
+  let mt = Number(getSavedValue("MT"))*12;
+  let mp = ab*((ir*Math.pow((1+ir),mt))/(Math.pow((1+ir),mt)-1));
 
   spanToMoney("MP",mp);
-  var today = new Date();
+  let today = new Date();
 
   let mortgage = [];
   let intr,eqp, pn, i, data; //interest, equity payment,remaining loan, payment number
   pn = 0;
 
-  var op = Number(getSavedValue("OP"));
-  var tp = op+mp;
+  let op = Number(getSavedValue("OP"));
+  let tp = op+mp;
   spanToMoney("TP",tp);
   spanToMoney("MOP",ab/120);
   

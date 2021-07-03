@@ -94,7 +94,7 @@ function minimax(reboard, player) {
 
   let moves = [], g;
   for (let i = 0; i < array.length; i++) {
-    var move = {};
+    let move = {};
     move.index = reboard[array[i]];
     reboard[array[i]] = player;
 

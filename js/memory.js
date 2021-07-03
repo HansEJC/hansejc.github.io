@@ -114,10 +114,10 @@ function startGame() {
   nextColor();
 }
 
-var AudioContext = window.AudioContext // Default
+let AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
     || false;
-if (AudioContext) {var a = new AudioContext();}
+if (AudioContext) {let a = new AudioContext();}
 
 board.classList.add('waiting');
 

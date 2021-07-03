@@ -96,17 +96,17 @@ function startup(bool) {
     box.addEventListener('change', saveRadio);
   });
   document.getElementById("69").checked = getSavedValue("69") === "true" || getSavedValue("69") === ""; //checkbox "Show" with new file
-  var idbSupported = ("indexedDB" in window);
-  var db;
+  let idbSupported = ("indexedDB" in window);
+  let db;
 
   if (idbSupported) {
-    var openRequest = indexedDB.open("graph", 1);
+    let openRequest = indexedDB.open("graph", 1);
     openRequest.onupgradeneeded = dbUpgrade(db);
     openRequest.onsuccess = function (e) {
       db = e.target.result;
-      var transaction = db.transaction(["plots"]);
-      var objectStore = transaction.objectStore("plots");
-      var request = objectStore.get("2");
+      let transaction = db.transaction(["plots"]);
+      let objectStore = transaction.objectStore("plots");
+      let request = objectStore.get("2");
       request.onsuccess = function (event) {
         uploadcsv(db);
         if (bool) return;
@@ -122,7 +122,7 @@ function uploadcsv(db) {
     addLoader("Uploading csv", false, 33);
     if (!window.FileReader) return; // Browser is not compatible
 
-    var reader = new FileReader();
+    let reader = new FileReader();
 
     reader.onload = function (evt) {
       if (evt.target.readyState != 2) return;
@@ -130,7 +130,7 @@ function uploadcsv(db) {
         addLoader('Error while reading file', true);
         return;
       }
-      var filecontent = evt.target.result;
+      let filecontent = evt.target.result;
       if (document.getElementById("CSVF").checked) {
         try {//the for loop removes saved labels
           const len = filecontent.split("\n")[0].split(",").length;
@@ -231,18 +231,18 @@ function parseCSV(csv) {
 function save(data, db) {
   heh = [];
   heh = data.map(x => [...x]);
-  var transaction = db.transaction(["plots"], "readwrite");
-  var objectStore = transaction.objectStore("plots");
+  let transaction = db.transaction(["plots"], "readwrite");
+  let objectStore = transaction.objectStore("plots");
   objectStore.put({ id: 1, 'data': data });
 }
 
 function plotexp(csv, db) {
   //show hidden options
-  var y = document.getElementById("hide");
+  let y = document.getElementById("hide");
   y.style.display = "block";
 
-  var dat = new Date()/*, datb = false*/;
-  var datrate = 1000;  //one second
+  let dat = new Date()/*, datb = false*/;
+  let datrate = 1000;  //one second
   if (document.getElementById("dat").value != "") dat = new Date(document.getElementById("dat").value);
   if (document.getElementById("datR").value != "") datrate = Number(document.getElementById("datR").value) * 1000;
   if (document.getElementById("99").checked && !(csv[0][0] instanceof Date)) { //set own start date and increment
@@ -371,10 +371,10 @@ function dygReady() {
   const colors = g3.getColors();
   //lbs.pop();
   lbs.shift();
-  var cb = [], cb2 = [], col = [], sty = [];
+  let cb = [], cb2 = [], col = [], sty = [];
   const cbh = document.getElementById('MyForm'), colF = document.getElementById('ColorForm');
 
-  for (var i = 0; i < lbs.length; i++) {
+  for (let i = 0; i < lbs.length; i++) {
     cb[i] = document.createElement('input'), cb2[i] = document.createElement('input'), col[i] = document.createElement('input');
     cb[i].type = 'checkbox', cb2[i].type = 'text', col[i].type = 'color';
     cbh.appendChild(cb[i]); cbh.appendChild(cb2[i]); colF.appendChild(col[i]);
@@ -417,8 +417,8 @@ function styleMe(e, i) {
   g3.updateOptions({ series: { [ser]: { strokePattern: JSON.parse(e.value) } } })
 }
 
-var xaxis = document.getElementById('xaxis');
-var yaxis = document.getElementById('yaxis');
+let xaxis = document.getElementById('xaxis');
+let yaxis = document.getElementById('yaxis');
 xaxis.onblur = () => {
   saveValue(this);
   g3.updateOptions({ xlabel: xaxis.value });
@@ -439,11 +439,11 @@ function change(el) {
 }
 
 function UncheckAll(elementID) {
-  var _container = document.getElementById(elementID);
-  var _chks = _container.getElementsByTagName("INPUT");
-  var _numChks = _chks.length - 1;
+  let _container = document.getElementById(elementID);
+  let _chks = _container.getElementsByTagName("INPUT");
+  let _numChks = _chks.length - 1;
 
-  for (var i = 0; i < _numChks; i++) {
+  for (let i = 0; i < _numChks; i++) {
 
     if (_chks[0].checked == false) {
       _chks[i + 1].checked = false;
@@ -459,7 +459,7 @@ function idents(len) {
   let labl = [], labd, colors, styles;
   labl.push("boobs");
 
-  for (var i = 0; i < len; i++) {
+  for (let i = 0; i < len; i++) {
     labd = document.getElementById(`csvlabel${i}`);
     colors = document.getElementById(`csvcolor${i}`);
     styles = document.getElementById(`csvlines${i}`);
@@ -478,15 +478,15 @@ function idents(len) {
 
 //below code was taken from <script src="https://dygraphs.com/src/extras/smooth-plotter.js"></script>
 function getControlPoints(p0, p1, p2, opt_alpha, opt_allowFalseExtrema) {
-  var alpha = (opt_alpha !== undefined) ? opt_alpha : 1 / 3;  // 0=no smoothing, 1=crazy smoothing
-  var allowFalseExtrema = opt_allowFalseExtrema || false;
+  let alpha = (opt_alpha !== undefined) ? opt_alpha : 1 / 3;  // 0=no smoothing, 1=crazy smoothing
+  let allowFalseExtrema = opt_allowFalseExtrema || false;
 
   if (!p2) {
     return [p1.x, p1.y, null, null];
   }
 
   // Step 1: Position the control points along each line segment.
-  var l1x = (1 - alpha) * p1.x + alpha * p0.x,
+  let l1x = (1 - alpha) * p1.x + alpha * p0.x,
     l1y = (1 - alpha) * p1.y + alpha * p0.y,
     r1x = (1 - alpha) * p1.x + alpha * p2.x,
     r1y = (1 - alpha) * p1.y + alpha * p2.y;
@@ -494,7 +494,7 @@ function getControlPoints(p0, p1, p2, opt_alpha, opt_allowFalseExtrema) {
   // Step 2: shift the points up so that p1 is on the l1–r1 line.
   if (l1x != r1x) {
     // This can be derived w/ some basic algebra.
-    var deltaY = p1.y - r1y - (p1.x - r1x) * (l1y - r1y) / (l1x - r1x);
+    let deltaY = p1.y - r1y - (p1.x - r1x) * (l1y - r1y) / (l1x - r1x);
     l1y += deltaY;
     r1y += deltaY;
   }
@@ -529,24 +529,24 @@ function isOK(x) {
 // A plotter which uses splines to create a smooth curve.
 // Can be controlled via smoothPlotter.smoothing
 function smoothPlotter(e) {
-  var ctx = e.drawingContext,
+  let ctx = e.drawingContext,
     points = e.points;
 
   ctx.beginPath();
   ctx.moveTo(points[0].canvasx, points[0].canvasy);
 
   // right control point for previous point
-  var lastRightX = points[0].canvasx, lastRightY = points[0].canvasy;
+  let lastRightX = points[0].canvasx, lastRightY = points[0].canvasy;
 
-  for (var i = 1; i < points.length; i++) {
-    var p0 = points[i - 1],
+  for (let i = 1; i < points.length; i++) {
+    let p0 = points[i - 1],
       p1 = points[i],
       p2 = points[i + 1];
     p0 = p0 && isOK(p0.canvasy) ? p0 : null;
     p1 = p1 && isOK(p1.canvasy) ? p1 : null;
     p2 = p2 && isOK(p2.canvasy) ? p2 : null;
     if (p0 && p1) {
-      var controls = getControlPoints(
+      let controls = getControlPoints(
         { x: p0.canvasx, y: p0.canvasy },
         { x: p1.canvasx, y: p1.canvasy },
         p2 && { x: p2.canvasx, y: p2.canvasy },
