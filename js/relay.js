@@ -12,11 +12,28 @@ function save(data) {
       x[0] = Number(x[0].split(`:`).pop()); //extracts seconds from timestamp
     });
   }
-  localStorage.setItem(`headers`, JSON.stringify(data.shift()));
+  const headers = JSON.stringify(data.shift());
+  localStorage.setItem(`headers`, headers);
+  saveIndexedDB(data);
+  const dbObj = firebase.database().ref(`relay`);
+  dbObj.set({ data, headers });
+}
+
+function saveIndexedDB(data){
   getIndex();
   var transaction = db.transaction(["plots"], "readwrite");
   var objectStore = transaction.objectStore("plots");
-  objectStore.put({ id: 1, 'data': data });
+  objectStore.put({ id: 1, data });
+  plotProtection(data);
+}
+
+function importFault() {
+  const dbObj = firebase.database().ref(`relay`);
+  dbObj.once(`value`, snap => {
+    const data = snap.val();
+    localStorage.setItem(`headers`, data.headers);
+    saveIndexedDB(data.data);
+  });
 }
 
 function read() {
@@ -27,11 +44,7 @@ function read() {
     try {
       plotProtection(cursor.value.data);
     } catch (err) {
-      let DRcsv = await fetch('uploads/fault.csv').then(result => result.text());
-      // code below here will only execute when await fetch() finished loading
-      let DR = Papa.parse(DRcsv, { dynamicTyping: true }).data;
-      save(DR);
-      plotProtection(DR);
+      importFault();
     }
   }
 }
@@ -49,7 +62,6 @@ function javaread() {
       var filecontent = evt.target.result;
       const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
       save(DR);
-      plotProtection(DR);
     };
     reader.readAsText(evt.target.files[0]);
   };
@@ -71,8 +83,10 @@ function javaread() {
 }
 
 function startup() {
+  fireBase();
   getIndex();
   funkyRadio();
+  document.querySelector(`#Import`).addEventListener(`click`, importFault);
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) == "true");
   });
