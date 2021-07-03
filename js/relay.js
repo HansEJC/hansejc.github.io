@@ -5,7 +5,13 @@ function checkit() {
 }
 
 function save(data) {
-  if (typeof data[0][0] === `string`) data.forEach(x => { x.shift(), x.shift(); });
+  if (typeof data[1][0] === `string`) {
+    data.pop(); //remove last empty line
+    data.forEach(x => {
+      x.shift();
+      x[0] = Number(x[0].split(`:`).pop()); //extracts seconds from timestamp
+    });
+  }
   localStorage.setItem(`headers`, JSON.stringify(data.shift()));
   getIndex();
   var transaction = db.transaction(["plots"], "readwrite");
