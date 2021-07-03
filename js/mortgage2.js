@@ -17,7 +17,7 @@ function firstMortgage() {
 
   document.getElementById("HPI").value = getSavedValue("HPI");    // set the value to this input
   document.getElementById("OP").value = getSavedValue("OP");
-  let hpi = Math.max(il + 9275, +(getSavedValue("HPI")));    // set the value to this input
+  let hpi = Math.max(il + 9275, Number(getSavedValue("HPI")));    // set the value to this input
   teq = hpi - il; //initial deposit plus HPI
   rl = il; tpa = 0;
 
@@ -73,7 +73,7 @@ function futureMortgage(info) {
 function calculations() {
 
   const mpc = 459.89;  //current mortgage payment
-  let op = +(getSavedValue("OP"));
+  let op = Number(getSavedValue("OP"));
   let tp = op + mpc; // total payment
 
   let info = firstMortgage();

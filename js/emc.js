@@ -1,25 +1,25 @@
 function killthemeter(num) {
-  if (num > 1000) return +(num/1000).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/gu, ",") + " km";
-  else if (num > 1) return +num.toFixed(2) + " m";
-  else if (num > 0.1) return +(num*100).toFixed(2) + " cm";
-  else if (num > 0.001) return +(num*1000).toFixed(2) + " mm";
-  else if (num > 0.000001) return +(num*1000000).toFixed(2) + " μm";
-  else if (num > 0.000000001) return +(num*1000000000).toFixed(2) + " nm";
-  else if (num > 0) return +(num*1000000000000).toFixed(2) + " pm";
+  if (num > 1000) return Number((num/1000).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/gu, ",")) + " km";
+  else if (num > 1) return Number(num.toFixed(2)) + " m";
+  else if (num > 0.1) return Number((num*100).toFixed(2)) + " cm";
+  else if (num > 0.001) return Number((num*1000).toFixed(2)) + " mm";
+  else if (num > 0.000001) return Number((num*1000000).toFixed(2)) + " μm";
+  else if (num > 0.000000001) return Number((num*1000000000).toFixed(2)) + " nm";
+  else if (num > 0) return Number((num*1000000000000).toFixed(2)) + " pm";
   else return "-";
 }
 
 function kill(num) {
-  if (num >= 1000000000000000) return +(num/1000000000000000).toFixed(2)+"P";
-  else if (num >= 1000000000000) return +(num/1000000000000).toFixed(2)+"T";
-  else if (num >= 1000000000) return +(num/1000000000).toFixed(2)+"G";
-  else if (num >= 1000000) return +(num/1000000).toFixed(2)+"M";
-  else if (num >= 1000) return +(num/1000).toFixed(2)+"k";
-  else if (num >= 1) return +num.toFixed(2);
-  else if (num >= 0.001) return +(num*1000).toFixed(2)+"m";
-  else if (num >= 0.000001) return +(num*1000000).toFixed(2)+"μ";
-  else if (num >= 0.000000001) return +(num*1000000000).toFixed(2)+"n";
-  else if (num >= 0.000000000001) return +(num*1000000000000).toFixed(2)+"p";
+  if (num >= 1000000000000000) return Number((num/1000000000000000).toFixed(2))+"P";
+  else if (num >= 1000000000000) return Number((num/1000000000000).toFixed(2))+"T";
+  else if (num >= 1000000000) return Number((num/1000000000).toFixed(2))+"G";
+  else if (num >= 1000000) return Number((num/1000000).toFixed(2))+"M";
+  else if (num >= 1000) return Number((num/1000).toFixed(2))+"k";
+  else if (num >= 1) return Number(num.toFixed(2));
+  else if (num >= 0.001) return Number((num*1000).toFixed(2))+"m";
+  else if (num >= 0.000001) return Number((num*1000000).toFixed(2))+"μ";
+  else if (num >= 0.000000001) return Number((num*1000000000).toFixed(2))+"n";
+  else if (num >= 0.000000000001) return Number((num*1000000000000).toFixed(2))+"p";
   else return 0;
 }
 
@@ -75,10 +75,10 @@ async function calculations(){
   document.getElementById("CA").value = getSavedValue("CA") || 0.02;
   if (getSavedValue("MUL") != "") document.getElementById("MUL").value = getSavedValue("MUL");
 
-  let vo = +(getSavedValue("VO"));
-  let cu = +(getSavedValue("CU"));
+  let vo = Number(getSavedValue("VO"));
+  let cu = Number(getSavedValue("CU"));
   let ca = getSavedValue("CA") || 0.02;
-  ca = +ca * Math.pow(10,-9); //from μF/km to F/m
+  ca = Number(ca) * Math.pow(10,-9); //from μF/km to F/m
   const eo = 8.55 * Math.pow(10,-12);
   const uo = 4 * Math.PI * Math.pow(10,-7);
   let q = ca*vo;

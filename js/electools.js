@@ -17,7 +17,7 @@ function startup() {
 
 function createInps() {
   remParallel();  
-  let npr = +(getSavedValue(`NumPar`));    // set the value to this input
+  let npr = Number(getSavedValue(`NumPar`));    // set the value to this input
   if (npr<2) npr = 2;
   let cb = [], cb2 = [], cb3 = [];
   let cbh = document.getElementById('Parallel'), cbh2 = document.getElementById('Nums'), cbh3 = document.getElementById('Angs');
@@ -43,22 +43,22 @@ function parallel() {
     inp.onkeyup = function(){saveValue(this);};
     if (inp.id === `NumPar`) inp.addEventListener('keyup',createInps);
   });
-  let npr = +(document.getElementById(`NumPar`).value);    // set the value to this input
+  let npr = Number(document.getElementById(`NumPar`).value);    // set the value to this input
   if (npr<2) npr = 2;
   let pr = 0, res;
   for (let i = 0; i < npr; i++){
-    res = +(getSavedValue(`res${i}`)) || Number.MAX_SAFE_INTEGER;
+    res = Number(getSavedValue(`res${i}`)) || Number.MAX_SAFE_INTEGER;
     pr += 1/res;
   }
   pr = 1/pr;
-  document.querySelector("#PR").textContent = `${+pr.toFixed(2)} Ω`;
+  document.querySelector("#PR").textContent = `${Number(pr.toFixed(2))} Ω`;
 }
 
 function polrec() {
-  let pn = +(getSavedValue("PN"));
-  let pa = +(getSavedValue("PA"));
-  let rr = +(getSavedValue("RR"));
-  let ir = +(getSavedValue("IR"));
+  let pn = Number(getSavedValue("PN"));
+  let pa = Number(getSavedValue("PA"));
+  let rr = Number(getSavedValue("RR"));
+  let ir = Number(getSavedValue("IR"));
   let ptrr = pn*Math.cos(pa*Math.PI/180);
   let ptir = pn*Math.sin(pa*Math.PI/180);
   let rtpn = Math.sqrt(rr*rr+ir*ir);
@@ -66,19 +66,19 @@ function polrec() {
   if (rr<0) rtpa = 180+180*Math.atan(ir/rr)/Math.PI;
   if (rr<0 && ir<0) rtpa = -180+180*Math.atan(ir/rr)/Math.PI;
 
-  document.querySelector("#PTR").textContent = `${+ptrr.toFixed(2)} + j${+(ptir.toFixed(2))}`;
-  document.querySelector("#RTP").textContent = `${+rtpn.toFixed(2)} + ∠${+(rtpa.toFixed(2))}°`;
+  document.querySelector("#PTR").textContent = `${Number(ptrr.toFixed(2))} + j${Number(ptir.toFixed(2))}`;
+  document.querySelector("#RTP").textContent = `${Number(rtpn.toFixed(2))} + ∠${Number(rtpa.toFixed(2))}°`;
 }
 
 function poladd() {
-  let npr = +(document.getElementById(`NumPar`).value);
+  let npr = Number(document.getElementById(`NumPar`).value);
   if (npr<2) npr = 2;
   let num = 0; let ang = 0;
   let nums, angs, real, imag;
   let reals = 0, imags = 0;
   for(let i = 0; i < npr; i++){
-      nums = +(getSavedValue(`pnum${i}`));
-      angs = +(getSavedValue(`pang${i}`));
+      nums = Number(getSavedValue(`pnum${i}`));
+      angs = Number(getSavedValue(`pang${i}`));
       real = nums*Math.cos(angs*Math.PI/180);
       imag = nums*Math.sin(angs*Math.PI/180);
       reals = reals+real;
@@ -88,17 +88,17 @@ function poladd() {
   ang = 180*Math.atan(imags/reals)/Math.PI;
   if (reals<0) ang = 180+180*Math.atan(imags/reals)/Math.PI;
   if (reals<0 && imags<0) ang = -180+180*Math.atan(imags/reals)/Math.PI;
-  document.querySelector("#PSUM").textContent = `${+num.toFixed(2)} + ∠${+(ang.toFixed(2))}°`;
+  document.querySelector("#PSUM").textContent = `${Number(num.toFixed(2))} + ∠${Number(ang.toFixed(2))}°`;
 }
 
 function loadcalc() {
-  let ilv = +(getSavedValue("ILV"));
-  let l1l = +(getSavedValue("L1L"));
-  let l2l = +(getSavedValue("L2L"));
-  let l3l = +(getSavedValue("L3L"));
-  let l12l = +(getSavedValue("L12L"));
-  let l13l = +(getSavedValue("L13L"));
-  let l23l = +(getSavedValue("L23L"));
+  let ilv = Number(getSavedValue("ILV"));
+  let l1l = Number(getSavedValue("L1L"));
+  let l2l = Number(getSavedValue("L2L"));
+  let l3l = Number(getSavedValue("L3L"));
+  let l12l = Number(getSavedValue("L12L"));
+  let l13l = Number(getSavedValue("L13L"));
+  let l23l = Number(getSavedValue("L23L"));
 
   let l1t = l1l+((l12l+l13l)/2)*Math.sqrt(3);
   let l2t = l2l+((l12l+l23l)/2)*Math.sqrt(3);
@@ -106,29 +106,29 @@ function loadcalc() {
   let nl = Math.sqrt(l1l*l1l+l2l*l2l+l3l*l3l-l1l*l2l-l2l*l3l-l1l*l3l);
   let tpow = (l1t+l2t+l3t)*ilv/Math.sqrt(3);
 
-  document.querySelector("#L1T").textContent = `${+l1t.toFixed(2)} A`;
-  document.querySelector("#L2T").textContent = `${+l2t.toFixed(2)} A`;
-  document.querySelector("#L3T").textContent = `${+l3t.toFixed(2)} A`;
-  document.querySelector("#NL").textContent = `${+nl.toFixed(2)} A`;
+  document.querySelector("#L1T").textContent = `${Number(l1t.toFixed(2))} A`;
+  document.querySelector("#L2T").textContent = `${Number(l2t.toFixed(2))} A`;
+  document.querySelector("#L3T").textContent = `${Number(l3t.toFixed(2))} A`;
+  document.querySelector("#NL").textContent = `${Number(nl.toFixed(2))} A`;
 
-  if (tpow > 1000000) document.querySelector("#TPOW").textContent = `${+(tpow/1000000).toFixed(2)} MVA`;
-  else if (tpow > 1000) document.querySelector("#TPOW").textContent = `${+(tpow/1000).toFixed(2)} kVA`;
-  else document.querySelector("#TPOW").textContent = `${+tpow.toFixed(2)} VA`;
+  if (tpow > 1000000) document.querySelector("#TPOW").textContent = `${Number((tpow/1000000).toFixed(2))} MVA`;
+  else if (tpow > 1000) document.querySelector("#TPOW").textContent = `${Number((tpow/1000).toFixed(2))} kVA`;
+  else document.querySelector("#TPOW").textContent = `${Number(tpow.toFixed(2))} VA`;
 }
 
 function consum() {
-  let conl = +(getSavedValue("CONL"));
-  let conr = +(getSavedValue("CONR"));
-  let conh = +(getSavedValue("CONH"));
+  let conl = Number(getSavedValue("CONL"));
+  let conr = Number(getSavedValue("CONR"));
+  let conh = Number(getSavedValue("CONH"));
 
   let cond = Math.floor(conh/24);
   let conm = conh%24;
   let conk = conl*conh/1000;
   let conc = conk*conr;
 
-  document.querySelector("#COND").textContent = `${+cond.toFixed(0)} d, ${+conm.toFixed(0)} h`;
-  document.querySelector("#CONK").textContent = `${+conk.toFixed(2)} kWh`;
-  document.querySelector("#CONC").textContent = `${+conc.toFixed(2)} £`;
+  document.querySelector("#COND").textContent = `${Number(cond.toFixed(0))} d, ${Number(conm.toFixed(0))} h`;
+  document.querySelector("#CONK").textContent = `${Number(conk.toFixed(2))} kWh`;
+  document.querySelector("#CONC").textContent = `${Number(conc.toFixed(2))} £`;
 
 }
 
