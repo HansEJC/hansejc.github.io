@@ -19,7 +19,7 @@ function save(data) {
   dbObj.set({ data, headers });
 }
 
-function saveIndexedDB(data){
+function saveIndexedDB(data) {
   getIndex();
   var transaction = db.transaction(["plots"], "readwrite");
   var objectStore = transaction.objectStore("plots");
@@ -50,7 +50,7 @@ function read() {
 }
 
 function javaread() {
-  document.forms['myForm'].elements["rel_upload"].onchange = function (evt) {
+  document.querySelector(`#rel_upload`).onchange = function (evt) {
     if (!window.FileReader) return; // Browser is not compatible
     var reader = new FileReader();
     reader.onload = function (evt) {
