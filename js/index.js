@@ -2,7 +2,7 @@ function initiate() {
   localStorage.setItem(`game`, `rex`);
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.addEventListener('change', saveRadio);
-    rad.checked = (getSavedValue(rad.id) == "true");
+    rad.checked = (getSavedValue(rad.id) === "true");
   });
   if (!document.querySelector("#Jon").checked && !document.querySelector("#Maple").checked) document.querySelector("#Jon").click(); //if none checked, make Jon default
   gameMode();
@@ -36,7 +36,7 @@ function speech() {
 function keys(e) {
   let keyCode = e.which || e.keyCode;
   let handled = false;
-  if (keyCode == 38 || keyCode == 40 || keyCode == 32) { //up or down or spacebar
+  if (keyCode === 38 || keyCode === 40 || keyCode === 32) { //up or down or spacebar
     e.preventDefault();
     handled = true;
   }

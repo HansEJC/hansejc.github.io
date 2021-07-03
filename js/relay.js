@@ -54,7 +54,7 @@ function javaread() {
     if (!window.FileReader) return; // Browser is not compatible
     let reader = new FileReader();
     reader.onload = function (evt) {
-      if (evt.target.readyState != 2) return;
+      if (evt.target.readyState !==2) return;
       if (evt.target.error) {
         logError('Error while reading file');
         return;
@@ -88,7 +88,7 @@ function startup() {
   funkyRadio();
   document.querySelector(`#Import`).addEventListener(`click`, importFault);
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
-    box.checked = (getSavedValue(box.id) == "true");
+    box.checked = (getSavedValue(box.id) === "true");
   });
   for (let i = 0; i < 6; i++) document.getElementById(i).checked = true;
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
@@ -104,11 +104,11 @@ function startup() {
   };
   let prim = document.getElementById("Prim");
   prim.onchange = function () { read(); checkit(); };
-  prim.checked = getSavedValue(prim.id) == "true" || getSavedValue(prim.id) == "";
+  prim.checked = getSavedValue(prim.id) === "true" || getSavedValue(prim.id) === "";
   document.getElementById("Sec").onchange = function () { checkit(); read(); };
   let primDR = document.getElementById("PrimDR");
   primDR.onchange = function () { read(); };
-  primDR.checked = getSavedValue(primDR.id) == "true" || getSavedValue(primDR.id) == "";
+  primDR.checked = getSavedValue(primDR.id) === "true" || getSavedValue(primDR.id) === "";
   document.getElementById("SecDR").onchange = function () { read(); };
   checkit();
 }
@@ -126,7 +126,7 @@ function inside(point, vs) {
     let xi = vs[i][0], yi = vs[i][1];
     let xj = vs[j][0], yj = vs[j][1];
 
-    let intersect = ((yi > y) != (yj > y))
+    let intersect = ((yi > y) !==(yj > y))
       && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
     if (intersect) inside = !inside;
   }
@@ -159,9 +159,9 @@ function plotProtection(csvarr) {
   let z3del = Number(document.getElementById("Z3del").value);
   let fst, vtr, ctr;
 
-  fst = document.getElementById("FST").value == "" ? 1 : Number(document.getElementById("FST").value);
-  vtr = document.getElementById("VTR").value == "" ? 1 : Number(document.getElementById("VTR").value);
-  ctr = document.getElementById("CTR").value == "" ? 1 : Number(document.getElementById("CTR").value);
+  fst = document.getElementById("FST").value === "" ? 1 : Number(document.getElementById("FST").value);
+  vtr = document.getElementById("VTR").value === "" ? 1 : Number(document.getElementById("VTR").value);
+  ctr = document.getElementById("CTR").value === "" ? 1 : Number(document.getElementById("CTR").value);
   let tr = ctr / vtr; //secondary ratio
 
   //Primary or Secondary Disturbance record
@@ -325,7 +325,7 @@ function Zone1P44T(tr) {
   let pcx1 = xx1 * Math.sin(Z1t) + Z1 * xmul1;
   let prx1 = pmul1 * Math.sin(pmul2);
   let pgr1 = -pgx1 * Math.sin(Z1s) / Math.sin((90 * Math.PI / 180) - Z1s);
-  if (pgx1 == pkx1) {
+  if (pgx1 === pkx1) {
     let pkr1 = pgr1;
   }
   else {
@@ -369,7 +369,7 @@ function Zone2P44T(tr) {
   let pcx2 = xx2 * Math.sin(Z2t) + Z2 * xmul1;
   let prx2 = pr21 * Math.sin(pr22);
   let pgr2 = -pgx2 * Math.sin(Z2s) / Math.sin((90 * Math.PI / 180) - Z2s);
-  if (pgx2 == pkx2) {
+  if (pgx2 === pkx2) {
     let pkr2 = pgr2;
   }
   else {

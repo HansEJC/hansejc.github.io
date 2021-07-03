@@ -28,9 +28,9 @@
   //Toggle to change mode manually
   darkToggle.addEventListener('change', function () { toggleDarkTheme(darkToggle.checked); saveCheckbox(this); });
 
-  toggleDarkTheme(prefersDark.matches && (getSavedValue(darkToggle.id) != "false"));
-  if (getSavedValue(darkToggle.id) == "true") toggleDarkTheme(true); //iif statement as it would turn off if false
-  //if ((prefersDark.matches || (getSavedValue(darkToggle.id) == "true")) && !darkToggle.checked) darkToggle.click();
+  toggleDarkTheme(prefersDark.matches && (getSavedValue(darkToggle.id) !=="false"));
+  if (getSavedValue(darkToggle.id) === "true") toggleDarkTheme(true); //iif statement as it would turn off if false
+  //if ((prefersDark.matches || (getSavedValue(darkToggle.id) === "true")) && !darkToggle.checked) darkToggle.click();
 
   // Listen for changes to the prefers-color-scheme media query
   prefersDark.addListener((mediaQuery) => toggleDarkTheme(mediaQuery.matches));
@@ -143,7 +143,7 @@ function clippy(x, y) {
       height: y + 10,
       width: x + 10,
     }).then(canvas => {
-      if (typeof (navigator.clipboard) != 'undefined') {
+      if (typeof (navigator.clipboard) !=='undefined') {
         canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]));
       }
       else {
@@ -155,7 +155,7 @@ function clippy(x, y) {
   if (typeof (navigator.clipboard) === 'undefined') {
     let htmltext = (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes("Edg")) ? "<br><br><a href=chrome://flags/#unsafely-treat-insecure-origin-as-secure>Auto copy to clipboard not supported in http. Copy this link and open in new tab to add this site as trusted to enable.</a>" : "<br><br><a>Auto copy to clipboard not supported. Right click plot and copy as image.</a>";
     let article = document.querySelector('article');
-    if (article.lastChild.nodeName != "A") article.innerHTML += htmltext;
+    if (article.lastChild.nodeName !=="A") article.innerHTML += htmltext;
   }
 }
 
@@ -199,7 +199,7 @@ function saveCheckbox(e) {
 
 function funkyRadio() {
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) == "true");
+    rad.checked = (getSavedValue(rad.id) === "true");
     rad.addEventListener('change', saveRadio);
   });
 }

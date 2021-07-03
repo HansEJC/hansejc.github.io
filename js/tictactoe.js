@@ -46,7 +46,7 @@ function avail() {
     if (s.includes('X')) board[ind] = 'X';
     if (s.includes('O')) board[ind] = 'O';
   });
-  return board.filter(s => s != "X" && s != "O");
+  return board.filter(s => s !=="X" && s !=="O");
 }
 
 function checkWin() {
@@ -81,7 +81,7 @@ let iter = 0;
 function minimax(reboard, player) {
   iter++;
   let array = avail();
-  if (array.length == 9) return { index: 7 };
+  if (array.length === 9) return { index: 7 };
   if (winning(reboard, 'X')) {
     return { score: -10 };
   }
@@ -98,7 +98,7 @@ function minimax(reboard, player) {
     move.index = reboard[array[i]];
     reboard[array[i]] = player;
 
-    if (player == 'O') {
+    if (player === 'O') {
       g = minimax(reboard, 'X');
       move.score = g.score;
     } else {
@@ -132,14 +132,14 @@ function minimax(reboard, player) {
 
 // winning combinations
 function winning(board, player) {
-  return (board[0] == player && board[1] == player && board[2] == player) ||
-    (board[3] == player && board[4] == player && board[5] == player) ||
-    (board[6] == player && board[7] == player && board[8] == player) ||
-    (board[0] == player && board[3] == player && board[6] == player) ||
-    (board[1] == player && board[4] == player && board[7] == player) ||
-    (board[2] == player && board[5] == player && board[8] == player) ||
-    (board[0] == player && board[4] == player && board[8] == player) ||
-    (board[2] == player && board[4] == player && board[6] == player) ? true : false;
+  return (board[0] === player && board[1] === player && board[2] === player) ||
+    (board[3] === player && board[4] === player && board[5] === player) ||
+    (board[6] === player && board[7] === player && board[8] === player) ||
+    (board[0] === player && board[3] === player && board[6] === player) ||
+    (board[1] === player && board[4] === player && board[7] === player) ||
+    (board[2] === player && board[5] === player && board[8] === player) ||
+    (board[0] === player && board[4] === player && board[8] === player) ||
+    (board[2] === player && board[4] === player && board[6] === player) ? true : false;
 }
 
 const toggleMode = () => mode.textContent = mode.textContent === "Hard" ? 'Easy' : 'Hard';
@@ -258,7 +258,7 @@ function firstPlay() {
   if (classInc(4, 'X')) { //X in the middle
     firstMid = true;
     let idx = Math.floor(Math.random() * 4);
-    idx = idx == 1 ? 6 : idx; idx = idx == 3 ? 8 : idx;  //random corner
+    idx = idx === 1 ? 6 : idx; idx = idx === 3 ? 8 : idx;  //random corner
     return squares[idx].firstChild;
   }
   if (squareClass.some(ev => ev.includes('X'))) return squares[4].firstChild;

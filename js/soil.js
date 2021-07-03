@@ -65,7 +65,7 @@ function soil() {
     stan = Number(document.getElementById(`stan${i}`).value);
     stiv = dis * stan * 2 * Math.PI;
     document.getElementById(`stiv${i}`).textContent = `${Number(stiv.toFixed(2))} Ωm`;
-    if (stan != 0) soilarr.push([dis, stan, stiv]);
+    if (stan !==0) soilarr.push([dis, stan, stiv]);
     document.getElementById(`dis${i}`).innerText = `${dis}m (${dis / 2} - ${(dis + dis / 2).toFixed(1)})`;
   }
   //console.table(soilarr);
@@ -89,7 +89,7 @@ function def() {
 function fop() {
   let dis, meas;
   let fopdis = Number(getSavedValue(`FOPDis`));    // set the value to this input
-  if (fopdis == 0) {
+  if (fopdis === 0) {
     fopdis = 50;
     document.getElementById(`FOPDis`).value = 50;
   }
@@ -97,7 +97,7 @@ function fop() {
   for (let i = 0; i < 10; i++) {
     dis = document.getElementById(`fopdis${i}`).innerText = Number((fopdis * ((i) / 10)).toFixed(1));
     meas = Number(document.getElementById(`fopmeas${i}`).value);
-    if (meas != 0) foparr.push([dis, meas]);
+    if (meas !==0) foparr.push([dis, meas]);
   }
   document.getElementById(`fopdis6`).innerText = `${Number((fopdis * 0.62).toFixed(1))}m`;
 
@@ -121,7 +121,7 @@ function dygPlot(foparr) {
   try {
     if (typeof g3 !== `undefined`) g3.destroy();
   } catch (e) { logError(e); }
-  if (foparr.length == 0) return;
+  if (foparr.length === 0) return;
   g3 = new Dygraph(
     document.getElementById(`graphdiv3`),
     foparr,
@@ -158,7 +158,7 @@ function dygPlot(foparr) {
 function saveResults(rows) {
   let tloc = document.getElementById(`TLOC`).value;
   let test = getSavedValue("test");
-  let removal = (document.querySelector(`#FOPDis`).value == `69`);
+  let removal = (document.querySelector(`#FOPDis`).value === `69`);
   if (tloc === `` || test === ``) return;
   let dbObj = firebase.database().ref(`${test}/${tloc}`);
   removal ? dbObj.remove() : dbObj.update(rows);

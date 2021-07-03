@@ -2,7 +2,7 @@ function inits() {
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) == "true");
+    rad.checked = (getSavedValue(rad.id) === "true");
   });
   let doublrr = document.querySelector("#DRR").checked;
   if (!doublrr) document.querySelector("#SRR").checked = true;
@@ -21,7 +21,7 @@ function calculations(){
   let erimp = Number(getSavedValue("ERIMP")) || 0.18;
   let mimp = (Number(getSavedValue("MIMP")) || 20)+erimp;
   let masd = Number(getSavedValue("MASD"))/1000 || 40/1000;
-  crbd = crbd == 0 ? Number.MAX_SAFE_INTEGER : Math.max(Number(crbd)/1000,0.1); //convert to km and set to minimum of 100m
+  crbd = crbd === 0 ? Number.MAX_SAFE_INTEGER : Math.max(Number(crbd)/1000,0.1); //convert to km and set to minimum of 100m
   let railR = doublrr ? 2 : 1;
   let earray = [] , subarray = [];
   let vol = 25; //25kV
@@ -36,19 +36,19 @@ function calculations(){
   let {extra,index,insert} = negTrack(subarray);
   document.querySelectorAll(".loc").forEach((loc,ind) => {
     let trnu = Number(getSavedValue(Number(loc.id)+199)) || 2;
-    trnu = trnu == 1 ? 1/Number.MAX_SAFE_INTEGER : trnu-1;
+    trnu = trnu === 1 ? 1/Number.MAX_SAFE_INTEGER : trnu-1;
     let dist = getSavedValue(loc.id);
     loc.value = dist;
     let lc = ind === index ? Number(dist) + extra : dist; //add extra for non parallel subs
-    lc = lc == "" ? 5 : Math.abs(lc); //set to 5km if it's empty to avoid lag
+    lc = lc === "" ? 5 : Math.abs(lc); //set to 5km if it's empty to avoid lag
 
     for (let i=1;i<=res;i++){
-      i = ind == 0 ? res : i; //shift the first sub to its km point
+      i = ind === 0 ? res : i; //shift the first sub to its km point
       let lcc = smoothdec(lc*i/res,6); //current location
       let lch = dist < 0 ? totlc-lcc : totlc+lcc; //current total location
       let nxbnd = lcd(lc/res,crbd); //next bond location
       nxbnd = nxbnd > lc ? lc : nxbnd; //if cross bonding is greater than sub distance, set to sub distance
-      let lxb = smoothdec(lcc % nxbnd,6) == 0 ? nxbnd : smoothdec(lcc % nxbnd,6) || 0;//location after last xbond 
+      let lxb = smoothdec(lcc % nxbnd,6) === 0 ? nxbnd : smoothdec(lcc % nxbnd,6) || 0;//location after last xbond 
       
       let masdcom = lcd(lc/res,masd); //make the mast distance have a common multiple with the res
       let masts = smoothdec(lcc % masdcom,6) === 0;
@@ -59,8 +59,8 @@ function calculations(){
       let stuff = {ole,lcc,lc,trnu,lch,lxb,aew,ri,railR,nxbnd,rsc,totmimp};
       oleimp = oleFun(stuff);
       ({returnimp, returnimp2} = normalCalc(stuff,true));
-      oleimp = ind == 0 ? 0 : oleimp; //set FS impedance to 0
-      returnimp = ind == 0 ? 0 : returnimp; //set FS impedance to 0
+      oleimp = ind === 0 ? 0 : oleimp; //set FS impedance to 0
+      returnimp = ind === 0 ? 0 : returnimp; //set FS impedance to 0
       faultimp = oleimp+returnimp;
 
       let current = 1000*vol/(faultimp+imp+previmp+prevole);
@@ -109,7 +109,7 @@ function dygPlot(earray,subarray){
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){logError(e);}
-  if (earray.length == 0) return;
+  if (earray.length === 0) return;
   g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     earray.join("\r\n"),

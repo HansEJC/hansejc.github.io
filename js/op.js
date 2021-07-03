@@ -4,7 +4,7 @@ function startup() {
   document.getElementById("SEAR").value = getSavedValue("SEAR");    // set the value to this input
   document.getElementById("PASS").value = getSavedValue("PASS");    // set the value to this input
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) == "true");
+    rad.checked = (getSavedValue(rad.id) === "true");
   });
   const radios = document.querySelector('input[name]:checked');
   if (!radios) document.querySelector(`#Del`).checked = true;
@@ -57,7 +57,7 @@ function splicer(arr, file) {
   let col = file.includes(`Proj`) ? 5
     : file.includes(`Ware`) ? 7 : 0;
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i][col] == "" || new RegExp(str, "iu").test(arr[i][col]) || new RegExp("undefined", "iu").test(arr[i][col])) {
+    if (arr[i][col] === "" || new RegExp(str, "iu").test(arr[i][col]) || new RegExp("undefined", "iu").test(arr[i][col])) {
       arr.splice(i, 1);
       i--;
     }

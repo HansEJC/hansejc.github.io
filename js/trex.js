@@ -28,7 +28,7 @@ function mods() {
   else Runner.prototype.gameOver = original;
 }
 
-const startBool = (e) => !this.crashed && (Runner.keycodes.JUMP[String(e.keyCode)] || e.type == Runner.events.TOUCHSTART);
+const startBool = (e) => !this.crashed && (Runner.keycodes.JUMP[String(e.keyCode)] || e.type === Runner.events.TOUCHSTART);
 //infinite jumps
 function cheats() {
   mods();
@@ -54,7 +54,7 @@ function cheats() {
 }
 
 function trexKeyDown(e) {
-  if (e.target != this.detailsButton) {
+  if (e.target !==this.detailsButton) {
     if (startBool(e)) {
       if (!this.activated) {
         this.loadSounds();
@@ -65,8 +65,8 @@ function trexKeyDown(e) {
         this.tRex.startJump();
       }
     }
-    if (this.crashed && e.type == Runner.events.TOUCHSTART &&
-      e.currentTarget == this.containerEl) {
+    if (this.crashed && e.type === Runner.events.TOUCHSTART &&
+      e.currentTarget === this.containerEl) {
       this.restart();
     }
   }
@@ -862,7 +862,7 @@ function trekt(imgs1, imgs2) {
         this.runningTime += deltaTime;
         let hasObstacles = this.runningTime > this.config.CLEAR_TIME;
         // First jump triggers the intro.
-        if (this.tRex.jumpCount == 1 && !this.playingIntro) {
+        if (this.tRex.jumpCount === 1 && !this.playingIntro) {
           this.playIntro();
         }
         // The horizon doesn't move until the intro is over.
@@ -962,8 +962,8 @@ function trekt(imgs1, imgs2) {
     onKeyUp: function (e) {
       let keyCode = String(e.keyCode);
       let isjumpKey = Runner.keycodes.JUMP[keyCode] ||
-        e.type == Runner.events.TOUCHEND ||
-        e.type == Runner.events.MOUSEDOWN;
+        e.type === Runner.events.TOUCHEND ||
+        e.type === Runner.events.MOUSEDOWN;
       if (this.isRunning() && isjumpKey) {
         this.tRex.endJump();
       } else if (Runner.keycodes.DUCK[keyCode]) {
@@ -972,7 +972,7 @@ function trekt(imgs1, imgs2) {
         // Check that enough time has elapsed before allowing jump key to restart.
         let deltaTime = getTimeStamp() - this.time;
         if (Runner.keycodes.RESTART[keyCode] ||
-          (e.type == Runner.events.MOUSEUP && e.target == this.canvas) ||
+          (e.type === Runner.events.MOUSEUP && e.target === this.canvas) ||
           (deltaTime >= this.config.GAMEOVER_CLEAR_TIME &&
             Runner.keycodes.JUMP[keyCode])) {
           this.restart();
@@ -1061,7 +1061,7 @@ function trekt(imgs1, imgs2) {
     * Pause the game if the tab is not in focus.
     */
     onVisibilityChange: function (e) {
-      if (document.hidden || document.webkitHidden || e.type == 'blur') {
+      if (document.hidden || document.webkitHidden || e.type === 'blur') {
         this.stop();
       } else {
         this.play();
@@ -1422,7 +1422,7 @@ function trekt(imgs1, imgs2) {
         this.currentFrame = 0;
         this.msPerFrame = Trex.animFrames[opt_status].msPerFrame;
         this.currentAnimFrames = Trex.animFrames[opt_status].frames;
-        if (opt_status == Trex.status.WAITING) {
+        if (opt_status === Trex.status.WAITING) {
           this.animStartTime = getTimeStamp();
           this.setBlinkDelay();
         }
@@ -1432,7 +1432,7 @@ function trekt(imgs1, imgs2) {
         this.xPos += Math.round((this.config.START_X_POS /
           this.config.INTRO_DURATION) * deltaTime);
       }
-      if (this.status == Trex.status.WAITING) {
+      if (this.status === Trex.status.WAITING) {
         this.blink(getTimeStamp());
       } else {
         this.draw(this.currentAnimFrames[this.currentFrame], 0);
@@ -1479,7 +1479,7 @@ function trekt(imgs1, imgs2) {
       let deltaTime = time - this.animStartTime;
       if (deltaTime >= this.blinkDelay) {
         this.draw(this.currentAnimFrames[this.currentFrame], 0);
-        if (this.currentFrame == 1) {
+        if (this.currentFrame === 1) {
           // Set new random delay to blink.
           this.setBlinkDelay();
           this.animStartTime = time;
@@ -1671,7 +1671,7 @@ function trekt(imgs1, imgs2) {
         distance = this.getActualDistance(distance);
         if (distance > 0) {
           // Acheivement unlocked
-          if (distance % this.config.ACHIEVEMENT_DISTANCE == 0) {
+          if (distance % this.config.ACHIEVEMENT_DISTANCE === 0) {
             // Flash score and play sound.
             this.acheivement = true;
             this.flashTimer = 0;
@@ -1820,7 +1820,7 @@ function trekt(imgs1, imgs2) {
     setSourceDimensions: function () {
       for (let dimension in HorizonLine.dimensions) {
         if (IS_HIDPI) {
-          if (dimension != 'YPOS') {
+          if (dimension !=='YPOS') {
             this.sourceDimensions[dimension] =
               HorizonLine.dimensions[dimension] * 2;
           }
@@ -1859,7 +1859,7 @@ function trekt(imgs1, imgs2) {
     */
     updateXPos: function (pos, increment) {
       let line1 = pos;
-      let line2 = pos == 0 ? 1 : 0;
+      let line2 = pos === 0 ? 1 : 0;
       this.xPos[line1] -= increment;
       this.xPos[line2] = this.xPos[line1] + this.dimensions.WIDTH;
       if (this.xPos[line1] <= -this.dimensions.WIDTH) {

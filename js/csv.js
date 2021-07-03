@@ -24,7 +24,7 @@ function addLoader(html, err, val) {
 
 function checkit() {
   const hide = document.getElementById("hide");
-  hide.style.display = this.id == 'CSVF' ? "none" : "block";
+  hide.style.display = this.id === 'CSVF' ? "none" : "block";
 }
 
 function colorUpdate() {
@@ -92,7 +92,7 @@ function inputsNfunc(db) {
 function startup(bool) {
   funkyRadio();
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
-    box.checked = (getSavedValue(box.id) == "true");
+    box.checked = (getSavedValue(box.id) === "true");
     box.addEventListener('change', saveRadio);
   });
   document.getElementById("69").checked = getSavedValue("69") === "true" || getSavedValue("69") === ""; //checkbox "Show" with new file
@@ -125,7 +125,7 @@ function uploadcsv(db) {
     let reader = new FileReader();
 
     reader.onload = function (evt) {
-      if (evt.target.readyState != 2) return;
+      if (evt.target.readyState !==2) return;
       if (evt.target.error) {
         addLoader('Error while reading file', true);
         return;
@@ -157,7 +157,7 @@ function uploadcsv(db) {
 }
 
 function read(db) {
-  let prog = ((getSavedValue("99") == "true") || (getSavedValue("eqcheck") == "true")) ? 33 : 66;
+  let prog = ((getSavedValue("99") === "true") || (getSavedValue("eqcheck") === "true")) ? 33 : 66;
   try {
     addLoader("Reading Data from Variable", false, prog);
     let arr = heh.map(x => [...x]);
@@ -198,19 +198,19 @@ function plotcalcs(csv, db) {
 function parseCSV(csv) {
   csv = Papa.parse(csv).data;
   try {
-    while (csv[csv.length - 1].length != csv[csv.length - 5].length) {
+    while (csv[csv.length - 1].length !==csv[csv.length - 5].length) {
       csv.splice(csv.length - 1, 1);// remove empty ends
     }
   } catch (e) { addLoader(e, true); }
 
   for (let i = 0; i < csv.length; i++) {    //make all rows have equal numbers to bottom row
-    if (csv[i].length != csv[csv.length - 1].length) {
+    if (csv[i].length !==csv[csv.length - 1].length) {
       csv.splice(i, 1);
       i--;
     }
   }
   csv = csv.map(i => i.map(j => {
-    return j == "null" ? null : Number(j);
+    return j === "null" ? null : Number(j);
   })); //loop through 2D array and map individual items
   for (let i = 0; i < csv.length; i++) {    //eliminate not numbers
     for (let j = 0; j < csv[i].length; j++) {    //eliminate not numbers
@@ -243,8 +243,8 @@ function plotexp(csv, db) {
 
   let dat = new Date()/*, datb = false*/;
   let datrate = 1000;  //one second
-  if (document.getElementById("dat").value != "") dat = new Date(document.getElementById("dat").value);
-  if (document.getElementById("datR").value != "") datrate = Number(document.getElementById("datR").value) * 1000;
+  if (document.getElementById("dat").value !=="") dat = new Date(document.getElementById("dat").value);
+  if (document.getElementById("datR").value !=="") datrate = Number(document.getElementById("datR").value) * 1000;
   if (document.getElementById("99").checked && !(csv[0][0] instanceof Date)) { //set own start date and increment
     addLoader("Adding Custom Dates", false, 80);
     for (let i = 0; i < csv.length; i++) {
@@ -254,7 +254,7 @@ function plotexp(csv, db) {
   }
 
   equationInputs(csv[0].length);
-  const eqychecky = document.getElementById("eqcheck").checked = (getSavedValue("eqcheck") == "true");
+  const eqychecky = document.getElementById("eqcheck").checked = (getSavedValue("eqcheck") === "true");
   if (eqychecky) { //eqb = true;
     addLoader("Calculating Equations", false, 90);
     setTimeout(() => { csv = arrayequations(csv, db) }, 1);
@@ -263,7 +263,7 @@ function plotexp(csv, db) {
   setTimeout(() => { dyg(csv) }, 1);
   //setTimeout(()=> g3.updateOptions({file: csv}),10);
 
-  /*if (typeof(worker) != "undefined") worker.terminate();
+  /*if (typeof(worker) !=="undefined") worker.terminate();
   worker = new Worker('js/worker.js');
   worker.postMessage([csv,eqw,datb,eqb]);
   worker.onmessage = (mess) => {
@@ -430,7 +430,7 @@ yaxis.onblur = () => {
 
 function rgbToHex(rgb) {
   const col = rgb.split(/[,)(]/u);
-  const ToHex = (c) => { const hex = c.toString(16); return hex.length == 1 ? `0${hex}` : hex; }
+  const ToHex = (c) => { const hex = c.toString(16); return hex.length === 1 ? `0${hex}` : hex; }
   return `#${ToHex(Number(col[1]))}${ToHex(Number(col[2]))}${ToHex(Number(col[3]))}`;
 }
 
@@ -445,7 +445,7 @@ function UncheckAll(elementID) {
 
   for (let i = 0; i < _numChks; i++) {
 
-    if (_chks[0].checked == false) {
+    if (_chks[0].checked === false) {
       _chks[i + 1].checked = false;
       g3.setVisibility(i);
     }
@@ -463,7 +463,7 @@ function idents(len) {
     labd = document.getElementById(`csvlabel${i}`);
     colors = document.getElementById(`csvcolor${i}`);
     styles = document.getElementById(`csvlines${i}`);
-    labd.value = getSavedValue(`csvlabel${i}`) == "" ? labd.value : getSavedValue(`csvlabel${i}`);
+    labd.value = getSavedValue(`csvlabel${i}`) === "" ? labd.value : getSavedValue(`csvlabel${i}`);
     labl.push(labd.value);
     if (labd.value.length > 0) {
       labd.style['width'] = `${labd.value.length + 1}ch`;
@@ -492,7 +492,7 @@ function getControlPoints(p0, p1, p2, opt_alpha, opt_allowFalseExtrema) {
     r1y = (1 - alpha) * p1.y + alpha * p2.y;
 
   // Step 2: shift the points up so that p1 is on the l1–r1 line.
-  if (l1x != r1x) {
+  if (l1x !==r1x) {
     // This can be derived w/ some basic algebra.
     let deltaY = p1.y - r1y - (p1.x - r1x) * (l1y - r1y) / (l1x - r1x);
     l1y += deltaY;

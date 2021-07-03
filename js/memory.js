@@ -28,13 +28,13 @@ function clicked(e) {
   colClick = color(e.offsetX, e.offsetY);
   board.classList.add(colClick);
   for(let i=0;i<clickArr.length;i++){
-    if (clickArr[i] != colArr[i]) return gameOver();
+    if (clickArr[i] !==colArr[i]) return gameOver();
   }
   setTimeout(() => {
     board.classList.remove(colClick);
   }, 200);
 
-  if (JSON.stringify(clickArr) == JSON.stringify(colArr) && clickArr.length == colArr.length) {
+  if (JSON.stringify(clickArr) === JSON.stringify(colArr) && clickArr.length === colArr.length) {
     setTimeout(() => {
       score++,
       scoreBoard.textContent = score;
@@ -63,10 +63,10 @@ function repeatArr(){
     setTimeout(function() {
       let cl = colArr[ind++];
       board.classList.add(cl);
-      if (cl == 'red') freq = 50;
-      if (cl == 'green') freq = 150;
-      if (cl == 'blue') freq = 200;
-      if (cl == 'orange') freq = 100;
+      if (cl === 'red') freq = 50;
+      if (cl === 'green') freq = 150;
+      if (cl === 'blue') freq = 200;
+      if (cl === 'orange') freq = 100;
       k(10,freq,200);
       setTimeout(() => {
         board.classList.remove(...classes);
@@ -79,14 +79,14 @@ function repeatArr(){
 
 function randomColor() {
   let num = Math.floor(Math.random() * 4);
-  if (num == oldernum) oldernum=null,randomColor(); //only two colors in a row
+  if (num === oldernum) oldernum=null,randomColor(); //only two colors in a row
   else innerRandom();
   function innerRandom(){
     let colo;
-    if (num == 0) colo = 'red', k(10,50,200);
-    if (num == 1) colo = 'green', k(10,150,200);
-    if (num == 2) colo = 'blue', k(10,200,200);
-    if (num == 3) colo = 'orange', k(10,100,200);
+    if (num === 0) colo = 'red', k(10,50,200);
+    if (num === 1) colo = 'green', k(10,150,200);
+    if (num === 2) colo = 'blue', k(10,200,200);
+    if (num === 3) colo = 'orange', k(10,100,200);
     colArr.push(colo);
     board.classList.add(colo);
     oldernum = oldnum;

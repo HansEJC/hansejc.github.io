@@ -81,7 +81,7 @@ function createDeck(){
 const spin = () => Math.round(Math.random() * (360));
 
 function newP1Card(){
-  if (deck.length == 0) emptyDeck(P1Deck,'P1');
+  if (deck.length === 0) emptyDeck(P1Deck,'P1');
   else {
     lastP1Card = deck.shift();
     P1Deck.forEach((symb,ind) => {
@@ -94,7 +94,7 @@ function newP1Card(){
   }
 }
 function newP2Card(){
-  if (deck.length == 0) emptyDeck(P2Deck,'P2');
+  if (deck.length === 0) emptyDeck(P2Deck,'P2');
   else {
     lastP2Card = deck.shift();
     P2Deck.forEach((symb,ind) => {
@@ -147,7 +147,7 @@ function clicked(e) {
   let classy = e.target.classList;
   let scored = false;
   HouseDeck.forEach(card => {
-    if (classy[classy.length-1] == card.classList[card.classList.length-1]) {
+    if (classy[classy.length-1] === card.classList[card.classList.length-1]) {
       k(10,500,50);
       if (classy.value.includes('P1')){
         score++;
@@ -170,9 +170,9 @@ function clicked(e) {
   if (scored) return;
   k(10,30,200);
   if (classy.value.includes('P1')){
-    score = score == 0 ? 0 : score-1;
+    score = score === 0 ? 0 : score-1;
   }
-  else score2 = score2 == 0 ? 0 : score2-1;
+  else score2 = score2 === 0 ? 0 : score2-1;
   scoreBoard.textContent = score;
   scoreBoard2.textContent = score2;
 }
@@ -223,7 +223,7 @@ function startTimer(duration) {
 function numPlayers(){
   this.checked = true;
   let x = document.getElementById("Player2"), y = document.getElementById("Score2"), z = document.getElementById("GameTimer");
-  if (this.id == 'SingleP') x.style.display = "none", y.style.display = "none", z.style.display = "block";
+  if (this.id === 'SingleP') x.style.display = "none", y.style.display = "none", z.style.display = "block";
   else x.style.display = "flex", y.style.display = "block", z.style.display = "none";
 }
 
