@@ -129,11 +129,11 @@ function HiFreqFun(stuff){
       else earray.push([d,Math.sqrt(eirp)/(68.8*d)]);
     }
   }
-  if (0.1 < fi){
+  if (fi > 0.1){
     range = Math.pow(c,2)*Math.sqrt(eirp)/(7.2*Math.pow(tf,2));
     ran = c*Math.sqrt(eirp)/(434*tf);
   }
-  if (0.1 > fi || tf>45000000){
+  if (fi < 0.1 || tf>45000000){
     range = 5.48*Math.sqrt(eirp);
     ran = Math.sqrt(eirp)/(68.8);
   }
