@@ -1019,7 +1019,7 @@ function trekt(imgs1, imgs2) {
       if (this.distanceRan > this.highestScore) {
         this.highestScore = Math.ceil(this.distanceRan);
         this.distanceMeter.setHighScore(this.highestScore);
-        if (!document.getElementById("0").checked && !document.getElementById("1").checked) saveScores(Number((this.highestScore * .025).toFixed(0)));
+        if (!document.getElementById("0").checked && !document.getElementById("1").checked) saveScores(Number((this.highestScore * 0.025).toFixed(0)));
       }
       // Reset the time clock.
       this.time = getTimeStamp();
@@ -1715,7 +1715,7 @@ function trekt(imgs1, imgs2) {
     */
     drawHighScore: function () {
       this.canvasCtx.save();
-      this.canvasCtx.globalAlpha = .8;
+      this.canvasCtx.globalAlpha = 0.8;
       for (let i = this.highScore.length - 1; i >= 0; i--) {
         this.draw(i, parseInt(this.highScore[i], 10), true);
       }
@@ -1898,8 +1898,8 @@ function trekt(imgs1, imgs2) {
   */
   Horizon.config = {
     BG_CLOUD_SPEED: 0.2,
-    BUMPY_THRESHOLD: .3,
-    CLOUD_FREQUENCY: .5,
+    BUMPY_THRESHOLD: 0.3,
+    CLOUD_FREQUENCY: 0.5,
     HORIZON_HEIGHT: 16,
     MAX_CLOUDS: 6
   };
