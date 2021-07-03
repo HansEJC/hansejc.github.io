@@ -210,7 +210,7 @@ function parseCSV(csv) {
     }
   }
   csv = csv.map(i => i.map(j => {
-    return j == "null" ? null : +j;
+    return j == "null" ? null : Number(j);
   })); //loop through 2D array and map individual items
   for (let i = 0; i < csv.length; i++) {    //eliminate not numbers
     for (let j = 0; j < csv[i].length; j++) {    //eliminate not numbers
@@ -431,7 +431,7 @@ yaxis.onblur = () => {
 function rgbToHex(rgb) {
   const col = rgb.split(/[,)(]/u);
   const ToHex = (c) => { const hex = c.toString(16); return hex.length == 1 ? `0${hex}` : hex; }
-  return `#${ToHex(+col[1])}${ToHex(+col[2])}${ToHex(+col[3])}`;
+  return `#${ToHex(Number(col[1]))}${ToHex(Number(col[2]))}${ToHex(Number(col[3]))}`;
 }
 
 function change(el) {
@@ -523,7 +523,7 @@ function getControlPoints(p0, p1, p2, opt_alpha, opt_allowFalseExtrema) {
 
 // i.e. is none of (null, undefined, NaN)
 function isOK(x) {
-  return !!x && !isNaN(x);
+  return Boolean(x) && !isNaN(x);
 }
 
 // A plotter which uses splines to create a smooth curve.
@@ -580,7 +580,7 @@ function findExtremes() {
     for (let j = 0; j < file[1].length; j++) {
       max = Math.max(max, file[i][j][1]);
       min = Math.min(min, file[i][j][1]);
-      av += +file[i][j][1];
+      av += Number(file[i][j][1]);
     }
     av = av / file[1].length;
     extremeArr.push([labls[i], smoothdec(min), smoothdec(av), smoothdec(max)])

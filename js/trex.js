@@ -995,7 +995,7 @@ function trekt(imgs1, imgs2) {
     * @return {boolean}
     */
     isRunning: function () {
-      return !!this.raqId;
+      return Boolean(this.raqId);
     },
     /**
     * Game over state.
@@ -1019,7 +1019,7 @@ function trekt(imgs1, imgs2) {
       if (this.distanceRan > this.highestScore) {
         this.highestScore = Math.ceil(this.distanceRan);
         this.distanceMeter.setHighScore(this.highestScore);
-        if (!document.getElementById("0").checked && !document.getElementById("1").checked) saveScores(+(this.highestScore * .025).toFixed(0));
+        if (!document.getElementById("0").checked && !document.getElementById("1").checked) saveScores(Number((this.highestScore * .025).toFixed(0)));
       }
       // Reset the time clock.
       this.time = getTimeStamp();

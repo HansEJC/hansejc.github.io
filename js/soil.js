@@ -61,10 +61,10 @@ function soil() {
   let dis, stan;
   let soilarr = [];
   for (let i = 0; i < measurements; i++) {
-    dis = +(document.getElementById(`dis${i}`).innerText);
-    stan = +(document.getElementById(`stan${i}`).value);
+    dis = Number(document.getElementById(`dis${i}`).innerText);
+    stan = Number(document.getElementById(`stan${i}`).value);
     stiv = dis * stan * 2 * Math.PI;
-    document.getElementById(`stiv${i}`).textContent = `${+stiv.toFixed(2)} Ωm`;
+    document.getElementById(`stiv${i}`).textContent = `${Number(stiv.toFixed(2))} Ωm`;
     if (stan != 0) soilarr.push([dis, stan, stiv]);
     document.getElementById(`dis${i}`).innerText = `${dis}m (${dis / 2} - ${(dis + dis / 2).toFixed(1)})`;
   }
@@ -88,22 +88,22 @@ function def() {
 
 function fop() {
   let dis, meas;
-  let fopdis = +(getSavedValue(`FOPDis`));    // set the value to this input
+  let fopdis = Number(getSavedValue(`FOPDis`));    // set the value to this input
   if (fopdis == 0) {
     fopdis = 50;
     document.getElementById(`FOPDis`).value = 50;
   }
   let foparr = [];
   for (let i = 0; i < 10; i++) {
-    dis = document.getElementById(`fopdis${i}`).innerText = +(fopdis * ((i) / 10)).toFixed(1);
-    meas = +(document.getElementById(`fopmeas${i}`).value);
+    dis = document.getElementById(`fopdis${i}`).innerText = Number((fopdis * ((i) / 10)).toFixed(1));
+    meas = Number(document.getElementById(`fopmeas${i}`).value);
     if (meas != 0) foparr.push([dis, meas]);
   }
-  document.getElementById(`fopdis6`).innerText = `${+(fopdis * 0.62).toFixed(1)}m`;
+  document.getElementById(`fopdis6`).innerText = `${Number((fopdis * 0.62).toFixed(1))}m`;
 
-  const fir = +(document.getElementById(`fopmeas5`).value),
-    sec = +(document.getElementById(`fopmeas6`).value),
-    thir = +(document.getElementById(`fopmeas7`).value);
+  const fir = Number(document.getElementById(`fopmeas5`).value),
+    sec = Number(document.getElementById(`fopmeas6`).value),
+    thir = Number(document.getElementById(`fopmeas7`).value);
   document.getElementById(`fopmeas5`).className = `info`;
   document.getElementById(`fopmeas6`).className = `info`;
   document.getElementById(`fopmeas7`).className = `info`;
@@ -141,7 +141,7 @@ function dygPlot(foparr) {
         },
         y: {
           axisLabelFormatter: function (y) {
-            return `${+y.toFixed(3)} Ω`;
+            return `${Number(y.toFixed(3))} Ω`;
           },
           axisLabelWidth: 70
         }

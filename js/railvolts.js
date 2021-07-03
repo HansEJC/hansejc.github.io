@@ -35,7 +35,7 @@ function calculations(){
 
   let {extra,index,insert} = negTrack(subarray);
   document.querySelectorAll(".loc").forEach((loc,ind) => {
-    let trnu = Number(getSavedValue(+loc.id+199)) || 2;
+    let trnu = Number(getSavedValue(Number(loc.id)+199)) || 2;
     trnu = trnu == 1 ? 1/Number.MAX_SAFE_INTEGER : trnu-1;
     let dist = getSavedValue(loc.id);
     loc.value = dist;

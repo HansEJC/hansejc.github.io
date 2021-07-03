@@ -12,7 +12,7 @@ function quantities() {
   const myNode3 = document.getElementById("Tracks");
   myNode3.innerHTML = '';
 
-  let NumLocs = +(getSavedValue("NumLocs"));     // set the value to this input
+  let NumLocs = Number(getSavedValue("NumLocs"));     // set the value to this input
   NumLocs = NumLocs < 2 ? 2 : NumLocs;
   let cb = []; let cb2 = []; let cb3 = [];
   if (NumLocs < 20){
@@ -68,12 +68,12 @@ function negTrack(subarray) { //this is for locations that don't parallel
     }
     locs.classList.toggle(`loc`,!(trac.value < 0));
     let sub = getSavedValue(posID-99);
-    totlc += +locs.value;
+    totlc += Number(locs.value);
     if (trac.value < 0) {
       let lblStuff = {totlc,subarray,sub};
       subLabels(lblStuff);
       insert = totlc;
-      extra = +locs.value;
+      extra = Number(locs.value);
       index = ind+1;
     };
   });
