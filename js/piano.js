@@ -23,6 +23,6 @@ function keyPress(e) {
 let AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
     || false;
-if (AudioContext) {let a = new AudioContext();}
+window.a = AudioContext ? new AudioContext() : null;
 
 window.addEventListener('keydown', keyPress);

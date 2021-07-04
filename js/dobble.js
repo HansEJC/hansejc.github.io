@@ -193,7 +193,7 @@ function gameOver(){
 let AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
     || false;
-if (AudioContext) {let a = new AudioContext();}
+window.a = AudioContext ? new AudioContext() : null;
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
