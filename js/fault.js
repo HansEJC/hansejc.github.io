@@ -141,14 +141,10 @@ function dygPlot(earray,subarray){
       pointSize: 0.1,
       axes: {
         x: {
-          axisLabelFormatter: function(y) {
-            return  y + ' km';
-          },
+          axisLabelFormatter: (y) => `${y} km`
         },
         y: {
-          axisLabelFormatter: function(y) {
-            return  smoothdec(y) + ' kA';
-          },
+          axisLabelFormatter: (y) => `${smoothdec(y)} kA`
         },
       }
     }          // options

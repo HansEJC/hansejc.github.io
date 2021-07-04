@@ -125,12 +125,12 @@ function dygPlot(earray,subarray){
       axes: {
         x: {
           axisLabelFormatter: function(y) {
-            return  y + ' km';
+            return  `${y} km`;
           },
         },
         y: {
           axisLabelFormatter: function(y) {
-            return  smoothdec(y) + ' V';
+            return  `${smoothdec(y)} V`;
           },
         },
       }

@@ -117,7 +117,7 @@ function randomPage(e) {
 
 if ("serviceWorker" in navigator) {
   //Adds manifest and stuff
-  const {head} = document;
+  const { head } = document;
   const mani = document.createElement("link"), apple = document.createElement("link"), theme = document.createElement("meta");
   mani.rel = "manifest"; apple.rel = "apple-touch-icon"; theme.name = "theme-color";
   mani.href = "manifest.json"; apple.href = "images/apple-icon-180.png"; theme.content = "#800080";
@@ -131,7 +131,7 @@ if ("serviceWorker" in navigator) {
 
 //function to resize plot and copy to clipboard
 function clippy(x, y) {
-  const {offsetTop} = document.querySelector('#graphdiv3');
+  const { offsetTop } = document.querySelector('#graphdiv3');
   document.querySelector('#graphdiv3').setAttribute(`style`, `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
   window.dispatchEvent(new Event('resize'));
   for (let j = 0; j < 3; j++) {  //weird way to make it actually work
@@ -225,12 +225,12 @@ function exportToCsv(filename, rows) {
       }
       let result = innerValue.replace(/"/gu, '""');
       if (result.search(/("|,|\n)/gu) >= 0)
-        result = '"' + result + '"';
+        result = `"${result}"`;
       if (j > 0)
         finalVal += ',';
       finalVal += result;
     }
-    return finalVal + '\n';
+    return `${finalVal}\n`;
   };
   let csvFile = '';
   for (let i = 0; i < rows.length; i++) {

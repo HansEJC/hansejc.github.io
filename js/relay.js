@@ -274,14 +274,10 @@ async function dygPlot(total, xaxis, yaxis) {
       includeZero: true,
       axes: {
         x: {
-          axisLabelFormatter: function (y) {
-            return y + ' Ω';
-          },
+          axisLabelFormatter: (y) => `${y} Ω`
         },
         y: {
-          axisLabelFormatter: function (y) {
-            return y + ' Ω';
-          },
+          axisLabelFormatter: (y) => `${y} Ω`,
           axisLabelWidth: 60
         }
       }
