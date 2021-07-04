@@ -130,7 +130,7 @@ function dygPlot(earray,subarray){
     if (typeof g3 !== 'undefined') g3.destroy();
   }catch(e){logError(e);}
   if (earray.length === 0) return;
-  g3 = new Dygraph(
+  window.g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     earray.join("\r\n"),
     {
@@ -159,9 +159,8 @@ function dygPlot(earray,subarray){
       window.dispatchEvent(new Event('resize'));
     }, 500);
     g3.setAnnotations(subarray);
-    let min = g3.xAxisExtremes()[0];
-    let max = g3.xAxisExtremes()[1];
-    let adj = Math.abs(max-min)*0.1;
+    const [min, max] = g3.xAxisExtremes();
+    const adj = Math.abs(max-min)*0.1;
     g3.updateOptions({
       dateWindow: [min-adj,max+adj]
     });
@@ -179,8 +178,7 @@ function table(rows){
   try{
     rows.forEach(arr => {
       let row = myTable.insertRow(-1);
-      row.insertCell(0).innerHTML = arr[0];
-      row.insertCell(1).innerHTML = arr[1];
+      [row.insertCell(0).innerHTML, row.insertCell(1).innerHTML] = arr;
     });
   }catch(err){logError(err);}
   

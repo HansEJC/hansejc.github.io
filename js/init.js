@@ -28,7 +28,7 @@
   //Toggle to change mode manually
   darkToggle.addEventListener('change', function () { toggleDarkTheme(darkToggle.checked); saveCheckbox(this); });
 
-  toggleDarkTheme(prefersDark.matches && (getSavedValue(darkToggle.id) !=="false"));
+  toggleDarkTheme(prefersDark.matches && (getSavedValue(darkToggle.id) !== "false"));
   if (getSavedValue(darkToggle.id) === "true") toggleDarkTheme(true); //iif statement as it would turn off if false
   //if ((prefersDark.matches || (getSavedValue(darkToggle.id) === "true")) && !darkToggle.checked) darkToggle.click();
 
@@ -117,8 +117,8 @@ function randomPage(e) {
 
 if ("serviceWorker" in navigator) {
   //Adds manifest and stuff
-  let head = document.head;
-  let mani = document.createElement("link"), apple = document.createElement("link"), theme = document.createElement("meta");
+  const {head} = document;
+  const mani = document.createElement("link"), apple = document.createElement("link"), theme = document.createElement("meta");
   mani.rel = "manifest"; apple.rel = "apple-touch-icon"; theme.name = "theme-color";
   mani.href = "manifest.json"; apple.href = "images/apple-icon-180.png"; theme.content = "#800080";
   head.appendChild(mani); head.appendChild(apple); head.appendChild(theme);
@@ -131,19 +131,19 @@ if ("serviceWorker" in navigator) {
 
 //function to resize plot and copy to clipboard
 function clippy(x, y) {
-  let offset = document.querySelector('#graphdiv3').offsetTop;
+  const {offsetTop} = document.querySelector('#graphdiv3');
   document.querySelector('#graphdiv3').setAttribute(`style`, `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
   window.dispatchEvent(new Event('resize'));
   for (let j = 0; j < 3; j++) {  //weird way to make it actually work
     html2canvas(document.querySelector("#graphdiv3"), {
-      y: offset,
+      y: offsetTop,
       //scrollY: -window.scrollY,
       scrollX: 0,
       scrollY: 0,
       height: y + 10,
       width: x + 10,
     }).then(canvas => {
-      if (typeof (navigator.clipboard) !=='undefined') {
+      if (typeof (navigator.clipboard) !== 'undefined') {
         canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]));
       }
       else {
@@ -155,15 +155,14 @@ function clippy(x, y) {
   if (typeof (navigator.clipboard) === 'undefined') {
     let htmltext = (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes("Edg")) ? "<br><br><a href=chrome://flags/#unsafely-treat-insecure-origin-as-secure>Auto copy to clipboard not supported in http. Copy this link and open in new tab to add this site as trusted to enable.</a>" : "<br><br><a>Auto copy to clipboard not supported. Right click plot and copy as image.</a>";
     let article = document.querySelector('article');
-    if (article.lastChild.nodeName !=="A") article.innerHTML += htmltext;
+    if (article.lastChild.nodeName !== "A") article.innerHTML += htmltext;
   }
 }
 
 //Save the value function - save it to localStorage as (ID, VALUE)
 function saveValue(e) {
-  let id = e.id;  // get the sender's id to save it .
-  let val = e.value; // get the value.
-  localStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override .
+  const { id, value } = e;  // get the sender's id to save it .
+  localStorage.setItem(id, value);// Every time user writing something, the localStorage's value will override .
   saveParameter();
 }
 

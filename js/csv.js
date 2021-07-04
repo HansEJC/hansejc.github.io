@@ -125,7 +125,7 @@ function uploadcsv(db) {
     let reader = new FileReader();
 
     reader.onload = function (evt) {
-      if (evt.target.readyState !==2) return;
+      if (evt.target.readyState !== 2) return;
       if (evt.target.error) {
         addLoader('Error while reading file', true);
         return;
@@ -198,13 +198,13 @@ function plotcalcs(csv, db) {
 function parseCSV(csv) {
   csv = Papa.parse(csv).data;
   try {
-    while (csv[csv.length - 1].length !==csv[csv.length - 5].length) {
+    while (csv[csv.length - 1].length !== csv[csv.length - 5].length) {
       csv.splice(csv.length - 1, 1);// remove empty ends
     }
   } catch (e) { addLoader(e, true); }
 
   for (let i = 0; i < csv.length; i++) {    //make all rows have equal numbers to bottom row
-    if (csv[i].length !==csv[csv.length - 1].length) {
+    if (csv[i].length !== csv[csv.length - 1].length) {
       csv.splice(i, 1);
       i--;
     }
@@ -243,8 +243,8 @@ function plotexp(csv, db) {
 
   let dat = new Date()/*, datb = false*/;
   let datrate = 1000;  //one second
-  if (document.getElementById("dat").value !=="") dat = new Date(document.getElementById("dat").value);
-  if (document.getElementById("datR").value !=="") datrate = Number(document.getElementById("datR").value) * 1000;
+  if (document.getElementById("dat").value !== "") dat = new Date(document.getElementById("dat").value);
+  if (document.getElementById("datR").value !== "") datrate = Number(document.getElementById("datR").value) * 1000;
   if (document.getElementById("99").checked && !(csv[0][0] instanceof Date)) { //set own start date and increment
     addLoader("Adding Custom Dates", false, 80);
     for (let i = 0; i < csv.length; i++) {
@@ -339,7 +339,7 @@ function dyg(csv) {
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
   } catch (e) { addLoader(e, true); }
-  g3 = new Dygraph(
+  window.g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     csv,
     {
@@ -492,7 +492,7 @@ function getControlPoints(p0, p1, p2, opt_alpha, opt_allowFalseExtrema) {
     r1y = (1 - alpha) * p1.y + alpha * p2.y;
 
   // Step 2: shift the points up so that p1 is on the l1–r1 line.
-  if (l1x !==r1x) {
+  if (l1x !== r1x) {
     // This can be derived w/ some basic algebra.
     let deltaY = p1.y - r1y - (p1.x - r1x) * (l1y - r1y) / (l1x - r1x);
     l1y += deltaY;
@@ -529,11 +529,10 @@ function isOK(x) {
 // A plotter which uses splines to create a smooth curve.
 // Can be controlled via smoothPlotter.smoothing
 function smoothPlotter(e) {
-  let ctx = e.drawingContext,
-    points = e.points;
+  const { drawingContext, points } = e;
 
-  ctx.beginPath();
-  ctx.moveTo(points[0].canvasx, points[0].canvasy);
+  drawingContext.beginPath();
+  drawingContext.moveTo(points[0].canvasx, points[0].canvasy);
 
   // right control point for previous point
   let lastRightX = points[0].canvasx, lastRightY = points[0].canvasy;
@@ -553,21 +552,20 @@ function smoothPlotter(e) {
         smoothPlotter.smoothing);
       lastRightX = (lastRightX !== null) ? lastRightX : p0.canvasx;
       lastRightY = (lastRightY !== null) ? lastRightY : p0.canvasy;
-      ctx.bezierCurveTo(lastRightX, lastRightY,
+      drawingContext.bezierCurveTo(lastRightX, lastRightY,
         controls[0], controls[1],
         p1.canvasx, p1.canvasy);
-      lastRightX = controls[2];
-      lastRightY = controls[3];
+      [, , lastRightX, lastRightY] = controls;
     } else if (p1) {
       // We're starting again after a missing point.
-      ctx.moveTo(p1.canvasx, p1.canvasy);
+      drawingContext.moveTo(p1.canvasx, p1.canvasy);
       lastRightX = p1.canvasx;
       lastRightY = p1.canvasy;
     } else {
       lastRightX = lastRightY = null;
     }
   }
-  ctx.stroke();
+  drawingContext.stroke();
 }
 
 function findExtremes() {
@@ -592,7 +590,7 @@ function table(rows) {
   const tabdiv = document.querySelector(`#ExtremesTable`);
   const myTable = document.createElement(`table`);
   myTable.classList.add(`scores`);
-  let row = myTable.insertRow(-1);
+  const row = myTable.insertRow(-1);
   row.insertCell(0).outerHTML = `<th>Series</th>`;
   row.insertCell(1).outerHTML = `<th>Min</th>`;
   row.insertCell(2).outerHTML = `<th>Average</th>`;
@@ -600,11 +598,8 @@ function table(rows) {
 
   try {
     rows.forEach(arr => {
-      let row = myTable.insertRow(-1);
-      row.insertCell(0).innerHTML = arr[0];
-      row.insertCell(1).innerHTML = arr[1];
-      row.insertCell(2).innerHTML = arr[2];
-      row.insertCell(3).innerHTML = arr[3];
+      const row = myTable.insertRow(-1);
+      [row.insertCell(0).innerHTML, row.insertCell(1).innerHTML, row.insertCell(2).innerHTML, row.insertCell(3).innerHTML] = arr;
     });
   } catch (err) { addLoader(err, true); }
 

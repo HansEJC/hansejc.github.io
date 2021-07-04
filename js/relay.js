@@ -21,8 +21,8 @@ function save(data) {
 
 function saveIndexedDB(data) {
   getIndex();
-  let transaction = db.transaction(["plots"], "readwrite");
-  let objectStore = transaction.objectStore("plots");
+  const transaction = db.transaction(["plots"], "readwrite");
+  const objectStore = transaction.objectStore("plots");
   objectStore.put({ id: 1, data });
   plotProtection(data);
 }
@@ -37,10 +37,10 @@ function importFault() {
 }
 
 function read() {
-  let transaction = db.transaction(["plots"], "readonly");
-  let objectStore = transaction.objectStore("plots");
+  const transaction = db.transaction(["plots"], "readonly");
+  const objectStore = transaction.objectStore("plots");
   objectStore.openCursor(null, "prev").onsuccess = async function (event) {
-    let cursor = event.target.result;
+    const cursor = event.target.result;
     try {
       plotProtection(cursor.value.data);
     } catch (err) {
@@ -52,9 +52,9 @@ function read() {
 function javaread() {
   document.querySelector(`#rel_upload`).onchange = function (evt) {
     if (!window.FileReader) return; // Browser is not compatible
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = function (evt) {
-      if (evt.target.readyState !==2) return;
+      if (evt.target.readyState !== 2) return;
       if (evt.target.error) {
         logError('Error while reading file');
         return;
@@ -66,13 +66,13 @@ function javaread() {
     reader.readAsText(evt.target.files[0]);
   };
   if (idbSupported) {
-    let openRequest = indexedDB.open("graph", 1);
+    const openRequest = indexedDB.open("graph", 1);
     openRequest.onupgradeneeded = dbUpgrade(db);
     openRequest.onsuccess = function (e) {
       db = e.target.result;
-      let transaction = db.transaction(["plots"]);
-      let objectStore = transaction.objectStore("plots");
-      let request = objectStore.get("2");
+      const transaction = db.transaction(["plots"]);
+      const objectStore = transaction.objectStore("plots");
+      const request = objectStore.get("2");
       request.onerror = function (event) {
       };
       request.onsuccess = function (event) {
@@ -93,7 +93,7 @@ function startup() {
   for (let i = 0; i < 6; i++) document.getElementById(i).checked = true;
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
-  let select = document.querySelector(`select`);
+  const select = document.querySelector(`select`);
   select.value = getSavedValue(select.id) || `P438`;
   javaread();
   // await code here
@@ -102,11 +102,11 @@ function startup() {
   document.onkeyup = function () {
     try { read(); } catch (e) { logError(e); }
   };
-  let prim = document.getElementById("Prim");
+  const prim = document.getElementById("Prim");
   prim.onchange = function () { read(); checkit(); };
   prim.checked = getSavedValue(prim.id) === "true" || getSavedValue(prim.id) === "";
   document.getElementById("Sec").onchange = function () { checkit(); read(); };
-  let primDR = document.getElementById("PrimDR");
+  const primDR = document.getElementById("PrimDR");
   primDR.onchange = function () { read(); };
   primDR.checked = getSavedValue(primDR.id) === "true" || getSavedValue(primDR.id) === "";
   document.getElementById("SecDR").onchange = function () { read(); };
@@ -120,13 +120,13 @@ function change(el) {
 function inside(point, vs) {
   // ray-casting algorithm based on
   // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-  let x = point[0], y = point[1];
+  const [x, y] = point;
   let inside = false;
   for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
-    let xi = vs[i][0], yi = vs[i][1];
-    let xj = vs[j][0], yj = vs[j][1];
+    const [xi, yi] = vs[i];
+    const [xj, yj] = vs[j];
 
-    let intersect = ((yi > y) !==(yj > y))
+    const intersect = ((yi > y) !== (yj > y))
       && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
     if (intersect) inside = !inside;
   }
@@ -151,38 +151,38 @@ function peakLoad() {
 }
 
 function plotProtection(csvarr) {
-  let select = document.querySelector(`select`);
+  const select = document.querySelector(`select`);
   const secdr = document.getElementById("SecDR");
 
   //Advanced settings variables
-  let z2del = Number(document.getElementById("Z2del").value);
-  let z3del = Number(document.getElementById("Z3del").value);
+  const z2del = Number(document.getElementById("Z2del").value);
+  const z3del = Number(document.getElementById("Z3del").value);
   let fst, vtr, ctr;
 
   fst = document.getElementById("FST").value === "" ? 1 : Number(document.getElementById("FST").value);
   vtr = document.getElementById("VTR").value === "" ? 1 : Number(document.getElementById("VTR").value);
   ctr = document.getElementById("CTR").value === "" ? 1 : Number(document.getElementById("CTR").value);
-  let tr = ctr / vtr; //secondary ratio
+  const tr = ctr / vtr; //secondary ratio
 
   //Primary or Secondary Disturbance record
   let trdr = 1;
   let vtrdr = 1;
   if (secdr.checked) { trdr = tr; vtrdr = vtr; }
 
-  let [Z1pol, Z1el] = eval(`Zone1${select.value}(tr)`);
-  let [Z2pol, Z2el] = eval(`Zone2${select.value}(tr)`);
-  let [Z3pol, Z3el] = eval(`Zone3${select.value}(tr)`);
-  let elements2 = [...peakLoad(), ...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
+  const [Z1pol, Z1el] = eval(`Zone1${select.value}(tr)`);
+  const [Z2pol, Z2el] = eval(`Zone2${select.value}(tr)`);
+  const [Z3pol, Z3el] = eval(`Zone3${select.value}(tr)`);
+  const elements2 = [...peakLoad(), ...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
   let polnums = [...Z1pol.flat(), ...Z2pol.flat(), ...Z3pol.flat()];
   polnums = { max: Math.max(...polnums) * 1.2, min: Math.min(...polnums) * 1.2 };
   const polmax = (num) => Math.max(polnums.max, num);
   const polmin = (num) => Math.min(polnums.min, num);
-  let xaxis = [polmin(-40), polmax(50)];
-  let yaxis = [polmin(-20), polmax(70)];
+  const xaxis = [polmin(-40), polmax(50)];
+  const yaxis = [polmin(-20), polmax(70)];
   let DR = []; DR = csvarr;
-  let calcStuff = { DR, trdr, vtrdr };
+  const calcStuff = { DR, trdr, vtrdr };
   let faultarray = addCSVtoArray(calcStuff);
-  let stuff = { faultarray, Z1pol, Z2pol, Z3pol, fst, z2del, z3del };
+  const stuff = { faultarray, Z1pol, Z2pol, Z3pol, fst, z2del, z3del };
   FaultZone(stuff);
 
   let total = elements2.slice();
@@ -193,16 +193,16 @@ function plotProtection(csvarr) {
 }
 
 function addCSVtoArray(stuff) {
-  let { DR, trdr, vtrdr } = stuff;
-  let faultarray = [], DRdiv, DRmult, res, react;
+  const { DR, trdr, vtrdr } = stuff;
+  let faultarray = [];
   if (DR.length === 0) return faultarray;
-  let [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
+  const [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
   for (let i = 1; i < DR.length; i++) { //add csv to array
-    DRdiv = (DR[i][v] / DR[i][c]) / trdr;
-    DRmult = (DR[i][va] - DR[i][ca]) * Math.PI / 180;
-    res = DRdiv * Math.cos(DRmult);
-    react = DRdiv * Math.sin(DRmult);
-    let isfault = res < 90 && react < 90 && react > 0 && DR[i][v] * vtrdr > 1000;
+    const DRdiv = (DR[i][v] / DR[i][c]) / trdr;
+    const DRmult = (DR[i][va] - DR[i][ca]) * Math.PI / 180;
+    const res = DRdiv * Math.cos(DRmult);
+    const react = DRdiv * Math.sin(DRmult);
+    const isfault = res < 90 && react < 90 && react > 0 && DR[i][v] * vtrdr > 1000;
     if (isfault) {
       faultarray.push([
         DRdiv * Math.cos(DRmult), //resistive values
@@ -257,7 +257,7 @@ async function dygPlot(total, xaxis, yaxis) {
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
   } catch (e) { logError(e); }
-  g3 = new Dygraph(
+  window.g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     total,
     {

@@ -165,7 +165,7 @@ function LowFreqFun(stuff){
 }
 
 function dygPlot(earray){
-  g3 = new Dygraph(
+  window.g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     earray,
     {

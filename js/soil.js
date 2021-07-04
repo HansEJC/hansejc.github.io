@@ -5,7 +5,7 @@ function startup() {
   fireBase();
   const measurements = 11;    // set the value to this input
   let cb = [], cb2 = [], cb3 = [];
-  let cbh = document.getElementById(`Dist`), cbh2 = document.getElementById(`Stan`), cbh3 = document.getElementById(`Stiv`);
+  const cbh = document.getElementById(`Dist`), cbh2 = document.getElementById(`Stan`), cbh3 = document.getElementById(`Stiv`);
 
   buttonFun(0, `soil`, soil);
   buttonFun(1, `fop`, fop);
@@ -32,8 +32,8 @@ function startup() {
 
 function buttonFun(but, str, fun) {
   document.querySelectorAll(`button`)[but].addEventListener(`click`, function () {
-    localStorage.setItem(`test`,str);
-    let filename = `${document.getElementById("TLOC").value}_${str}.csv`;
+    localStorage.setItem(`test`, str);
+    const filename = `${document.getElementById("TLOC").value}_${str}.csv`;
     exportToCsv(filename, fun());
     saveResults(fun());
   });
@@ -42,7 +42,7 @@ function buttonFun(but, str, fun) {
 function def2() {
   document.getElementById(`FOPDis`).value = getSavedValue(`FOPDis`);    // set the value to this input 
   let cb = [], cb2 = [];
-  let cbh = document.getElementById(`Dist2`), cbh2 = document.getElementById(`Meas`);
+  const cbh = document.getElementById(`Dist2`), cbh2 = document.getElementById(`Meas`);
   for (let i = 0; i < 10; i++) {
     cb[i] = document.createElement(`span`), cb2[i] = document.createElement(`input`);
     cb[i].className = `label`, cb2[i].type = `number`, cb2[i].step = `0.01`;
@@ -65,7 +65,7 @@ function soil() {
     stan = Number(document.getElementById(`stan${i}`).value);
     stiv = dis * stan * 2 * Math.PI;
     document.getElementById(`stiv${i}`).textContent = `${Number(stiv.toFixed(2))} Ωm`;
-    if (stan !==0) soilarr.push([dis, stan, stiv]);
+    if (stan !== 0) soilarr.push([dis, stan, stiv]);
     document.getElementById(`dis${i}`).innerText = `${dis}m (${dis / 2} - ${(dis + dis / 2).toFixed(1)})`;
   }
   //console.table(soilarr);
@@ -97,7 +97,7 @@ function fop() {
   for (let i = 0; i < 10; i++) {
     dis = document.getElementById(`fopdis${i}`).innerText = Number((fopdis * ((i) / 10)).toFixed(1));
     meas = Number(document.getElementById(`fopmeas${i}`).value);
-    if (meas !==0) foparr.push([dis, meas]);
+    if (meas !== 0) foparr.push([dis, meas]);
   }
   document.getElementById(`fopdis6`).innerText = `${Number((fopdis * 0.62).toFixed(1))}m`;
 
@@ -122,7 +122,7 @@ function dygPlot(foparr) {
     if (typeof g3 !== `undefined`) g3.destroy();
   } catch (e) { logError(e); }
   if (foparr.length === 0) return;
-  g3 = new Dygraph(
+  window.g3 = new Dygraph(
     document.getElementById(`graphdiv3`),
     foparr,
     {
@@ -156,18 +156,18 @@ function dygPlot(foparr) {
 }
 
 function saveResults(rows) {
-  let tloc = document.getElementById(`TLOC`).value;
-  let test = getSavedValue("test");
-  let removal = (document.querySelector(`#FOPDis`).value === `69`);
+  const tloc = document.getElementById(`TLOC`).value;
+  const test = getSavedValue("test");
+  const removal = (document.querySelector(`#FOPDis`).value === `69`);
   if (tloc === `` || test === ``) return;
-  let dbObj = firebase.database().ref(`${test}/${tloc}`);
+  const dbObj = firebase.database().ref(`${test}/${tloc}`);
   removal ? dbObj.remove() : dbObj.update(rows);
-  let msg = removal ? `Deleting from the database` : `Saving test results to the database`;
+  const msg = removal ? `Deleting from the database` : `Saving test results to the database`;
   sucPost(msg);
 }
 
 function sucPost(data) {
-  let span = (getSavedValue(`test`).includes(`fop`)) ? `#span2` : `#span1`;
+  const span = (getSavedValue(`test`).includes(`fop`)) ? `#span2` : `#span1`;
   document.querySelector(span).innerHTML = data;
   _(span).fade(`in`, 200);
   setTimeout(function () {
@@ -177,8 +177,8 @@ function sucPost(data) {
 }
 
 function fetchResults() {
-  let dbSoil = firebase.database().ref(`soil`);
-  let dbFop = firebase.database().ref(`fop`);
+  const dbSoil = firebase.database().ref(`soil`);
+  const dbFop = firebase.database().ref(`fop`);
   dbSoil.on(`value`, snap => {
     resultsTable(snap.val(), document.getElementById(`soilResults`));
   });
@@ -188,14 +188,14 @@ function fetchResults() {
 }
 
 function resultsTable(results, tbl) {
-  let tbody = tbl.firstElementChild.nextSibling;
+  const tbody = tbl.firstElementChild.nextSibling;
   while (tbody.childElementCount > 2) { //don't remove the firstborn children
     tbody.removeChild(tbody.lastChild);
   }
   results = Object.entries(results);
   results.forEach(val => {
-    let row = tbl.insertRow(-1);
-    let check = document.createElement(`input`);
+    const row = tbl.insertRow(-1);
+    const check = document.createElement(`input`);
     check.type = `checkbox`;
     check.onchange = function () { table(val, this); }
     row.insertCell(0).innerHTML = val[0];
@@ -206,16 +206,15 @@ function resultsTable(results, tbl) {
 function table(rows, target) {
   const myTable = document.createElement(`table`);
   myTable.classList.add(`scores`);
-  let row = myTable.insertRow(-1);
+  const row = myTable.insertRow(-1);
   row.insertCell(0).outerHTML = `<th>Distance (m)</th>`;
   row.insertCell(1).outerHTML = `<th>Resistance (Ω)</th>`;
   if (rows[1][0].length > 2) row.insertCell(2).outerHTML = `<th>Resistivity (Ωm)</th>`;
 
   try {
     rows[1].forEach(arr => {
-      let row = myTable.insertRow(-1);
-      row.insertCell(0).innerHTML = arr[0];
-      row.insertCell(1).innerHTML = arr[1];
+      const row = myTable.insertRow(-1);
+      [row.insertCell(0).innerHTML, row.insertCell(1).innerHTML] = arr;
       if (arr.length > 2) row.insertCell(2).innerHTML = parseFloat(arr[2]).toFixed(2);
     })
   } catch (err) { logError(err) }
