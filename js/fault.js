@@ -15,17 +15,17 @@ function inits() {
 
 function calculations(){
   const {boost,atfeed,doublrr} = inits();
-  let fc = +(getSavedValue("FC")) || 6;
-  let ci = +(getSavedValue("CI"))|| 0.43;
-  let cw = +(getSavedValue("CW")) || 0.15;
-  let ri = +(getSavedValue("RI")) || 0.2;
-  let bimp = +(getSavedValue("BIMP"))/2 || 0.21/2; //booster impedance diveded by two for OLE and RSC
-  let atf = +(getSavedValue("ATF")) || 0.07;
-  let aew = +(getSavedValue("AEW")) || Number.MAX_SAFE_INTEGER;
-  let rsc = +(getSavedValue("RSC")) || Number.MAX_SAFE_INTEGER; 
+  let fc = Number(getSavedValue("FC")) || 6;
+  let ci = Number(getSavedValue("CI"))|| 0.43;
+  let cw = Number(getSavedValue("CW")) || 0.15;
+  let ri = Number(getSavedValue("RI")) || 0.2;
+  let bimp = Number(getSavedValue("BIMP"))/2 || 0.21/2; //booster impedance diveded by two for OLE and RSC
+  let atf = Number(getSavedValue("ATF")) || 0.07;
+  let aew = Number(getSavedValue("AEW")) || Number.MAX_SAFE_INTEGER;
+  let rsc = Number(getSavedValue("RSC")) || Number.MAX_SAFE_INTEGER; 
   rsc = boost && rsc>1 ? 0.11 : rsc; //if booster, RSC is required
-  let crbd = +(getSavedValue("CRBD")); 
-  crbd = crbd === 0 ? Number.MAX_SAFE_INTEGER : Math.max(+(crbd)/1000,0.1); //convert to km and set to minimum of 100m
+  let crbd = Number(getSavedValue("CRBD")); 
+  crbd = crbd === 0 ? Number.MAX_SAFE_INTEGER : Math.max(Number(crbd)/1000,0.1); //convert to km and set to minimum of 100m
   let railR = doublrr ? 2 : 1;
   let earray = [] , subarray = [], faultarray = [], subfault;
   let vol = 25; //25kV
@@ -40,11 +40,11 @@ function calculations(){
 
   let {extra,index,insert} = negTrack(subarray);
   document.querySelectorAll(".loc").forEach((loc,ind) => {
-    let trnu = +(getSavedValue(+loc.id+199)) || 2; 
+    let trnu = Number(getSavedValue(+loc.id+199)) || 2; 
     trnu = trnu === 1 ? 1/Number.MAX_SAFE_INTEGER : trnu-1;
     let dist = getSavedValue(loc.id);
     loc.value = dist;
-    let lc = ind === index ? +dist + extra : dist; //add extra for non parallel subs
+    let lc = ind === index ? Number(dist) + extra : dist; //add extra for non parallel subs
     lc = lc === "" ? 5 : Math.abs(lc); //set to 5km if it's empty to avoid lag
     
     for (let i=1;i<=res;i++){
@@ -77,15 +77,15 @@ function calculations(){
         prevoleneg = previmpneg = 0;
       }
       if (once && lch >= insert) {
-        faultarray.push([getSavedValue(99+(+loc.id)),smoothdec(subfault)]); //insert non parallel sub
+        faultarray.push([getSavedValue(99+(Number(loc.id))),smoothdec(subfault)]); //insert non parallel sub
         once = false;
         subarray.sort((a,b) => a.x - b.x); //makes it easier to find the non parallel location in the index
         subarray[ind].x = lch;
       }
     }
-    totlc += +dist < 0 ? 0 : lc; //total length
-    textlc += +dist; //total length
-    let sub = getSavedValue(100+(+loc.id));
+    totlc += Number(dist) < 0 ? 0 : lc; //total length
+    textlc += Number(dist); //total length
+    let sub = getSavedValue(100+(Number(loc.id)));
     let lblStuff = {dist,textlc,totlc,subarray,sub};
     subLabels(lblStuff);
     faultarray.push([sub,smoothdec(subfault)]);
