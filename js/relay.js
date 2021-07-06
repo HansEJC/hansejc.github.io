@@ -15,8 +15,6 @@ function save(data) {
   const headers = JSON.stringify(data.shift());
   localStorage.setItem(`headers`, headers);
   saveIndexedDB(data);
-  const dbObj = firebase.database().ref(`relay`);
-  dbObj.set({ data, headers });
 }
 
 function saveIndexedDB(data) {
@@ -34,6 +32,15 @@ function importFault() {
     localStorage.setItem(`headers`, data.headers);
     saveIndexedDB(data.data);
   });
+}
+
+function exportFault() {
+  const headers = localStorage.getItem(`headers`);
+  const dbObj = firebase.database().ref(`relay`);
+  db.transaction(["plots"]).objectStore("plots").openCursor(null, "prev").onsuccess = async (e) => {
+    const data = e.target.result.value.data;
+    dbObj.set({ data, headers });
+  }
 }
 
 function read() {
@@ -87,6 +94,7 @@ function startup() {
   getIndex();
   funkyRadio();
   document.querySelector(`#Import`).addEventListener(`click`, importFault);
+  document.querySelector(`#Export`).addEventListener(`click`, exportFault);
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) === "true");
   });
@@ -194,7 +202,7 @@ function plotProtection(csvarr) {
 
 function addCSVtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
-  let faultarray = [];
+  let faultarray = [], gap = false;
   if (DR.length === 0) return faultarray;
   const [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
   for (let i = 1; i < DR.length; i++) { //add csv to array
@@ -202,12 +210,14 @@ function addCSVtoArray(stuff) {
     const DRmult = (DR[i][va] - DR[i][ca]) * Math.PI / 180;
     const res = DRdiv * Math.cos(DRmult);
     const react = DRdiv * Math.sin(DRmult);
-    const isfault = res < 90 && react < 90 && react > 0 && DR[i][v] * vtrdr > 1000;
+    const isfault = res < 90 && react < 90 && DR[i][v] * vtrdr > 1000;
     if (isfault) {
-      faultarray.push([
-        DRdiv * Math.cos(DRmult), //resistive values
-        DRdiv * Math.sin(DRmult) //reactive values
-      ]);
+      faultarray.push([res, react]);
+      gap = true;
+    }
+    else if (gap) {
+      faultarray.push([]); //inserts only one gap
+      gap = false;
     }
   }
   return faultarray;
