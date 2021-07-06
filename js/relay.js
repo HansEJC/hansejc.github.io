@@ -240,6 +240,7 @@ function FaultZone(stuff) {
   let { faultarray, Z1pol, Z2pol, Z3pol, fst, z2del, z3del } = stuff;
   let Z3time = 0;
   let Z2time = 0;
+  let Z1 = ``;
   for (let i = 0; i < faultarray.length; i++) { //check through fault if in zone
     if (inside(faultarray[i], Z3pol)) {
       Z3time = Z3time + Number(fst);
@@ -257,10 +258,15 @@ function FaultZone(stuff) {
     }
     if (inside(faultarray[i], Z1pol)) {
       document.getElementById("FaultLoc").textContent = "Zone 1 trip";
+      Z1 = `Trip`;
       break;
     }
     else document.getElementById("FaultLoc").textContent = "No trip!";
   }
+  const Z2 = Z2time > z2del ? `Trip` : `${smoothdec(Z2time, 0)} ms`;
+  const Z3 = Z3time > z3del ? `Trip` : `${smoothdec(Z3time, 0)} ms`;
+  const timers = [Z1, Z2, Z3];
+  localStorage.setItem(`ZoneTimers`, JSON.stringify(timers));
 }
 
 async function dygPlot(total, xaxis, yaxis) {
@@ -303,12 +309,14 @@ async function dygPlot(total, xaxis, yaxis) {
 
 function processNeeded(data) {
   let newdata = [];
-  const vtr = document.getElementById("VTR").value || 1;
-  const ctr = document.getElementById("CTR").value || 1;
+  const secdr = document.getElementById("SecDR");
+  const vtr = secdr.checked ? document.getElementById("VTR").value || 1 : 1;
+  const ctr = secdr.checked ? document.getElementById("CTR").value || 1 : 1;
   const [v, , c,] = JSON.parse(localStorage.getItem(`indices`));
   data.forEach(x => {
     newdata.push([x[0], x[v] * vtr, x[c] * ctr]);
   });
+  summaryTable(newdata);
   return newdata;
 }
 
@@ -320,15 +328,15 @@ async function dygPlot2(data) {
     document.getElementById("graphdiv2"),
     processNeeded(data),
     {
-      labels: ['a', 'Voltage (kV)', 'Current (kA)'],
+      labels: ['a', 'Voltage (V)', 'Current (A)'],
       xlabel: "Time (s.ms)",
-      ylabel: "Voltage (V)",
-      y2label: "Current (A)",
+      ylabel: "Voltage (kV)",
+      y2label: "Current (kA)",
       colors: ["blue", "red"],
       //connectSeparatedPoints: true,
       includeZero: true,
       series: {
-        'Current (kA)': {
+        'Current (A)': {
           axis: 'y2'
         },
       },
@@ -337,11 +345,11 @@ async function dygPlot2(data) {
           axisLabelFormatter: (y) => `${smoothdec(y)} s`
         },
         y: {
-          axisLabelFormatter: (y) => `${smoothdec(y/1000)} kV`,
+          axisLabelFormatter: (y) => `${smoothdec(y / 1000)} kV`,
           axisLabelWidth: 60
         },
         y2: {
-          axisLabelFormatter: (y) => `${smoothdec(y/1000)} kA`,
+          axisLabelFormatter: (y) => `${smoothdec(y / 1000)} kA`,
           axisLabelWidth: 60
         }
       }
@@ -534,6 +542,49 @@ function Zone3P438(tr) {
   Zel = [[0, , , , , 0], [Z * Math.cos(a), , , , , Z * Math.sin(a)], ...Zel, [0, , , , 0], [r1, , , , x1], [r2, , , , x2], [r3, , , , x3], [0, , , , 0]];
   Zpol = [...Zpol, [r1, x1], [r2, x2], [r3, x3], [0, 0]];
   return [Zpol, Zel];
+}
+
+function summaryTable(data) {
+  let maxfault = data[0][0];
+  const column = [`Fault Level`, `Fault Duration`, `Zone 1`, `Zone 2`, `Zone 3`];
+  const timers = JSON.parse(localStorage.getItem(`ZoneTimers`));
+  let duration = 0;
+  let startflag = true;
+  let endflag = true;
+  data.forEach(x => {
+    if (maxfault * 2 < x[2] && startflag) {
+      duration = x[0];
+      startflag = false;
+    }
+    if (maxfault > x[2] * 2 && endflag && !startflag) {
+      duration = x[0] - duration;
+      endflag = false;
+    }
+    maxfault = Math.max(maxfault, x[2]);
+  });
+  const column2 = [`${smoothdec(maxfault / 1000)} kA`, `${smoothdec(duration * 1000, 0)} ms`, ...timers];
+
+  const summaryArr = column.map((x, i) => [x, column2[i]]);
+  table(summaryArr);
+}
+
+function table(rows) {
+  const tabdiv = document.querySelector(`#SummaryTable`);
+  const myTable = document.createElement(`table`);
+  myTable.classList.add(`scores`);
+  const row = myTable.insertRow(-1);
+  row.insertCell(0).outerHTML = `<th>Item</th>`;
+  row.insertCell(1).outerHTML = `<th>Result</th>`;
+
+  try {
+    rows.forEach(arr => {
+      const row = myTable.insertRow(-1);
+      [row.insertCell(0).innerHTML, row.insertCell(1).innerHTML] = arr;
+    });
+  } catch (err) { logError(err, true); }
+
+  while (tabdiv.childElementCount > 1) tabdiv.removeChild(tabdiv.lastChild);
+  tabdiv.appendChild(myTable);
 }
 
 let idbSupported = ("indexedDB" in window) ? true : false;
