@@ -134,6 +134,7 @@ function clippy(x, y, div = `#graphdiv3`) {
   const { offsetTop } = document.querySelector(div);
   document.querySelector(div).setAttribute(`style`, `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
   window.dispatchEvent(new Event('resize'));
+  const extra = div === `#graphdiv3` ? 10 : 15;
   for (let j = 0; j < 3; j++) {  //weird way to make it actually work
     html2canvas(document.querySelector(div), {
       y: offsetTop,
@@ -141,7 +142,7 @@ function clippy(x, y, div = `#graphdiv3`) {
       scrollX: 0,
       scrollY: 0,
       height: y + 10,
-      width: x + 10,
+      width: x + extra,
     }).then(canvas => {
       if (typeof (navigator.clipboard) !== 'undefined') {
         canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]));
