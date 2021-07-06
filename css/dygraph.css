@@ -1,24 +1,24 @@
-/*********************************************************************************/
-/* Dygraphs                                                                      */
+/********************************************************************************
+ Dygraphs                                                                     
 /*********************************************************************************/
 
-#graphdiv3
-{
-	width: 90vw; 
-	height: 50vw;
-	max-width:850px; 
-	max-height:470px;
+#graphdiv3, #graphdiv2 {
+  width: 90vw;
+  height: 50vw;
+  max-width: 850px;
+  max-height: 470px;
 }
 
-canvas:hover ~ .dygraph-roller {
-	opacity:0.8;
+canvas:hover~.dygraph-roller {
+  opacity: 0.8;
 }
 
 .dygraph-legend {
   position: absolute;
   font-size: 14px;
   z-index: 10;
-  width: 250px;  /* labelsDivWidth */
+  width: 250px;
+  /* labelsDivWidth */
   /*
   dygraphs determines these based on the presence of chart labels.
   It might make more sense to create a wrapper div around the chart proper.
@@ -26,14 +26,14 @@ canvas:hover ~ .dygraph-roller {
   right: 2px;
   */
   left: 70px !important;
-  background: rgba(255,255, 255, 0.8);
-  //background-color: transparent !important;
+  background: rgba(255, 255, 255, 0.8);
   line-height: normal;
   text-align: left;
   overflow: hidden;
 }
 
 /* styles for a solid line in the legend */
+
 .dygraph-legend-line {
   display: inline-block;
   position: relative;
@@ -46,6 +46,7 @@ canvas:hover ~ .dygraph-roller {
 }
 
 /* styles for a dashed line in the legend, e.g. when strokePattern is set */
+
 .dygraph-legend-dash {
   display: inline-block;
   position: relative;
@@ -58,8 +59,8 @@ canvas:hover ~ .dygraph-roller {
   /* padding-left is set based on the stroke pattern */
 }
 
-.dygraph-roller:is(:hover,:focus) {
-	opacity:1;
+.dygraph-roller:is(:hover, :focus) {
+  opacity: 1;
 }
 
 .dygraph-roller {
@@ -67,22 +68,22 @@ canvas:hover ~ .dygraph-roller {
   z-index: 10;
   opacity: 0;
   width: 50px;
-  
-	-webkit-appearance: none;
-	display: block;
-	border: 0;
-	background: #eee;
-	box-shadow: inset 0px 0px 1px 0px #a0a1a7;
-	border-radius: 0.35em;
-	padding: 0.5em 0.5em 0.5em 0.5em;
-	-moz-transition: all .25s ease-in-out;
-	-webkit-transition: all .25s ease-in-out;
-	-o-transition: all .25s ease-in-out;
-	-ms-transition: all .25s ease-in-out;
-	transition: all .25s ease-in-out;
+  -webkit-appearance: none;
+  display: block;
+  border: 0;
+  background: #eee;
+  box-shadow: inset 0px 0px 1px 0px #a0a1a7;
+  border-radius: 0.35em;
+  padding: 0.5em 0.5em 0.5em 0.5em;
+  -moz-transition: all .25s ease-in-out;
+  -webkit-transition: all .25s ease-in-out;
+  -o-transition: all .25s ease-in-out;
+  -ms-transition: all .25s ease-in-out;
+  transition: all .25s ease-in-out;
 }
 
 /* This class is shared by all annotations, including those with icons */
+
 .dygraph-annotation {
   position: absolute;
   z-index: 10;
@@ -90,14 +91,17 @@ canvas:hover ~ .dygraph-roller {
 }
 
 /* This class only applies to annotations without icons */
+
 /* Old class name: .dygraphDefaultAnnotation */
+
 .dygraph-default-annotation {
- /* border: 1px solid black;
+  /* border: 1px solid black;
   background-color: white;*/
   text-align: center;
 }
 
 /* This class is shared by all annotations, including those with icons */
+
 .dygraph-first-annotation {
   top: 12px !important;
   left: 60px !important;
@@ -105,21 +109,19 @@ canvas:hover ~ .dygraph-roller {
 
 .dygraph-axis-label {
   /* position: absolute; */
-  font-size: 13px; 
+  font-size: 13px;
   z-index: 10;
   line-height: normal;
   overflow: hidden;
-  color: black;  /* replaces old axisLabelColor option */
+  color: black;
+  /* replaces old axisLabelColor option */
 }
 
-.dygraph-axis-label-x {
-}
+.dygraph-axis-label-x {}
 
-.dygraph-axis-label-y {
-}
+.dygraph-axis-label-y {}
 
-.dygraph-axis-label-y2 {
-}
+.dygraph-axis-label-y2 {}
 
 .dygraph-title {
   font-weight: bold;
@@ -134,6 +136,7 @@ canvas:hover ~ .dygraph-roller {
 }
 
 /* For y-axis label */
+
 .dygraph-label-rotate-left {
   text-align: center;
   /* See http://caniuse.com/#feat=transforms2d */
@@ -142,9 +145,11 @@ canvas:hover ~ .dygraph-roller {
   -moz-transform: rotate(90deg);
   -o-transform: rotate(90deg);
   -ms-transform: rotate(90deg);
+  margin-left: 1em;
 }
 
 /* For y2-axis label */
+
 .dygraph-label-rotate-right {
   text-align: center;
   /* See http://caniuse.com/#feat=transforms2d */

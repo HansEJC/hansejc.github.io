@@ -130,12 +130,12 @@ if ("serviceWorker" in navigator) {
 }
 
 //function to resize plot and copy to clipboard
-function clippy(x, y) {
-  const { offsetTop } = document.querySelector('#graphdiv3');
-  document.querySelector('#graphdiv3').setAttribute(`style`, `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
+function clippy(x, y, div = `#graphdiv3`) {
+  const { offsetTop } = document.querySelector(div);
+  document.querySelector(div).setAttribute(`style`, `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
   window.dispatchEvent(new Event('resize'));
   for (let j = 0; j < 3; j++) {  //weird way to make it actually work
-    html2canvas(document.querySelector("#graphdiv3"), {
+    html2canvas(document.querySelector(div), {
       y: offsetTop,
       //scrollY: -window.scrollY,
       scrollX: 0,
@@ -147,8 +147,8 @@ function clippy(x, y) {
         canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]));
       }
       else {
-        document.querySelector("#graphdiv3").innerHTML = '';
-        document.querySelector("#graphdiv3").appendChild(canvas);
+        document.querySelector(div).innerHTML = '';
+        document.querySelector(div).appendChild(canvas);
       }
     });
   }

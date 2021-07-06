@@ -165,11 +165,10 @@ function plotProtection(csvarr) {
   //Advanced settings variables
   const z2del = Number(document.getElementById("Z2del").value);
   const z3del = Number(document.getElementById("Z3del").value);
-  let fst, vtr, ctr;
 
-  fst = document.getElementById("FST").value === "" ? 1 : Number(document.getElementById("FST").value);
-  vtr = document.getElementById("VTR").value === "" ? 1 : Number(document.getElementById("VTR").value);
-  ctr = document.getElementById("CTR").value === "" ? 1 : Number(document.getElementById("CTR").value);
+  const fst = document.getElementById("FST").value || 1;
+  const vtr = document.getElementById("VTR").value || 1;
+  const ctr = document.getElementById("CTR").value || 1;
   const tr = ctr / vtr; //secondary ratio
 
   //Primary or Secondary Disturbance record
@@ -198,6 +197,7 @@ function plotProtection(csvarr) {
     total.push(faultarray[i]);
   }
   dygPlot(total, xaxis, yaxis);
+  if (DR.length > 0) dygPlot2(DR);
 }
 
 function addCSVtoArray(stuff) {
@@ -294,6 +294,60 @@ async function dygPlot(total, xaxis, yaxis) {
     }          // options
   );
   g3.ready(function () {
+    setTimeout(function () {
+      window.dispatchEvent(new Event('resize'));
+    }, 500);
+
+  });
+}
+
+function processNeeded(data) {
+  let newdata = [];
+  const vtr = document.getElementById("VTR").value || 1;
+  const ctr = document.getElementById("CTR").value || 1;
+  const [v, , c,] = JSON.parse(localStorage.getItem(`indices`));
+  data.forEach(x => {
+    newdata.push([x[0], x[v] * vtr, x[c] * ctr]);
+  });
+  return newdata;
+}
+
+async function dygPlot2(data) {
+  try {
+    if (typeof g2 !== 'undefined') g2.destroy();
+  } catch (e) { logError(e); }
+  window.g2 = new Dygraph(
+    document.getElementById("graphdiv2"),
+    processNeeded(data),
+    {
+      labels: ['a', 'Voltage (kV)', 'Current (kA)'],
+      xlabel: "Time (s.ms)",
+      ylabel: "Voltage (V)",
+      y2label: "Current (A)",
+      colors: ["blue", "red"],
+      //connectSeparatedPoints: true,
+      includeZero: true,
+      series: {
+        'Current (kA)': {
+          axis: 'y2'
+        },
+      },
+      axes: {
+        x: {
+          axisLabelFormatter: (y) => `${smoothdec(y)} s`
+        },
+        y: {
+          axisLabelFormatter: (y) => `${smoothdec(y/1000)} kV`,
+          axisLabelWidth: 60
+        },
+        y2: {
+          axisLabelFormatter: (y) => `${smoothdec(y/1000)} kA`,
+          axisLabelWidth: 60
+        }
+      }
+    }          // options
+  );
+  g2.ready(function () {
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
     }, 500);
