@@ -166,7 +166,6 @@ function plotProtection(csvarr) {
   const z2del = Number(document.getElementById("Z2del").value);
   const z3del = Number(document.getElementById("Z3del").value);
 
-  const fst = document.getElementById("FST").value || 1;
   const vtr = document.getElementById("VTR").value || 1;
   const ctr = document.getElementById("CTR").value || 1;
   const tr = ctr / vtr; //secondary ratio
@@ -189,7 +188,7 @@ function plotProtection(csvarr) {
   let DR = []; DR = csvarr;
   const calcStuff = { DR, trdr, vtrdr };
   let faultarray = addCSVtoArray(calcStuff);
-  const stuff = { faultarray, Z1pol, Z2pol, Z3pol, fst, z2del, z3del };
+  const stuff = { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del };
   FaultZone(stuff);
 
   let total = elements2.slice();
@@ -237,7 +236,9 @@ function getIndex() {
 }
 
 function FaultZone(stuff) {
-  let { faultarray, Z1pol, Z2pol, Z3pol, fst, z2del, z3del } = stuff;
+  let { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del } = stuff;
+  if (DR.length === 0) return;
+  const fst = smoothdec((DR[1][0] - DR[0][0]) * 1000, 3);
   let Z3time = 0;
   let Z2time = 0;
   let Z1 = ``;
@@ -545,22 +546,27 @@ function Zone3P438(tr) {
 }
 
 function summaryTable(data) {
-  let maxfault = data[0][0];
-  const column = [`Fault Level`, `Fault Duration`, `Zone 1`, `Zone 2`, `Zone 3`];
-  const timers = JSON.parse(localStorage.getItem(`ZoneTimers`));
+  let maxfault = data[9][2]; //remove the risk of any initial fault recording noise
+  const multi = smoothdec((data[1][0] - data[0][0]) * 1000) < 1 ? 1.3 : 2; //bigger multiplier for 1ms interval
+  const column = [`Fault Level`, `Fault Duration`, `Fault Start`, `Fault Finish`, `Zone 1`, `Zone 2`, `Zone 3`];
+  let timers = JSON.parse(localStorage.getItem(`ZoneTimers`));
   let duration = 0;
   let startflag = true;
   let endflag = true;
+  let counter = 0; //counter to ignore first initial fault recording noise
   data.forEach(x => {
-    if (maxfault * 2 < x[2] && startflag) {
+    if (maxfault * multi < x[2] && startflag && counter > 69) {
       duration = x[0];
+      timers.unshift(`${smoothdec(x[0], 3)} s`);
       startflag = false;
     }
-    if (maxfault > x[2] * 2 && endflag && !startflag) {
+    if (maxfault > x[2] * multi && endflag && !startflag) {
       duration = x[0] - duration;
+      timers.splice(1, 0, `${smoothdec(x[0], 3)} s`);
       endflag = false;
     }
     maxfault = Math.max(maxfault, x[2]);
+    counter++;
   });
   const column2 = [`${smoothdec(maxfault / 1000)} kA`, `${smoothdec(duration * 1000, 0)} ms`, ...timers];
 
