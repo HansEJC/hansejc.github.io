@@ -555,7 +555,7 @@ function summaryTable(data) {
   let endflag = true;
   let counter = 0; //counter to ignore first initial fault recording noise
   data.forEach(x => {
-    if (maxfault * multi < x[2] && startflag && counter > 69) {
+    if (maxfault * multi < x[2] && startflag && counter > 25) {
       duration = x[0];
       timers.unshift(`${smoothdec(x[0], 3)} s`);
       startflag = false;
@@ -568,7 +568,9 @@ function summaryTable(data) {
     maxfault = Math.max(maxfault, x[2]);
     counter++;
   });
-  const column2 = [`${smoothdec(maxfault / 1000)} kA`, `${smoothdec(duration * 1000, 0)} ms`, ...timers];
+  duration = duration === 0 ? `???` : smoothdec(duration * 1000, 0);
+  if (endflag) timers.unshift(`Error`, `Error`);
+  const column2 = [`${smoothdec(maxfault / 1000)} kA`, `${duration} ms`, ...timers];
 
   const summaryArr = column.map((x, i) => [x, column2[i]]);
   table(summaryArr);
