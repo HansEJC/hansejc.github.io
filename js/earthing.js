@@ -1,5 +1,5 @@
 function volts(v) {
-  return v > 1000 ? `${+(v / 1000).toFixed(2)} kV` : `${+v.toFixed(2)} V`;
+  return v > 1000 ? `${Number((v / 1000).toFixed(2))} kV` : `${Number(v.toFixed(2))} V`;
 }
 
 function earthing() {
@@ -9,9 +9,9 @@ function earthing() {
 }
 
 function eprCalc() {
-  let er = +(getSavedValue("ER"));    // set the value to this input
-  let rr = +(getSavedValue("RR"));
-  let fc = +(getSavedValue("FC"));
+  let er = Number(getSavedValue("ER"));    // set the value to this input
+  let rr = Number(getSavedValue("RR"));
+  let fc = Number(getSavedValue("FC"));
   let pr = er * rr / (er + rr);
   let epr = 1000 * pr * fc;
   let ir = epr / rr / 1000;
@@ -29,17 +29,17 @@ function eprCalc() {
 }
 
 function earthGrid() {
-  let p = +(getSavedValue("P"));    // set the value to this input
-  let area = +(getSavedValue("AREA"));
-  let h = +(getSavedValue("H"));
-  let l = +(getSavedValue("L"));
-  let nr = +(getSavedValue("NR"));
-  let lr = +(getSavedValue("LR"));
+  let p = Number(getSavedValue("P"));    // set the value to this input
+  let area = Number(getSavedValue("AREA"));
+  let h = Number(getSavedValue("H"));
+  let l = Number(getSavedValue("L"));
+  let nr = Number(getSavedValue("NR"));
+  let lr = Number(getSavedValue("LR"));
   let r = Math.sqrt(area / Math.PI);
   let kr = 1 + nr * lr * lr / (10 * r * r);
   let re = p / (4 * r) + p / (l + nr * lr);
   let rg = p * ((1 + r / (r + 2.5 * h)) / (8 * r * kr) + 1 / l);
-  let era = +(getSavedValue("ERA"));
+  let era = Number(getSavedValue("ERA"));
   let pa = era * p / rg;
 
   texty(`R`, r, `m`);
@@ -50,7 +50,7 @@ function earthGrid() {
 }
 
 const texty = (id, num, sym, dec = 2) => {
-  document.querySelector(`#${id}`).textContent = `${+num.toFixed(dec)} ${sym}`;
+  document.querySelector(`#${id}`).textContent = `${Number(num.toFixed(dec))} ${sym}`;
 }
 
 //startup
