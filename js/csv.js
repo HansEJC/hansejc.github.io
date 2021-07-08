@@ -118,7 +118,7 @@ function startup(bool) {
 }
 
 function uploadcsv(db) {
-  document.forms['myForm'].elements['my_upload'].onchange = function (evt) {
+  document.querySelector("#my_upload").onchange = function (evt) {
     addLoader("Uploading csv", false, 33);
     if (!window.FileReader) return; // Browser is not compatible
 
@@ -466,9 +466,9 @@ function idents(len) {
     labd.value = getSavedValue(`csvlabel${i}`) === "" ? labd.value : getSavedValue(`csvlabel${i}`);
     labl.push(labd.value);
     if (labd.value.length > 0) {
-      labd.style['width'] = `${labd.value.length + 1}ch`;
-      colors.style['width'] = `${Math.max(5.5, 3.5 + labd.value.length)}ch`;
-      styles.style['width'] = `${Math.max(5.5, 3.5 + labd.value.length)}ch`;
+      labd.style.width = `${labd.value.length + 1}ch`;
+      colors.style.width = `${Math.max(5.5, 3.5 + labd.value.length)}ch`;
+      styles.style.width = `${Math.max(5.5, 3.5 + labd.value.length)}ch`;
     }
   }
   g3.updateOptions({
