@@ -6,7 +6,7 @@ function killthemeter(num) {
   else if (num > 0.000001) return `${Number((num * 1000000).toFixed(2))} μm`;
   else if (num > 0.000000001) return `${Number((num * 1000000000).toFixed(2))} nm`;
   else if (num > 0) return `${Number((num * 1000000000000).toFixed(2))} pm`;
-  else return `-`;
+  return `-`;
 }
 
 function kill(num) {
@@ -20,7 +20,7 @@ function kill(num) {
   else if (num >= 0.000001) return `${Number((num * 1000000).toFixed(2))}μ`;
   else if (num >= 0.000000001) return `${Number((num * 1000000000).toFixed(2))}n`;
   else if (num >= 0.000000000001) return `${Number((num * 1000000000000).toFixed(2))}p`;
-  else return 0;
+  return 0;
 }
 
 function labls(num) {
@@ -32,7 +32,7 @@ function labls(num) {
   else if (num > 1) return "";
   else if (num > 0.001) return "m";
   else if (num > 0.000001) return "μ";
-  else return "-";
+  return "-";
 }
 
 function checkit() {
