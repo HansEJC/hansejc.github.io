@@ -5,12 +5,12 @@ function startup() {
 }
 
 function induced() {
-  const IL = +(getSavedValue("LoadCurrent")) || 500;
-  const IF = +(getSavedValue("FaultCurrent")) || 6000;
-  const L = +(getSavedValue("CableLength")) || 1;
-  const S = +(getSavedValue("AxialSpacing")) || 12;
-  const dM = +(getSavedValue("SheathDiameter")) || 10.33;
-  const K = +(getSavedValue("CableWires")) || 0.05;
+  const IL = Number(getSavedValue("LoadCurrent")) || 500;
+  const IF = Number(getSavedValue("FaultCurrent")) || 6000;
+  const L = Number(getSavedValue("CableLength")) || 1;
+  const S = Number(getSavedValue("AxialSpacing")) || 12;
+  const dM = Number(getSavedValue("SheathDiameter")) || 10.33;
+  const K = Number(getSavedValue("CableWires")) || 0.05;
   const loadI = document.querySelector(`#LoadInduced`);
   const faultI = document.querySelector(`#FaultInduced`);
 

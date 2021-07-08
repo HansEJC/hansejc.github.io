@@ -163,23 +163,23 @@ function protectionDets() {
 function mainCalcs() {
   const phaserating = document.querySelector(`#PhaseRating`);
   const trip = document.querySelector(`#ProtectionTrip`);
-  const protectrating = +document.querySelector(`#Protection`).value.split(`A`)[0];
-  const designcurrent = +document.querySelector(`#DesignCurrent`).value;
-  const phasevoltage = +document.querySelector(`#PhaseVoltage`).value;
-  const len = +document.querySelector(`#CableLength`).value;
+  const protectrating = Number(document.querySelector(`#Protection`).value.split(`A`)[0]);
+  const designcurrent = Number(document.querySelector(`#DesignCurrent`).value);
+  const phasevoltage = Number(document.querySelector(`#PhaseVoltage`).value);
+  const len = Number(document.querySelector(`#CableLength`).value);
   const vdrop = document.querySelector(`#PhaseDrop`);
-  const Zs = +document.querySelector("#Zs").value;
-  const K = +document.querySelector(`#K`).value;
+  const Zs = Number(document.querySelector("#Zs").value);
+  const K = Number(document.querySelector(`#K`).value);
   const proZs = document.querySelector("#ProtectionZs");
   const earthfault = document.querySelector(`#EarthFault`);
   const maxfault = document.querySelector(`#MaxFault`);
   const minc = document.querySelector(`#MinCable`);
   const triptime = document.querySelector("#ProtectionType").value.includes(`F`) ? 5 : 0.4;
 
-  let phasesafe = +phaserating.textContent.split(` `)[0] > protectrating && protectrating > designcurrent;
+  let phasesafe = Number(phaserating.textContent.split(` `)[0]) > protectrating && protectrating > designcurrent;
   phaserating.className = phasesafe ? `label safe` : `label danger`;
   trip.className = protectrating > designcurrent ? `label safe` : `label danger`;
-  const vdropped = +vdrop.textContent.split(` `)[0] / 1000 * len * designcurrent;
+  const vdropped = Number(vdrop.textContent.split(` `)[0]) / 1000 * len * designcurrent;
   document.querySelector(`#VoltageDrop`).textContent = `${smoothdec(vdropped)} V`;
   vdrop.className = 100 * vdropped / phasevoltage < 2.5 ? `label safe` : `label danger`;
 
@@ -188,7 +188,7 @@ function mainCalcs() {
   document.querySelector(`#MaxVoltage`).textContent = `${maxv} V`;
   document.querySelector(`#MinVoltage`).textContent = `${minv} V`;
 
-  const Zc = len * +vdrop.textContent.split(` `)[0] / 2 / 1000;
+  const Zc = len * Number(vdrop.textContent.split(` `)[0]) / 2 / 1000;
   const Zel = smoothdec(Zc * 2 + Zs, 4);
   const Zt = smoothdec(Zc + Zc / 2 + Zs, 4);
   const mincable = smoothdec(Math.sqrt((maxv / Zt) ** 2 * triptime) / K); //0.4s disconnection time. The time should really be cross checked with the trip curves
@@ -201,9 +201,9 @@ function mainCalcs() {
   earthfault.textContent = `${smoothdec(minv / Zel)} A`;
   maxfault.textContent = `${smoothdec(maxv / Zt)} A`;
   minc.textContent = `${mincable} mm2`;
-  earthfault.className = smoothdec(minv / Zel) > +trip.textContent.split(` `)[0] ? `label safe` : `label danger`;
-  maxfault.className = smoothdec(maxv / Zt) > +trip.textContent.split(` `)[0] ? `label safe` : `label danger`;
-  minc.className = mincable < +document.querySelector("#PhaseSize").value ? `label safe` : `label danger`;
+  earthfault.className = smoothdec(minv / Zel) > Number(trip.textContent.split(` `)[0]) ? `label safe` : `label danger`;
+  maxfault.className = smoothdec(maxv / Zt) > Number(trip.textContent.split(` `)[0]) ? `label safe` : `label danger`;
+  minc.className = mincable < Number(document.querySelector("#PhaseSize").value) ? `label safe` : `label danger`;
 }
 
 //startup
