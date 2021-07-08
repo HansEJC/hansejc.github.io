@@ -122,8 +122,9 @@
             </section>
             <section class="box">
               <form>
-                <label for="VTR">VT Ratio<input type="number" id="VTR" onkeyup='saveValue(this);' /></label>
-                <label for="CTR"> CT Ratio<input type="number" id="CTR" onkeyup='saveValue(this);' /></label>
+                <label for="VTR">VT Ratio (26400/110V)</label><input type="number" id="VTR"
+                  onkeyup='saveValue(this);' />110
+                <label for="CTR"> CT Ratio (600/1A)</label><input type="number" id="CTR" onkeyup='saveValue(this);' />
                 <label for="PrimDR"><input type="radio" name="DR" id="PrimDR" checked>Primary DR</label>
                 <label for="SecDR"><input type="radio" name="DR" id="SecDR" onchange="">Secondary DR</label>
               </form>

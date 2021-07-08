@@ -95,6 +95,8 @@ function startup() {
   funkyRadio();
   document.querySelector(`#Import`).addEventListener(`click`, importFault);
   document.querySelector(`#Export`).addEventListener(`click`, exportFault);
+  document.querySelector("#VTR").addEventListener(`keyup`, vtRatio);
+  document.querySelector("#CTR").addEventListener(`keyup`, ctRatio);
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) === "true");
   });
@@ -291,10 +293,10 @@ async function dygPlot(total, xaxis, yaxis) {
       includeZero: true,
       axes: {
         x: {
-          axisLabelFormatter: (y) => `${y} Ω`
+          axisLabelFormatter: (y) => `${smoothdec(y)} Ω`
         },
         y: {
-          axisLabelFormatter: (y) => `${y} Ω`,
+          axisLabelFormatter: (y) => `${smoothdec(y)} Ω`,
           axisLabelWidth: 60
         }
       }
@@ -593,6 +595,18 @@ function table(rows) {
 
   while (tabdiv.childElementCount > 1) tabdiv.removeChild(tabdiv.lastChild);
   tabdiv.appendChild(myTable);
+}
+
+function vtRatio() {
+  const label = document.querySelector(`label[for=VTR]`);
+  const vtr = 26400 / document.querySelector("#VTR").value;
+  label.innerText = `VT Ratio 26400/${smoothdec(vtr, 0)}V`;
+}
+
+function ctRatio() {
+  const label = document.querySelector(`label[for=CTR]`);
+  const ctr = document.querySelector("#CTR").value;
+  label.innerText = `CT Ratio ${smoothdec(ctr, 0)}/1A`;
 }
 
 let idbSupported = ("indexedDB" in window) ? true : false;
