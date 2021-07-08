@@ -2,6 +2,8 @@ function checkit() {
   const x = document.getElementById(`Sec`).checked || document.querySelector(`#advanced`).checked;
   const y = document.getElementById("hide");
   y.style.display = x ? `block` : `none`;
+  vtRatio();
+  ctRatio();
 }
 
 function save(data) {
@@ -599,14 +601,14 @@ function table(rows) {
 
 function vtRatio() {
   const label = document.querySelector(`label[for=VTR]`);
-  const vtr = 26400 / document.querySelector("#VTR").value;
-  label.innerText = `VT Ratio 26400/${smoothdec(vtr, 0)}V`;
+  const vtr = document.querySelector("#VTR").value || 240;
+  label.innerText = `VT Ratio (26.4/${smoothdec(26.4 / vtr, 2)} kV)`;
 }
 
 function ctRatio() {
   const label = document.querySelector(`label[for=CTR]`);
-  const ctr = document.querySelector("#CTR").value;
-  label.innerText = `CT Ratio ${smoothdec(ctr, 0)}/1A`;
+  const ctr = document.querySelector("#CTR").value || 600;
+  label.innerText = `CT Ratio (${ctr}/1 A)`;
 }
 
 let idbSupported = ("indexedDB" in window) ? true : false;
