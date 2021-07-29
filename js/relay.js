@@ -437,7 +437,8 @@ function Zone2P44T(tr) {
 function Zone3P44T(tr) {
   //%Zone 3 setting
   let Z3 = Number(document.getElementById("Zone3").value);
-  const Z3A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
+  const alpha = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
+  const Z3A = alpha > 80 * Math.PI / 180 ? 7 * Math.PI / 18 : alpha;
   const Z3t = (-3 * Math.PI / 180);
   let R3R = Number(document.getElementById("Zone3RH").value);
   let R3L = Number(document.getElementById("Zone3LH").value);
