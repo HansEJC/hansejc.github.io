@@ -523,11 +523,12 @@
   text-align: left;
 }
 
-.topnav a:is(:hover,:focus), 
-.dropdown:is(:hover,:focus) 
-.dropbtn 
-.dropdown-content a:is(:hover,:focus) {
+.topnav a:is(:hover,:focus) {
   background-color: #666;
+}
+
+.dropdown-content a:last-child:is(:hover,:focus) {
+  border-radius: 0em 0em 0.5em 0.5em;
 }
 
 .dropbtn:is(:hover,:focus) + .dropdown-content,
