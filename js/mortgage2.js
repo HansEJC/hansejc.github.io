@@ -48,11 +48,11 @@ function currentMortgage(info) {
   const monthd = (today - new Date(2021, 3, 1)) / 1000 / 60 / 60 / 24 / 365.25 * 12; //difference in month
   const ir = 1.59 / 12 / 100; //remortgage rate
 
-  let pay = 5814.12 + 250 - 66; //the £5814.12 was the shortfall since we borrowed £135k, the £250 is cashback, £66 fees
+  let pay = 5814.12 + 250 - 66 + 5.88; //the £5814.12 was the shortfall since we borrowed £135k, the £250 is cashback, £66 fees, £5.88 extra first month
   let loopInfo = { num: 1, pay, year: 2021, month: 3, ir, ...info }; // First month
   info = mortgageLoop(loopInfo);
 
-  loopInfo = { num: monthd, pay: 1205.88, year: 2021, month: 4, ir, ...info }; // changed overpayment to £1200 since baby is coming
+  loopInfo = { num: monthd, pay: 1200, year: 2021, month: 4, ir, ...info }; // changed overpayment to £1200 since baby is coming
   return { monthd, ...mortgageLoop(loopInfo) };
 }
 
