@@ -338,7 +338,6 @@ async function dygPlot2(data) {
       ylabel: "Voltage (kV)",
       y2label: "Current (kA)",
       colors: ["blue", "red"],
-      //connectSeparatedPoints: true,
       includeZero: true,
       series: {
         'Current (A)': {
