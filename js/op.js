@@ -28,9 +28,8 @@ function getModDates() {
 function waitForAll() {
   return Promise.all([
     fireFetch(`op/assets-Asset List.csv`),
-    fireFetch(`op/op-Project Stock.csv`),
     fireFetch(`op/op-Warehouse Stock .csv`),
-    fireFetch(`op/op-Delivery.csv`)
+    fireFetch(`op/op-DELIVERIES.csv`)
   ]);
 }
 
@@ -54,8 +53,7 @@ function listeners() {
 function splicer(arr, file) {
   let str = file.includes(`set`) ? `asset`
     : file.includes(`Ware`) ? `location` : `date`;
-  let col = file.includes(`Proj`) ? 5
-    : file.includes(`Ware`) ? 7 : 0;
+  let col = file.includes(`Ware`) ? 7 : 0;
   for (let i = 0; i < arr.length; i++) {
     if (arr[i][col] === "" || new RegExp(str, "iu").test(arr[i][col]) || new RegExp("undefined", "iu").test(arr[i][col])) {
       arr.splice(i, 1);
