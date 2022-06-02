@@ -131,34 +131,29 @@ if ("serviceWorker" in navigator) {
 
 //function to resize plot and copy to clipboard
 function clippy(x, y, div = `#graphdiv3`) {
-  const { offsetTop } = document.querySelector(div);
   document.querySelector(div).setAttribute(`style`, `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
   window.dispatchEvent(new Event('resize'));
   const extra = div === `#graphdiv3` ? 10 : 15;
-  for (let j = 0; j < 3; j++) {  //weird way to make it actually work
-    html2canvas(document.querySelector(div), {
-      y: offsetTop,
-      //scrollY: -window.scrollY,
-      scrollX: 0,
-      scrollY: 0,
-      height: y + 10,
-      width: x + extra,
-    }).then(canvas => {
-      if (typeof (navigator.clipboard) !== 'undefined') {
-        canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]));
-      }
-      else {
-        document.querySelector(div).innerHTML = '';
-        document.querySelector(div).appendChild(canvas);
-      }
-    });
-  }
-  if (typeof (navigator.clipboard) === 'undefined') {
-    let htmltext = (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes("Edg")) ? "<br><br><a href=chrome://flags/#unsafely-treat-insecure-origin-as-secure>Auto copy to clipboard not supported in http. Copy this link and open in new tab to add this site as trusted to enable.</a>" : "<br><br><a>Auto copy to clipboard not supported. Right click plot and copy as image.</a>";
-    let article = document.querySelector('article');
-    if (article.lastChild.nodeName !== "A") article.innerHTML += htmltext;
-  }
+  html2canvas(document.querySelector(div), {
+    x: -extra,
+    height: y + 10,
+    width: x + extra,
+  }).then(canvas => {
+    if (typeof (navigator.clipboard) !== 'undefined') {
+      canvas.toBlob(blob => navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]));
+    }
+    else {
+      document.querySelector(div).innerHTML = '';
+      document.querySelector(div).appendChild(canvas);
+    }
+  });
 }
+if (typeof (navigator.clipboard) === 'undefined') {
+  let htmltext = (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes("Edg")) ? "<br><br><a href=chrome://flags/#unsafely-treat-insecure-origin-as-secure>Auto copy to clipboard not supported in http. Copy this link and open in new tab to add this site as trusted to enable.</a>" : "<br><br><a>Auto copy to clipboard not supported. Right click plot and copy as image.</a>";
+  let article = document.querySelector('article');
+  if (article.lastChild.nodeName !== "A") article.innerHTML += htmltext;
+}
+
 
 //Save the value function - save it to localStorage as (ID, VALUE)
 function saveValue(e) {
