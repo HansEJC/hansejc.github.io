@@ -11,7 +11,7 @@
     "html2canvas": "^1.0.0-rc.7",
     "katex": "^0.15.6",
     "papaparse": "^5.3.0",
-    "workbox-sw": "^6.1.5",
+    "workbox-sw": "^6.5.2",
     "firebase": "^8.6.0",
     "sorttable": "1.0.2"
   },
