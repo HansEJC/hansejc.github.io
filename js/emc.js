@@ -174,14 +174,10 @@ function dygPlot(earray) {
       connectSeparatedPoints: true,
       axes: {
         x: {
-          axisLabelFormatter: function (y) {
-            return killthemeter(smoothdec(y, 6));
-          },
+          axisLabelFormatter(y) { return killthemeter(smoothdec(y, 6)) },
         },
         y: {
-          axisLabelFormatter: function (y) {
-            return kill(smoothdec(y, 6));
-          },
+          axisLabelFormatter(y) { return kill(smoothdec(y, 6)) },
         }
       }
     }          // options
