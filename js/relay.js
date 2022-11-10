@@ -535,7 +535,6 @@ function S7ST(tr, num, empty) {
   const g = (Number(document.getElementById("Gamma").value) * Math.PI / 180);
   const load = Number(document.querySelector("#PeakLoad").value) || 1000;
   let Z = Number(document.getElementById(`Zone${num}`).value);
-  
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
@@ -544,7 +543,6 @@ function S7ST(tr, num, empty) {
   let Zpol = [[0, 0]];
   let Zel = [[0, ...empty, 0]];
   for (let i = 0; i <= 100; i++) {
-    //const deg = i / 100 * Math.PI / 180;
     const rad = i / 100 * b + (1 - i / 100) * g;
     const maxres = Z < 25000 / load ? Z : 25000 / load * Math.cos(40 * Math.PI / 180);
     const res = rad > a
@@ -567,14 +565,14 @@ function Zone1S7ST(tr) {
 }
 
 function Zone2S7ST(tr) {
-  return S7ST(tr, `2`, [,]);
+  return S7ST(tr, `2`, [, ,]);
 }
 
 function Zone3S7ST(tr) {
   let Zr = Number(document.getElementById(`Zone3rev`).value);
   Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
   const load = Number(document.querySelector("#PeakLoad").value) || 1000;
-  let [Zpol, Zel, stuff] = P438(tr, `3`, [, , ,]);
+  let [Zpol, Zel, stuff] = S7ST(tr, `3`, [, , ,]);
   let { a, b, g, Z, LH } = stuff;
   for (let i = 0; i <= 100; i++) {
     const rad = i / 100 * (b + Math.PI) + (1 - i / 100) * (g + Math.PI);
