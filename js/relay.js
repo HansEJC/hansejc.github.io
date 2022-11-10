@@ -538,7 +538,7 @@ function S7ST(tr, num, empty) {
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
-    Z = Z / tr; RH = RH / tr; LH = LH / tr;
+    Z = Z / tr;
   }
   let Zpol = [[0, 0]];
   let Zel = [[0, ...empty, 0]];
