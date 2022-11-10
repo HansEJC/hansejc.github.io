@@ -120,7 +120,7 @@ function HiFreqFun(stuff) {
   let d, ran, range, distrange;
   for (let i = 0; i < 5000; i++) {
     d = i / 100;
-    if (d < c / (2 * Math.PI * tf) && d != 0) {
+    if (d < c / (2 * Math.PI * tf) && d !== 0) {
       if (EField) earray.push([d, Math.pow(c, 2) * Math.sqrt(eirp) / (7.2 * Math.pow(tf, 2) * Math.pow(d, 3))]);
       else earray.push([d, c * Math.sqrt(eirp) / (434 * tf * Math.pow(d, 2))]);
     }
