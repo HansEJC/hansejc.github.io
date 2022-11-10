@@ -150,9 +150,9 @@ function peakLoad() {
   const Z = 25000 / load;
   let loadarray = [];
   let rad, r, x;
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i <= 40; i++) {
     rad = i * Math.PI / 180;
-    r = Z * Math.cos(rad) * 0.85; //Resistive reach tolerance of 15%
+    r = Z * Math.cos(rad) * 1; //Resistive reach tolerance of 100%
     x = Z * Math.sin(rad);
     loadarray.push([r, , , , , , x]);
   }
@@ -525,6 +525,70 @@ function Zone3P438(tr) {
   const x3 = m1 * Math.sin(-g);
   Zel = [[0, , , , , 0], [Z * Math.cos(a), , , , , Z * Math.sin(a)], ...Zel, [0, , , , 0], [r1, , , , x1], [r2, , , , x2], [r3, , , , x3], [0, , , , 0]];
   Zpol = [...Zpol, [r1, x1], [r2, x2], [r3, x3], [0, 0]];
+  return [Zpol, Zel];
+}
+
+function S7ST(tr, num, empty) {
+  //%Zone 1 setting
+  const a = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
+  const b = (Number(document.getElementById("Beta").value) * Math.PI / 180);
+  const g = (Number(document.getElementById("Gamma").value) * Math.PI / 180);
+  const load = Number(document.querySelector("#PeakLoad").value) || 1000;
+  let Z = Number(document.getElementById(`Zone${num}`).value);
+  
+  //Primary or Secondary Inputs
+  const sec = document.getElementById("Sec");
+  if (sec.checked) {
+    Z = Z / tr; RH = RH / tr; LH = LH / tr;
+  }
+  let Zpol = [[0, 0]];
+  let Zel = [[0, ...empty, 0]];
+  for (let i = 0; i <= 100; i++) {
+    //const deg = i / 100 * Math.PI / 180;
+    const rad = i / 100 * b + (1 - i / 100) * g;
+    const maxres = Z < 25000 / load ? Z : 25000 / load * Math.cos(40 * Math.PI / 180);
+    const res = rad > a
+      ? Z * Math.cos(rad)
+      : Math.min(Z * Math.cos(rad), maxres);
+    const rea = rad > a || Z * Math.cos(rad) < maxres
+      ? Z * Math.sin(rad)
+      : maxres * Math.tan(rad);
+    Zpol.push([res, rea]);
+    Zel.push([res, ...empty, rea]);
+  }
+  Zpol.push([0, 0]);
+  Zel.push([0, ...empty, 0]);
+  let stuff = { a, b, g, Z };
+  return [Zpol, Zel, stuff];
+}
+
+function Zone1S7ST(tr) {
+  return S7ST(tr, `1`, [,]);
+}
+
+function Zone2S7ST(tr) {
+  return S7ST(tr, `2`, [,]);
+}
+
+function Zone3S7ST(tr) {
+  let Zr = Number(document.getElementById(`Zone3rev`).value);
+  Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
+  const load = Number(document.querySelector("#PeakLoad").value) || 1000;
+  let [Zpol, Zel, stuff] = P438(tr, `3`, [, , ,]);
+  let { a, b, g, Z, LH } = stuff;
+  for (let i = 0; i <= 100; i++) {
+    const rad = i / 100 * (b + Math.PI) + (1 - i / 100) * (g + Math.PI);
+    const res = rad > a + Math.PI
+      ? Z * Math.cos(rad)
+      : Math.max(Z * Math.cos(rad), Zr);
+    const rea = rad > a + Math.PI || Z * Math.cos(rad) > Zr
+      ? Z * Math.sin(rad)
+      : Zr * Math.tan(rad);
+    Zpol.push([res, rea]);
+    Zel.push([res, , , , rea]);
+  }
+  Zpol.push([0, 0]);
+  Zel.push([0, , , , 0]);
   return [Zpol, Zel];
 }
 
