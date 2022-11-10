@@ -571,9 +571,8 @@ function Zone2S7ST(tr) {
 function Zone3S7ST(tr) {
   let Zr = Number(document.getElementById(`Zone3rev`).value);
   Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
-  const load = Number(document.querySelector("#PeakLoad").value) || 1000;
   let [Zpol, Zel, stuff] = S7ST(tr, `3`, [, , ,]);
-  let { a, b, g, Z, LH } = stuff;
+  let { a, b, g, Z } = stuff;
   for (let i = 0; i <= 100; i++) {
     const rad = i / 100 * (b + Math.PI) + (1 - i / 100) * (g + Math.PI);
     const res = rad > a + Math.PI
@@ -628,14 +627,7 @@ function table(rows) {
   const row = myTable.insertRow(-1);
   row.insertCell(0).outerHTML = `<th>Item</th>`;
   row.insertCell(1).outerHTML = `<th>Result</th>`;
-
-  try {
-    rows.forEach(arr => {
-      const row = myTable.insertRow(-1);
-      [row.insertCell(0).innerHTML, row.insertCell(1).innerHTML] = arr;
-    });
-  } catch (err) { logError(err); }
-
+  insertRow(rows, myTable);
   while (tabdiv.childElementCount > 1) tabdiv.removeChild(tabdiv.lastChild);
   tabdiv.appendChild(myTable);
 }
