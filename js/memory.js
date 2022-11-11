@@ -7,7 +7,6 @@ const Deg = (x, y) => toDeg(Math.atan(y / x));
 let colArr = [], clickArr = [], colClick;
 let gamesStarted = false;
 let score = 0;
-let time = 0;
 let oldnum, oldernum;
 
 const classes = ['red', 'green', 'blue', 'orange'];
@@ -61,7 +60,7 @@ function repeatArr() {
 
   (function myLoop(i) {
     setTimeout(function () {
-      let cl = colArr[ind++];
+      const cl = colArr[ind++];
       board.classList.add(cl);
       if (cl === 'red') freq = 50;
       if (cl === 'green') freq = 150;
@@ -78,7 +77,7 @@ function repeatArr() {
 }
 
 function randomColor() {
-  let num = Math.floor(Math.random() * 4);
+  const num = Math.floor(Math.random() * 4);
   if (num === oldernum) { oldernum = null; randomColor(); }//only two colors in a row
   else innerRandom();
   function innerRandom() {
@@ -114,7 +113,7 @@ function startGame() {
   nextColor();
 }
 
-let AudioContext = window.AudioContext // Default
+const AudioContext = window.AudioContext // Default
   || window.webkitAudioContext // Safari and old versions of Chrome
   || false;
 window.a = AudioContext ? new AudioContext() : null;

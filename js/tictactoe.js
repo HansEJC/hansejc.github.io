@@ -46,20 +46,20 @@ function avail() {
     if (s.includes('X')) board[ind] = 'X';
     if (s.includes('O')) board[ind] = 'O';
   });
-  return board.filter(s => s !=="X" && s !=="O");
+  return board.filter(s => s !== "X" && s !== "O");
 }
 
 function checkWin() {
   squareClass = [...squares].map(sq => sq.firstChild.classList.value);
 
-  let r1 = [squareClass[0], squareClass[1], squareClass[2]];
-  let r2 = [squareClass[3], squareClass[4], squareClass[5]];
-  let r3 = [squareClass[6], squareClass[7], squareClass[8]];
-  let c1 = [squareClass[0], squareClass[3], squareClass[6]];
-  let c2 = [squareClass[1], squareClass[4], squareClass[7]];
-  let c3 = [squareClass[2], squareClass[5], squareClass[8]];
-  let d1 = [squareClass[0], squareClass[4], squareClass[8]];
-  let d2 = [squareClass[2], squareClass[4], squareClass[6]];
+  const r1 = [squareClass[0], squareClass[1], squareClass[2]];
+  const r2 = [squareClass[3], squareClass[4], squareClass[5]];
+  const r3 = [squareClass[6], squareClass[7], squareClass[8]];
+  const c1 = [squareClass[0], squareClass[3], squareClass[6]];
+  const c2 = [squareClass[1], squareClass[4], squareClass[7]];
+  const c3 = [squareClass[2], squareClass[5], squareClass[8]];
+  const d1 = [squareClass[0], squareClass[4], squareClass[8]];
+  const d2 = [squareClass[2], squareClass[4], squareClass[6]];
 
   if (
     checker(r1, 'hwin', row1) ||
@@ -80,7 +80,7 @@ function checkWin() {
 let iter = 0;
 function minimax(reboard, player) {
   iter++;
-  let array = avail();
+  const array = avail();
   if (array.length === 9) return { index: 7 };
   if (winning(reboard, 'X')) {
     return { score: -10 };
@@ -92,9 +92,10 @@ function minimax(reboard, player) {
     return { score: 0 };
   }
 
-  let moves = [], g;
+  const moves = [];
+  let g;
   for (let i = 0; i < array.length; i++) {
-    let move = {};
+    const move = {};
     move.index = reboard[array[i]];
     reboard[array[i]] = player;
 
@@ -162,8 +163,7 @@ function gameOver() {
 function nextMove() {
   board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   if (checkWin()) return;
-  let square;
-  square = mode.textContent === "Hard" ? squares[minimax(board, 'O').index].firstChild : getMove();
+  const square = mode.textContent === "Hard" ? squares[minimax(board, 'O').index].firstChild : getMove();
   logError(`Scenarios assessed: ${iter}`); //check how many moves where simulated
   setTimeout(() => {
     square.classList.add('Oplay');
@@ -233,7 +233,7 @@ function checkTwo() {
 }
 
 function getMove() {
-  let move = checkTwo();
+  const move = checkTwo();
   if (move) return move;
   if (!firstMove) {
     firstMove = true;

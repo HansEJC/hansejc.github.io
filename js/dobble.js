@@ -67,7 +67,7 @@ function createDeck() {
       cards.push([i + 2]);
       //Add n symbols on the card (e.g. 7 symbols)
       for (let k = 0; k < n; k++) {
-        let val = (n + 1 + n * k + (i * k + j) % n) + 1;
+        const val = (n + 1 + n * k + (i * k + j) % n) + 1;
         cards[cards.length - 1].push(val);
       }
     }
@@ -144,7 +144,7 @@ function cardsGone() {
 
 function clicked(e) {
   if (!e.isTrusted) return; // cheater!
-  let classy = e.target.classList;
+  const classy = e.target.classList;
   let scored = false;
   HouseDeck.forEach(card => {
     if (classy[classy.length - 1] === card.classList[card.classList.length - 1]) {
@@ -190,7 +190,7 @@ function gameOver() {
 }
 
 
-let AudioContext = window.AudioContext // Default
+const AudioContext = window.AudioContext // Default
   || window.webkitAudioContext // Safari and old versions of Chrome
   || false;
 window.a = AudioContext ? new AudioContext() : null;
@@ -222,7 +222,7 @@ function startTimer(duration) {
 
 function numPlayers() {
   this.checked = true;
-  let x = document.getElementById("Player2"), y = document.getElementById("Score2"), z = document.getElementById("GameTimer");
+  const x = document.getElementById("Player2"), y = document.getElementById("Score2"), z = document.getElementById("GameTimer");
   if (this.id === 'SingleP') { x.style.display = "none"; y.style.display = "none"; z.style.display = "block"; }
   else { x.style.display = "flex"; y.style.display = "block"; z.style.display = "none"; }
 }
