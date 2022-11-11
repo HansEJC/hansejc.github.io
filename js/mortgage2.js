@@ -113,9 +113,7 @@ function dygPlot(mortgage) {
       connectSeparatedPoints: true,
       axes: {
         y: {
-          axisLabelFormatter: function (y) {
-            return `${y} £`;
-          },
+          axisLabelFormatter(y) { return `${y} £` },
           axisLabelWidth: 60
         }
       }

@@ -66,8 +66,8 @@ function addOption(opt, desc, bool, plotter) {
     if (e.target.checked) eval(`g3.updateOptions({${e.target.id}: ${plotter}});`);
     else eval(`g3.updateOptions({${e.target.id}: Dygraph.Plotters.linePlotter});`);
   }
-  if (typeof plotter !== `undefined`) newopt.addEventListener('change', updatePlotter), updatePlotter({ target: { checked: checked, id: opt } });
-  else newopt.addEventListener('change', updateOps), updateOps({ target: { checked: checked, id: opt } });
+  if (typeof plotter !== `undefined`) newopt.addEventListener('change', updatePlotter), updatePlotter({ target: { checked, id: opt } });
+  else newopt.addEventListener('change', updateOps), updateOps({ target: { checked, id: opt } });
 }
 
 function inputsNfunc(db) {
@@ -233,7 +233,7 @@ function save(data, db) {
   heh = data.map(x => [...x]);
   let transaction = db.transaction(["plots"], "readwrite");
   let objectStore = transaction.objectStore("plots");
-  objectStore.put({ id: 1, 'data': data });
+  objectStore.put({ id: 1, data });
 }
 
 function plotexp(csv, db) {
@@ -351,14 +351,12 @@ function dyg(csv) {
       showRoller: true,
       axes: {
         x: {
-          axisLabelFormatter: function (y, gran, opts) {
+          axisLabelFormatter(y, gran, opts) {
             return y instanceof Date ? Dygraph.dateAxisLabelFormatter(y, gran, opts) : smoothdec(y);
           },
         },
         y: {
-          axisLabelFormatter: function (y) {
-            return smoothdec(y);
-          },
+          axisLabelFormatter(y) { return smoothdec(y) },
         },
       }
     }          // options

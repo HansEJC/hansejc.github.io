@@ -134,15 +134,11 @@ function dygPlot(foparr) {
       includeZero: true,
       axes: {
         x: {
-          axisLabelFormatter: function (y) {
-            return `${y} m`;
-          },
+          axisLabelFormatter(y) { return `${y} m` },
           // axisLabelWidth: 100
         },
         y: {
-          axisLabelFormatter: function (y) {
-            return `${Number(y.toFixed(3))} Ω`;
-          },
+          axisLabelFormatter(y) { return `${Number(y.toFixed(3))} Ω` },
           axisLabelWidth: 70
         }
       }

@@ -185,7 +185,7 @@ function gaOP(file, refreshOP) {
   try {
     dataLayer.push({
       'event': 'op_fetch',
-      file: file,
+      file,
       firebase: refreshOP
     });
   } catch (err) { logError(err); }
