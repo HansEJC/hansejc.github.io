@@ -1,7 +1,7 @@
 function addLoader(html, err, val) {
   let div = document.createElement('div');
   let prog = document.createElement(`progress`);
-  prog.max = 100, prog.value = val || 50;
+  prog.max = 100; prog.value = val || 50;
   let graphdiv = document.getElementById("graphdiv3");
   let errdiv = document.getElementById("err");
   if (err) {
@@ -66,8 +66,8 @@ function addOption(opt, desc, bool, plotter) {
     if (e.target.checked) eval(`g3.updateOptions({${e.target.id}: ${plotter}});`);
     else eval(`g3.updateOptions({${e.target.id}: Dygraph.Plotters.linePlotter});`);
   }
-  if (typeof plotter !== `undefined`) newopt.addEventListener('change', updatePlotter), updatePlotter({ target: { checked, id: opt } });
-  else newopt.addEventListener('change', updateOps), updateOps({ target: { checked, id: opt } });
+  if (typeof plotter !== `undefined`) { newopt.addEventListener('change', updatePlotter); updatePlotter({ target: { checked, id: opt } }); }
+  else { newopt.addEventListener('change', updateOps); updateOps({ target: { checked, id: opt } }); }
 }
 
 function inputsNfunc(db) {
@@ -373,8 +373,8 @@ function dygReady() {
   const cbh = document.getElementById('MyForm'), colF = document.getElementById('ColorForm');
 
   for (let i = 0; i < lbs.length; i++) {
-    cb[i] = document.createElement('input'), cb2[i] = document.createElement('input'), col[i] = document.createElement('input');
-    cb[i].type = 'checkbox', cb2[i].type = 'text', col[i].type = 'color';
+    cb[i] = document.createElement('input'); cb2[i] = document.createElement('input'); col[i] = document.createElement('input');
+    cb[i].type = 'checkbox'; cb2[i].type = 'text'; col[i].type = 'color';
     cbh.appendChild(cb[i]); cbh.appendChild(cb2[i]); colF.appendChild(col[i]);
     cb[i].id = `csvcheckbox ${i}`; cb2[i].id = `csvlabel${i}`; col[i].id = `csvcolor${i}`;
     cb2[i].value = lbs[i];
@@ -402,9 +402,9 @@ function lineStyles(sty, i) {
   const lineS = document.getElementById('LineStyles');
   const opt1 = document.createElement("option"), opt2 = document.createElement("option"), opt3 = document.createElement("option"), opt4 = document.createElement("option");
   sty[i] = document.createElement('select');
-  opt1.text = `Solid`, opt2.text = `Dotted`, opt3.text = `Dashed`, opt4.text = `Dotdash`;
-  opt1.value = `null`, opt2.value = `[2,2]`, opt3.value = JSON.stringify(Dygraph.DASHED_LINE), opt4.value = JSON.stringify(Dygraph.DOT_DASH_LINE);
-  sty[i].appendChild(opt1), sty[i].appendChild(opt2), sty[i].appendChild(opt3), sty[i].appendChild(opt4);
+  opt1.text = `Solid`; opt2.text = `Dotted`; opt3.text = `Dashed`; opt4.text = `Dotdash`;
+  opt1.value = `null`; opt2.value = `[2,2]`; opt3.value = JSON.stringify(Dygraph.DASHED_LINE); opt4.value = JSON.stringify(Dygraph.DOT_DASH_LINE);
+  sty[i].appendChild(opt1); sty[i].appendChild(opt2); sty[i].appendChild(opt3); sty[i].appendChild(opt4);
   sty[i].id = `csvlines${i}`;
   lineS.appendChild(sty[i]);
   sty[i].onchange = function () { saveValue(this); styleMe(this, i + 1); };

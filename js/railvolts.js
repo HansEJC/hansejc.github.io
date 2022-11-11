@@ -134,15 +134,13 @@ function dygPlot(earray, subarray) {
   );
   g3.ready(function () {
     const colors = g3.getColors();
-    colors.pop(), colors.pop();
+    colors.pop(); colors.pop();
     colors.push(`orange`, `red`);
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
     }, 500);
     g3.setAnnotations(subarray);
-    g3.updateOptions({
-      colors: colors
-    });
+    g3.updateOptions({ colors });
     findExtremes();
   });
 }

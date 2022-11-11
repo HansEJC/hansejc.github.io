@@ -30,7 +30,7 @@ function startGame() {
   noHighScore = false;
   scoreBoard.textContent = 0;
   scoreBoard2.textContent = 0;
-  score = 0, score2 = 0;
+  score = 0; score2 = 0;
   deck = createDeck();
   newP1Card();
   newHouseCard();
@@ -223,8 +223,8 @@ function startTimer(duration) {
 function numPlayers() {
   this.checked = true;
   let x = document.getElementById("Player2"), y = document.getElementById("Score2"), z = document.getElementById("GameTimer");
-  if (this.id === 'SingleP') x.style.display = "none", y.style.display = "none", z.style.display = "block";
-  else x.style.display = "flex", y.style.display = "block", z.style.display = "none";
+  if (this.id === 'SingleP') { x.style.display = "none"; y.style.display = "none"; z.style.display = "block"; }
+  else { x.style.display = "flex"; y.style.display = "block"; z.style.display = "none"; }
 }
 
 

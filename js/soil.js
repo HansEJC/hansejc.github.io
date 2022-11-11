@@ -11,11 +11,11 @@ function startup() {
   buttonFun(1, `fop`, fop);
 
   for (let i = 0; i < measurements; i++) {
-    cb[i] = document.createElement(`span`), cb2[i] = document.createElement(`input`), cb3[i] = document.createElement(`span`);
-    cb2[i].type = `number`, cb2[i].step = `0.01`;
-    cbh.appendChild(cb[i]), cbh2.appendChild(cb2[i]), cbh3.appendChild(cb3[i]);
-    cb[i].id = `dis${i}`, cb2[i].id = `stan${i}`, cb3[i].id = `stiv${i}`;
-    cb[i].className = `label`, cb3[i].className = `label`;
+    cb[i] = document.createElement(`span`); cb2[i] = document.createElement(`input`); cb3[i] = document.createElement(`span`);
+    cb2[i].type = `number`; cb2[i].step = `0.01`;
+    cbh.appendChild(cb[i]); cbh2.appendChild(cb2[i]); cbh3.appendChild(cb3[i]);
+    cb[i].id = `dis${i}`; cb2[i].id = `stan${i}`; cb3[i].id = `stiv${i}`;
+    cb[i].className = `label`; cb3[i].className = `label`;
     cb2[i].value = getSavedValue(cb2[i].id);
     cb2[i].onkeyup = function () { saveValue(this); };
   }
@@ -44,10 +44,10 @@ function def2() {
   let cb = [], cb2 = [];
   const cbh = document.getElementById(`Dist2`), cbh2 = document.getElementById(`Meas`);
   for (let i = 0; i < 10; i++) {
-    cb[i] = document.createElement(`span`), cb2[i] = document.createElement(`input`);
-    cb[i].className = `label`, cb2[i].type = `number`, cb2[i].step = `0.01`;
-    cbh.appendChild(cb[i]), cbh2.appendChild(cb2[i]);
-    cb[i].id = `fopdis${i}`, cb2[i].id = `fopmeas${i}`;
+    cb[i] = document.createElement(`span`); cb2[i] = document.createElement(`input`);
+    cb[i].className = `label`; cb2[i].type = `number`; cb2[i].step = `0.01`;
+    cbh.appendChild(cb[i]); cbh2.appendChild(cb2[i]);
+    cb[i].id = `fopdis${i}`; cb2[i].id = `fopmeas${i}`;
     cb2[i].value = getSavedValue(cb2[i].id);
     cb2[i].onkeyup = function () { saveValue(this); };
   }

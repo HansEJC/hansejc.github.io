@@ -153,8 +153,8 @@ function gameOver() {
       gamesStarted = false;
     });
   }, 400);
-  firstMove = false, secondMove = false, thirdMove = false, fourthMove = false;
-  firstMid = false, firstCor = false, firstEd = false;
+  firstMove = false; secondMove = false; thirdMove = false; fourthMove = false;
+  firstMid = false; firstCor = false; firstEd = false;
   gamesStarted = false;
   toggleMode();
 }
