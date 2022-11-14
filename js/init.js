@@ -279,11 +279,11 @@ function _(el) {
 
 _.prototype.fade = function fade(type, ms) {
   const isIn = type === 'in',
-    opacity = isIn ? 0 : 1,
     interval = 50,
     duration = ms,
     self = this,
     gap = interval / duration;
+  let opacity = isIn ? 0 : 1;
 
   if (isIn) {
     self.el.style.display = 'inline';
