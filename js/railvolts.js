@@ -23,7 +23,7 @@ function calculations() {
   const masd = Number(getSavedValue("MASD")) / 1000 || 40 / 1000;
   crbd = crbd === 0 ? Number.MAX_SAFE_INTEGER : Math.max(Number(crbd) / 1000, 0.1); //convert to km and set to minimum of 100m
   const railR = doublrr ? 2 : 1;
-  let earray = [], subarray = [];
+  const earray = [], subarray = [];
   const vol = 25; //25kV
   const imp = vol / fc; //fault limit impedance
   const ole = 1 / (1 / ci + 1 / cw);
@@ -56,7 +56,7 @@ function calculations() {
         ? parall([totmimp, mimp / Math.floor(lch / masdcom)])
         : totmimp;
 
-      let stuff = { ole, lcc, lc, trnu, lch, lxb, aew, ri, railR, nxbnd, rsc, totmimp };
+      const stuff = { ole, lcc, lc, trnu, lch, lxb, aew, ri, railR, nxbnd, rsc, totmimp };
       oleimp = oleFun(stuff);
       ({ returnimp, returnimp2 } = normalCalc(stuff, true));
       oleimp = ind === 0 ? 0 : oleimp; //set FS impedance to 0
@@ -146,7 +146,7 @@ function dygPlot(earray, subarray) {
 }
 
 function findExtremes() {
-  let extremeArr = [];
+  const extremeArr = [];
   const file = g3.rolledSeries_;
   const labls = g3.getLabels();
 

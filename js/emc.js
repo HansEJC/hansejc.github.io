@@ -116,7 +116,7 @@ async function calculations() {
 }
 
 function HiFreqFun(stuff) {
-  let { earray, c, tf, EField, eirp, fi } = stuff;
+  const { earray, c, tf, EField, eirp, fi } = stuff;
   let d, ran, range, distrange;
   for (let i = 0; i < 5000; i++) {
     d = i / 100;
@@ -142,8 +142,9 @@ function HiFreqFun(stuff) {
 }
 
 function LowFreqFun(stuff) {
-  let { fields, earray, EField, eo, q, uo, cu } = stuff;
-  let d, ran, range, distrange;
+  const { fields, earray, eo, q, uo, cu } = stuff;
+  let { EField } = stuff;
+  let d, distrange;
   if (EField && q === 0) return; //return if plotting nothing
   if (fields[1].checked && cu === 0) return;
   const lowfreqrange = 51000;
@@ -158,8 +159,8 @@ function LowFreqFun(stuff) {
       distrange = uo * cu / (2 * Math.PI * d) < 5e-5 ? uo * cu / (2 * Math.PI * d) > 4.5e-5 ? d : distrange : lowfreqrange / 1000;
     }
   }
-  range = Math.max(q / (2 * Math.PI * eo * 0.3), 50e3);
-  ran = Math.max(uo * cu / (2 * Math.PI * 0.3), 400e-6);
+  const range = Math.max(q / (2 * Math.PI * eo * 0.3), 50e3);
+  const ran = Math.max(uo * cu / (2 * Math.PI * 0.3), 400e-6);
   const freqStuff = { earray, ran, range, distrange };
   return freqStuff;
 }

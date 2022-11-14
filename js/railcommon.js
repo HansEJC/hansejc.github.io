@@ -14,7 +14,7 @@ function quantities() {
 
   let NumLocs = Number(getSavedValue("NumLocs"));     // set the value to this input
   NumLocs = NumLocs < 2 ? 2 : NumLocs;
-  let cb = []; let cb2 = []; let cb3 = [];
+  const cb = [], cb2 = [], cb3 = [];
   if (NumLocs < 20) {
     for (let i = 0; i < NumLocs; i++) {
       cb[i] = document.createElement('input'); cb2[i] = document.createElement('input'); cb3[i] = document.createElement('input');
@@ -36,15 +36,15 @@ function quantities() {
 const lcd = (a, b) => smoothdec(a * Math.round(b / a), 10) || 0; //lowest commom multiplier
 
 function oleFun(stuff) {
-  let { ole, lcc, lc, trnu } = stuff;
+  const { ole, lcc, lc, trnu } = stuff;
   return 1 / (1 / (ole * lcc) + 1 / ((ole * lc) / trnu + ole * (lc - lcc)));
 }
 
 function normalCalc(stuff, volt) {
-  let { trnu, lxb, aew, ri, railR, nxbnd, rsc, totmimp } = stuff;
-  let returnimp = 1 / (1 / (ri * lxb) + 1 / (1 / (railR * trnu / (ri * nxbnd) + 1 / (aew * nxbnd) + 1 / (rsc * nxbnd)) + ri * (nxbnd - lxb))); //bonds at cross bond location
-  let returnimp2 = 1 / (1 / (ri * lxb) + 1 / (1 / (railR * trnu / (ri * nxbnd) + 1 / parall([aew * nxbnd, totmimp]) + 1 / (rsc * nxbnd)) + ri * (nxbnd - lxb))); //bonds at cross bond location
-  let returnaew = returnimp2 + aew * lxb;
+  const { trnu, lxb, aew, ri, railR, nxbnd, rsc, totmimp } = stuff;
+  const returnimp = 1 / (1 / (ri * lxb) + 1 / (1 / (railR * trnu / (ri * nxbnd) + 1 / (aew * nxbnd) + 1 / (rsc * nxbnd)) + ri * (nxbnd - lxb))); //bonds at cross bond location
+  const returnimp2 = 1 / (1 / (ri * lxb) + 1 / (1 / (railR * trnu / (ri * nxbnd) + 1 / parall([aew * nxbnd, totmimp]) + 1 / (rsc * nxbnd)) + ri * (nxbnd - lxb))); //bonds at cross bond location
+  const returnaew = returnimp2 + aew * lxb;
   if (volt) return { returnimp, returnimp2, returnaew };
   return returnimp;
 }
@@ -67,10 +67,10 @@ function negTrack(subarray) { //this is for locations that don't parallel
       locs = document.getElementById(posID - 199);
     }
     locs.classList.toggle(`loc`, !(trac.value < 0));
-    let sub = getSavedValue(posID - 99);
+    const sub = getSavedValue(posID - 99);
     totlc += Number(locs.value);
     if (trac.value < 0) {
-      let lblStuff = { totlc, subarray, sub };
+      const lblStuff = { totlc, subarray, sub };
       subLabels(lblStuff);
       insert = totlc;
       extra = Number(locs.value);

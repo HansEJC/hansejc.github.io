@@ -1,8 +1,9 @@
 function mortgageLoop(loopInfo) {
-  let { num, pay, year, month, teq, mortgage, rl, tpa, ir } = loopInfo;
+  const { num, pay, year, month, mortgage, ir } = loopInfo;
+  let { teq, rl, tpa } = loopInfo;
   for (let i = 0; i < num; i++) { // changed overpayment to $pay
-    let intr = rl * ir; //interest
-    let eqp = pay - intr; //equity payment
+    const intr = rl * ir; //interest
+    const eqp = pay - intr; //equity payment
     teq += eqp; //total equity
     mortgage.push([new Date(year, month + i, 1), intr, eqp, intr + eqp]);
     rl = rl - eqp; //remaining loan
@@ -13,18 +14,16 @@ function mortgageLoop(loopInfo) {
 
 function firstMortgage() {
   const il = 176225; //initial loan
-  let rl, teq, tpa; //remaining loan, total equity, total payed
-
   document.getElementById("HPI").value = getSavedValue("HPI");    // set the value to this input
   document.getElementById("OP").value = getSavedValue("OP");
-  let hpi = Math.max(il + 9275, Number(getSavedValue("HPI")));    // set the value to this input
-  teq = hpi - il; //initial deposit plus HPI
-  rl = il; tpa = 0;
+  const hpi = Math.max(il + 9275, Number(getSavedValue("HPI")));    // set the value to this input
+  const teq = hpi - il; //total equity, initial deposit plus HPI
+  let rl = il, tpa = 0; //remaining loan, total payed
 
-  let mortgage = [];
+  const mortgage = [];
   const ir = 4.09 / 12 / 100; //initial interest rate
   let loopInfo = { num: 13, pay: 1000, year: 2017, month: 3, ir, teq, rl, tpa, mortgage };
-  let info = mortgageLoop(loopInfo);
+  const info = mortgageLoop(loopInfo);
 
   loopInfo = { num: 11, pay: 1100, year: 2018, month: 4, ir, ...info }; // changed overpayment to £1100
   return mortgageLoop(loopInfo);
@@ -32,7 +31,7 @@ function firstMortgage() {
 
 function secondMortgage(info) {
   const ir = 1.84 / 12 / 100; //remortgage rate  
-  let pay = 1100 - 995; //the 995 was te remortgage fee
+  const pay = 1100 - 995; //the 995 was te remortgage fee
   let loopInfo = { num: 1, pay, year: 2019, month: 3, ir, ...info }; // First month
   info = mortgageLoop(loopInfo);
 
@@ -44,11 +43,11 @@ function secondMortgage(info) {
 }
 
 function currentMortgage(info) {
-  let today = new Date();
+  const today = new Date();
   const monthd = (today - new Date(2021, 3, 1)) / 1000 / 60 / 60 / 24 / 365.25 * 12; //difference in month
   const ir = 1.59 / 12 / 100; //remortgage rate
 
-  let pay = 5814.12 + 250 - 66 + 5.88; //the £5814.12 was the shortfall since we borrowed £135k, the £250 is cashback, £66 fees, £5.88 extra first month
+  const pay = 5814.12 + 250 - 66 + 5.88; //the £5814.12 was the shortfall since we borrowed £135k, the £250 is cashback, £66 fees, £5.88 extra first month
   let loopInfo = { num: 1, pay, year: 2021, month: 3, ir, ...info }; // First month
   info = mortgageLoop(loopInfo);
 
@@ -57,12 +56,13 @@ function currentMortgage(info) {
 }
 
 function futureMortgage(info) {
-  let { mortgage, rl, tp, monthd } = info;
+  const { mortgage, tp, monthd } = info;
+  let { rl } = info;
   let pn = 0; //payment number
   const ir = 1.59 / 12 / 100; //remortgage rate
   for (let i = 0; rl > 0; i++) {
-    let intr = rl * ir;
-    let eqp = tp - intr;
+    const intr = rl * ir;
+    const eqp = tp - intr;
     mortgage.push([new Date(2021, 5 + i + monthd, 1), intr, eqp, intr + eqp]);
     rl = rl - eqp;
     pn++;
@@ -71,17 +71,15 @@ function futureMortgage(info) {
 }
 
 function calculations() {
-
   const mpc = 459.89;  //current mortgage payment
-  let op = Number(getSavedValue("OP"));
-  let tp = op + mpc; // total payment
-
+  const op = Number(getSavedValue("OP"));
+  const tp = op + mpc; // total payment
   let info = firstMortgage();
   info = secondMortgage(info);
-  let { teq, mortgage, rl, tpa } = info = currentMortgage(info);
-  let pn = futureMortgage({ tp, ...info });
+  const { teq, mortgage, rl, tpa } = info = currentMortgage(info);
+  const pn = futureMortgage({ tp, ...info });
 
-  let ltv = 100 - teq / (teq + rl) * 100; //Loan to value
+  const ltv = 100 - teq / (teq + rl) * 100; //Loan to value
   spanMon("TPA", tpa);
   spanMon("TEQ", teq);
   spanMon("MPN", mpc);

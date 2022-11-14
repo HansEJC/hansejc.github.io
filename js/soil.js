@@ -4,7 +4,7 @@ function startup() {
   });
   fireBase();
   const measurements = 11;    // set the value to this input
-  let cb = [], cb2 = [], cb3 = [];
+  const cb = [], cb2 = [], cb3 = [];
   const cbh = document.getElementById(`Dist`), cbh2 = document.getElementById(`Stan`), cbh3 = document.getElementById(`Stiv`);
 
   buttonFun(0, `soil`, soil);
@@ -41,7 +41,7 @@ function buttonFun(but, str, fun) {
 
 function def2() {
   document.getElementById(`FOPDis`).value = getSavedValue(`FOPDis`);    // set the value to this input 
-  let cb = [], cb2 = [];
+  const cb = [], cb2 = [];
   const cbh = document.getElementById(`Dist2`), cbh2 = document.getElementById(`Meas`);
   for (let i = 0; i < 10; i++) {
     cb[i] = document.createElement(`span`); cb2[i] = document.createElement(`input`);
@@ -59,7 +59,7 @@ function soil() {
   const measurements = 11;
   let stiv = 0;
   let dis, stan;
-  let soilarr = [];
+  const soilarr = [];
   for (let i = 0; i < measurements; i++) {
     dis = Number(document.getElementById(`dis${i}`).innerText);
     stan = Number(document.getElementById(`stan${i}`).value);
@@ -93,7 +93,7 @@ function fop() {
     fopdis = 50;
     document.getElementById(`FOPDis`).value = 50;
   }
-  let foparr = [];
+  const foparr = [];
   for (let i = 0; i < 10; i++) {
     dis = document.getElementById(`fopdis${i}`).innerText = Number((fopdis * ((i) / 10)).toFixed(1));
     meas = Number(document.getElementById(`fopmeas${i}`).value);

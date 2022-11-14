@@ -4,9 +4,9 @@ function inits() {
   document.querySelectorAll('input[type="radio"]').forEach(rad => {
     rad.checked = (getSavedValue(rad.id) === "true");
   });
-  let boost = document.querySelector("#BOOST").checked;
-  let atfeed = document.querySelector("#ATFEED").checked;
-  let doublrr = document.querySelector("#DRR").checked;
+  const boost = document.querySelector("#BOOST").checked;
+  const atfeed = document.querySelector("#ATFEED").checked;
+  const doublrr = document.querySelector("#DRR").checked;
   if (!doublrr) document.querySelector("#SRR").checked = true;
   document.querySelector("#Bstuff").style.display = boost ? "block" : "none";
   document.querySelector("#ATFstuff").style.display = atfeed ? "block" : "none";
@@ -15,46 +15,47 @@ function inits() {
 
 function calculations() {
   const { boost, atfeed, doublrr } = inits();
-  let fc = Number(getSavedValue("FC")) || 6;
-  let ci = Number(getSavedValue("CI")) || 0.43;
-  let cw = Number(getSavedValue("CW")) || 0.15;
-  let ri = Number(getSavedValue("RI")) || 0.2;
-  let bimp = Number(getSavedValue("BIMP")) / 2 || 0.21 / 2; //booster impedance diveded by two for OLE and RSC
-  let atf = Number(getSavedValue("ATF")) || 0.07;
-  let aew = Number(getSavedValue("AEW")) || Number.MAX_SAFE_INTEGER;
+  const fc = Number(getSavedValue("FC")) || 6;
+  const ci = Number(getSavedValue("CI")) || 0.43;
+  const cw = Number(getSavedValue("CW")) || 0.15;
+  const ri = Number(getSavedValue("RI")) || 0.2;
+  const bimp = Number(getSavedValue("BIMP")) / 2 || 0.21 / 2; //booster impedance diveded by two for OLE and RSC
+  const atf = Number(getSavedValue("ATF")) || 0.07;
+  const aew = Number(getSavedValue("AEW")) || Number.MAX_SAFE_INTEGER;
   let rsc = Number(getSavedValue("RSC")) || Number.MAX_SAFE_INTEGER;
   rsc = boost && rsc > 1 ? 0.11 : rsc; //if booster, RSC is required
   let crbd = Number(getSavedValue("CRBD"));
   crbd = crbd === 0 ? Number.MAX_SAFE_INTEGER : Math.max(Number(crbd) / 1000, 0.1); //convert to km and set to minimum of 100m
-  let railR = doublrr ? 2 : 1;
-  let earray = [], subarray = [], faultarray = [], subfault;
-  let vol = 25; //25kV
-  let imp = vol / fc; //fault limit impedance
-  let ole = 1 / (1 / ci + 1 / cw);
+  const railR = doublrr ? 2 : 1;
+  const earray = [], subarray = [], faultarray = [];
+  let subfault;
+  const vol = 25; //25kV
+  const imp = vol / fc; //fault limit impedance
+  const ole = 1 / (1 / ci + 1 / cw);
   let faultimp = ole / 2 + 1 / (2 / ri + 1 / aew + 1 / rsc); //in ohm/km
   let oleimp = 0, returnimp = 0;
   let totlc = 0, previmp = 0, prevole = 0, previmpneg = 0, prevoleneg = 0, textlc = 0; //total length, previous impedance, prev OLE
-  let res = 1000; //resolution
-  let bdist = 3; //booster distance of 3km
+  const res = 1000; //resolution
+  const bdist = 3; //booster distance of 3km
   let once = true;
 
-  let { extra, index, insert } = negTrack(subarray);
+  const { extra, index, insert } = negTrack(subarray);
   document.querySelectorAll(".loc").forEach((loc, ind) => {
     let trnu = Number(getSavedValue(Number(loc.id) + 199)) || 2;
     trnu = trnu === 1 ? 1 / Number.MAX_SAFE_INTEGER : trnu - 1;
-    let dist = getSavedValue(loc.id);
+    const dist = getSavedValue(loc.id);
     loc.value = dist;
     let lc = ind === index ? Number(dist) + extra : dist; //add extra for non parallel subs
     lc = lc === "" ? 5 : Math.abs(lc); //set to 5km if it's empty to avoid lag
 
     for (let i = 1; i <= res; i++) {
       i = ind === 0 ? res : i; //shift the first sub to its km point
-      let lcc = smoothdec(lc * i / res, 6); //current location
-      let lch = dist < 0 ? totlc - lcc : totlc + lcc; //current total location
+      const lcc = smoothdec(lc * i / res, 6); //current location
+      const lch = dist < 0 ? totlc - lcc : totlc + lcc; //current total location
       let nxbnd = lcd(lc / res, crbd); //next bond location
       nxbnd = nxbnd > lc ? lc : nxbnd; //if cross bonding is greater than sub distance, set to sub distance
-      let lxb = smoothdec(lcc % nxbnd, 6) === 0 ? nxbnd : smoothdec(lcc % nxbnd, 6) || 0;//location after last xbond
-      let stuff = { ole, lcc, lc, trnu, bimp, lch, bdist, lxb, aew, ri, railR, nxbnd, rsc, atf };
+      const lxb = smoothdec(lcc % nxbnd, 6) === 0 ? nxbnd : smoothdec(lcc % nxbnd, 6) || 0;//location after last xbond
+      const stuff = { ole, lcc, lc, trnu, bimp, lch, bdist, lxb, aew, ri, railR, nxbnd, rsc, atf };
       oleimp = oleFun(stuff);
       if (boost) ({ oleimp, returnimp } = boosterCalc({ oleimp, ...stuff }));
       else returnimp = (atfeed) ? atCalc(stuff) : normalCalc(stuff);
@@ -85,8 +86,8 @@ function calculations() {
     }
     totlc += Number(dist) < 0 ? 0 : lc; //total length
     textlc += Number(dist); //total length
-    let sub = getSavedValue(100 + (Number(loc.id)));
-    let lblStuff = { dist, textlc, totlc, subarray, sub };
+    const sub = getSavedValue(100 + (Number(loc.id)));
+    const lblStuff = { dist, textlc, totlc, subarray, sub };
     subLabels(lblStuff);
     faultarray.push([sub, smoothdec(subfault)]);
   });
@@ -96,7 +97,7 @@ function calculations() {
 }
 
 function subLabels(stuff) {
-  let { dist, textlc, totlc, subarray, sub } = stuff;
+  const { dist, textlc, totlc, subarray, sub } = stuff;
   subarray.push({
     series: dist < 0 ? "Fault Current (kA)." : "Fault Current (kA)",
     x: dist < 0 ? textlc : totlc,
@@ -108,18 +109,19 @@ function subLabels(stuff) {
 }
 
 function atCalc(stuff) {
-  let { lxb, ri, nxbnd, atf } = stuff;
+  const { lxb, ri, nxbnd, atf } = stuff;
   return 1 / (1 / (ri * lxb) + 1 / ((atf * nxbnd) + ri * (nxbnd - lxb))); //bonds at cross bond location
 }
 
 function boosterCalc(stuff) {
   //nxbnd = nxbnd > bdist ? bdist : nxbnd; //if booster is greater than sub distance, set to sub distance
   //lxb = smoothdec(lcc % nxbnd) === 0 ? nxbnd : smoothdec(lcc % nxbnd) || 0;//location after last xbond
-  let { oleimp, ole, lcc, trnu, bimp, lch, bdist, lxb, aew } = stuff;
+  const { ole, lcc, trnu, bimp, lch, bdist, lxb, aew } = stuff;
+  let { oleimp, } = stuff;
   oleimp += 2 * bimp * Math.floor(Math.abs(lch) / bdist);
   if (trnu < 1) oleimp = ole * lcc;
   //returnimp = 1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd))+ri*(nxbnd-lxb))); //bonds at cross bond location
-  let returnimp = aew * lxb; //bonds at cross bond location
+  const returnimp = aew * lxb; //bonds at cross bond location
   //prevole += oleimp;// -oleFun(stuff);
   //previmp += returnimp;// -1/(1/(ri*lxb)+1/(1/(railR*trnu/(ri*nxbnd)+1/(aew*nxbnd)+1/(rsc*nxbnd))+ri*(nxbnd-lxb)));;
   return { oleimp, returnimp }
@@ -167,7 +169,7 @@ function table(rows) {
   const tabdiv = document.querySelector(`#FaultTable`);
   const myTable = document.createElement(`table`);
   myTable.classList.add(`scores`);
-  let row = myTable.insertRow(-1);
+  const row = myTable.insertRow(-1);
   row.insertCell(0).outerHTML = `<th>Location Name</th>`;
   row.insertCell(1).outerHTML = `<th>Fault Current (kA)</th>`;
   insertRow(rows, myTable);

@@ -1,9 +1,9 @@
 function addLoader(html, err, val) {
-  let div = document.createElement('div');
-  let prog = document.createElement(`progress`);
+  const div = document.createElement('div');
+  const prog = document.createElement(`progress`);
   prog.max = 100; prog.value = val || 50;
-  let graphdiv = document.getElementById("graphdiv3");
-  let errdiv = document.getElementById("err");
+  const graphdiv = document.getElementById("graphdiv3");
+  const errdiv = document.getElementById("err");
   if (err) {
     document.querySelectorAll("#error").forEach(x => x.parentNode.removeChild(x));
     errdiv.insertBefore(div, errdiv.firstChild);
@@ -84,7 +84,7 @@ function inputsNfunc(db) {
   localStorage.setItem(document.getElementById("eqcheck").id, false); //uncheck equations with new file
   const radios = document.querySelectorAll("input[name=ArrayOrCSV]");
   radios.forEach(rad => rad.addEventListener('change', checkit));
-  let prup = document.querySelector("#PrUp");
+  const prup = document.querySelector("#PrUp");
   prup.checked = getSavedValue("PrUp") === "true" || getSavedValue("PrUp") === "";
   saveRadio(prup);
 }
@@ -96,17 +96,17 @@ function startup(bool) {
     box.addEventListener('change', saveRadio);
   });
   document.getElementById("69").checked = getSavedValue("69") === "true" || getSavedValue("69") === ""; //checkbox "Show" with new file
-  let idbSupported = ("indexedDB" in window);
+  const idbSupported = ("indexedDB" in window);
   let db;
 
   if (idbSupported) {
-    let openRequest = indexedDB.open("graph", 1);
+    const openRequest = indexedDB.open("graph", 1);
     openRequest.onupgradeneeded = dbUpgrade(db);
     openRequest.onsuccess = function (e) {
       db = e.target.result;
-      let transaction = db.transaction(["plots"]);
-      let objectStore = transaction.objectStore("plots");
-      let request = objectStore.get("2");
+      const transaction = db.transaction(["plots"]);
+      const objectStore = transaction.objectStore("plots");
+      const request = objectStore.get("2");
       request.onsuccess = function (event) {
         uploadcsv(db);
         if (bool) return;
@@ -122,7 +122,7 @@ function uploadcsv(db) {
     addLoader("Uploading csv", false, 33);
     if (!window.FileReader) return; // Browser is not compatible
 
-    let reader = new FileReader();
+    const reader = new FileReader();
 
     reader.onload = function (evt) {
       if (evt.target.readyState !== 2) return;
@@ -146,7 +146,7 @@ function uploadcsv(db) {
     //put filename in span
     let fullPath = document.getElementById('my_upload').value;
     if (fullPath) {
-      let startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
+      const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
       let filename = fullPath.substring(startIndex);
       if (filename.indexOf('\\') === 0 || filename.indexOf('/') === 0) {
         filename = filename.substring(1);
@@ -157,10 +157,10 @@ function uploadcsv(db) {
 }
 
 function read(db) {
-  let prog = ((getSavedValue("99") === "true") || (getSavedValue("eqcheck") === "true")) ? 33 : 66;
+  const prog = ((getSavedValue("99") === "true") || (getSavedValue("eqcheck") === "true")) ? 33 : 66;
   try {
     addLoader("Reading Data from Variable", false, prog);
-    let arr = heh.map(x => [...x]);
+    const arr = heh.map(x => [...x]);
     plotexp(arr, db);
   }
   catch (err) {
@@ -231,14 +231,14 @@ function parseCSV(csv) {
 function save(data, db) {
   heh = [];
   heh = data.map(x => [...x]);
-  let transaction = db.transaction(["plots"], "readwrite");
-  let objectStore = transaction.objectStore("plots");
+  const transaction = db.transaction(["plots"], "readwrite");
+  const objectStore = transaction.objectStore("plots");
   objectStore.put({ id: 1, data });
 }
 
 function plotexp(csv, db) {
   //show hidden options
-  let y = document.getElementById("hide");
+  const y = document.getElementById("hide");
   y.style.display = "block";
 
   let dat = new Date()/*, datb = false*/;
@@ -283,11 +283,11 @@ function equationInputs(len, res) {//add equation inputs
       eqh.removeChild(eqh.lastChild);
     }
   } catch (err) { addLoader(e, true); }
-  let equ = []/*, eqw = [], eqb = false*/;
+  const equ = []/*, eqw = [], eqb = false*/;
   for (let i = 1; i < len; i++) {
     equ[i] = document.createElement('input');
     equ[i].type = 'text';
-    let ch = String.fromCharCode(96 + i);
+    const ch = String.fromCharCode(96 + i);
     if (getSavedValue(ch) === "0" && res) localStorage.setItem(ch, ch);
     reset = getSavedValue(ch) === "";
     equ[i].value = reset ? ch : getSavedValue(ch);
@@ -302,8 +302,8 @@ function arrayequations(csv, db) {//column equations
   let mod = false;
   try {
     for (let i = 1; i < csv[0].length; i++) {
-      let ch = String.fromCharCode(96 + i);
-      let eq = document.getElementById(ch).value;
+      const ch = String.fromCharCode(96 + i);
+      const eq = document.getElementById(ch).value;
       if (ch === eq) continue; //only eval if there is an equation
       for (let j = 0; j < csv.length; j++) {
         if (eq === "0") {
@@ -369,7 +369,7 @@ function dygReady() {
   const colors = g3.getColors();
   //lbs.pop();
   lbs.shift();
-  let cb = [], cb2 = [], col = [], sty = [];
+  const cb = [], cb2 = [], col = [], sty = [];
   const cbh = document.getElementById('MyForm'), colF = document.getElementById('ColorForm');
 
   for (let i = 0; i < lbs.length; i++) {
@@ -411,7 +411,7 @@ function lineStyles(sty, i) {
 }
 
 function styleMe(e, i) {
-  let ser = g3.getLabels()[i];
+  const ser = g3.getLabels()[i];
   g3.updateOptions({ series: { [ser]: { strokePattern: JSON.parse(e.value) } } })
 }
 
@@ -437,9 +437,9 @@ function change(el) {
 }
 
 function UncheckAll(elementID) {
-  let _container = document.getElementById(elementID);
-  let _chks = _container.getElementsByTagName("INPUT");
-  let _numChks = _chks.length - 1;
+  const _container = document.getElementById(elementID);
+  const _chks = _container.getElementsByTagName("INPUT");
+  const _numChks = _chks.length - 1;
 
   for (let i = 0; i < _numChks; i++) {
 
@@ -453,14 +453,14 @@ function UncheckAll(elementID) {
     }
   }
 }
-function idents(len) {
-  let labl = [], labd, colors, styles;
-  labl.push("boobs");
 
+function idents(len) {
+  const labl = [];
+  labl.push("boobs");
   for (let i = 0; i < len; i++) {
-    labd = document.getElementById(`csvlabel${i}`);
-    colors = document.getElementById(`csvcolor${i}`);
-    styles = document.getElementById(`csvlines${i}`);
+    const labd = document.getElementById(`csvlabel${i}`);
+    const colors = document.getElementById(`csvcolor${i}`);
+    const styles = document.getElementById(`csvlines${i}`);
     labd.value = getSavedValue(`csvlabel${i}`) === "" ? labd.value : getSavedValue(`csvlabel${i}`);
     labl.push(labd.value);
     if (labd.value.length > 0) {
@@ -476,23 +476,23 @@ function idents(len) {
 
 //below code was taken from <script src="https://dygraphs.com/src/extras/smooth-plotter.js"></script>
 function getControlPoints(p0, p1, p2, opt_alpha, opt_allowFalseExtrema) {
-  let alpha = (typeof opt_alpha !== `undefined`) ? opt_alpha : 1 / 3;  // 0=no smoothing, 1=crazy smoothing
-  let allowFalseExtrema = opt_allowFalseExtrema || false;
+  const alpha = (typeof opt_alpha !== `undefined`) ? opt_alpha : 1 / 3;  // 0=no smoothing, 1=crazy smoothing
+  const allowFalseExtrema = opt_allowFalseExtrema || false;
 
   if (!p2) {
     return [p1.x, p1.y, null, null];
   }
 
   // Step 1: Position the control points along each line segment.
-  let l1x = (1 - alpha) * p1.x + alpha * p0.x,
-    l1y = (1 - alpha) * p1.y + alpha * p0.y,
-    r1x = (1 - alpha) * p1.x + alpha * p2.x,
-    r1y = (1 - alpha) * p1.y + alpha * p2.y;
+  const l1x = (1 - alpha) * p1.x + alpha * p0.x;
+  let l1y = (1 - alpha) * p1.y + alpha * p0.y;
+  const r1x = (1 - alpha) * p1.x + alpha * p2.x;
+  let r1y = (1 - alpha) * p1.y + alpha * p2.y;
 
   // Step 2: shift the points up so that p1 is on the l1–r1 line.
   if (l1x !== r1x) {
     // This can be derived w/ some basic algebra.
-    let deltaY = p1.y - r1y - (p1.x - r1x) * (l1y - r1y) / (l1x - r1x);
+    const deltaY = p1.y - r1y - (p1.x - r1x) * (l1y - r1y) / (l1x - r1x);
     l1y += deltaY;
     r1y += deltaY;
   }
@@ -543,7 +543,7 @@ function smoothPlotter(e) {
     p1 = p1 && isOK(p1.canvasy) ? p1 : null;
     p2 = p2 && isOK(p2.canvasy) ? p2 : null;
     if (p0 && p1) {
-      let controls = getControlPoints(
+      const controls = getControlPoints(
         { x: p0.canvasx, y: p0.canvasy },
         { x: p1.canvasx, y: p1.canvasy },
         p2 && { x: p2.canvasx, y: p2.canvasy },
@@ -567,9 +567,9 @@ function smoothPlotter(e) {
 }
 
 function findExtremes() {
-  let extremeArr = []
-  let file = g3.rolledSeries_;
-  let labls = g3.getLabels();
+  const extremeArr = []
+  const file = g3.rolledSeries_;
+  const labls = g3.getLabels();
 
   for (let i = 1; i < file.length; i++) {
     let max = 0, av = 0, min = Number.MAX_SAFE_INTEGER;

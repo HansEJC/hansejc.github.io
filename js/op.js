@@ -12,9 +12,9 @@ function startup() {
 }
 
 function getModDates() {
-  let dbObj = firebase.database().ref(`op`);
+  const dbObj = firebase.database().ref(`op`);
   dbObj.on(`value`, snap => {
-    let dates = snap.val();
+    const dates = snap.val();
     let { lastmod, lastmodassets } = dates;
     document.getElementById("p").textContent = `Asset Reg Last Updated:  ${new Date(lastmodassets)}`;
     document.getElementById("pp").textContent = `Warehouse Last Updated:  ${new Date(lastmod)}`;
@@ -63,7 +63,7 @@ function splicer(arr, file) {
 }
 
 function ifsy() {
-  let file = document.querySelector('input[name]:checked').className;
+  const file = document.querySelector('input[name]:checked').className;
   let data = getSavedValue(file);
   data = file.includes(`Ware`) ? Papa.parse(data).data : Papa.parse(data).data.reverse();
   splicer(data, file);
@@ -75,7 +75,7 @@ function search(arrheh) {
   pn = pn.toLowerCase().split(" ");
   let myArray = arrheh;
   myArray = myArray.map(e => e.join(','));//remove undefined row
-  let npr = myArray.length; //number of rows
+  const npr = myArray.length; //number of rows
   let sArray = [];
   for (let i = 0; i < npr; i++) {
     if (typeof myArray[i][8] === "undefined") {
@@ -132,10 +132,10 @@ function searchDel(sArray) {
     <th>Project</th>
     <th>PO #</th></tr>`;
   for (let i = 0; i < Math.min(50, sArray.length); i++) {
-    let len = sArray[i][8].includes(`</`) ? 16 : 3;
-    let shifty = sArray[i][8].length > len;
-    let comm = shifty ? `${sArray[i][7]} ${sArray[i][8]}` : sArray[i][7];
-    let proj = shifty ? `` : sArray[i][8].substring(0, len);
+    const len = sArray[i][8].includes(`</`) ? 16 : 3;
+    const shifty = sArray[i][8].length > len;
+    const comm = shifty ? `${sArray[i][7]} ${sArray[i][8]}` : sArray[i][7];
+    const proj = shifty ? `` : sArray[i][8].substring(0, len);
     myTable += `<tr><td>${sArray[i][0]}</td>
       <td>${sArray[i][1]}</td>
       <td>${sArray[i][4]}</td>
@@ -166,13 +166,13 @@ function searchOther(sArray) {
 }
 
 async function fireFetch(file) {
-  let refreshOP = getSavedValue(`refreshOP`) === `true`;
+  const refreshOP = getSavedValue(`refreshOP`) === `true`;
   gaOP(file, refreshOP);
   let data = localStorage.getItem(file);
   if (!refreshOP && data !== null) return;
 
   const storage = firebase.storage();
-  let pathReference = storage.ref(file);
+  const pathReference = storage.ref(file);
   data = await pathReference.getDownloadURL()
     .then(async (url) => {
       return await fetch(url).then(result => result.text());
@@ -192,7 +192,7 @@ function gaOP(file, refreshOP) {
 }
 
 function enterLogin(e) {
-  let keyCode = e.which || e.keyCode;
+  const keyCode = e.which || e.keyCode;
   let handled = false;
   if (keyCode === 13) { //enter
     e.preventDefault();
