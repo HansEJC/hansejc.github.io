@@ -14,13 +14,13 @@ function keyPress(e) {
   logError(e.keyCode);
   try{
     k(10,Number(e.keyCode),200);
-    let div = document.querySelector(`[data-key="${e.keyCode}"]`);
+    const div = document.querySelector(`[data-key="${e.keyCode}"]`);
     div.classList.add('pressed');
     setTimeout(() => div.classList.remove('pressed'),300);
   }catch(err){k(10,Number(e.keyCode),200);}
 }
 
-let AudioContext = window.AudioContext // Default
+const AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
     || false;
 window.a = AudioContext ? new AudioContext() : null;

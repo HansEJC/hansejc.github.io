@@ -68,7 +68,7 @@ function javaread() {
         logError('Error while reading file');
         return;
       }
-      let filecontent = evt.target.result;
+      const filecontent = evt.target.result;
       const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
       save(DR);
     };
@@ -109,7 +109,7 @@ function startup() {
   select.value = getSavedValue(select.id) || `P438`;
   javaread();
   // await code here
-  let DR = [];
+  const DR = [];
   plotProtection(DR);
   document.onkeyup = function () {
     try { read(); } catch (e) { logError(e); }
@@ -148,7 +148,7 @@ function inside(point, vs) {
 function peakLoad() {
   const load = Number(document.querySelector("#PeakLoad").value) || 1000;
   const Z = 25000 / load;
-  let loadarray = [];
+  const loadarray = [];
   let rad, r, x;
   for (let i = 0; i <= 40; i++) {
     rad = i * Math.PI / 180;
@@ -205,7 +205,7 @@ function plotProtection(csvarr) {
 
 function addCSVtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
-  let faultarray = [], gap = false;
+  const faultarray = []; let gap = false;
   if (DR.length === 0) return faultarray;
   const [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
   for (let i = 1; i < DR.length; i++) { //add csv to array
@@ -240,7 +240,7 @@ function getIndex() {
 }
 
 function FaultZone(stuff) {
-  let { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del } = stuff;
+  const { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del } = stuff;
   if (DR.length === 0) return;
   const fst = smoothdec((DR[1][0] - DR[0][0]) * 1000, 3);
   let Z3time = 0;
@@ -313,7 +313,7 @@ async function dygPlot(total, xaxis, yaxis) {
 }
 
 function processNeeded(data) {
-  let newdata = [];
+  const newdata = [];
   const secdr = document.getElementById("SecDR");
   const vtr = secdr.checked ? document.getElementById("VTR").value || 1 : 1;
   const ctr = secdr.checked ? document.getElementById("CTR").value || 1 : 1;
@@ -497,9 +497,9 @@ function P438(tr, num, empty) {
   const r5 = m2 * Math.cos(Math.PI - b);
   const x5 = Math.min(-m2 * Math.sin(Math.PI - b), x4);
   const r4 = Math.min((x2 - x5) * Math.sin(0.5 * Math.PI - a) / Math.sin(a) + r5, 0);
-  let Zpol = [[0, 0], [r1, x1], [r2, x2], [r3, x3], [r4, x4], [r5, x5], [0, 0]]; //Z1 polygon
-  let Zel = [[0, ...empty, 0], [r1, ...empty, x1], [r2, ...empty, x2], [r3, ...empty, x3], [r4, ...empty, x4], [r5, ...empty, x5], [0, ...empty, 0]];
-  let stuff = { a, b, g, Z, LH };
+  const Zpol = [[0, 0], [r1, x1], [r2, x2], [r3, x3], [r4, x4], [r5, x5], [0, 0]]; //Z1 polygon
+  const Zel = [[0, ...empty, 0], [r1, ...empty, x1], [r2, ...empty, x2], [r3, ...empty, x3], [r4, ...empty, x4], [r5, ...empty, x5], [0, ...empty, 0]];
+  const stuff = { a, b, g, Z, LH };
   return [Zpol, Zel, stuff];
 }
 
@@ -515,7 +515,7 @@ function Zone3P438(tr) {
   let Zr = Number(document.getElementById(`Zone3rev`).value);
   Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
   let [Zpol, Zel, stuff] = P438(tr, `3`, [, , ,]);
-  let { a, b, g, Z, LH } = stuff;
+  const { a, b, g, Z, LH } = stuff;
   const m1 = LH * Math.sin(a) / Math.sin(Math.PI - a + g);
   const x1 = -Zr * Math.sin(a);
   const r1 = -x1 * Math.sin(b - 0.5 * Math.PI) / Math.sin(Math.PI - b);
@@ -540,8 +540,8 @@ function S7ST(tr, num, empty) {
   if (sec.checked) {
     Z = Z / tr;
   }
-  let Zpol = [[0, 0]];
-  let Zel = [[0, ...empty, 0]];
+  const Zpol = [[0, 0]];
+  const Zel = [[0, ...empty, 0]];
   for (let i = 0; i <= 100; i++) {
     const rad = i / 100 * b + (1 - i / 100) * g;
     const maxres = Z < 25000 / load ? Z : 25000 / load * Math.cos(40 * Math.PI / 180);
@@ -556,7 +556,7 @@ function S7ST(tr, num, empty) {
   }
   Zpol.push([0, 0]);
   Zel.push([0, ...empty, 0]);
-  let stuff = { a, b, g, Z };
+  const stuff = { a, b, g, Z };
   return [Zpol, Zel, stuff];
 }
 
@@ -571,8 +571,8 @@ function Zone2S7ST(tr) {
 function Zone3S7ST(tr) {
   let Zr = Number(document.getElementById(`Zone3rev`).value);
   Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
-  let [Zpol, Zel, stuff] = S7ST(tr, `3`, [, , ,]);
-  let { a, b, g, Z } = stuff;
+  const [Zpol, Zel, stuff] = S7ST(tr, `3`, [, , ,]);
+  const { a, b, g, Z } = stuff;
   for (let i = 0; i <= 100; i++) {
     const rad = i / 100 * (b + Math.PI) + (1 - i / 100) * (g + Math.PI);
     const res = rad > a + Math.PI
@@ -593,7 +593,7 @@ function summaryTable(data) {
   let maxfault = data[9][2]; //remove the risk of any initial fault recording noise
   const multi = smoothdec((data[1][0] - data[0][0]) * 1000) < 1 ? 1.3 : 2; //bigger multiplier for 1ms interval
   const column = [`Fault Level`, `Fault Duration`, `Fault Start`, `Fault Finish`, `Zone 1`, `Zone 2`, `Zone 3`];
-  let timers = JSON.parse(localStorage.getItem(`ZoneTimers`));
+  const timers = JSON.parse(localStorage.getItem(`ZoneTimers`));
   let duration = 0;
   let startflag = true;
   let endflag = true;

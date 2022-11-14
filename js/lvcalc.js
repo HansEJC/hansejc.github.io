@@ -25,7 +25,7 @@ function cables() { //cables from table 4E4A page 417
 }
 
 function addCable(cable) {
-  let cables = JSON.parse(localStorage.getItem(`LVCableData`)) || {};
+  const cables = JSON.parse(localStorage.getItem(`LVCableData`)) || {};
   cables[cable[0]] = {//current carrying capacity below
     c: {
       two: cable[1],
@@ -50,7 +50,7 @@ function cableSizes() {
   const phasesize = document.querySelector(`#PhaseSize`);
   const cpcsize = document.querySelector(`#CPCSize`);
   for (const size in cables) {
-    let opt = document.createElement(`option`);
+    const opt = document.createElement(`option`);
     opt.value = size;
     opt.innerHTML = `${size} mm<sup>2</sup>`;
     phasesize.appendChild(opt.cloneNode(true));
@@ -103,17 +103,17 @@ function protectionSelect() {
   const protectiontype = document.querySelector(`#Protection`);
   protectiontype.innerHTML = null;
   for (const rating in protection) {
-    let opt = document.createElement(`option`);
+    const opt = document.createElement(`option`);
     opt.value = rating;
     opt.innerHTML = rating;
-    let fuse = (document.querySelector("#ProtectionType").value.includes(`F`));
+    const fuse = (document.querySelector("#ProtectionType").value.includes(`F`));
     if (fuse && protection[rating].Fe) protectiontype.appendChild(opt);
     else if (!fuse && !protection[rating].Fe) protectiontype.appendChild(opt);
   }
 }
 
 function addMCB(rating) {
-  let protection = JSON.parse(localStorage.getItem(`LVProtection`)) || {};
+  const protection = JSON.parse(localStorage.getItem(`LVProtection`)) || {};
   protection[`${rating}A MCB`] = {
     b: {
       zs: zsCalc(5, rating),
@@ -132,7 +132,7 @@ function addMCB(rating) {
 }
 
 function addFuse(fuse) {
-  let protection = JSON.parse(localStorage.getItem(`LVProtection`)) || {};
+  const protection = JSON.parse(localStorage.getItem(`LVProtection`)) || {};
   protection[`${fuse[0]}A Fuse`] = {
     Fe: {
       zs: fuse[1],
@@ -176,7 +176,7 @@ function mainCalcs() {
   const minc = document.querySelector(`#MinCable`);
   const triptime = document.querySelector("#ProtectionType").value.includes(`F`) ? 5 : 0.4;
 
-  let phasesafe = Number(phaserating.textContent.split(` `)[0]) > protectrating && protectrating > designcurrent;
+  const phasesafe = Number(phaserating.textContent.split(` `)[0]) > protectrating && protectrating > designcurrent;
   phaserating.className = phasesafe ? `label safe` : `label danger`;
   trip.className = protectrating > designcurrent ? `label safe` : `label danger`;
   const vdropped = Number(vdrop.textContent.split(` `)[0]) / 1000 * len * designcurrent;

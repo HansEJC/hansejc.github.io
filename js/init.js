@@ -109,7 +109,7 @@ const randomChild = function (len) { return Math.floor(Math.random() * len) };
 function randomPage(e) {
   test = e;
   if (navs.some(function (nav) { return e.target.innerHTML.includes(nav) })) {
-    let nodeLen = randomChild(e.target.parentElement.children[1].querySelectorAll('a').length)
+    const nodeLen = randomChild(e.target.parentElement.children[1].querySelectorAll('a').length)
     e.target.parentElement.children[1].querySelectorAll('a')[nodeLen].click();
   }
   else return;
@@ -149,8 +149,8 @@ function clippy(x, y, div = `#graphdiv3`) {
   });
 }
 if (typeof (navigator.clipboard) === 'undefined') {
-  let htmltext = (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes("Edg")) ? "<br><br><a href=chrome://flags/#unsafely-treat-insecure-origin-as-secure>Auto copy to clipboard not supported in http. Copy this link and open in new tab to add this site as trusted to enable.</a>" : "<br><br><a>Auto copy to clipboard not supported. Right click plot and copy as image.</a>";
-  let article = document.querySelector('article');
+  const htmltext = (navigator.userAgent.includes('Chrome') && !navigator.userAgent.includes("Edg")) ? "<br><br><a href=chrome://flags/#unsafely-treat-insecure-origin-as-secure>Auto copy to clipboard not supported in http. Copy this link and open in new tab to add this site as trusted to enable.</a>" : "<br><br><a>Auto copy to clipboard not supported. Right click plot and copy as image.</a>";
+  const article = document.querySelector('article');
   if (article.lastChild.nodeName !== "A") article.innerHTML += htmltext;
 }
 
@@ -164,18 +164,18 @@ function saveValue(e) {
 
 function saveParameter() {
   let url = '';
-  let params = {};
+  const params = {};
   document.querySelectorAll('input').forEach((el) => {
     if (el.value.length > 0) params[el.id] = el.value;
     if (el.type === `checkbox` || el.type === `radio`) params[el.id] = el.checked;
   });
   document.querySelectorAll('select').forEach((select) => params[select.id] = select.value);
-  let esc = encodeURIComponent;
-  let query = Object.keys(params)
+  const esc = encodeURIComponent;
+  const query = Object.keys(params)
     .map(k => `${esc(k)}=${esc(params[k])}`)
     .join('&');
   url += `?${query}`;
-  let newurl = `${window.location.protocol}//${window.location.host + window.location.pathname + url}`;
+  const newurl = `${window.location.protocol}//${window.location.host + window.location.pathname + url}`;
   window.history.pushState({ path: newurl }, '', newurl);
 }
 
@@ -212,7 +212,7 @@ function change(el) {
 }
 
 function exportToCsv(filename, rows) {
-  let processRow = function (row) {
+  const processRow = function (row) {
     let finalVal = '';
     for (let j = 0; j < row.length; j++) {
       let innerValue = row[j] === null ? '' : row[j].toString();
@@ -232,14 +232,14 @@ function exportToCsv(filename, rows) {
   for (let i = 0; i < rows.length; i++) {
     csvFile += processRow(rows[i]);
   }
-  let blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+  const blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
   if (navigator.msSaveBlob) { // IE 10+
     navigator.msSaveBlob(blob, filename);
   } else {
-    let link = document.createElement("a");
+    const link = document.createElement("a");
     if (typeof link.download !== `undefined`) { // feature detection
       // Browsers that support HTML5 download attribute
-      let url = URL.createObjectURL(blob);
+      const url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
       link.setAttribute("download", filename);
       link.style.visibility = 'hidden';
@@ -278,12 +278,12 @@ function _(el) {
 }
 
 _.prototype.fade = function fade(type, ms) {
-  let isIn = type === 'in',
+  const isIn = type === 'in',
     opacity = isIn ? 0 : 1,
     interval = 50,
     duration = ms,
-    gap = interval / duration,
-    self = this;
+    self = this,
+    gap = interval / duration;
 
   if (isIn) {
     self.el.style.display = 'inline';
@@ -297,7 +297,7 @@ _.prototype.fade = function fade(type, ms) {
     if (opacity <= 0) self.el.style.display = 'none'
     if (opacity <= 0 || opacity >= 1) window.clearInterval(fading);
   }
-  let fading = window.setInterval(func, interval);
+  const fading = window.setInterval(func, interval);
 };
 
 //Firebase
@@ -317,8 +317,8 @@ function fireBase() {
 };
 
 function logError(err) {
-  let div = document.createElement('div');
-  let errdiv = document.getElementById("copyright");
+  const div = document.createElement('div');
+  const errdiv = document.getElementById("copyright");
   document.querySelectorAll("#error").forEach(x => x.parentNode.removeChild(x));
   errdiv.insertBefore(div, errdiv.lastChild);
   div.innerHTML = `<center>${err}</center>`;

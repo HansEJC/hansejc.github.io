@@ -18,7 +18,7 @@ function firstMortgage() {
   document.getElementById("OP").value = getSavedValue("OP");
   const hpi = Math.max(il + 9275, Number(getSavedValue("HPI")));    // set the value to this input
   const teq = hpi - il; //total equity, initial deposit plus HPI
-  let rl = il, tpa = 0; //remaining loan, total payed
+  const rl = il, tpa = 0; //remaining loan, total payed
 
   const mortgage = [];
   const ir = 4.09 / 12 / 100; //initial interest rate

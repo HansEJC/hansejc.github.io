@@ -1,5 +1,5 @@
 onmessage = (mess) => {
-	let csv = mess.data[0];
+	const csv = mess.data[0];
 	
 	if (mess.data[3]) {
 		for (let i=0;i<csv.length;i++){		

@@ -9,15 +9,15 @@ function earthing() {
 }
 
 function eprCalc() {
-  let er = Number(getSavedValue("ER"));    // set the value to this input
-  let rr = Number(getSavedValue("RR"));
-  let fc = Number(getSavedValue("FC"));
-  let pr = er * rr / (er + rr);
-  let epr = 1000 * pr * fc;
-  let ir = epr / rr / 1000;
-  let ig = epr / er / 1000;
-  let irp = 100 * ir / fc;
-  let igp = 100 * ig / fc;
+  const er = Number(getSavedValue("ER"));    // set the value to this input
+  const rr = Number(getSavedValue("RR"));
+  const fc = Number(getSavedValue("FC"));
+  const pr = er * rr / (er + rr);
+  const epr = 1000 * pr * fc;
+  const ir = epr / rr / 1000;
+  const ig = epr / er / 1000;
+  const irp = 100 * ir / fc;
+  const igp = 100 * ig / fc;
 
   document.getElementById("EPR").textContent = volts(epr);
   document.getElementById("EPR").className = epr > 645 ? 'label danger' : 'label safe';
@@ -29,18 +29,18 @@ function eprCalc() {
 }
 
 function earthGrid() {
-  let p = Number(getSavedValue("P"));    // set the value to this input
-  let area = Number(getSavedValue("AREA"));
-  let h = Number(getSavedValue("H"));
-  let l = Number(getSavedValue("L"));
-  let nr = Number(getSavedValue("NR"));
-  let lr = Number(getSavedValue("LR"));
-  let r = Math.sqrt(area / Math.PI);
-  let kr = 1 + nr * lr * lr / (10 * r * r);
-  let re = p / (4 * r) + p / (l + nr * lr);
-  let rg = p * ((1 + r / (r + 2.5 * h)) / (8 * r * kr) + 1 / l);
-  let era = Number(getSavedValue("ERA"));
-  let pa = era * p / rg;
+  const p = Number(getSavedValue("P"));    // set the value to this input
+  const area = Number(getSavedValue("AREA"));
+  const h = Number(getSavedValue("H"));
+  const l = Number(getSavedValue("L"));
+  const nr = Number(getSavedValue("NR"));
+  const lr = Number(getSavedValue("LR"));
+  const r = Math.sqrt(area / Math.PI);
+  const kr = 1 + nr * lr * lr / (10 * r * r);
+  const re = p / (4 * r) + p / (l + nr * lr);
+  const rg = p * ((1 + r / (r + 2.5 * h)) / (8 * r * kr) + 1 / l);
+  const era = Number(getSavedValue("ERA"));
+  const pa = era * p / rg;
 
   texty(`R`, r, `m`);
   texty(`KR`, kr, ``);

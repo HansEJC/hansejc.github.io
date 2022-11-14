@@ -130,7 +130,7 @@ function uploadcsv(db) {
         addLoader('Error while reading file', true);
         return;
       }
-      let filecontent = evt.target.result;
+      const filecontent = evt.target.result;
       if (document.getElementById("CSVF").checked) {
         try {//the for loop removes saved labels
           const len = filecontent.split("\n")[0].split(",").length;
@@ -144,7 +144,7 @@ function uploadcsv(db) {
     reader.readAsText(evt.target.files[0]);
 
     //put filename in span
-    let fullPath = document.getElementById('my_upload').value;
+    const fullPath = document.getElementById('my_upload').value;
     if (fullPath) {
       const startIndex = (fullPath.indexOf('\\') >= 0 ? fullPath.lastIndexOf('\\') : fullPath.lastIndexOf('/'));
       let filename = fullPath.substring(startIndex);

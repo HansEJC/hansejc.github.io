@@ -33,13 +33,13 @@ const plugStand = [
 ];
 
 function newRoute(inputs) {
-  let { str, name, plugs, strat, typ } = inputs;
-  let straTegy = strat === `cache`
+  const { str, name, plugs, strat, typ } = inputs;
+  const straTegy = strat === `cache`
     ? new CacheFirst({ cacheName: name, plugins: plugs, })
     : strat === `stale`
       ? new StaleWhileRevalidate({ cacheName: name, plugins: plugs, })
       : new NetworkFirst({ networkTimeoutSeconds: 3, cacheName: name, plugins: plugs, });
-  let type = typ === `request`
+  const type = typ === `request`
     ? ({ request }) => request.destination === str
     : typ === `url`
       ? ({ url }) => url.pathname.endsWith(str)

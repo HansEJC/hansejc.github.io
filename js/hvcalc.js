@@ -14,12 +14,12 @@ function induced() {
   const loadI = document.querySelector(`#LoadInduced`);
   const faultI = document.querySelector(`#FaultInduced`);
 
-  let LM = K + 0.2 * Math.log(2 * S / dM);
-  let Xm = 2 * Math.PI * 50 * LM;
-  let UL = Xm * L * IL / 1000;
-  let UF = Xm * L * IF / 1000;
-  let LL = 1000 * 60 / (Xm * IL);
-  let LF = 1000 * 645 / (Xm * IF);
+  const LM = K + 0.2 * Math.log(2 * S / dM);
+  const Xm = 2 * Math.PI * 50 * LM;
+  const UL = Xm * L * IL / 1000;
+  const UF = Xm * L * IF / 1000;
+  const LL = 1000 * 60 / (Xm * IL);
+  const LF = 1000 * 645 / (Xm * IF);
 
   loadI.textContent = `${smoothdec(UL)} V`;
   faultI.textContent = `${smoothdec(UF)} V`;

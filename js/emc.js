@@ -142,8 +142,7 @@ function HiFreqFun(stuff) {
 }
 
 function LowFreqFun(stuff) {
-  const { fields, earray, eo, q, uo, cu } = stuff;
-  let { EField } = stuff;
+  const { EField, fields, earray, eo, q, uo, cu } = stuff;
   let d, distrange;
   if (EField && q === 0) return; //return if plotting nothing
   if (fields[1].checked && cu === 0) return;

@@ -15,10 +15,10 @@ function getModDates() {
   const dbObj = firebase.database().ref(`op`);
   dbObj.on(`value`, snap => {
     const dates = snap.val();
-    let { lastmod, lastmodassets } = dates;
+    const { lastmod, lastmodassets } = dates;
     document.getElementById("p").textContent = `Asset Reg Last Updated:  ${new Date(lastmodassets)}`;
     document.getElementById("pp").textContent = `Warehouse Last Updated:  ${new Date(lastmod)}`;
-    let refreshOP = new Date(lastmod) > new Date(getSavedValue(`lastmod`));
+    const refreshOP = new Date(lastmod) > new Date(getSavedValue(`lastmod`));
     localStorage.setItem(`refreshOP`, refreshOP);
     localStorage.setItem(`lastmod`, lastmod);
     delivery();
@@ -51,9 +51,9 @@ function listeners() {
 }
 
 function splicer(arr, file) {
-  let str = file.includes(`set`) ? `asset`
+  const str = file.includes(`set`) ? `asset`
     : file.includes(`Ware`) ? `location` : `date`;
-  let col = file.includes(`Ware`) ? 7 : 0;
+    const col = file.includes(`Ware`) ? 7 : 0;
   for (let i = 0; i < arr.length; i++) {
     if (arr[i][col] === "" || new RegExp(str, "iu").test(arr[i][col]) || new RegExp("undefined", "iu").test(arr[i][col])) {
       arr.splice(i, 1);
