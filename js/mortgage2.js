@@ -31,8 +31,11 @@ function firstMortgage() {
 
 function secondMortgage(info) {
   const ir = 1.84 / 12 / 100; //remortgage rate  
-  const pay = 1100 - 995; //the 995 was te remortgage fee
-  let loopInfo = { num: 1, pay, year: 2019, month: 3, ir, ...info }; // First month
+  let { rl, tpa } = info;
+  const fees = 995; //the £995 was te remortgage fee
+  tpa += -fees;
+  rl += fees;
+  let loopInfo = { num: 1, pay: 1100, year: 2019, month: 3, ir, ...info, rl, tpa }; // First month
   info = mortgageLoop(loopInfo);
 
   loopInfo = { num: 14, pay: 1200, year: 2019, month: 4, ir, ...info }; // changed overpayment to £1200
@@ -42,16 +45,26 @@ function secondMortgage(info) {
   return mortgageLoop(loopInfo);
 }
 
+function thirdMortgage(info) {
+  const today = new Date();
+  const ir = 1.59 / 12 / 100; //remortgage rate
+  let { rl, tpa } = info;
+  const fees = -5814.12 - 250 + 66 - 5.88; //the £5814.12 was the shortfall since we borrowed £135k, the £250 is cashback, £66 fees, £5.88 extra first month
+  tpa += -fees;
+  rl += fees;
+  loopInfo = { num: 24, pay: 1200, year: 2021, month: 3, ir, ...info, rl, tpa }; // changed overpayment to £1200 since baby is coming
+  return mortgageLoop(loopInfo);
+}
+
 function currentMortgage(info) {
   const today = new Date();
-  const monthd = (today - new Date(2021, 3, 1)) / 1000 / 60 / 60 / 24 / 365.25 * 12; //difference in month
-  const ir = 1.59 / 12 / 100; //remortgage rate
-
-  const pay = 5814.12 + 250 - 66 + 5.88; //the £5814.12 was the shortfall since we borrowed £135k, the £250 is cashback, £66 fees, £5.88 extra first month
-  let loopInfo = { num: 1, pay, year: 2021, month: 3, ir, ...info }; // First month
-  info = mortgageLoop(loopInfo);
-
-  loopInfo = { num: monthd, pay: 1200, year: 2021, month: 4, ir, ...info }; // changed overpayment to £1200 since baby is coming
+  const monthd = (today - new Date(2023, 3, 1)) / 1000 / 60 / 60 / 24 / 365.25 * 12; //difference in month
+  const ir = 3.35 / 12 / 100; //remortgage rate
+  let { rl, tpa } = info;
+  const fees = -3600.22 + 995;
+  tpa += -fees; //the £3600.22 was the shortfall since we borrowed £108k, the £995 was te remortgage fee
+  rl += fees;
+  loopInfo = { num: monthd, pay: 771.18, year: 2023, month: 3, ir, ...info, rl }; // changed overpayment to £1200 since baby is coming
   return { monthd, ...mortgageLoop(loopInfo) };
 }
 
@@ -59,11 +72,11 @@ function futureMortgage(info) {
   const { mortgage, tp, monthd } = info;
   let { rl } = info;
   let pn = 0; //payment number
-  const ir = 1.59 / 12 / 100; //remortgage rate
+  const ir = 3.35 / 12 / 100; //remortgage rate
   for (let i = 0; rl > 0; i++) {
     const intr = rl * ir;
     const eqp = tp - intr;
-    mortgage.push([new Date(2021, 5 + i + monthd, 1), intr, eqp, intr + eqp]);
+    mortgage.push([new Date(2023, 4 + i + monthd, 1), intr, eqp, intr + eqp]);
     rl = rl - eqp;
     pn++;
   }
@@ -71,11 +84,12 @@ function futureMortgage(info) {
 }
 
 function calculations() {
-  const mpc = 459.89;  //current mortgage payment
+  const mpc = 771.18;  //current mortgage payment
   const op = Number(getSavedValue("OP"));
   const tp = op + mpc; // total payment
   let info = firstMortgage();
   info = secondMortgage(info);
+  info = thirdMortgage(info);
   const { teq, mortgage, rl, tpa } = info = currentMortgage(info);
   const pn = futureMortgage({ tp, ...info });
 
@@ -102,7 +116,6 @@ function dygPlot(mortgage) {
     document.getElementById("graphdiv3"),
     mortgage,
     {
-      valueRange: [0, 2000], //sets default view to £2k
       legend: 'always',
       labels: ['Date', 'Interest', 'Equity', 'Payment'],
       xlabel: "Dates",
