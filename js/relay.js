@@ -204,12 +204,12 @@ function plotProtection(csvarr) {
     total.push(faultarray[i]);
   }
   dygPlot(total, xaxis, yaxis);
-  if (DR.length > 0) dygPlot2(DR);
 }
 
 function addCSVtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
-  const faultarray = []; let gap = false;
+  const faultarray = [];
+  const volarray = [];
   if (DR.length === 0) return faultarray;
   const [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
   for (let i = 1; i < DR.length; i++) { //add csv to array
@@ -217,16 +217,14 @@ function addCSVtoArray(stuff) {
     const DRmult = (DR[i][va] - DR[i][ca]) * Math.PI / 180;
     const res = DRdiv * Math.cos(DRmult);
     const react = DRdiv * Math.sin(DRmult);
-    const isfault = res < 90 && react < 90 && DR[i][v] * vtrdr > 1000;
+    const isfault = Math.abs(res) < 1000 && Math.abs(react) < 1000 && DR[i][v] * vtrdr > 1000;
     if (isfault) {
       faultarray.push([res, react]);
+      volarray.push([DR[i][0], DR[i][v], DR[i][c]]);
       gap = true;
     }
-    else if (gap) {
-      faultarray.push([]); //inserts only one gap
-      gap = false;
-    }
   }
+  dygPlot2(volarray);
   return faultarray;
 }
 
@@ -305,6 +303,9 @@ async function dygPlot(total, xaxis, yaxis) {
           axisLabelFormatter: (y) => `${smoothdec(y)} Ω`,
           axisLabelWidth: 60
         }
+      },
+      highlightCallback: (_e, _x, _pts, row) => {
+        g2.setSelection(row - window.g3.file_.length + window.g2.file_.length);
       }
     }          // options
   );
@@ -321,9 +322,8 @@ function processNeeded(data) {
   const secdr = document.getElementById("SecDR");
   const vtr = secdr.checked ? document.getElementById("VTR").value || 1 : 1;
   const ctr = secdr.checked ? document.getElementById("CTR").value || 1 : 1;
-  const [v, , c,] = JSON.parse(localStorage.getItem(`indices`));
   data.forEach(x => {
-    newdata.push([x[0], x[v] * vtr, x[c] * ctr]);
+    newdata.push([x[0], x[1] * vtr, x[2] * ctr]);
   });
   summaryTable(newdata);
   return newdata;
@@ -350,7 +350,7 @@ async function dygPlot2(data) {
       },
       axes: {
         x: {
-          axisLabelFormatter: (y) => `${smoothdec(y)} s`
+          axisLabelFormatter: (y) => `${smoothdec(y, 3)} s`
         },
         y: {
           axisLabelFormatter: (y) => `${smoothdec(y / 1000)} kV`,
@@ -360,7 +360,10 @@ async function dygPlot2(data) {
           axisLabelFormatter: (y) => `${smoothdec(y / 1000)} kA`,
           axisLabelWidth: 60
         }
-      }
+      },
+      highlightCallback: (_e, _x, _pts, row) => {
+        g3.setSelection(row + window.g3.file_.length - window.g2.file_.length);
+      },
     }          // options
   );
   g2.ready(function () {
@@ -573,27 +576,22 @@ function Zone3S7ST(tr) {
 }
 
 function summaryTable(data) {
-  let maxfault = data[9][2]; //remove the risk of any initial fault recording noise
+  let maxfault = 0;
+  let voltage = 0;
   const multi = smoothdec((data[1][0] - data[0][0]) * 1000) < 1 ? 1.3 : 2; //bigger multiplier for 1ms interval
   const column = [`Fault Level`, `Fault Duration`, `Fault Start`, `Fault Finish`, `Zone 1`, `Zone 2`, `Zone 3`];
   const timers = JSON.parse(localStorage.getItem(`ZoneTimers`));
-  let duration = 0;
-  let startflag = true;
+  let duration = Number(data[0][0]);
   let endflag = true;
-  let counter = 0; //counter to ignore first initial fault recording noise
+  timers.unshift(`${smoothdec(data[0], 3)} s`);
   data.forEach(x => {
-    if (maxfault * multi < x[2] && startflag && counter > 25) {
-      duration = x[0];
-      timers.unshift(`${smoothdec(x[0], 3)} s`);
-      startflag = false;
-    }
-    if (maxfault > x[2] * multi && endflag && !startflag) {
+    if (maxfault > x[2] * multi && voltage < x[1] && endflag) {
       duration = x[0] - duration;
       timers.splice(1, 0, `${smoothdec(x[0], 3)} s`);
       endflag = false;
     }
     maxfault = Math.max(maxfault, x[2]);
-    counter++;
+    voltage = Math.min(voltage, x[1]);
   });
   duration = duration === 0 ? `???` : smoothdec(duration * 1000, 0);
   if (endflag) timers.unshift(`Error`, `Error`);
