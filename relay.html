@@ -23,6 +23,7 @@
   <script defer src="js/ext/html2canvas.min.js"></script>
   <link rel="stylesheet" href="css/dygraph.css" />
   <script defer src="js/ext/dygraph.min.js"></script>
+  <script defer src="js/ext/synchronizer.js"></script>
   <script defer src="js/ext/firebase-app-compat.js"></script>
   <script defer src="js/ext/firebase-database-compat.js"></script>
   <script defer src="js/relay.js"></script>
@@ -141,8 +142,6 @@
           </div>
           <div class="row">
             <article class="post">
-              <div id="graphdiv3"></div>
-              <br>
               <p><b>Show: </b>
                 <input type=checkbox id=0 onchange="change(this)" checked>
                 <label for="0"> Fault</label>
@@ -157,10 +156,26 @@
                 <input type=checkbox id=5 onchange="change(this)" checked>
                 <label for="5"> Peak Load</label>
               </p>
+              <br>
+              <div id="graphdiv3"></div>
               Copy to Clipboard: <a href="javascript:clippy(700,400)">A4 Normal</a>
               <a href="javascript:clippy(700,300)">A4 Narrow</a>
               <a href="javascript:clippy(1000,500)">A3 Normal</a>
               <a href="javascript:clippy(1000,400)">A3 Narrow</a>
+            </article>
+          </div>
+          <div class="row">
+            <article class="post">
+              <div id="graphdiv2"></div>
+              Copy to Clipboard: <a href="javascript:clippy(700,400, '#graphdiv2')">A4 Normal</a>
+              <a href="javascript:clippy(700,300,'#graphdiv2')">A4 Narrow</a>
+              <a href="javascript:clippy(1000,500,'#graphdiv2')">A3 Normal</a>
+              <a href="javascript:clippy(1000,400,'#graphdiv2')">A3 Narrow</a>
+              <section id="SummaryTable" class="box">
+                <form>
+                  <b>Summary</b>
+                </form>
+              </section>
             </article>
           </div>
           <div class="row">
@@ -174,20 +189,6 @@
               <form onsubmit="return false;">
                 <label for="Import">Fetch Database Fault</label>
                 <button id="Import" class="button">Import</button>
-              </form>
-            </section>
-          </div>
-          <div class="row">
-            <article class="post">
-              <div id="graphdiv2"></div>
-              Copy to Clipboard: <a href="javascript:clippy(700,400, '#graphdiv2')">A4 Normal</a>
-              <a href="javascript:clippy(700,300,'#graphdiv2')">A4 Narrow</a>
-              <a href="javascript:clippy(1000,500,'#graphdiv2')">A3 Normal</a>
-              <a href="javascript:clippy(1000,400,'#graphdiv2')">A3 Narrow</a>
-            </article>
-            <section id="SummaryTable" class="box">
-              <form>
-                <b>Summary</b>
               </form>
             </section>
           </div>
