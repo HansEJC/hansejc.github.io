@@ -165,6 +165,10 @@ function peakLoad() {
 function plotProtection(csvarr) {
   const select = document.querySelector(`select`);
   const secdr = document.getElementById("SecDR");
+  const rel = select.value === `P44T`;
+  const begamma = document.querySelectorAll(".box");
+  begamma[3].style.display = rel ? `none` : `block`;
+  begamma[4].style.display = rel ? `none` : `block`;
 
   //Advanced settings variables
   const z2del = Number(document.getElementById("Z2del").value);
@@ -367,105 +371,84 @@ async function dygPlot2(data) {
   });
 }
 
-function Zone1P44T(tr) {
-  //%Zone 1 setting
-  let Z1 = Number(document.getElementById("Zone1").value);
-  const Z1A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
-  const Z1t = (-3 * Math.PI / 180);
-  let R1R = Number(document.getElementById("Zone1RH").value);
-  let R1L = Number(document.getElementById("Zone1LH").value);
-  const Z1s = (87 * Math.PI / 180);
+function P44T(tr, num, empty) {
+  //%Zone setting
+  let a = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
+  let Z = Number(document.getElementById(`Zone${num}`).value);
+  let LH = Number(document.getElementById(`Zone${num}LH`).value);
+  const RHbox = document.getElementById(`Zone${num}RH`);
+  let Zr = Number(document.getElementById(`Zone3rev`).value);
+  const LZ = num === `1` ? 22.52 : 25;//Math.max(22.52, 25000 / Number(document.getElementById("PeakLoad").value));
+  const Ztilt = -0 * Math.PI / 180;
+  const ftd = 40 * Math.PI / 180;
+  const btilt = 3 * Math.PI / 180;
+  const Zdeg = 30 * Math.PI / 180;
+  a = Z <= LZ * (Math.sin(ftd - Ztilt) / Math.sin(a - Ztilt)) ? Math.PI / 2 : a;
+  let RH = a === Math.PI / 2
+    ? LZ * Math.cos(Math.asin(Z / LZ * Math.sin(90 * Math.PI / 180 + Ztilt) + Ztilt))
+    : LZ * Math.cos(ftd) - LZ * Math.sin(ftd) / Math.tan(a);
+  RHbox.value = smoothdec(RH);
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
-    Z1 = Z1 / tr; R1R = R1R / tr; R1L = R1L / tr;
+    Z = Z / tr; RH = RH / tr; LH = LH / tr; Zr = Zr / tr;
   }
-  //%Zone 1 plot
-  const xmul1 = Math.sin(Z1A);
-  const xmul2 = Math.sin((180 * Math.PI / 180) - Z1A + Z1t);
-  const pmul1 = R1R * xmul1 / Math.sin((90 * Math.PI / 180) + Z1s - Z1A);
-  const pmul2 = (-90 * Math.PI / 180) + Z1s;
-  const x1 = xmul1 * R1L / xmul2;
-  const xx1 = xmul1 * R1R / xmul2;
-  const pkx1 = -x1 * Math.sin(Z1t) + Z1 * xmul1;
-  const pgx1 = Math.min(-R1L * Math.sin(pmul2), pkx1);
-  const pcx1 = xx1 * Math.sin(Z1t) + Z1 * xmul1;
-  const prx1 = pmul1 * Math.sin(pmul2);
-  const pgr1 = -pgx1 * Math.sin(Z1s) / Math.sin((90 * Math.PI / 180) - Z1s);
-  const pkr1 = pgx1 === pkx1 ? pgr1 : -x1 * Math.cos(Z1t) + Z1 * Math.cos(Z1A);
-  const pcr1 = xx1 * Math.cos(Z1t) + Z1 * Math.cos(Z1A);
-  const prr1 = pmul1 * Math.cos(pmul2);
-  const Z1pol = [[pgr1, pgx1], [pkr1, pkx1], [pcr1, pcx1], [prr1, prx1], [pgr1, pgx1]]; //Z1 polygon
-  const Z1el = [[pgr1, , pgx1], [pkr1, , pkx1], [pcr1, , pcx1], [prr1, , prx1], [pgr1, , pgx1]];
-  return [Z1pol, Z1el];
+  //%Zone plot
+  const Zlef = Z > LH * Math.sin(a) * Math.sin(Zdeg + Ztilt) / Math.sin(Math.PI - Zdeg - a) / Math.sin(a - Ztilt);
+  const r1 = Z * Math.cos(a);
+  const x1 = Z * Math.sin(a);
+  const r2 = r1 + RH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.cos(Ztilt);
+  const x2 = x1 + RH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt);
+  const r3 = RH;
+  const x3 = 0;
+  const r4 = num === `3`
+    ? RH - (Zr + RH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.cos(a)
+    : Math.max(RH - (RH * Math.sin(btilt) / Math.sin(Math.PI - btilt - a) + 0.25 * Z) * Math.cos(a), RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg));
+  const x4 = num === `3`
+    ? - (Zr + RH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.sin(a)
+    : Math.max(- (RH * Math.sin(btilt) / Math.sin(Math.PI - btilt - a) + 0.25 * Z) * Math.sin(a), -RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg));
+  const r5 = num === `3`
+    ? -Zr * Math.cos(a)
+    : Math.min(0.25 * Z * Math.sin(a + btilt) / Math.sin(Zdeg - btilt) * Math.cos(Zdeg), RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg));
+  const x5 = num === `3`
+    ? -Zr * Math.sin(a)
+    : Math.max(-0.25 * Z * Math.sin(a + btilt) / Math.sin(Zdeg - btilt) * Math.sin(Zdeg), -RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg));
+  const r6 = num === `3`
+    ? -LH - (Zr - LH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.cos(a)
+    : Zlef
+      ? -LH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg)
+      : -Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.cos(Zdeg);
+  const x6 = num === `3`
+    ? - (Zr - LH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.sin(a)
+    : Zlef
+      ? LH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg)
+      : Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.sin(Zdeg);
+  const r7 = num === `3`
+    ? r1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.cos(Ztilt)
+    : Zlef
+      ? Z * Math.cos(a) - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.cos(Ztilt)
+      : -Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.cos(Zdeg);
+  const x7 = num === `3`
+    ? x1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt)
+    : Zlef
+      ? Z * Math.sin(a) - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt)
+      : Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.sin(Zdeg);
+  const Zpol = [[r1, x1], [r2, x2], [r3, x3], [r4, x4], [r5, x5], [r6, x6], [r7, x7], [r1, x1]]; //Z1 polygon
+  const Zel = [[r1, ...empty, x1], [r2, ...empty, x2], [r3, ...empty, x3], [r4, ...empty, x4], [r5, ...empty, x5], [r6, ...empty, x6], [r7, ...empty, x7], [r1, ...empty, x1]];
+  const stuff = { a, Z, LH };
+  return [Zpol, Zel, stuff];
+}
+
+function Zone1P44T(tr) {
+  return P44T(tr, `1`, [,]);
 }
 
 function Zone2P44T(tr) {
-  //%Zone 2 setting
-  let Z2 = Number(document.getElementById("Zone2").value);
-  const Z2A = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
-  const Z2t = (-3 * Math.PI / 180);
-  let R2R = Number(document.getElementById("Zone2RH").value);
-  let R2L = Number(document.getElementById("Zone2LH").value);
-  const Z2s = (87 * Math.PI / 180);
-  //Primary or Secondary Inputs
-  const sec = document.getElementById("Sec");
-  if (sec.checked) {
-    Z2 = Z2 / tr; R2R = R2R / tr; R2L = R2L / tr;
-  }
-  const xmul1 = Math.sin(Z2A);
-  const xmul2 = (180 * Math.PI / 180) - Z2A + Z2t;
-  const pr21 = R2R * xmul1 / Math.sin((90 * Math.PI / 180) + Z2s - Z2A);
-  const pr22 = (-90 * Math.PI / 180) + Z2s;
-  //%Zone 2 plot
-  const x2 = xmul1 * R2L / Math.sin(xmul2);
-  const xx2 = xmul1 * R2R / Math.sin(xmul2);
-  const pkx2 = -x2 * Math.sin(Z2t) + Z2 * xmul1;
-  const pgx2 = Math.min(pkx2, -R2L * Math.sin(pr22));
-  const pcx2 = xx2 * Math.sin(Z2t) + Z2 * xmul1;
-  const prx2 = pr21 * Math.sin(pr22);
-  const pgr2 = -pgx2 * Math.sin(Z2s) / Math.sin((90 * Math.PI / 180) - Z2s);
-  const pkr2 = pgx2 === pkx2 ? pgr2 : -x2 * Math.cos(Z2t) + Z2 * Math.cos(Z2A);
-  const pcr2 = xx2 * Math.cos(Z2t) + Z2 * Math.cos(Z2A);
-  const prr2 = pr21 * Math.cos(pr22);
-  const Z2pol = [[pgr2, pgx2], [pkr2, pkx2], [pcr2, pcx2], [prr2, prx2], [pgr2, pgx2]];
-  const Z2el = [[pgr2, , , pgx2], [pkr2, , , pkx2], [pcr2, , , pcx2], [prr2, , , prx2], [pgr2, , , pgx2]];
-  return [Z2pol, Z2el];
+  return P44T(tr, `2`, [, ,]);
 }
 
 function Zone3P44T(tr) {
-  //%Zone 3 setting
-  let Z3 = Number(document.getElementById("Zone3").value);
-  const alpha = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
-  const Z3A = alpha > 80 * Math.PI / 180 ? 7 * Math.PI / 18 : alpha;
-  const Z3t = (-3 * Math.PI / 180);
-  let R3R = Number(document.getElementById("Zone3RH").value);
-  let R3L = Number(document.getElementById("Zone3LH").value);
-  const Z3rev = Number(document.getElementById("Zone3rev").value);
-  //Primary or Secondary Inputs
-  const sec = document.getElementById("Sec");
-  if (sec.checked) {
-    Z3 = Z3 / tr; R3R = R3R / tr; R3L = R3L / tr;
-  }
-  //%Zone 3 plot
-  const xmul1 = Math.sin(Z3A);
-  const xmul2 = (180 * Math.PI / 180) - Z3A + Z3t;
-  const x3 = xmul1 * R3L / Math.sin(xmul2);
-  const xx3 = xmul1 * R3R / Math.sin(xmul2);
-  const ox3 = -Z3rev * xmul1;
-  const pgx3 = ox3 - x3 * Math.sin(Z3t);
-  const pkx3 = pgx3 + (Z3 + Z3rev) * xmul1;
-  const prx3 = ox3 + xx3 * Math.sin(Z3t);
-  const pcx3 = prx3 + (Z3 + Z3rev) * xmul1;
-  const or3 = -Z3rev * Math.cos(Z3A);
-  const pgr3 = or3 - x3 * Math.cos(Z3t);
-  const pkr3 = pgr3 + (Z3 + Z3rev) * Math.cos(Z3A);
-  const prr3 = or3 + xx3 * Math.cos(Z3t);
-  const pcr3 = prr3 + (Z3 + Z3rev) * Math.cos(Z3A);
-  const Z3pol = [[pgr3, pgx3], [pkr3, pkx3], [pcr3, pcx3], [prr3, prx3], [pgr3, pgx3]];
-  const Z3el = [[-Z3rev * Math.cos(Z3A), , , , , -Z3rev * xmul1], [Z3 * Math.cos(Z3A), , , , , Z3 * xmul1],
-  [pgr3, , , , pgx3], [pkr3, , , , pkx3], [pcr3, , , , pcx3], [prr3, , , , prx3], [pgr3, , , , pgx3]];
-  return [Z3pol, Z3el];
+  return P44T(tr, `3`, [, , ,]);
 }
 
 function P438(tr, num, empty) {
