@@ -114,14 +114,10 @@ function startup() {
   document.onkeyup = function () {
     try { read(); } catch (e) { logError(e); }
   };
-  const prim = document.getElementById("Prim");
-  prim.onchange = function () { read(); checkit(); };
-  prim.checked = getSavedValue(prim.id) === "true" || getSavedValue(prim.id) === "";
-  document.getElementById("Sec").onchange = function () { checkit(); read(); };
-  const primDR = document.getElementById("PrimDR");
-  primDR.onchange = function () { read(); };
-  primDR.checked = getSavedValue(primDR.id) === "true" || getSavedValue(primDR.id) === "";
-  document.getElementById("SecDR").onchange = function () { read(); };
+  document.querySelectorAll('input[type=radio]').forEach(inp => {
+    inp.onchange = function () { read(); checkit(); };
+    inp.checked = getSavedValue(inp.id) === "true" || getSavedValue(inp.id) === "";
+  });
   checkit();
 }
 
@@ -217,14 +213,19 @@ function addCSVtoArray(stuff) {
     const DRmult = (DR[i][va] - DR[i][ca]) * Math.PI / 180;
     const res = DRdiv * Math.cos(DRmult);
     const react = DRdiv * Math.sin(DRmult);
-    const isfault = Math.abs(res) < 1000 && Math.abs(react) < 1000 && DR[i][v] * vtrdr > 1000;
+    const vmag = DR[i][v] * vtrdr;
+    const cmag = DR[i][c] * vtrdr * trdr;
+    vlog = vmag * Math.cos(DR[i][v + 1] * Math.PI / 180);
+    clog = cmag * Math.cos(DR[i][c + 1] * Math.PI / 180);
+    const isfault = Math.abs(res) < 1000 && Math.abs(react) < 1000 && vmag > 1000;
+    //const isfault = vmag < 22000 && vmag > 1000 && cmag > 100;
     if (isfault) {
       faultarray.push([res, react]);
-      volarray.push([DR[i][0], DR[i][v], DR[i][c]]);
-      gap = true;
+      volarray.push([DR[i][0], vmag, cmag, vlog, clog]);
     }
   }
   dygPlot2(volarray);
+  summaryTable(volarray);
   return faultarray;
 }
 
@@ -306,27 +307,31 @@ async function dygPlot(total, xaxis, yaxis) {
       },
       highlightCallback: (_e, _x, _pts, row) => {
         g2.setSelection(row - window.g3.file_.length + window.g2.file_.length);
-      }
+      },
+      legendFormatter,
     }          // options
   );
   g3.ready(function () {
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
     }, 500);
-
   });
 }
 
-function processNeeded(data) {
-  const newdata = [];
-  const secdr = document.getElementById("SecDR");
-  const vtr = secdr.checked ? document.getElementById("VTR").value || 1 : 1;
-  const ctr = secdr.checked ? document.getElementById("CTR").value || 1 : 1;
-  data.forEach(x => {
-    newdata.push([x[0], x[1] * vtr, x[2] * ctr]);
+function legendFormatter(data) {
+  if (!data.series || data.series.length === 0) return ``;
+  let html = ``;
+  if (data.x != null) html += `Resistance ${smoothdec(data.xHTML)}Ω<br>`;
+
+  data.series.forEach(function (series) {
+    if (!series.isVisible) return;
+    const data = series.yHTML === undefined ? `` : `Reactance ${series.yHTML}Ω`;
+    let labeledData = `${series.labelHTML}: ${data}`;
+    if (series.isHighlighted) labeledData = `<b>${labeledData}</b>`;
+
+    html += `${series.dashHTML} ${labeledData}<br>`;
   });
-  summaryTable(newdata);
-  return newdata;
+  return html;
 }
 
 async function dygPlot2(data) {
@@ -335,22 +340,26 @@ async function dygPlot2(data) {
   } catch (e) { logError(e); }
   window.g2 = new Dygraph(
     document.getElementById("graphdiv2"),
-    processNeeded(data),
+    data,
     {
-      labels: ['a', 'Voltage (V)', 'Current (A)'],
+      labels: ['a', 'Voltage (V)', 'Current (A)', 'Voltage (V) ', 'Current (A) '],
       xlabel: "Time (s.ms)",
       ylabel: "Voltage (kV)",
       y2label: "Current (kA)",
-      colors: ["blue", "red"],
+      legend: 'always',
+      colors: ["blue", "red", "blue", "red"],
       includeZero: true,
       series: {
         'Current (A)': {
           axis: 'y2'
         },
+        'Current (A) ': {
+          axis: 'y2'
+        },
       },
       axes: {
         x: {
-          axisLabelFormatter: (y) => `${smoothdec(y, 3)} s`
+          axisLabelFormatter: (y) => `${smoothdec(y % 1 * 1000, 3)} ms`
         },
         y: {
           axisLabelFormatter: (y) => `${smoothdec(y / 1000)} kV`,
@@ -366,11 +375,15 @@ async function dygPlot2(data) {
       },
     }          // options
   );
+  const x = document.querySelector(`#Mag`).checked;
+  g2.setVisibility(0, x);
+  g2.setVisibility(1, x);
+  g2.setVisibility(2, !x);
+  g2.setVisibility(3, !x);
   g2.ready(function () {
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
     }, 500);
-
   });
 }
 
@@ -387,8 +400,9 @@ function P44T(tr, num, empty) {
   const btilt = 3 * Math.PI / 180;
   const Zdeg = 30 * Math.PI / 180;
   a = Z <= LZ * (Math.sin(ftd - Ztilt) / Math.sin(a - Ztilt)) ? Math.PI / 2 : a;
+  const RHNaN = Math.asin(Z / LZ * Math.sin(a + Ztilt) + Ztilt) || 0;//if Z is >> LZ it throws NaN
   let RH = a === Math.PI / 2
-    ? LZ * Math.cos(Math.asin(Z / LZ * Math.sin(90 * Math.PI / 180 + Ztilt) + Ztilt))
+    ? LZ * Math.cos(RHNaN)
     : LZ * Math.cos(ftd) - LZ * Math.sin(ftd) / Math.tan(a);
   RHbox.value = smoothdec(RH);
   //Primary or Secondary Inputs
@@ -436,8 +450,10 @@ function P44T(tr, num, empty) {
     : Zlef
       ? Z * Math.sin(a) - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt)
       : Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.sin(Zdeg);
-  const Zpol = [[r1, x1], [r2, x2], [r3, x3], [r4, x4], [r5, x5], [r6, x6], [r7, x7], [r1, x1]]; //Z1 polygon
-  const Zel = [[r1, ...empty, x1], [r2, ...empty, x2], [r3, ...empty, x3], [r4, ...empty, x4], [r5, ...empty, x5], [r6, ...empty, x6], [r7, ...empty, x7], [r1, ...empty, x1]];
+
+  const char = num === `3` ? [[0, , , , , 0], [Z * Math.cos(a), , , , , Z * Math.sin(a)]] : []; //adding char angle
+  const Zpol = [[r1, x1], [r2, x2], [r3, x3], [r4, x4], [r5, x5], [r6, x6], [r7, x7], [r1, x1]]; //Z polygon
+  const Zel = [...char, [r1, ...empty, x1], [r2, ...empty, x2], [r3, ...empty, x3], [r4, ...empty, x4], [r5, ...empty, x5], [r6, ...empty, x6], [r7, ...empty, x7], [r1, ...empty, x1]];
   const stuff = { a, Z, LH };
   return [Zpol, Zel, stuff];
 }
@@ -483,7 +499,7 @@ function P438(tr, num, empty) {
   const r5 = m2 * Math.cos(Math.PI - b);
   const x5 = Math.min(-m2 * Math.sin(Math.PI - b), x4);
   const r4 = Math.min((x2 - x5) * Math.sin(0.5 * Math.PI - a) / Math.sin(a) + r5, 0);
-  const Zpol = [[0, 0], [r1, x1], [r2, x2], [r3, x3], [r4, x4], [r5, x5], [0, 0]]; //Z1 polygon
+  const Zpol = [[0, 0], [r1, x1], [r2, x2], [r3, x3], [r4, x4], [r5, x5], [0, 0]]; //Z polygon
   const Zel = [[0, ...empty, 0], [r1, ...empty, x1], [r2, ...empty, x2], [r3, ...empty, x3], [r4, ...empty, x4], [r5, ...empty, x5], [0, ...empty, 0]];
   const stuff = { a, b, g, Z, LH };
   return [Zpol, Zel, stuff];

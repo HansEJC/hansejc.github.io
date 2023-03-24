@@ -156,7 +156,6 @@
                 <input type=checkbox id=5 onchange="change(this)" checked>
                 <label for="5"> Peak Load</label>
               </p>
-              <br>
               <div id="graphdiv3"></div>
               Copy to Clipboard: <a href="javascript:clippy(700,400)">A4 Normal</a>
               <a href="javascript:clippy(700,300)">A4 Narrow</a>
@@ -173,6 +172,9 @@
               <a href="javascript:clippy(1000,400,'#graphdiv2')">A3 Narrow</a>
               <section id="SummaryTable" class="box">
                 <form>
+                  <label for="Mag" style="display: inline-block;"><input type="radio" name="MagAnal" id="Mag" checked>Magnitudes</label>
+                  <label for="Anal" style="display: inline-block;"><input type="radio" name="MagAnal" id="Anal" onchange="">Analogue</label>
+                  <br>
                   <b>Summary</b>
                 </form>
               </section>
