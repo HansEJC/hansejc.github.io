@@ -232,13 +232,13 @@ function getIndex() {
   const data = JSON.parse(localStorage.getItem(`headers`)) || [];
   let [v, va, c, ca] = [0, 1, 2, 3];
   data.forEach((x, ind) => {
-    if (/check|frost|def|max/i.test(x)) return;
+    if (/check|frost|def|max|sitiv|IB|IC|IN/i.test(x)) return;
     v = /v.*rms/i.test(x) ? ind : v;
     va = /v.*a/i.test(x) ? ind : va;
     c = /i.*rms|cur.*rms/i.test(x) ? ind : c;
     ca = /i.*a|cur.*a/i.test(x) ? ind : ca;
   });
-  localStorage.setItem(`indices`, `[${v},${va},${c},${ca}]`)
+  localStorage.setItem(`indices`, `[${v},${va},${c},${ca}]`);
 }
 
 function FaultZone(stuff) {
