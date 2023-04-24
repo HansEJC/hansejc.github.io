@@ -208,14 +208,15 @@ function addCSVtoArray(stuff) {
   const volarray = [];
   const [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
   for (let i = 1; i < DR.length; i++) { //add csv to array
-    const DRdiv = (DR[i][v] / DR[i][c]) / trdr;
+    let DRdiv = (DR[i][v] / DR[i][c]) / trdr;
+    DRdiv = ca > 7 ? -DRdiv : DRdiv; //siprotec temp fix
     const DRmult = (DR[i][va] - DR[i][ca]) * Math.PI / 180;
     const res = DRdiv * Math.cos(DRmult);
     const react = DRdiv * Math.sin(DRmult);
     const vmag = DR[i][v] * vtrdr;
     const cmag = DR[i][c] * vtrdr * trdr;
-    vlog = vmag * Math.cos(DR[i][v + 1] * Math.PI / 180);
-    clog = cmag * Math.cos(DR[i][c + 1] * Math.PI / 180);
+    const vlog = vmag * Math.cos(DR[i][va] * Math.PI / 180);
+    const clog = cmag * Math.cos(DR[i][ca] * Math.PI / 180);
     const isfault = Math.abs(res) < 200 && Math.abs(react) < 1000 && vmag > 1000 && cmag > 100;
     if (isfault) {
       faultarray.push([res, react]);
@@ -232,7 +233,7 @@ function getIndex() {
   const data = JSON.parse(localStorage.getItem(`headers`)) || [];
   let [v, va, c, ca] = [0, 1, 2, 3];
   data.forEach((x, ind) => {
-    if (/check|frost|def|max|sitiv|IB|IC|IN/i.test(x)) return;
+    if (/check|frost|def|max|sitiv|IB|IC |IN/i.test(x)) return;
     v = /v.*rms/i.test(x) ? ind : v;
     va = /v.*a/i.test(x) ? ind : va;
     c = /i.*rms|cur.*rms/i.test(x) ? ind : c;
