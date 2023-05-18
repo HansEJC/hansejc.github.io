@@ -217,7 +217,7 @@ function addCSVtoArray(stuff) {
     const cmag = DR[i][c] * vtrdr * trdr;
     const vlog = vmag * Math.cos(DR[i][va] * Math.PI / 180);
     const clog = cmag * Math.cos(DR[i][ca] * Math.PI / 180);
-    const isfault = Math.abs(res) < 200 && Math.abs(react) < 1000 && vmag > 1000 && cmag > 100;
+    const isfault = Math.abs(res) < 200 && Math.abs(react) < 1000 && cmag > 100;
     if (isfault) {
       faultarray.push([res, react]);
       volarray.push([DR[i][0], vmag, cmag, vlog, clog]);
@@ -233,9 +233,9 @@ function getIndex() {
   const data = JSON.parse(localStorage.getItem(`headers`)) || [];
   let [v, va, c, ca] = [0, 1, 2, 3];
   data.forEach((x, ind) => {
-    if (/check|frost|def|max|sitiv|IB|IC |IN/i.test(x)) return;
-    v = /v.*rms/i.test(x) ? ind : v;
-    va = /v.*a/i.test(x) ? ind : va;
+    if (/check|frost|def|max|sitiv|IB|IC |IN|ref|if|ix|uf/i.test(x)) return;
+    v = /v.*rms|u.*rms/i.test(x) ? ind : v;
+    va = /v.*a|u.*a/i.test(x) ? ind : va;
     c = /i.*rms|cur.*rms/i.test(x) ? ind : c;
     ca = /i.*a|cur.*a/i.test(x) ? ind : ca;
   });
