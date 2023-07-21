@@ -596,7 +596,7 @@ function summaryTable(data) {
   let voltage = 0;
   const multi = smoothdec((data[1][0] - data[0][0]) * 1000) < 1 ? 1.3 : 2; //bigger multiplier for 1ms interval
   const column = [`Fault Level`, `Fault Duration`, `Fault Start`, `Fault Finish`, `Zone 1`, `Zone 2`, `Zone 3`];
-  const timers = JSON.parse(localStorage.getItem(`ZoneTimers`));
+  const timers = JSON.parse(localStorage.getItem(`ZoneTimers`)) || [``, ``, ``];
   let duration = Number(data[0][0]);
   let endflag = true;
   timers.unshift(`${smoothdec(data[0], 3)} s`);
