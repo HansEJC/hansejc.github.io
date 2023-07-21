@@ -1,9 +1,4 @@
 function inits() {
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-  document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
-  document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) === "true");
-  });
   const doublrr = document.querySelector("#DRR").checked;
   if (!doublrr) document.querySelector("#SRR").checked = true;
   return doublrr;
@@ -38,7 +33,6 @@ function calculations() {
     let trnu = Number(getSavedValue(Number(loc.id) + 199)) || 2;
     trnu = trnu === 1 ? 1 / Number.MAX_SAFE_INTEGER : trnu - 1;
     const dist = getSavedValue(loc.id);
-    loc.value = dist;
     let lc = ind === index ? Number(dist) + extra : dist; //add extra for non parallel subs
     lc = lc === "" ? 5 : Math.abs(lc); //set to 5km if it's empty to avoid lag
 

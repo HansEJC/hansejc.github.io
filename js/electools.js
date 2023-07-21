@@ -1,6 +1,6 @@
 function startup() {
-  loadcalc();
   createInps();
+  loadcalc();
   parallel();
   polrec();
   poladd();
@@ -35,14 +35,14 @@ function createInps() {
     cb[0].value = 'bad human!'; cb2[0].value = 'bad human!'; cb3[0].value = 'bad human!';
     cbh.appendChild(cb[0]); cbh2.appendChild(cb2[0]); cbh3.appendChild(cb3[0]);
   }
-}
-
-function parallel() {
   document.querySelectorAll('input[type=Number]').forEach((inp) => {
     inp.value = getSavedValue(inp.id);
     inp.onkeyup = function () { saveValue(this); };
     if (inp.id === `NumPar`) inp.addEventListener('keyup', createInps);
   });
+}
+
+function parallel() {
   let npr = Number(document.getElementById(`NumPar`).value);    // set the value to this input
   if (npr < 2) npr = 2;
   let pr = 0, res;

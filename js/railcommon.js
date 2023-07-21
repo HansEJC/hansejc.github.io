@@ -31,6 +31,11 @@ function quantities() {
     cb[0].value = 'bad human!'; cb2[0].value = 'bad human!';
     myNode.appendChild(cb[0]); myNode2.appendChild(cb2[0]);
   }
+  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
+  document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
+  document.querySelectorAll('input[type="radio"]').forEach(rad => {
+    rad.checked = (getSavedValue(rad.id) === "true");
+  });
 }
 
 const lcd = (a, b) => smoothdec(a * Math.round(b / a), 10) || 0; //lowest commom multiplier

@@ -3,7 +3,6 @@ function volts(v) {
 }
 
 function earthing() {
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   eprCalc();
   earthGrid();
 }
@@ -55,6 +54,7 @@ const texty = (id, num, sym, dec = 2) => {
 
 //startup
 window.addEventListener("load", function () {
+  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   earthing();
   document.onkeyup = function () {
     earthing();

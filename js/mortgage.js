@@ -1,5 +1,4 @@
 function calculations() {
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   let ab = Number(getSavedValue("AB"));    // set the value to this input
   const ir = Number(getSavedValue("IR")) / 12 / 100;
   const mt = Number(getSavedValue("MT")) * 12;
@@ -64,6 +63,7 @@ function dygPlot(mortgage) {
 const spanToMoney = (span, cont) => document.getElementById(span).textContent = (cont).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/gu, ",") + " £";
 
 //startup
+document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
 calculations();
 document.onkeyup = function () {
   calculations();

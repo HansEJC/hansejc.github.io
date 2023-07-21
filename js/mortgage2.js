@@ -14,8 +14,6 @@ function mortgageLoop(loopInfo) {
 
 function firstMortgage() {
   const il = 176225; //initial loan
-  document.getElementById("HPI").value = getSavedValue("HPI");    // set the value to this input
-  document.getElementById("OP").value = getSavedValue("OP");
   const hpi = Math.max(il + 9275, Number(getSavedValue("HPI")));    // set the value to this input
   const teq = hpi - il; //total equity, initial deposit plus HPI
   const rl = il, tpa = 0; //remaining loan, total payed
@@ -138,6 +136,7 @@ function dygPlot(mortgage) {
 const spanMon = (span, cont) => document.getElementById(span).textContent = `${(cont).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/gu, ",")}  £`;
 
 //startup
+document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
 calculations();
 document.onkeyup = function () {
   calculations();

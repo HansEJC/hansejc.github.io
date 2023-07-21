@@ -69,9 +69,6 @@ async function calculations() {
   const EField = fields[0].checked = fields[1].checked ? false : true;
   radios[0].checked = !HiFreq;
 
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-  document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
-
   document.getElementById("CA").value = getSavedValue("CA") || 0.02;
   if (getSavedValue("MUL") !== "") document.getElementById("MUL").value = getSavedValue("MUL");
 
@@ -214,7 +211,9 @@ function dygReady() {
 
 //startup
 window.addEventListener("load", function () {
-  funkyRadio();
+  funkyRadio();  
+  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
+  document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
   const radios = document.querySelectorAll("input[name=drive]");
   const fields = document.querySelectorAll("input[name=field]");
   radios.forEach(rad => rad.addEventListener('change', checkit));
