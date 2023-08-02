@@ -3,11 +3,11 @@ function startup() {
   loadcalc();
   parallel();
   polrec();
-  poladd();
+  pnrEquations();
   consum();
   document.onkeyup = function () {
     parallel();
-    poladd();
+    pnrEquations();
     consum();
     polrec();
     loadcalc();
@@ -40,6 +40,8 @@ function createInps() {
     inp.onkeyup = function () { saveValue(this); };
     if (inp.id === `NumPar`) inp.addEventListener('keyup', createInps);
   });
+  funkyRadio();
+  document.querySelectorAll('select').forEach(inp => inp.value = getSavedValue(inp.id));
 }
 
 function parallel() {
@@ -59,36 +61,58 @@ function polrec() {
   const pa = Number(getSavedValue("PA"));
   const rr = Number(getSavedValue("RR"));
   const ir = Number(getSavedValue("IR"));
-  const ptrr = pn * Math.cos(pa * Math.PI / 180);
-  const ptir = pn * Math.sin(pa * Math.PI / 180);
-  const rtpn = Math.sqrt(rr * rr + ir * ir);
-  let rtpa = 180 * Math.atan(ir / rr) / Math.PI;
-  if (rr < 0) rtpa = 180 + 180 * Math.atan(ir / rr) / Math.PI;
-  if (rr < 0 && ir < 0) rtpa = -180 + 180 * Math.atan(ir / rr) / Math.PI;
+  const { p2re, p2im } = pol2rec(pn, pa);
+  const { r2pn, r2pa } = rec2pol(rr, ir);
 
-  document.querySelector("#PTR").textContent = `${Number(ptrr.toFixed(2))} + j${Number(ptir.toFixed(2))}`;
-  document.querySelector("#RTP").textContent = `${Number(rtpn.toFixed(2))} + ∠${Number(rtpa.toFixed(2))}°`;
+  document.querySelector("#PTR").textContent = `${Number(p2re.toFixed(2))} + j${Number(p2im.toFixed(2))}`;
+  document.querySelector("#RTP").textContent = `${Number(r2pn.toFixed(2))} + ∠${Number(r2pa.toFixed(2))}°`;
 }
 
-function poladd() {
-  let npr = Number(document.getElementById(`NumPar`).value);
-  if (npr < 2) npr = 2;
-  let num = 0; let ang = 0;
-  let nums, angs, real, imag;
+const pol2rec = (pn, pa) => { return { p2re: pn * Math.cos(pa * Math.PI / 180), p2im: pn * Math.sin(pa * Math.PI / 180) } };
+const rec2pol = (rr, ir) => {
+  let angle = 180 * Math.atan(ir / rr) / Math.PI || 0;
+  angle += rr < 0 ? 180 : rr < 0 && ir < 0 ? - 180 : 0;
+  return { r2pn: Math.sqrt(rr * rr + ir * ir), r2pa: angle }
+};
+
+function pnrEquations() {
+  const npr = Math.max(Number(document.getElementById(`NumPar`).value), 2);
+  const ispolar = document.querySelector(`#PLR`).checked;
+  const isadd = document.querySelector(`#EQU`).value === `A`;
+  document.querySelector(`label[for="Nums"]`).textContent = ispolar ? `Numbers` : `Real`;
+  document.querySelector(`label[for="Angs"]`).textContent = ispolar ? `Angles` : `Imaginary`;
+
+  const { nums, angs, reals, imags } = isadd ? pnrAdd(npr, ispolar) : pnrParallel(npr, ispolar);
+  document.querySelector("#PSUM").textContent = `${Number(nums.toFixed(2))} + ∠${Number(angs.toFixed(2))}°`;
+  document.querySelector("#RSUM").textContent = `${Number(reals.toFixed(2))} + j${Number(imags.toFixed(2))}`;
+}
+
+function pnrAdd(npr, ispolar) {
   let reals = 0, imags = 0;
   for (let i = 0; i < npr; i++) {
-    nums = Number(getSavedValue(`pnum${i}`));
-    angs = Number(getSavedValue(`pang${i}`));
-    real = nums * Math.cos(angs * Math.PI / 180);
-    imag = nums * Math.sin(angs * Math.PI / 180);
-    reals = reals + real;
-    imags = imags + imag;
+    const fir = Number(getSavedValue(`pnum${i}`));
+    const sec = Number(getSavedValue(`pang${i}`));
+    const { p2re, p2im } = ispolar ? pol2rec(fir, sec) : { p2re: fir, p2im: sec };
+    reals += p2re;
+    imags += p2im;
   }
-  num = Math.sqrt(reals * reals + imags * imags);
-  ang = 180 * Math.atan(imags / reals) / Math.PI;
-  if (reals < 0) ang = 180 + 180 * Math.atan(imags / reals) / Math.PI;
-  if (reals < 0 && imags < 0) ang = -180 + 180 * Math.atan(imags / reals) / Math.PI;
-  document.querySelector("#PSUM").textContent = `${Number(num.toFixed(2))} + ∠${Number(ang.toFixed(2))}°`;
+  return { nums: rec2pol(reals, imags).r2pn, angs: rec2pol(reals, imags).r2pa, reals, imags }
+}
+
+function pnrParallel(npr, ispolar) {
+  let reals = 0, imags = 0;
+  const max = Number.MAX_SAFE_INTEGER;
+  for (let i = 0; i < npr; i++) {
+    const fir = Number(getSavedValue(`pnum${i}`));
+    const sec = Number(getSavedValue(`pang${i}`));
+    let { r2pn, r2pa } = ispolar ? { r2pn: fir || max, r2pa: sec } : rec2pol(fir, sec);
+    const { p2re, p2im } = pol2rec(1 / (r2pn || max), -r2pa)
+    reals += p2re;
+    imags += p2im;
+  }
+  const nums = 1 / rec2pol(reals, imags).r2pn;
+  const angs = -rec2pol(reals, imags).r2pa;
+  return { nums, angs, reals: pol2rec(nums, angs).p2re, imags: pol2rec(nums, angs).p2im }
 }
 
 function loadcalc() {

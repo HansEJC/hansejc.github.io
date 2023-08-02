@@ -84,9 +84,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               </section>
             </div>
             <header><hr>
-              <h1>Polar Addition</h1>
+              <h1>Polar and Rectangular Equations</h1>
             </header>
             <div class="row 50%">
+              <section class="box">
+                <form>
+                  <label for="EQU">Equation</label>
+                  <select id="EQU" onchange='saveValue(this);pnrEquations();'>
+                    <option value="A">Addition</option>
+                    <option value="P" selected>Parallel</option>
+                  </select>
+                </form>
+                <form>
+                  <label for="PLR"></label><input type="radio" name="polar" id="PLR" checked onchange='saveValue(this);pnrEquations();'>Polar</label>
+                  <label for="RCR"></label><input type="radio" name="polar" id="RCR"- onchange='saveValue(this);pnrEquations();'>Rectangular</label>                  
+                </form>
+              </section>
               <section class="box"><br>
                 <label for="Nums">Numbers</label>
                 <form id="Nums">
@@ -99,8 +112,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               </section>
               <section class="box">
                 <form>
-                  <label for="PSUM">Polar Sum</label>
+                  <label for="PSUM">Polar Result</label>
                   <span id="PSUM" style="min-width: 17ch;" class="label"></span>
+                  <label for="RSUM">Rectangular Result</label>
+                  <span id="RSUM" style="min-width: 17ch;" class="label"></span>
                 </form>
               </section>
             </div>
