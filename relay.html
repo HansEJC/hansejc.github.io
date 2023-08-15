@@ -23,7 +23,6 @@
   <script defer src="js/ext/html2canvas.min.js"></script>
   <link rel="stylesheet" href="css/dygraph.css" />
   <script defer src="js/ext/dygraph.min.js"></script>
-  <script defer src="js/ext/synchronizer.js"></script>
   <script defer src="js/ext/firebase-app-compat.js"></script>
   <script defer src="js/ext/firebase-database-compat.js"></script>
   <script defer src="js/relay.js"></script>
@@ -63,7 +62,7 @@
             <section class="box">
               <form id="myForm">
                 <label for="rel_upload">Upload Disturbance Record</label>
-                <input type="file" accept=".csv" id="rel_upload" name="rel_upload" />
+                <input type="file" multiple="multiple" accept=".csv, .cfg, .dat" id="rel_upload" name="rel_upload" />
               </form>
             </section>
           </div>
@@ -172,8 +171,10 @@
               <a href="javascript:clippy(1000,400,'#graphdiv2')">A3 Narrow</a>
               <section id="SummaryTable" class="box">
                 <form>
-                  <label for="Mag" style="display: inline-block;"><input type="radio" name="MagAnal" id="Mag" checked>Magnitudes</label>
-                  <label for="Anal" style="display: inline-block;"><input type="radio" name="MagAnal" id="Anal" onchange="">Analogue</label>
+                  <label for="Mag" style="display: inline-block;"><input type="radio" name="MagAnal" id="Mag"
+                      checked>Magnitudes</label>
+                  <label for="Anal" style="display: inline-block;"><input type="radio" name="MagAnal" id="Anal"
+                      onchange="">Analogue</label>
                   <br>
                   <b>Summary</b>
                 </form>

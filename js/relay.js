@@ -6,7 +6,7 @@ function checkit() {
   ctRatio();
 }
 
-function save(data) {
+function saveCSV(data) {
   if (typeof data[1][0] === `string`) {
     data.pop(); //remove last empty line
     data.forEach(x => {
@@ -16,6 +16,13 @@ function save(data) {
   }
   const headers = JSON.stringify(data.shift());
   localStorage.setItem(`headers`, headers);
+  localStorage.setItem(`isDAT`, false);
+  saveIndexedDB(data);
+}
+
+function saveDAT(data) {
+  data.pop(); //remove last empty line
+  localStorage.setItem(`isDAT`, true);
   saveIndexedDB(data);
 }
 
@@ -25,24 +32,6 @@ function saveIndexedDB(data) {
   const objectStore = transaction.objectStore("plots");
   objectStore.put({ id: 1, data });
   plotProtection(data);
-}
-
-function importFault() {
-  const dbObj = firebase.database().ref(`relay`);
-  dbObj.once(`value`, snap => {
-    const data = snap.val();
-    localStorage.setItem(`headers`, data.headers);
-    saveIndexedDB(data.data);
-  });
-}
-
-function exportFault() {
-  const headers = localStorage.getItem(`headers`);
-  const dbObj = firebase.database().ref(`relay`);
-  db.transaction(["plots"]).objectStore("plots").openCursor(null, "prev").onsuccess = async (e) => {
-    const data = e.target.result.value.data;
-    dbObj.set({ data, headers });
-  }
 }
 
 function read() {
@@ -61,18 +50,23 @@ function read() {
 function javaread() {
   document.querySelector(`#rel_upload`).onchange = function (evt) {
     if (!window.FileReader) return; // Browser is not compatible
-    const reader = new FileReader();
-    reader.onload = function (evt) {
-      if (evt.target.readyState !== 2) return;
-      if (evt.target.error) {
-        logError('Error while reading file');
-        return;
-      }
-      const filecontent = evt.target.result;
-      const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
-      save(DR);
-    };
-    reader.readAsText(evt.target.files[0]);
+    Array.from(evt.target.files).forEach(file => {
+      const reader = new FileReader();
+      reader.readAsText(file)
+
+      reader.onload = function (evt) {
+        if (evt.target.readyState !== 2) return;
+        if (evt.target.error) {
+          logError('Error while reading file');
+          return;
+        }
+        const filecontent = evt.target.result;
+        const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
+        if (/csv/i.test(file.name)) saveCSV(DR);
+        if (/cfg/i.test(file.name)) localStorage.setItem(`CFGdata`, JSON.stringify(DR));;
+        if (/dat/i.test(file.name)) saveDAT(DR);
+      };
+    });
   };
   if (idbSupported) {
     const openRequest = indexedDB.open("graph", 1);
@@ -191,14 +185,11 @@ function plotProtection(csvarr) {
   const yaxis = [polmin(-20), polmax(70)];
   let DR = []; DR = csvarr;
   const calcStuff = { DR, trdr, vtrdr };
-  let faultarray = addCSVtoArray(calcStuff);
+  let faultarray = localStorage.getItem(`isDAT`) === `false` ? addCSVtoArray(calcStuff) : addDATtoArray(calcStuff);
   const stuff = { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del };
   FaultZone(stuff);
 
-  let total = elements2.slice();
-  for (let i = 0; i < faultarray.length; i++) {
-    total.push(faultarray[i]);
-  }
+  const total = [...elements2, ...faultarray];
   dygPlot(total, xaxis, yaxis);
 }
 
@@ -227,6 +218,57 @@ function addCSVtoArray(stuff) {
   dygPlot2(volarray);
   summaryTable(volarray);
   return faultarray;
+}
+
+function addDATtoArray(stuff) {
+  const { DR, trdr, vtrdr } = stuff;
+  const { id, vmul, cmul, stime } = getCFG();
+  const faultarray = [];
+  if (DR.length === 0) return faultarray;
+  const volarray = [];
+  const freq = 50;
+  const sample = DR[1][1] > 1 ? DR[1][1] / 1_000_000 : DR[1][1] / 1_000;
+  const period = Math.round((1 / freq) / sample, 1);
+  const omega = 2 * Math.PI * freq;
+  for (let i = 1; i < DR.length - period; i++) { //add csv to array
+
+    const periodSamples = DR.slice(i, i + period);
+
+    const vr = (2 / period) * periodSamples.reduce((sum, val, idx) => sum + val[2] * Math.cos(omega * DR[idx][1] / 1_000_000), 0);
+    const vi = (2 / period) * periodSamples.reduce((sum, val, idx) => sum + val[2] * Math.sin(omega * DR[idx][1] / 1_000_000), 0);
+    const cr = (2 / period) * periodSamples.reduce((sum, val, idx) => sum + val[3] * Math.cos(omega * DR[idx][1] / 1_000_000), 0);
+    const ci = (2 / period) * periodSamples.reduce((sum, val, idx) => sum + val[3] * Math.sin(omega * DR[idx][1] / 1_000_000), 0);
+    const vmag = Math.sqrt(vr * vr + vi * vi) / Math.SQRT2 * vmul * vtrdr;
+    const cmag = Math.sqrt(cr * cr + ci * ci) / Math.SQRT2 * cmul * vtrdr * trdr;
+    const va = Math.atan2(vr, vi);
+    const ca = Math.atan2(cr, ci);
+    const res = (vmag / cmag) * Math.cos(va - ca);
+    const react = (vmag / cmag) * Math.sin(va - ca);
+    const vlog = DR[i][2] * vmul * vtrdr;
+    const clog = DR[i][3] * cmul * vtrdr * trdr;
+    const isfault = Math.abs(res) < 200 && Math.abs(react) < 1000 && cmag > 100;
+    if (isfault) {
+      faultarray.push([res, react]);
+      volarray.push([stime + (period * sample) + (DR[i][1] / 1_000_000), vmag, cmag, vlog, clog]);
+    }
+  }
+  if (volarray.length === 0) return faultarray;
+  dygPlot2(volarray);
+  summaryTable(volarray);
+  return faultarray;
+}
+
+function getCFG() {
+  const data = JSON.parse(localStorage.getItem(`CFGdata`)) || [];
+  const cfg = { id: data[0][0], vmul: 2.093, cmul: 1.657, stime: 0 };
+  const ar = [];
+  data.forEach((x) => {
+    cfg.vmul = /vcat/i.test(x[1]) ? x[5] : cfg.vmul;
+    cfg.cmul = /Icat/i.test(x[1]) ? x[5] : cfg.cmul;
+    if (/:/i.test(x[1]) && /./i.test(x[1])) ar.push(Number(x[1].split(`:`).pop()));
+  });
+  cfg.stime = ar[0];
+  return cfg;
 }
 
 function getIndex() {
@@ -639,6 +681,24 @@ function ctRatio() {
   const label = document.querySelector(`label[for=CTR]`);
   const ctr = document.querySelector("#CTR").value || 600;
   label.innerText = `CT Ratio (${ctr}/1 A)`;
+}
+
+function importFault() {
+  const dbObj = firebase.database().ref(`relay`);
+  dbObj.once(`value`, snap => {
+    const data = snap.val();
+    localStorage.setItem(`headers`, data.headers);
+    saveIndexedDB(data.data);
+  });
+}
+
+function exportFault() {
+  const headers = localStorage.getItem(`headers`);
+  const dbObj = firebase.database().ref(`relay`);
+  db.transaction(["plots"]).objectStore("plots").openCursor(null, "prev").onsuccess = async (e) => {
+    const data = e.target.result.value.data;
+    dbObj.set({ data, headers });
+  }
 }
 
 let idbSupported = ("indexedDB" in window) ? true : false;
