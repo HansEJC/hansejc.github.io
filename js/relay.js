@@ -185,10 +185,11 @@ function plotProtection(csvarr) {
   const yaxis = [polmin(-20), polmax(70)];
   let DR = []; DR = csvarr;
   const calcStuff = { DR, trdr, vtrdr };
-  const faultarray = localStorage.getItem(`isDAT`) === `true` ? addDATtoArray(calcStuff) : addCSVtoArray(calcStuff);
+  const { faultarray, volarray } = localStorage.getItem(`isDAT`) === `true` ? addDATtoArray(calcStuff) : addCSVtoArray(calcStuff);
   const stuff = { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del };
   FaultZone(stuff);
-
+  if (volarray.length > 1) summaryTable(volarray);
+  dygPlot2(volarray);
   const total = [...elements2, ...faultarray];
   dygPlot(total, xaxis, yaxis);
 }
@@ -197,6 +198,7 @@ function addCSVtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
   const faultarray = [];
   const volarray = [];
+  if (DR.length === 0) return { faultarray, volarray };
   const [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
   for (let i = 1; i < DR.length; i++) { //add csv to array
     let DRdiv = (DR[i][v] / DR[i][c]) / trdr;
@@ -214,18 +216,16 @@ function addCSVtoArray(stuff) {
       volarray.push([DR[i][0], vmag, cmag, vlog, clog]);
     }
   }
-  if (volarray.length === 0) return faultarray;
-  dygPlot2(volarray);
-  summaryTable(volarray);
-  return faultarray;
+  if (volarray.length === 0) return { faultarray, volarray };
+  return { faultarray, volarray };
 }
 
 function addDATtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
-  const { id, vmul, cmul, stime } = getCFG();
+  const { vmul, cmul, stime } = getCFG();
   const faultarray = [];
-  if (DR.length === 0) return faultarray;
   const volarray = [];
+  if (DR.length === 0) return { faultarray, volarray };
   const freq = 50;
   const sample = DR[1][1] > 1 ? DR[1][1] / 1_000_000 : DR[1][1] / 1_000;
   const period = Math.round((1 / freq) / sample, 1);
@@ -252,10 +252,8 @@ function addDATtoArray(stuff) {
       volarray.push([stime + (period * sample) + (DR[i][1] / 1_000_000), vmag, cmag, vlog, clog]);
     }
   }
-  if (volarray.length === 0) return faultarray;
-  dygPlot2(volarray);
-  summaryTable(volarray);
-  return faultarray;
+  if (volarray.length === 0) return { faultarray, volarray };
+  return { faultarray, volarray };
 }
 
 function getCFG() {
@@ -287,7 +285,9 @@ function getIndex() {
 function FaultZone(stuff) {
   const { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del } = stuff;
   if (DR.length === 0) return;
-  const fst = smoothdec((DR[1][0] - DR[0][0]) * 1000, 3);
+  const fst = localStorage.getItem(`isDAT`) === `true` ?
+    DR[1][1] > 1 ? DR[1][1] / 1_000 : DR[1][1]
+    : smoothdec((DR[1][0] - DR[0][0]) * 1000, 3);
   let Z3time = 0;
   let Z2time = 0;
   let Z1 = ``;
