@@ -185,7 +185,7 @@ function plotProtection(csvarr) {
   const yaxis = [polmin(-20), polmax(70)];
   let DR = []; DR = csvarr;
   const calcStuff = { DR, trdr, vtrdr };
-  let faultarray = localStorage.getItem(`isDAT`) === `false` ? addCSVtoArray(calcStuff) : addDATtoArray(calcStuff);
+  const faultarray = localStorage.getItem(`isDAT`) === `true` ? addDATtoArray(calcStuff) : addCSVtoArray(calcStuff);
   const stuff = { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del };
   FaultZone(stuff);
 
@@ -259,7 +259,7 @@ function addDATtoArray(stuff) {
 }
 
 function getCFG() {
-  const data = JSON.parse(localStorage.getItem(`CFGdata`)) || [];
+  const data = JSON.parse(localStorage.getItem(`CFGdata`)) || [[``]];
   const cfg = { id: data[0][0], vmul: 2.093, cmul: 1.657, stime: 0 };
   const ar = [];
   data.forEach((x) => {
