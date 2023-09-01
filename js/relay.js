@@ -188,8 +188,10 @@ function plotProtection(csvarr) {
   const { faultarray, volarray } = localStorage.getItem(`isDAT`) === `true` ? addDATtoArray(calcStuff) : addCSVtoArray(calcStuff);
   const stuff = { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del };
   FaultZone(stuff);
-  if (volarray.length > 1) summaryTable(volarray);
-  dygPlot2(volarray);
+  if (volarray.length > 1) {
+    summaryTable(volarray);
+    dygPlot2(volarray);
+  }
   const total = [...elements2, ...faultarray];
   dygPlot(total, xaxis, yaxis);
 }
