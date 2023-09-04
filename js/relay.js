@@ -105,7 +105,7 @@ function startup() {
   // await code here
   const DR = [];
   plotProtection(DR);
-  document.onkeyup = function () {
+  document.onkeyup = () => {
     try { read(); } catch (e) { logError(e); }
   };
   document.querySelectorAll('input[type=radio]').forEach(inp => {
@@ -185,11 +185,11 @@ function plotProtection(csvarr) {
   const yaxis = [polmin(-20), polmax(70)];
   let DR = []; DR = csvarr;
   const calcStuff = { DR, trdr, vtrdr };
-  const { faultarray, volarray } = localStorage.getItem(`isDAT`) === `true` ? addDATtoArray(calcStuff) : addCSVtoArray(calcStuff);
+  const { faultarray, volarray, Zarray } = localStorage.getItem(`isDAT`) === `true` ? addDATtoArray(calcStuff) : addCSVtoArray(calcStuff);
   const stuff = { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del };
   FaultZone(stuff);
   if (volarray.length > 1) {
-    summaryTable(volarray);
+    summaryTable(volarray, Zarray);
     dygPlot2(volarray);
   }
   const total = [...elements2, ...faultarray];
@@ -198,9 +198,8 @@ function plotProtection(csvarr) {
 
 function addCSVtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
-  const faultarray = [];
-  const volarray = [];
-  if (DR.length === 0) return { faultarray, volarray };
+  const [faultarray, volarray, Zarray] = [[], [], []];
+  if (DR.length === 0) return { faultarray, volarray, Zarray };
   const [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
   for (let i = 1; i < DR.length; i++) { //add csv to array
     let DRdiv = (DR[i][v] / DR[i][c]) / trdr;
@@ -213,33 +212,36 @@ function addCSVtoArray(stuff) {
     const vlog = vmag * Math.cos(DR[i][va] * Math.PI / 180);
     const clog = cmag * Math.cos(DR[i][ca] * Math.PI / 180);
     const isfault = Math.abs(res) < 200 && Math.abs(react) < 1000 && cmag > 100;
-    if (isfault) {
+    if (isfault || document.querySelector(`#FullFault`).checked) {
       faultarray.push([res, react]);
       volarray.push([DR[i][0], vmag, cmag, vlog, clog]);
     }
   }
-  if (volarray.length === 0) return { faultarray, volarray };
-  return { faultarray, volarray };
+  if (volarray.length === 0) return { faultarray, volarray, Zarray };
+  return { faultarray, volarray, Zarray };
 }
 
 function addDATtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
-  const { vmul, cmul, stime } = getCFG();
-  const faultarray = [];
-  const volarray = [];
-  if (DR.length === 0) return { faultarray, volarray };
+  const { vmul, cmul, stime, Z1, Z2, Z3, CBo } = getCFG();
+  const [faultarray, volarray, Zarray] = [[], [], []];
+  if (DR.length === 0) return { faultarray, volarray, Zarray };
   const freq = 50;
   const sample = DR[1][1] > 1 ? DR[1][1] / 1_000_000 : DR[1][1] / 1_000;
   const period = Math.round((1 / freq) / sample, 1);
   const omega = 2 * Math.PI * freq;
-  for (let i = 1; i < DR.length - period; i++) { //add csv to array
 
+  function FFTcalc(periodSamples, DR, ind, isSin) {
+    const CosOrSin = isSin ? Math.sin : Math.cos;
+    return (2 / period) * periodSamples.reduce((sum, val, idx) => sum + val[ind] * CosOrSin(omega * DR[idx][1] / 1_000_000), 0);
+  }
+
+  for (let i = 1; i < DR.length - period; i++) { //add data to array
     const periodSamples = DR.slice(i, i + period);
-
-    const vr = (2 / period) * periodSamples.reduce((sum, val, idx) => sum + val[2] * Math.cos(omega * DR[idx][1] / 1_000_000), 0);
-    const vi = (2 / period) * periodSamples.reduce((sum, val, idx) => sum + val[2] * Math.sin(omega * DR[idx][1] / 1_000_000), 0);
-    const cr = (2 / period) * periodSamples.reduce((sum, val, idx) => sum + val[3] * Math.cos(omega * DR[idx][1] / 1_000_000), 0);
-    const ci = (2 / period) * periodSamples.reduce((sum, val, idx) => sum + val[3] * Math.sin(omega * DR[idx][1] / 1_000_000), 0);
+    const vr = FFTcalc(periodSamples, DR, 2, false); // Cosine for vr
+    const vi = FFTcalc(periodSamples, DR, 2, true);  // Sine for vi
+    const cr = FFTcalc(periodSamples, DR, 3, false); // Cosine for cr
+    const ci = FFTcalc(periodSamples, DR, 3, true);  // Sine for ci
     const vmag = Math.sqrt(vr * vr + vi * vi) / Math.SQRT2 * vmul * vtrdr;
     const cmag = Math.sqrt(cr * cr + ci * ci) / Math.SQRT2 * cmul * vtrdr * trdr;
     const va = Math.atan2(vr, vi);
@@ -249,25 +251,32 @@ function addDATtoArray(stuff) {
     const vlog = DR[i][2] * vmul * vtrdr;
     const clog = DR[i][3] * cmul * vtrdr * trdr;
     const isfault = Math.abs(res) < 200 && Math.abs(react) < 1000 && cmag > 100;
-    if (isfault) {
+    const time = stime + (DR[i][1] / 1_000_000);
+    if (isfault || document.querySelector(`#FullFault`).checked) {
       faultarray.push([res, react]);
-      volarray.push([stime + (period * sample) + (DR[i][1] / 1_000_000), vmag, cmag, vlog, clog]);
+      volarray.push([time, vmag, cmag, vlog, clog]);
+      Zarray.push([time, DR[i][Z1], DR[i][Z2], DR[i][Z3], DR[i][CBo]]);
     }
   }
-  if (volarray.length === 0) return { faultarray, volarray };
-  return { faultarray, volarray };
+  if (volarray.length === 0) return { faultarray, volarray, Zarray };
+  return { faultarray, volarray, Zarray };
 }
 
 function getCFG() {
   const data = JSON.parse(localStorage.getItem(`CFGdata`)) || [[``]];
-  const cfg = { id: data[0][0], vmul: 2.093, cmul: 1.657, stime: 0 };
+  const cfg = { title: data[0][0], vmul: 2.093, cmul: 1.657, stime: 0 };
   const ar = [];
   data.forEach((x) => {
     cfg.vmul = /vcat/i.test(x[1]) ? x[5] : cfg.vmul;
     cfg.cmul = /Icat/i.test(x[1]) ? x[5] : cfg.cmul;
-    if (/:/i.test(x[1]) && /./i.test(x[1])) ar.push(Number(x[1].split(`:`).pop()));
+    cfg.Z1 = /Zone 1 Trip/i.test(x[1]) ? x[0] + 3 : cfg.Z1;
+    cfg.Z2 = /Zone 2 Trip/i.test(x[1]) ? x[0] + 3 : cfg.Z2;
+    cfg.Z3 = /Zone 3 Trip/i.test(x[1]) ? x[0] + 3 : cfg.Z3;
+    cfg.CBo = /CB Closed/i.test(x[1]) ? x[0] + 3 : cfg.CBo;
+    if (/:/i.test(x[1]) && /./i.test(x[1])) ar.push(x[1]);
   });
-  cfg.stime = ar[0];
+  cfg.sdate = ar[0] || ``;
+  cfg.stime = Number(cfg.sdate.split(`:`).pop()) || ``;
   return cfg;
 }
 
@@ -325,12 +334,14 @@ async function dygPlot(total, xaxis, yaxis) {
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
   } catch (e) { logError(e); }
+  const cfg = getCFG();
   window.g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     total,
     {
       dateWindow: xaxis,
       valueRange: yaxis,
+      title: `${cfg.title} ${cfg.sdate}` || ``,
       labels: ['a', 'Fault', 'Zone 1', 'Zone 2', 'Zone 3', 'Characteristic Angle', `Peak Load`],
       xlabel: "Resistance (Ω)",
       ylabel: "Reactance (Ω)",
@@ -635,9 +646,10 @@ function Zone3S7ST(tr) {
   return [Zpol, Zel];
 }
 
-function summaryTable(data) {
+function summaryTable(data, Zarray) {
   let maxfault = 0;
   let voltage = 0;
+  const [Z1times, Z2times, Z3times, CBotimes] = [[], [], [], []];
   const multi = smoothdec((data[1][0] - data[0][0]) * 1000) < 1 ? 1.3 : 2; //bigger multiplier for 1ms interval
   const column = [`Fault Level`, `Fault Duration`, `Fault Start`, `Fault Finish`, `Zone 1`, `Zone 2`, `Zone 3`];
   const timers = JSON.parse(localStorage.getItem(`ZoneTimers`)) || [``, ``, ``];
@@ -653,10 +665,19 @@ function summaryTable(data) {
     maxfault = Math.max(maxfault, x[2]);
     voltage = Math.min(voltage, x[1]);
   });
+  Zarray.forEach(x => {
+    if (x[1] === 1) Z1times.push(` at ${smoothdec(x[0], 3)}s`);
+    if (x[2] === 1) Z2times.push(` at ${smoothdec(x[0], 3)}s`);
+    if (x[3] === 1) Z3times.push(` at ${smoothdec(x[0], 3)}s`);
+    if (x[4] === 0) CBotimes.push(`${smoothdec(x[0], 3)}s`);
+  });
+  timers[2] += Z1times[0] || ``;
+  timers[3] += Z2times[0] || ``;
+  timers[4] += Z3times[0] || ``;
+  timers[1] = CBotimes[0] || timers[1];
   duration = duration === 0 ? `???` : smoothdec(duration * 1000, 0);
   if (endflag) timers.unshift(`Error`, `Error`);
   const column2 = [`${smoothdec(maxfault / 1000)} kA`, `${duration} ms`, ...timers];
-
   const summaryArr = column.map((x, i) => [x, column2[i]]);
   table(summaryArr);
 }
