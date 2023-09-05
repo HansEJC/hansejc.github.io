@@ -63,8 +63,9 @@ function javaread() {
         const filecontent = evt.target.result;
         const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
         if (/csv/i.test(file.name)) saveCSV(DR);
-        if (/cfg/i.test(file.name)) localStorage.setItem(`CFGdata`, JSON.stringify(DR));;
+        if (/cfg/i.test(file.name)) localStorage.setItem(`CFGdata`, JSON.stringify(DR));
         if (/dat/i.test(file.name)) saveDAT(DR);
+        if (/xrio/i.test(file.name)) xrio(filecontent);
       };
     });
   };
@@ -722,6 +723,84 @@ function exportFault() {
     const data = e.target.result.value.data;
     dbObj.set({ data, headers });
   }
+}
+
+function parseXml(xml) {
+  let dom = window.DOMParser ? (new DOMParser()).parseFromString(xml, "text/xml") : null;
+  if (window.ActiveXObject) {
+    dom = new ActiveXObject('Microsoft.XMLDOM');
+    dom.async = false;
+    if (!dom.loadXML(xml)) throw `${dom.parseError.reason} ${dom.parseError.srcText}`;
+  }
+  function parseNode(xmlNode, result) {
+    if (xmlNode.nodeName === `#text`) {
+      const v = xmlNode.nodeValue;
+      if (v.trim()) result[`#text`] = v;
+      return;
+    }
+    const jsonNode = {},
+      existing = result[xmlNode.nodeName];
+    if (existing) {
+      if (!Array.isArray(existing)) result[xmlNode.nodeName] = [existing, jsonNode];
+      else result[xmlNode.nodeName].push(jsonNode);
+    }
+    else result[xmlNode.nodeName] = jsonNode;
+    if (xmlNode.attributes) for (let attribute of xmlNode.attributes) jsonNode[attribute.nodeName] = attribute.nodeValue;
+    for (let node of xmlNode.childNodes) parseNode(node, jsonNode);
+  }
+  let result = {};
+  for (let node of dom.childNodes) parseNode(node, result);
+  return result;
+}
+
+function xrio(xml) {
+  const xrio = parseXml(xml).XRio.CUSTOM;
+  const IED = xrio.Name[`#text`];
+  document.querySelector(`select`).value = /P44T/i.test(IED) ? `P44T` : /P438/i.test(IED) ? `P438` : `7ST`;
+  if (!/P44T/i.test(IED)) return;
+  let [config, group, ct, groups] = [{}, {}, {}, []];
+  xrio.Block.forEach(x => {
+    config = /configuration/i.test(x.Name[`#text`]) ? x : config;
+    ct = /ct and vt/i.test(x.Name[`#text`]) ? x : ct;
+    if (/Group /i.test(x.Name[`#text`])) groups.push(x);
+  });
+  config.Parameter.forEach(x => {
+    group = /Active Settings/i.test(x.Description[`#text`]) ? x : group;
+  });
+  group.EnumList.EnumValue.forEach(x => {
+    group.text = group.Value[`#text`] === x.EnumId ? x[`#text`] : group.text;
+  });
+  groups.forEach(x => {
+    if (x.Name[`#text`] === group.text) {
+      x.Block.forEach(y => {
+        if (/Dist. Elem/i.test(y.Name[`#text`])) groups.distEl = y;
+        if (/logic/i.test(y.Name[`#text`])) groups.logic = y;
+      });
+    }
+  });
+  groups.distEl.Parameter.forEach(x => {
+    for (let i = 1; i < 4; i++) {
+      if (`Z${i} Gnd. Reach` === x.Name[`#text`]) document.querySelector(`#Zone${i}`).value = x.Value[`#text`];
+      if (`R${i} Gnd RH Res.` === x.Name[`#text`]) document.querySelector(`#Zone${i}RH`).value = x.Value[`#text`];
+      if (`R${i} Gnd LH Res.` === x.Name[`#text`]) document.querySelector(`#Zone${i}LH`).value = x.Value[`#text`];
+    }
+    if (/z3' Gnd rev rch/i.test(x.Name[`#text`])) document.querySelector(`#Zone3rev`).value = x.Value[`#text`];
+    if (/z3 Gnd. angle/i.test(x.Name[`#text`])) document.querySelector(`#Alpha`).value = x.Value[`#text`];
+  });
+  groups.logic.Parameter.forEach(x => {
+    if (/Z2 Gnd. Delay/i.test(x.Name[`#text`])) document.querySelector(`#Z2del`).value = Number(x.Value[`#text`]) * 1000;
+    if (/Z3 Gnd. Delay/i.test(x.Name[`#text`])) document.querySelector(`#Z3del`).value = Number(x.Value[`#text`]) * 1000;
+  });
+  let [vtprim, vtsec, ctprim, ctsec] = [26.4, .11, 600, 1];
+  ct.Parameter.forEach(x => {
+    vtprim = /vt prim/i.test(x.Description[`#text`]) ? x.Value[`#text`] : vtprim;
+    vtsec = /vt sec/i.test(x.Description[`#text`]) ? x.Value[`#text`] : vtsec;
+    ctprim = /ct prim/i.test(x.Description[`#text`]) ? x.Value[`#text`] : ctprim;
+    ctsec = /ct sec/i.test(x.Description[`#text`]) ? x.Value[`#text`] : ctsec;
+  });
+  document.querySelector(`#VTR`).value = vtprim / vtsec;
+  document.querySelector(`#CTR`).value = ctprim / ctsec;
+  read();
 }
 
 let idbSupported = ("indexedDB" in window) ? true : false;
