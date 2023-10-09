@@ -66,6 +66,7 @@ function javaread() {
         if (/cfg/i.test(file.name)) localStorage.setItem(`CFGdata`, JSON.stringify(DR));
         if (/dat/i.test(file.name)) saveDAT(DR);
         if (/xrio/i.test(file.name)) xrio(filecontent);
+        if (/.rio/i.test(file.name)) console.log(rio(filecontent));
       };
     });
   };
@@ -200,6 +201,7 @@ function plotProtection(csvarr) {
 function addCSVtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
   const [faultarray, volarray, Zarray] = [[], [], []];
+  localStorage.removeItem(`CFGdata`);
   if (DR.length === 0) return { faultarray, volarray, Zarray };
   const [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
   for (let i = 1; i < DR.length; i++) { //add csv to array
@@ -335,14 +337,14 @@ async function dygPlot(total, xaxis, yaxis) {
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
   } catch (e) { logError(e); }
-  const cfg = getCFG();
+  const { title, sdate } = getCFG();
   window.g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     total,
     {
       dateWindow: xaxis,
       valueRange: yaxis,
-      title: `${cfg.title} ${cfg.sdate}` || ``,
+      title: `${title} ${sdate}` || ``,
       labels: ['a', 'Fault', 'Zone 1', 'Zone 2', 'Zone 3', 'Characteristic Angle', `Peak Load`],
       xlabel: "Resistance (Ω)",
       ylabel: "Reactance (Ω)",
@@ -803,7 +805,25 @@ function xrio(xml) {
   read();
 }
 
-let idbSupported = ("indexedDB" in window) ? true : false;
+function rio(data) {
+  let res = [], levels = [res];
+  const zones = {};
+  for (let line of data.split('\n')) {
+    let
+      level = line.search(/\S/) >> 2  // (index of first non whitespace char) / 2 --> IF indentation is 2 spaces
+      , root = line.replace(/  +/g, ',').trim()
+      , content = [];
+    if (!root) continue;
+    levels[level].push({ root, content });
+    levels[++level] = content;
+  }
+  res.forEach(x => {
+    if (x.content.length !== 0) zones[x.content[0].root.split(`,`).pop()] = x.content[2].content.map(x => x.root.split(`,`).flatMap(y => y.length === 0 || isNaN(Number(y)) ? [] : Number(y)));
+  });
+  return zones
+}
+
+let idbSupported = "indexedDB" in window ? true : false;
 let db;
 //startup
 startup();
