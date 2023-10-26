@@ -66,7 +66,7 @@ function javaread() {
         if (/cfg/i.test(file.name)) localStorage.setItem(`CFGdata`, JSON.stringify(DR));
         if (/dat/i.test(file.name)) saveDAT(DR);
         if (/xrio/i.test(file.name)) xrio(filecontent);
-        if (/.rio/i.test(file.name)) console.log(rio(filecontent));
+        if (/\.rio/i.test(file.name)) rio(filecontent);
       };
     });
   };
@@ -187,7 +187,7 @@ function plotProtection(csvarr) {
   const yaxis = [polmin(-20), polmax(70)];
   let DR = []; DR = csvarr;
   const calcStuff = { DR, trdr, vtrdr };
-  const { faultarray, volarray, Zarray } = localStorage.getItem(`isDAT`) === `true` ? addDATtoArray(calcStuff) : addCSVtoArray(calcStuff);
+  const { faultarray, volarray, Zarray } = localStorage.getItem(`isDAT`) === `true` ? addDATtoArray(DR) : addCSVtoArray(calcStuff);
   const stuff = { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del };
   FaultZone(stuff);
   if (volarray.length > 1) {
@@ -224,9 +224,8 @@ function addCSVtoArray(stuff) {
   return { faultarray, volarray, Zarray };
 }
 
-function addDATtoArray(stuff) {
-  const { DR, trdr, vtrdr } = stuff;
-  const { vmul, cmul, stime, Z1, Z2, Z3, CBo } = getCFG();
+function addDATtoArray(DR) {
+  const { vmul, cmul, stime, Z1, Z2, Z3, CBo, trdr, vtrdr } = getCFG();
   const [faultarray, volarray, Zarray] = [[], [], []];
   if (DR.length === 0) return { faultarray, volarray, Zarray };
   const freq = 50;
@@ -267,17 +266,19 @@ function addDATtoArray(stuff) {
 
 function getCFG() {
   const data = JSON.parse(localStorage.getItem(`CFGdata`)) || [[``]];
-  const cfg = { title: data[0][0], vmul: 2.093, cmul: 1.657, stime: 0 };
+  const cfg = { title: data[0][0], vmul: 1, cmul: 1, stime: 0 };
   const ar = [];
-  data.forEach((x) => {
-    cfg.vmul = /vcat/i.test(x[1]) ? x[5] : cfg.vmul;
-    cfg.cmul = /Icat/i.test(x[1]) ? x[5] : cfg.cmul;
-    cfg.Z1 = /Zone 1 Trip/i.test(x[1]) ? x[0] + 3 : cfg.Z1;
-    cfg.Z2 = /Zone 2 Trip/i.test(x[1]) ? x[0] + 3 : cfg.Z2;
-    cfg.Z3 = /Zone 3 Trip/i.test(x[1]) ? x[0] + 3 : cfg.Z3;
-    cfg.CBo = /CB Closed/i.test(x[1]) ? x[0] + 3 : cfg.CBo;
+  data.forEach((x, ind) => {
+    cfg.Z1 = /Zone 1 Trip|Trip Z1/i.test(x[1]) ? ind : cfg.Z1;
+    cfg.Z2 = /Zone 2 Trip|Trip Z2/i.test(x[1]) ? ind : cfg.Z2;
+    cfg.Z3 = /Zone 3 Trip|Trip Z3/i.test(x[1]) ? ind : cfg.Z3;
+    cfg.CBo = /CB Closed|Brk Aux NO/i.test(x[1]) ? ind : cfg.CBo;
     if (/:/i.test(x[1]) && /./i.test(x[1])) ar.push(x[1]);
   });
+  cfg.vtrdr = data[2][10] / data[2][11];
+  cfg.trdr = data[3][10] / data[3][11] / cfg.vtrdr;
+  cfg.vmul = data[2][5];
+  cfg.cmul = data[3][5];
   cfg.sdate = ar[0] || ``;
   cfg.stime = Number(cfg.sdate.split(`:`).pop()) || ``;
   return cfg;
@@ -758,7 +759,7 @@ function parseXml(xml) {
 function xrio(xml) {
   const xrio = parseXml(xml).XRio.CUSTOM;
   const IED = xrio.Name[`#text`];
-  document.querySelector(`select`).value = /P44T/i.test(IED) ? `P44T` : /P438/i.test(IED) ? `P438` : `7ST`;
+  document.querySelector(`select`).value = /P44T/i.test(IED) ? `P44T` : /P438/i.test(IED) ? `P438` : `S7ST`;
   if (!/P44T/i.test(IED)) return;
   let [config, group, ct, groups] = [{}, {}, {}, []];
   xrio.Block.forEach(x => {
@@ -806,6 +807,8 @@ function xrio(xml) {
 }
 
 function rio(data) {
+  document.querySelector(`select`).value = /7ST/i.test(data) ? `S7ST` : `P44T`;
+  const { trdr } = getCFG();
   let res = [], levels = [res];
   const zones = {};
   for (let line of data.split('\n')) {
@@ -820,7 +823,19 @@ function rio(data) {
   res.forEach(x => {
     if (x.content.length !== 0) zones[x.content[0].root.split(`,`).pop()] = x.content[2].content.map(x => x.root.split(`,`).flatMap(y => y.length === 0 || isNaN(Number(y)) ? [] : Number(y)));
   });
-  return zones
+  for (const obj in zones) {
+    const zone = document.querySelector(`#Zone${obj.slice(-1)}`);
+    if (zone) {
+      zone.value = zones[obj][1][0] / trdr;
+      document.querySelector(`#Zone${obj.slice(-1)}RH`).value = zones[obj][1][0] / trdr;
+      document.querySelector(`#Zone${obj.slice(-1)}LH`).value = ``;
+    }
+  }
+  document.querySelector(`#Alpha`).value = zones.Z1[4][1];
+  document.querySelector(`#Beta`).value = zones.Z1[4][2];
+  document.querySelector(`#Zone3`).value = zones.Z3[3][0] / trdr;
+  document.querySelector(`#Zone3rev`).value = zones.Z3[4][0] / trdr;
+  read();
 }
 
 let idbSupported = "indexedDB" in window ? true : false;
