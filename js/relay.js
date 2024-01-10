@@ -225,7 +225,7 @@ function addCSVtoArray(stuff) {
 }
 
 function addDATtoArray(DR) {
-  const { vmul, cmul, stime, Z1, Z2, Z3, CBo, trdr, vtrdr } = getCFG();
+  const { vmul, cmul, stime, Z1, Z2, Z3, CBo, trdr, vtrdr, v, c } = getCFG();
   const [faultarray, volarray, Zarray] = [[], [], []];
   if (DR.length === 0) return { faultarray, volarray, Zarray };
   const freq = 50;
@@ -240,18 +240,18 @@ function addDATtoArray(DR) {
 
   for (let i = 1; i < DR.length - period; i++) { //add data to array
     const periodSamples = DR.slice(i, i + period);
-    const vr = FFTcalc(periodSamples, DR, 2, false); // Cosine for vr
-    const vi = FFTcalc(periodSamples, DR, 2, true);  // Sine for vi
-    const cr = FFTcalc(periodSamples, DR, 3, false); // Cosine for cr
-    const ci = FFTcalc(periodSamples, DR, 3, true);  // Sine for ci
+    const vr = FFTcalc(periodSamples, DR, v, false); // Cosine for vr
+    const vi = FFTcalc(periodSamples, DR, v, true);  // Sine for vi
+    const cr = FFTcalc(periodSamples, DR, c, false); // Cosine for cr
+    const ci = FFTcalc(periodSamples, DR, c, true);  // Sine for ci
     const vmag = Math.sqrt(vr * vr + vi * vi) / Math.SQRT2 * vmul * vtrdr;
     const cmag = Math.sqrt(cr * cr + ci * ci) / Math.SQRT2 * cmul * vtrdr * trdr;
     const va = Math.atan2(vr, vi);
     const ca = Math.atan2(cr, ci);
     const res = (vmag / cmag) * Math.cos(va - ca);
     const react = (vmag / cmag) * Math.sin(va - ca);
-    const vlog = DR[i][2] * vmul * vtrdr;
-    const clog = DR[i][3] * cmul * vtrdr * trdr;
+    const vlog = DR[i][v] * vmul * vtrdr;
+    const clog = DR[i][c] * cmul * vtrdr * trdr;
     const isfault = Math.abs(res) < 200 && Math.abs(react) < 1000 && cmag > 100;
     const time = stime + (DR[i][1] / 1_000_000);
     if (isfault || document.querySelector(`#FullFault`).checked) {
@@ -276,12 +276,14 @@ function getCFG() {
     cfg.CBo = /CB Closed|Brk Aux NO/i.test(x[1]) ? ind : cfg.CBo;
     if (/:/i.test(x[1]) && /./i.test(x[1])) ar.push(x[1]);
   });
-  cfg.vtrdr = data[2][10] / data[2][11];
-  cfg.trdr = data[3][10] / data[3][11] / cfg.vtrdr;
-  cfg.vmul = data[2][5];
-  cfg.cmul = data[3][5];
+  cfg.v = /V/i.test(data[2][4]) ? 2 : 3;
+  cfg.c = /A/i.test(data[3][4]) ? 3 : 2;
+  cfg.vtrdr = data[cfg.v][10] / data[cfg.v][11];
+  cfg.trdr = data[cfg.c][10] / data[cfg.c][11] / cfg.vtrdr;
+  cfg.vmul = Number(data[cfg.v][5]);
+  cfg.cmul = Number(data[cfg.c][5]);
   cfg.sdate = ar[0] || ``;
-  cfg.stime = Number(cfg.sdate.split(`:`).pop()) || ``;
+  cfg.stime = Number(cfg.sdate.split(`:`).pop()) || 0;
   return cfg;
 }
 
