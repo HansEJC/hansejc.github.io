@@ -265,7 +265,8 @@ function addDATtoArray(DR) {
 }
 
 function getCFG() {
-  const data = JSON.parse(localStorage.getItem(`CFGdata`)) || [[``]];
+  const data = JSON.parse(localStorage.getItem(`CFGdata`)) || false;
+  if (!data) return { title: ``, sdate: `` };
   const cfg = { title: data[0][0], vmul: 1, cmul: 1, stime: 0 };
   const ar = [];
   data.forEach((x, ind) => {
