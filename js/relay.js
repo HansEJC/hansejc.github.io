@@ -270,11 +270,11 @@ function getCFG() {
   const cfg = { title: data[0][0], vmul: 1, cmul: 1, stime: 0 };
   const ar = [];
   data.forEach((x, ind) => {
-    cfg.Z1 = /Zone 1 Trip|Trip Z1/i.test(x[1]) ? ind : cfg.Z1;
-    cfg.Z2 = /Zone 2 Trip|Trip Z2/i.test(x[1]) ? ind : cfg.Z2;
-    cfg.Z3 = /Zone 3 Trip|Trip Z3/i.test(x[1]) ? ind : cfg.Z3;
+    cfg.Z1 = /Zone 1 Trip|Trip Z1|Trip signal Z1/i.test(x[1]) ? ind : cfg.Z1;
+    cfg.Z2 = /Zone 2 Trip|Trip Z2|Trip signal Z2/i.test(x[1]) ? ind : cfg.Z2;
+    cfg.Z3 = /Zone 3 Trip|Trip Z3|Trip signal Z3/i.test(x[1]) ? ind : cfg.Z3;
     cfg.CBo = /CB Closed|Brk Aux NO/i.test(x[1]) ? ind : cfg.CBo;
-    if (/:/i.test(x[1]) && /./i.test(x[1])) ar.push(x[1]);
+    if (typeof x[1] === `string` && x[1].split(`:`).length > 2) ar.push(x[1]);
   });
   cfg.v = /V/i.test(data[2][4]) ? 2 : 3;
   cfg.c = /A/i.test(data[3][4]) ? 3 : 2;
