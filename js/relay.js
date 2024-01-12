@@ -20,8 +20,9 @@ function saveCSV(data) {
   saveIndexedDB(data);
 }
 
-function saveDAT(data) {
+function saveDAT(data, filecontent) {
   data.pop(); //remove last empty line
+  data = typeof data[0][0] !== `number` ? binary2ASCII(filecontent) : data;
   localStorage.setItem(`isDAT`, true);
   saveIndexedDB(data);
 }
@@ -52,7 +53,7 @@ function javaread() {
     if (!window.FileReader) return; // Browser is not compatible
     Array.from(evt.target.files).forEach(file => {
       const reader = new FileReader();
-      reader.readAsText(file)
+      reader.readAsBinaryString(file)
 
       reader.onload = function (evt) {
         if (evt.target.readyState !== 2) return;
@@ -64,7 +65,7 @@ function javaread() {
         const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
         if (/csv/i.test(file.name)) saveCSV(DR);
         if (/cfg/i.test(file.name)) localStorage.setItem(`CFGdata`, JSON.stringify(DR));
-        if (/dat/i.test(file.name)) saveDAT(DR);
+        if (/dat/i.test(file.name)) saveDAT(DR, filecontent);
         if (/xrio/i.test(file.name)) xrio(filecontent);
         if (/\.rio/i.test(file.name)) rio(filecontent);
       };
@@ -284,6 +285,7 @@ function getCFG() {
   cfg.cmul = Number(data[cfg.c][5]);
   cfg.sdate = ar[0] || ``;
   cfg.stime = Number(cfg.sdate.split(`:`).pop()) || 0;
+  [, cfg.ana, cfg.dig] = data[1];
   return cfg;
 }
 
@@ -609,10 +611,10 @@ function S7ST(tr, num, empty) {
   for (let i = 0; i <= 100; i++) {
     const rad = i / 100 * b + (1 - i / 100) * g;
     const maxres = Z < 25000 / load ? Z : 25000 / load * Math.cos(40 * Math.PI / 180);
-    const res = rad > a
+    const res = rad >= a
       ? Z * Math.cos(rad)
       : Math.min(Z * Math.cos(rad), maxres);
-    const rea = rad > a || Z * Math.cos(rad) < maxres
+    const rea = rad >= a || Z * Math.cos(rad) < maxres
       ? Z * Math.sin(rad)
       : maxres * Math.tan(rad);
     Zpol.push([res, rea]);
@@ -639,10 +641,10 @@ function Zone3S7ST(tr) {
   const { a, b, g, Z } = stuff;
   for (let i = 0; i <= 100; i++) {
     const rad = i / 100 * (b + Math.PI) + (1 - i / 100) * (g + Math.PI);
-    const res = rad > a + Math.PI
+    const res = rad >= a + Math.PI
       ? Z * Math.cos(rad)
       : Math.max(Z * Math.cos(rad), Zr);
-    const rea = rad > a + Math.PI || Z * Math.cos(rad) > Zr
+    const rea = rad >= a + Math.PI || Z * Math.cos(rad) > Zr
       ? Z * Math.sin(rad)
       : Zr * Math.tan(rad);
     Zpol.push([res, rea]);
@@ -760,7 +762,7 @@ function parseXml(xml) {
 }
 
 function xrio(xml) {
-  const xrio = parseXml(xml).XRio.CUSTOM;
+  const xrio = parseXml(decodeURIComponent(escape(xml))).XRio.CUSTOM;
   const IED = xrio.Name[`#text`];
   document.querySelector(`select`).value = /P44T/i.test(IED) ? `P44T` : /P438/i.test(IED) ? `P438` : `S7ST`;
   if (!/P44T/i.test(IED)) return;
@@ -839,6 +841,17 @@ function rio(data) {
   document.querySelector(`#Zone3`).value = zones.Z3[3][0] / trdr;
   document.querySelector(`#Zone3rev`).value = zones.Z3[4][0] / trdr;
   read();
+}
+
+function binary2ASCII(data) {
+  let ASCII = [...data].map(c => c.charCodeAt(0).toString(16));
+  let { ana, dig } = getCFG();
+  ana = Number(ana.replace(/\D/g, ''));
+  dig = Number(dig.replace(/\D/g, ''));
+  const bytes = ana * 2 + 2 * Math.ceil(dig / 16) + 8;
+
+  debugger
+  return ASCII;
 }
 
 let idbSupported = "indexedDB" in window ? true : false;
