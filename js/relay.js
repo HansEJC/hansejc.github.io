@@ -202,7 +202,6 @@ function plotProtection(csvarr) {
 function addCSVtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
   const [faultarray, volarray, Zarray] = [[], [], []];
-  localStorage.removeItem(`CFGdata`);
   if (DR.length === 0) return { faultarray, volarray, Zarray };
   const [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
   for (let i = 1; i < DR.length; i++) { //add csv to array
@@ -720,16 +719,20 @@ function importFault() {
   dbObj.once(`value`, snap => {
     const data = snap.val();
     localStorage.setItem(`headers`, data.headers);
+    localStorage.setItem(`CFGdata`, data.cfg);
+    localStorage.setItem(`isDAT`, data.isDAT);
     saveIndexedDB(data.data);
   });
 }
 
 function exportFault() {
   const headers = localStorage.getItem(`headers`);
+  const cfg = localStorage.getItem(`CFGdata`);
+  const isDAT = localStorage.getItem(`isDAT`) === `true`;
   const dbObj = firebase.database().ref(`relay`);
   db.transaction(["plots"]).objectStore("plots").openCursor(null, "prev").onsuccess = async (e) => {
     const data = e.target.result.value.data;
-    dbObj.set({ data, headers });
+    dbObj.set({ data, headers, cfg, isDAT });
   }
 }
 
