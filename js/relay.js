@@ -834,27 +834,46 @@ function rio(data) {
   for (const obj in zones) {
     const zone = document.querySelector(`#Zone${obj.slice(-1)}`);
     if (zone) {
-      zone.value = zones[obj][1][0] / trdr;
-      document.querySelector(`#Zone${obj.slice(-1)}RH`).value = zones[obj][1][0] / trdr;
+      zone.value = smoothdec(zones[obj][1][0] / trdr);
+      document.querySelector(`#Zone${obj.slice(-1)}RH`).value = smoothdec(zones[obj][1][0] / trdr);
       document.querySelector(`#Zone${obj.slice(-1)}LH`).value = ``;
     }
   }
   document.querySelector(`#Alpha`).value = zones.Z1[4][1];
   document.querySelector(`#Beta`).value = zones.Z1[4][2];
-  document.querySelector(`#Zone3`).value = zones.Z3[3][0] / trdr;
-  document.querySelector(`#Zone3rev`).value = zones.Z3[4][0] / trdr;
+  document.querySelector(`#Zone3`).value = smoothdec(zones.Z3[3][0] / trdr);
+  document.querySelector(`#Zone3rev`).value = smoothdec(zones.Z3[4][0] / trdr);
   read();
 }
 
 function binary2ASCII(data) {
-  let ASCII = [...data].map(c => c.charCodeAt(0).toString(16));
+  const bin = [...data].map(c => c.charCodeAt(0).toString(16));
   let { ana, dig } = getCFG();
   ana = Number(ana.replace(/\D/g, ''));
   dig = Number(dig.replace(/\D/g, ''));
   const bytes = ana * 2 + 2 * Math.ceil(dig / 16) + 8;
-
-  debugger
+  const ASCII = [];
+  for (let i = 0; i <= bin.length / bytes; i++) {
+    ASCII.push([]);
+  }
+  ASCII.pop();
+  bin.forEach((x, ind) => {
+    x = x.length < 2 ? `0${x}` : x;
+    ASCII[Math.floor(ind / bytes)].push(x);
+  });
+  ASCII.forEach(x => {
+    x[0] = hex2dec(x, 0, 4);
+    x[1] = hex2dec(x, 4, 8);
+    for (let i = 0; i < ana; i++) {
+      x[2 + i] = hex2dec(x, 8 + i * 2, 10 + i * 2);
+    }
+  }); debugger
   return ASCII;
+}
+
+const hex2dec = (x, fir, sec) => {
+  x = parseInt(x.slice(fir, sec).reverse().join(``), 16);
+  return x = sec - fir <= 2 && (x & 0x8000) > 0 ? x - 0x10000 : x;
 }
 
 let idbSupported = "indexedDB" in window ? true : false;
