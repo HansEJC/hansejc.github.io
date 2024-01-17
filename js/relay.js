@@ -271,8 +271,8 @@ function getCFG() {
   const ar = [];
   data.forEach((x, ind) => {
     cfg.Z1 = /Zone 1 Trip|Trip Z1|Trip signal Z1/i.test(x[1]) ? ind : cfg.Z1;
-    cfg.Z2 = /Zone 2 Trip|Trip Z2|Trip signal Z2/i.test(x[1]) ? ind : cfg.Z2;
-    cfg.Z3 = /Zone 3 Trip|Trip Z3|Trip signal Z3/i.test(x[1]) ? ind : cfg.Z3;
+    cfg.Z2 = /Zone 2 Trip|Trip Z2|Trip signal Z2\/t2S/i.test(x[1]) ? ind : cfg.Z2;
+    cfg.Z3 = /Zone 3 Trip|Trip Z3|Trip signal Z3\/t3S/i.test(x[1]) ? ind : cfg.Z3;
     cfg.CBo = /CB Closed|Brk Aux NO/i.test(x[1]) ? ind : cfg.CBo;
     if (typeof x[1] === `string` && x[1].split(`:`).length > 2) ar.push(x[1]);
   });
@@ -851,7 +851,8 @@ function binary2ASCII(data) {
   let { ana, dig } = getCFG();
   ana = Number(ana.replace(/\D/g, ''));
   dig = Number(dig.replace(/\D/g, ''));
-  const bytes = ana * 2 + 2 * Math.ceil(dig / 16) + 8;
+  const diglen = 2 * Math.ceil(dig / 16);
+  const bytes = ana * 2 + diglen + 8;
   const ASCII = [];
   for (let i = 0; i <= bin.length / bytes; i++) {
     ASCII.push([]);
@@ -867,13 +868,21 @@ function binary2ASCII(data) {
     for (let i = 0; i < ana; i++) {
       x[2 + i] = hex2dec(x, 8 + i * 2, 10 + i * 2);
     }
-  }); debugger
+    x.splice(ana + 2, bytes - ana - 2, ...hex2bin(x, ana * 2 + 8, bytes, diglen));
+  });
   return ASCII;
 }
 
 const hex2dec = (x, fir, sec) => {
   x = parseInt(x.slice(fir, sec).reverse().join(``), 16);
   return x = sec - fir <= 2 && (x & 0x8000) > 0 ? x - 0x10000 : x;
+}
+
+const hex2bin = (x, fir, sec, diglen) => {
+  x = x.slice(fir, sec).reverse();
+  let bin = ``;
+  x.forEach(a => bin = `${bin}${parseInt(a, 16).toString(2).padStart(8, `0`)}`);
+  return [...bin].reverse().map(x => Number(x));
 }
 
 let idbSupported = "indexedDB" in window ? true : false;
