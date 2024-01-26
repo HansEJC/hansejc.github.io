@@ -90,7 +90,7 @@ function navBar() {
           <a href='railvolts.html'>Railway Voltages</a>
         </div>
       </div>
-      <a href='op.html'>Orion Park</a>
+      <a href='equip.html'>Equipment</a>
       <a href='javascript:helpPage()'>Help</a>
     `;
   document.querySelectorAll('.heh').forEach(function (item) { return item.addEventListener('click', randomPage) });
