@@ -44,7 +44,6 @@ function secondMortgage(info) {
 }
 
 function thirdMortgage(info) {
-  const today = new Date();
   const ir = 1.59 / 12 / 100; //remortgage rate
   let { rl, tpa } = info;
   const fees = -5814.12 - 250 + 66 - 5.88; //the £5814.12 was the shortfall since we borrowed £135k, the £250 is cashback, £66 fees, £5.88 extra first month
@@ -54,15 +53,22 @@ function thirdMortgage(info) {
   return mortgageLoop(loopInfo);
 }
 
-function currentMortgage(info) {
+function fourthMortgage(info) {
   const today = new Date();
-  const monthd = (today - new Date(2023, 3, 1)) / 1000 / 60 / 60 / 24 / 365.25 * 12; //difference in month
+  const monthd = Math.floor((today - new Date(2024, 2, 1)) / 1000 / 60 / 60 / 24 / 365.25 * 12); //difference in month
   const ir = 3.35 / 12 / 100; //remortgage rate
   let { rl, tpa } = info;
-  const fees = -3600.22 + 995;
+  const fees = -3600.22 + 995 + 713.12; //shortfall, fees, 713.12 seems to be a random amount that was added?
   tpa += -fees; //the £3600.22 was the shortfall since we borrowed £108k, the £995 was te remortgage fee
   rl += fees;
-  loopInfo = { num: monthd, pay: 771.18, year: 2023, month: 3, ir, ...info, rl }; // changed overpayment to £1200 since baby is coming
+
+  loopInfo = { num: 10, pay: 771.18, year: 2023, month: 3, ir, ...info, rl }; // removed overpayment for a while since baby nursery is ££££
+  info = mortgageLoop(loopInfo);
+
+  loopInfo = { num: 1, pay: 1000, year: 2024, month: 1, ir, ...info }; // changed overpayment to £1000
+  info = mortgageLoop(loopInfo);
+
+  loopInfo = { num: monthd, pay: 1100, year: 2024, month: 2, ir, ...info, rl }; // changed overpayment to £1100
   return { monthd, ...mortgageLoop(loopInfo) };
 }
 
@@ -74,7 +80,7 @@ function futureMortgage(info) {
   for (let i = 0; rl > 0; i++) {
     const intr = rl * ir;
     const eqp = tp - intr;
-    mortgage.push([new Date(2023, 4 + i + monthd, 1), intr, eqp, intr + eqp]);
+    mortgage.push([new Date(2024, 2 + i + monthd, 1), intr, eqp, intr + eqp]);
     rl = rl - eqp;
     pn++;
   }
@@ -88,7 +94,7 @@ function calculations() {
   let info = firstMortgage();
   info = secondMortgage(info);
   info = thirdMortgage(info);
-  const { teq, mortgage, rl, tpa } = info = currentMortgage(info);
+  const { teq, mortgage, rl, tpa } = info = fourthMortgage(info);
   const pn = futureMortgage({ tp, ...info });
 
   const ltv = 100 - teq / (teq + rl) * 100; //Loan to value
