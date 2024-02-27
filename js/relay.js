@@ -42,9 +42,7 @@ function read() {
     const cursor = event.target.result;
     try {
       plotProtection(cursor.value.data);
-    } catch (err) {
-      importFault();
-    }
+    } catch (err) { }
   }
 }
 
@@ -63,6 +61,7 @@ function javaread() {
         }
         const filecontent = evt.target.result;
         const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
+        localStorage.setItem(`filename`, file.name.split(`.`)[0]);
         if (/csv/i.test(file.name)) saveCSV(DR);
         if (/cfg/i.test(file.name)) localStorage.setItem(`CFGdata`, JSON.stringify(DR));
         if (/dat/i.test(file.name)) saveDAT(DR, filecontent);
@@ -266,15 +265,15 @@ function addDATtoArray(DR) {
 
 function getCFG() {
   const data = JSON.parse(localStorage.getItem(`CFGdata`)) || false;
-  if (!data) return { title: ``, sdate: `` };
-  const cfg = { title: data[0][0], vmul: 1, cmul: 1, stime: 0 };
+  if (!data) return { title: localStorage.getItem(`filename`), sdate: `` };
+  const cfg = { vmul: 1, cmul: 1, stime: 0 };
   const ar = [];
   data.forEach((x, ind) => {
     cfg.Z1 = /Zone 1 Trip|Trip Z1|Trip signal Z1/i.test(x[1]) ? ind : cfg.Z1;
     cfg.Z2 = /Zone 2 Trip|Trip Z2|Trip signal Z2\/t2S/i.test(x[1]) ? ind : cfg.Z2;
     cfg.Z3 = /Zone 3 Trip|Trip Z3|Trip signal Z3\/t3S/i.test(x[1]) ? ind : cfg.Z3;
     cfg.CBo = /CB Closed|Brk Aux NO/i.test(x[1]) ? ind : cfg.CBo;
-    if (typeof x[1] === `string` && x[1].split(`:`).length > 2) ar.push(x[1]);
+    if (typeof x[1] === `string` && x[1].split(`:`).length > 2) ar.push(x);
   });
   cfg.v = /V/i.test(data[2][4]) ? 2 : 3;
   cfg.c = /A/i.test(data[3][4]) ? 3 : 2;
@@ -282,7 +281,9 @@ function getCFG() {
   cfg.trdr = data[cfg.c][10] / data[cfg.c][11] / cfg.vtrdr;
   cfg.vmul = Number(data[cfg.v][5]);
   cfg.cmul = Number(data[cfg.c][5]);
-  cfg.sdate = ar[0] || ``;
+  cfg.sdate = ar[0][1] || ``;
+  const circuit = data[0][0] === null ? localStorage.getItem(`filename`) : data[0][0];
+  cfg.title = `${circuit.replace(/\,/g, ` `)},${ar[0]}`;
   cfg.stime = Number(cfg.sdate.split(`:`).pop()) || 0;
   [, cfg.ana, cfg.dig] = data[1];
   return cfg;
@@ -342,14 +343,14 @@ async function dygPlot(total, xaxis, yaxis) {
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
   } catch (e) { logError(e); }
-  const { title, sdate } = getCFG();
+  const { title } = getCFG();
   window.g3 = new Dygraph(
     document.getElementById("graphdiv3"),
     total,
     {
       dateWindow: xaxis,
       valueRange: yaxis,
-      title: `${title} ${sdate}` || ``,
+      title,
       labels: ['a', 'Fault', 'Zone 1', 'Zone 2', 'Zone 3', 'Characteristic Angle', `Peak Load`],
       xlabel: "Resistance (Ω)",
       ylabel: "Reactance (Ω)",
@@ -715,24 +716,18 @@ function ctRatio() {
 }
 
 function importFault() {
-  const dbObj = firebase.database().ref(`relay`);
-  dbObj.once(`value`, snap => {
-    const data = snap.val();
-    localStorage.setItem(`headers`, data.headers);
-    localStorage.setItem(`CFGdata`, data.cfg);
-    localStorage.setItem(`isDAT`, data.isDAT);
-    saveIndexedDB(data.data);
-  });
+  window.open(`faultimport.html`, `_self`);
 }
 
 function exportFault() {
   const headers = localStorage.getItem(`headers`);
   const cfg = localStorage.getItem(`CFGdata`);
   const isDAT = localStorage.getItem(`isDAT`) === `true`;
-  const dbObj = firebase.database().ref(`relay`);
+  const params = document.location.search;
+  const dbObj = firebase.database().ref(`relay/${getCFG().title.replace(/\/|\./g, '-')}`);
   db.transaction(["plots"]).objectStore("plots").openCursor(null, "prev").onsuccess = async (e) => {
     const data = e.target.result.value.data;
-    dbObj.set({ data, headers, cfg, isDAT });
+    dbObj.update({ data, headers, cfg, isDAT, params });
   }
 }
 
