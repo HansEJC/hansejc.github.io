@@ -725,9 +725,11 @@ function exportFault() {
   const isDAT = localStorage.getItem(`isDAT`) === `true`;
   const params = document.location.search;
   const dbObj = firebase.database().ref(`relay/${getCFG().title.replace(/\/|\./g, '-')}`);
+  const dbObj2 = firebase.database().ref(`faults/${getCFG().title.replace(/\/|\./g, '-')}`);
   db.transaction(["plots"]).objectStore("plots").openCursor(null, "prev").onsuccess = async (e) => {
     const data = e.target.result.value.data;
     dbObj.update({ data, headers, cfg, isDAT, params });
+    dbObj2.update({ isDAT });
   }
 }
 

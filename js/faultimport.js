@@ -1,7 +1,7 @@
 fireBase();
 
 function getFaults() {
-  const dbObj = firebase.database().ref(`relay`);
+  const dbObj = firebase.database().ref(`faults`);
   dbObj.on(`value`, snap => {
     const faults = snap.val();
     faultTable(faults);
@@ -39,7 +39,6 @@ function faultTable(faults) {
     try {
       const row = table.insertRow(-1);
       const titstuff = val[0].split(`,`);
-      const date = new Date(`${titstuff[1].split(`-`)[2]}-${titstuff[1].split(`-`)[1]}-${titstuff[1].split(`-`)[0]}T${titstuff[2].split(`-`)[0]}`);
       const faultrow = row.insertCell(0);
       const daterow = row.insertCell(1);
       const timerow = row.insertCell(2);
@@ -54,15 +53,20 @@ function faultTable(faults) {
     }
     catch (e) { return e }
   });
-
-  let imported = document.createElement('script');
-  imported.src = 'js/ext/sorttable.js';
-  document.head.appendChild(imported);
+  addsortable();
 }
 
 function updateNotes(content) {
   const dbObj = firebase.database().ref(`relay/${content.target.parentElement.firstChild.innerHTML}`);
+  const dbObj2 = firebase.database().ref(`faults/${content.target.parentElement.firstChild.innerHTML}`);
   const notes = content.target.innerText;
-  notes === `delete` ? dbObj.remove() : dbObj.update({ notes });
+  notes === `delete` ? dbObj.remove() & dbObj2.remove() : dbObj2.update({ notes });
+}
+
+function addsortable() {
+  let imported = document.createElement('script');
+  imported.src = 'js/ext/sorttable.js';
+  if (document.querySelector(`script[src="js/ext/sorttable.js"]`)) document.querySelector(`script[src="js/ext/sorttable.js"]`).remove();
+  document.head.appendChild(imported);
 }
 
