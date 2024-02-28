@@ -31,6 +31,9 @@ function faultTable(faults) {
   while (table.childElementCount > 1) { //don't remove the firstborn children
     table.removeChild(table.lastElementChild);
   }
+  while (table.firstElementChild.childElementCount > 1) { //don't remove the firstborn children
+    table.firstElementChild.removeChild(table.firstElementChild.lastChild);
+  }
   faults = Object.entries(faults);
   faults.forEach(val => {
     try {
@@ -56,9 +59,8 @@ function faultTable(faults) {
 }
 
 function updateNotes(content) {
-  const table = document.getElementById('board');
   const dbObj = firebase.database().ref(`relay/${content.target.parentElement.firstChild.innerHTML}`);
   const notes = content.target.innerText;
-  dbObj.update({ notes });
+  notes === `delete` ? dbObj.remove() : dbObj.update({ notes });
 }
 
