@@ -61,7 +61,7 @@ function javaread() {
         }
         const filecontent = evt.target.result;
         const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
-        localStorage.setItem(`filename`, file.name.split(`.`)[0]);
+        localStorage.setItem(`filename`, file.name.substring(0, file.name.length - 4));
         if (/csv/i.test(file.name)) saveCSV(DR);
         if (/cfg/i.test(file.name)) localStorage.setItem(`CFGdata`, JSON.stringify(DR));
         if (/dat/i.test(file.name)) saveDAT(DR, filecontent);

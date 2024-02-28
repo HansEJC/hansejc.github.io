@@ -28,8 +28,8 @@ function importFault(fault) {
 
 function faultTable(faults) {
   const table = document.getElementById('board');
-  while (table.firstElementChild.childElementCount > 1) { //don't remove the firstborn children
-    table.firstElementChild.removeChild(table.firstElementChild.lastChild);
+  while (table.childElementCount > 1) { //don't remove the firstborn children
+    table.removeChild(table.lastElementChild);
   }
   faults = Object.entries(faults);
   faults.forEach(val => {
@@ -39,15 +39,26 @@ function faultTable(faults) {
       const date = new Date(`${titstuff[1].split(`-`)[2]}-${titstuff[1].split(`-`)[1]}-${titstuff[1].split(`-`)[0]}T${titstuff[2].split(`-`)[0]}`);
       const faultrow = row.insertCell(0);
       const daterow = row.insertCell(1);
+      const noterow = row.insertCell(2);
       faultrow.innerHTML = val[0];
       faultrow.addEventListener(`click`, importFault);
       daterow.innerHTML = date;
+      noterow.innerHTML = val[1].notes;
+      noterow.contentEditable = true;
+      noterow.addEventListener(`focusout`, updateNotes);
     }
     catch (e) { return e }
   });
-  const imported = document.createElement('script');
+
+  let imported = document.createElement('script');
   imported.src = 'js/ext/sorttable.js';
   document.head.appendChild(imported);
 }
 
+function updateNotes(content) {
+  const table = document.getElementById('board');
+  const dbObj = firebase.database().ref(`relay/${content.target.parentElement.firstChild.innerHTML}`);
+  const notes = content.target.innerText;
+  dbObj.update({ notes });
+}
 
