@@ -42,10 +42,12 @@ function faultTable(faults) {
       const date = new Date(`${titstuff[1].split(`-`)[2]}-${titstuff[1].split(`-`)[1]}-${titstuff[1].split(`-`)[0]}T${titstuff[2].split(`-`)[0]}`);
       const faultrow = row.insertCell(0);
       const daterow = row.insertCell(1);
-      const noterow = row.insertCell(2);
+      const timerow = row.insertCell(2);
+      const noterow = row.insertCell(3);
       faultrow.innerHTML = val[0];
       faultrow.addEventListener(`click`, importFault);
-      daterow.innerHTML = date;
+      daterow.innerHTML = titstuff[1].replace(/-/g, `/`);
+      timerow.innerHTML = titstuff[2].replace(/-/g, `.`);
       noterow.innerHTML = val[1].notes;
       noterow.contentEditable = true;
       noterow.addEventListener(`focusout`, updateNotes);
