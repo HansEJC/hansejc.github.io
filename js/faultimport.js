@@ -27,13 +27,14 @@ function importFault(fault) {
 }
 
 function faultTable(faults) {
-  const table = document.getElementById('board');
-  while (table.childElementCount > 1) { //don't remove the firstborn children
-    table.removeChild(table.lastElementChild);
-  }
-  while (table.firstElementChild.childElementCount > 1) { //don't remove the firstborn children
-    table.firstElementChild.removeChild(table.firstElementChild.lastChild);
-  }
+  if (document.querySelector(`table`)) document.querySelector(`table`).remove();
+  const table = document.createElement(`table`);
+  table.classList.add(`orionPark`, `sortable`);
+  const header = table.insertRow(-1);
+  header.insertCell(0).outerHTML = `<th>Fault</th>`;
+  header.insertCell(1).outerHTML = `<th>Date</th>`;
+  header.insertCell(2).outerHTML = `<th>Time</th>`;
+  header.insertCell(3).outerHTML = `<th>Notes</th>`;
   faults = Object.entries(faults);
   faults.forEach(val => {
     try {
@@ -53,6 +54,7 @@ function faultTable(faults) {
     }
     catch (e) { return e }
   });
+  document.querySelector(`#tab`).appendChild(table);
   addsortable();
 }
 
