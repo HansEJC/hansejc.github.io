@@ -13,9 +13,10 @@ function getFaults() {
 }
 
 function importFault(fault) {
-  const dbObj = firebase.database().ref(`relay/${fault.target.innerHTML}`);
+  const dbObj = firebase.database().ref(`relay/${fault.target.innerHTML},${fault.target.parentElement.children[1].innerHTML.replace(/\//g, `-`)},${fault.target.parentElement.children[2].innerHTML.replace(/\./g, `-`)}`);
   dbObj.once(`value`, snap => {
     const data = snap.val();
+    localStorage.setItem(`filename`, fault.target.innerHTML.split(`,`)[0]);
     localStorage.setItem(`headers`, data.headers);
     localStorage.setItem(`CFGdata`, data.cfg);
     localStorage.setItem(`isDAT`, data.isDAT);
@@ -44,7 +45,7 @@ function faultTable(faults) {
       const daterow = row.insertCell(1);
       const timerow = row.insertCell(2);
       const noterow = row.insertCell(3);
-      faultrow.innerHTML = val[0];
+      faultrow.innerHTML = titstuff[0];
       faultrow.addEventListener(`click`, importFault);
       daterow.innerHTML = titstuff[1].replace(/-/g, `/`);
       timerow.innerHTML = titstuff[2].replace(/-/g, `.`);
@@ -59,8 +60,9 @@ function faultTable(faults) {
 }
 
 function updateNotes(content) {
-  const dbObj = firebase.database().ref(`relay/${content.target.parentElement.firstChild.innerHTML}`);
-  const dbObj2 = firebase.database().ref(`faults/${content.target.parentElement.firstChild.innerHTML}`);
+  const faultname = `${content.target.parentElement.firstChild.innerHTML},${content.target.parentElement.children[1].innerHTML.replace(/\//g, `-`)},${content.target.parentElement.children[2].innerHTML.replace(/\./g, `-`)}`;
+  const dbObj = firebase.database().ref(`relay/${faultname}`);
+  const dbObj2 = firebase.database().ref(`faults/${faultname}`);
   const notes = content.target.innerText;
   notes === `delete` ? dbObj.remove() & dbObj2.remove() : dbObj2.update({ notes });
 }
