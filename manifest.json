@@ -32,10 +32,10 @@
       ]
     },
     {
-      "name": "Orion Park",
-      "short_name": "OP",
+      "name": "Equipment Locator",
+      "short_name": "Equip",
       "description": "View Warehouse stuff",
-      "url": "op.html",
+      "url": "equip.html",
       "icons": [
         {
           "src": "images/manifest-icon-192.png",
