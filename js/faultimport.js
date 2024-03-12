@@ -64,7 +64,11 @@ function updateNotes(content) {
   const dbObj = firebase.database().ref(`relay/${faultname}`);
   const dbObj2 = firebase.database().ref(`faults/${faultname}`);
   const notes = content.target.innerText;
-  notes === `delete` ? dbObj.remove() & dbObj2.remove() : dbObj2.update({ notes });
+  if (notes === `delete`) {
+    dbObj.remove();
+    dbObj2.remove();
+  }
+  else dbObj2.update({ notes });
 }
 
 function addsortable() {

@@ -62,13 +62,13 @@ function fourthMortgage(info) {
   tpa += -fees; //the £3600.22 was the shortfall since we borrowed £108k, the £995 was te remortgage fee
   rl += fees;
 
-  loopInfo = { num: 10, pay: 771.18, year: 2023, month: 3, ir, ...info, rl }; // removed overpayment for a while since baby nursery is ££££
+  loopInfo = { num: 10, pay: 771.18, year: 2023, month: 3, ir, ...info, rl, tpa }; // removed overpayment for a while since baby nursery is ££££
   info = mortgageLoop(loopInfo);
 
   loopInfo = { num: 1, pay: 1000, year: 2024, month: 1, ir, ...info }; // changed overpayment to £1000
   info = mortgageLoop(loopInfo);
 
-  loopInfo = { num: monthd, pay: 1100, year: 2024, month: 2, ir, ...info, rl }; // changed overpayment to £1100
+  loopInfo = { num: monthd, pay: 1100, year: 2024, month: 2, ir, ...info }; // changed overpayment to £1100
   return { monthd, ...mortgageLoop(loopInfo) };
 }
 

@@ -71,7 +71,7 @@ function polrec() {
 const pol2rec = (pn, pa) => { return { p2re: pn * Math.cos(pa * Math.PI / 180), p2im: pn * Math.sin(pa * Math.PI / 180) } };
 const rec2pol = (rr, ir) => {
   let angle = 180 * Math.atan(ir / rr) / Math.PI || 0;
-  angle += rr < 0 ? 180 : rr < 0 && ir < 0 ? - 180 : 0;
+  angle += rr < 0 ? 180 : ir < 0 ? - 180 : 0;
   return { r2pn: Math.sqrt(rr * rr + ir * ir), r2pa: angle }
 };
 

@@ -229,7 +229,7 @@ function addDATtoArray(DR) {
   if (DR.length === 0) return { faultarray, volarray, Zarray };
   const freq = 50;
   const sample = DR[1][1] > 1 ? DR[1][1] / 1_000_000 : DR[1][1] / 1_000;
-  const period = Math.round((1 / freq) / sample, 1);
+  const period = Math.round((1 / freq) / sample);
   const omega = 2 * Math.PI * freq;
 
   function FFTcalc(periodSamples, DR, ind, isSin) {
@@ -872,7 +872,7 @@ function binary2ASCII(data) {
 
 const hex2dec = (x, fir, sec) => {
   x = parseInt(x.slice(fir, sec).reverse().join(``), 16);
-  return x = sec - fir <= 2 && (x & 0x8000) > 0 ? x - 0x10000 : x;
+  return sec - fir <= 2 && (x & 0x8000) > 0 ? x - 0x10000 : x;
 }
 
 const hex2bin = (x, fir, sec, diglen) => {
