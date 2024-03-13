@@ -259,26 +259,13 @@ function plotexp(csv, db) {
     addLoader("Calculating Equations", false, 90);
     setTimeout(() => { csv = arrayequations(csv, db) }, 1);
   }
-
   setTimeout(() => { dyg(csv) }, 1);
-  //setTimeout(()=> g3.updateOptions({file: csv}),10);
-
-  /*if (typeof(worker) !=="undefined") worker.terminate();
-  worker = new Worker('js/worker.js');
-  worker.postMessage([csv,eqw,datb,eqb]);
-  worker.onmessage = (mess) => {
-    //console.table(e.data);
-    dyg(mess.data);
-    worker.terminate();
-    //worker = undefined;
-  };*/
 }
 
 function equationInputs(len, res) {//add equation inputs
   const eqh = document.getElementById('equa');
   let reset = false;
   try {
-    //const equadiv = document.getElementById("equa");
     while (eqh.childElementCount > 2) { //don't remove the firstborn children
       eqh.removeChild(eqh.lastChild);
     }
