@@ -1,4 +1,4 @@
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.2/workbox-sw.js');
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/7.0.0/workbox-sw.js');
 
 const { precacheAndRoute, precache, matchPrecache } = workbox.precaching;
 const { registerRoute, setCatchHandler, setDefaultHandler } = workbox.routing;
