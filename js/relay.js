@@ -101,11 +101,6 @@ function startup() {
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) === "true");
   });
-  for (let i = 0; i < 6; i++) document.getElementById(i).checked = true;
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-  document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
-  const select = document.querySelector("select");
-  select.value = getSavedValue(select.id) || "P438";
   javaread();
   // await code here
   const DR = [];
@@ -665,6 +660,11 @@ function Zone3S7ST(tr) {
   return [Zpol, Zel];
 }
 
+/**
+ * Creates summary table
+ * @param data Voltage and current array
+ * @param Zarray Zone array timers
+ */
 function summaryTable(data, Zarray) {
   let maxfault = 0;
   let voltage = 0;
@@ -701,6 +701,10 @@ function summaryTable(data, Zarray) {
   table(summaryArr);
 }
 
+/**
+ * Inserts summary table
+ * @param rows array with summary info
+ */
 function table(rows) {
   const tabdiv = document.querySelector("#SummaryTable");
   const myTable = document.createElement("table");
@@ -713,22 +717,34 @@ function table(rows) {
   tabdiv.appendChild(myTable);
 }
 
+/**
+ * Updates vt ratio label
+ */
 function vtRatio() {
   const label = document.querySelector("label[for=VTR]");
   const vtr = document.querySelector("#VTR").value || 240;
   label.innerText = `VT Ratio (26.4/${smoothdec(26.4 / vtr, 2)} kV)`;
 }
 
+/**
+ * Updates ct ratio label
+ */
 function ctRatio() {
   const label = document.querySelector("label[for=CTR]");
   const ctr = document.querySelector("#CTR").value || 600;
   label.innerText = `CT Ratio (${ctr}/1 A)`;
 }
 
+/**
+ * Opens import fault page
+ */
 function importFault() {
   window.open("faultimport.html", "_self");
 }
 
+/**
+ * Export fault to firebase database
+ */
 function exportFault() {
   const headers = localStorage.getItem("headers");
   const cfg = localStorage.getItem("CFGdata");
@@ -743,12 +759,17 @@ function exportFault() {
   }
 }
 
+/**
+ * Parse xml into array
+ * @param xml Input xrio in xml format
+ * @returns xml array
+ */
 function parseXml(xml) {
   let dom = window.DOMParser ? (new DOMParser()).parseFromString(xml, "text/xml") : null;
   if (window.ActiveXObject) {
     dom = new ActiveXObject('Microsoft.XMLDOM');
     dom.async = false;
-    if (!dom.loadXML(xml)) throw `${dom.parseError.reason} ${dom.parseError.srcText}`;
+    if (!dom.loadXML(xml)) throw new Error(`${dom.parseError.reason} ${dom.parseError.srcText}`);
   }
   function parseNode(xmlNode, result) {
     if (xmlNode.nodeName === "#text") {
@@ -771,6 +792,10 @@ function parseXml(xml) {
   return result;
 }
 
+/**
+ * Loads xrio file settings into inputs
+ * @param xml Input xrio in xml format
+ */
 function xrio(xml) {
   const xrio = parseXml(decodeURIComponent(escape(xml))).XRio.CUSTOM;
   const IED = xrio.Name["#text"];
@@ -821,6 +846,10 @@ function xrio(xml) {
   read();
 }
 
+/**
+ * Loads rio file settings into inputs
+ * @param data Input rio
+ */
 function rio(data) {
   document.querySelector("select").value = /7ST/i.test(data) ? "S7ST" : "P44T";
   const { trdr } = getCFG();
@@ -853,6 +882,11 @@ function rio(data) {
   read();
 }
 
+/**
+ * Converts binary 2D array to ASCII 2D array
+ * @param data Input binary array
+ * @returns ASCII array
+ */
 function binary2ASCII(data) {
   const bin = [...data].map(c => c.charCodeAt(0).toString(16));
   let { ana, dig } = getCFG();
@@ -880,15 +914,29 @@ function binary2ASCII(data) {
   return ASCII;
 }
 
+/**
+ * Converts hex to dec for analog signals
+ * @param x Hex array
+ * @param fir Start of hex array
+ * @param sec End of hex array
+ * @returns Dec array
+ */
 const hex2dec = (x, fir, sec) => {
   x = parseInt(x.slice(fir, sec).reverse().join(""), 16);
-  return sec - fir <= 2 && (x & 0x8000) > 0 ? x - 0x10000 : x;
+  return sec - fir <= 2 && (x & 0x8000) > 0 ? x - 0x10000 : x; //signed integer so that FFFF is -1
 }
 
-const hex2bin = (x, fir, sec, diglen) => {
+/**
+ * Converts hex to binary for digital signals
+ * @param x Hex array
+ * @param fir Start of hex array
+ * @param sec End of hex array
+ * @returns Binary array
+*/
+const hex2bin = (x, fir, sec) => {
   x = x.slice(fir, sec).reverse();
   let bin = "";
-  x.forEach(a => bin = `${bin}${parseInt(a, 16).toString(2).padStart(8, "0")}`);
+  x.forEach(a => (bin = `${bin}${parseInt(a, 16).toString(2).padStart(8, "0")}`));
   return [...bin].reverse().map(x => Number(x));
 }
 
