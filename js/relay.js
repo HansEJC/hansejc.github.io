@@ -175,9 +175,16 @@ function plotProtection(csvarr) {
   let vtrdr = 1;
   if (secdr.checked) { trdr = tr; vtrdr = vtr; }
 
-  const [Z1pol, Z1el] = eval(`Zone1${select.value}(tr)`);
-  const [Z2pol, Z2el] = eval(`Zone2${select.value}(tr)`);
-  const [Z3pol, Z3el] = eval(`Zone3${select.value}(tr)`);
+  // Mapping object for zone functions
+  const zoneFunctions = {
+    Zone1P438, Zone2P438, Zone3P438,
+    Zone1P44T, Zone2P44T, Zone3P44T,
+    Zone1S7ST, Zone2S7ST, Zone3S7ST,
+  };
+  const [Z1pol, Z1el] = zoneFunctions[`Zone1${select.value}`](tr);
+  const [Z2pol, Z2el] = zoneFunctions[`Zone2${select.value}`](tr);
+  const [Z3pol, Z3el] = zoneFunctions[`Zone3${select.value}`](tr);
+
   const elements2 = [...peakLoad(), ...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
   let polnums = [...Z1pol.flat(), ...Z2pol.flat(), ...Z3pol.flat()];
   polnums = { max: Math.max(...polnums) * 1.2, min: Math.min(...polnums) * 1.2 };
@@ -185,7 +192,7 @@ function plotProtection(csvarr) {
   const polmin = (num) => Math.min(polnums.min, num);
   const xaxis = [polmin(-40), polmax(50)];
   const yaxis = [polmin(-20), polmax(70)];
-  let DR = []; DR = csvarr;
+  const DR = [...csvarr];
   const calcStuff = { DR, trdr, vtrdr };
   const { faultarray, volarray, Zarray } = localStorage.getItem(`isDAT`) === `true` ? addDATtoArray(DR) : addCSVtoArray(calcStuff);
   const stuff = { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del };

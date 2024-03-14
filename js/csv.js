@@ -40,7 +40,7 @@ function chooseOptions() {
   //options
   const options = document.getElementById("options"); options.innerHTML = '<b>Options</b>';
   addOption('fillGraph', 'Fill Graph');
-  addOption('plotter', 'Smooth Plotter', false, 'smoothPlotter');
+  addOption('plotter', 'Smooth Plotter', false, smoothPlotter);
   addOption('logscale', 'Log Scale');
   addOption('drawGrid', 'Show Grid', true);
   addOption('connectSeparatedPoints', 'Connect Points', true);
@@ -60,13 +60,16 @@ function addOption(opt, desc, bool, plotter) {
   const label = document.createElement("Label"); label.setAttribute("for", opt); label.innerHTML = desc;
   options.appendChild(label); label.appendChild(newopt);
   function updateOps(e) {
-    eval(`g3.updateOptions({${e.target.id}: ${e.target.checked}});`);
+    const optionsToUpdate = {};
+    optionsToUpdate[e.target.id] = e.target.checked;
+    g3.updateOptions(optionsToUpdate);
   }
   function updatePlotter(e) {
-    if (e.target.checked) eval(`g3.updateOptions({${e.target.id}: ${plotter}});`);
-    else eval(`g3.updateOptions({${e.target.id}: Dygraph.Plotters.linePlotter});`);
+    const optionsToUpdate = {};
+    optionsToUpdate[e.target.id] = e.target.checked ? plotter : Dygraph.Plotters.linePlotter;
+    g3.updateOptions(optionsToUpdate);
   }
-  if (typeof plotter !== `undefined`) { newopt.addEventListener('change', updatePlotter); updatePlotter({ target: { checked, id: opt } }); }
+  if (typeof plotter === 'function') { newopt.addEventListener('change', updatePlotter); updatePlotter({ target: { checked, id: opt } }); }
   else { newopt.addEventListener('change', updateOps); updateOps({ target: { checked, id: opt } }); }
 }
 
@@ -292,7 +295,7 @@ function arrayequations(csv, db) {//column equations
         }
         else {
           window[ch] = csv[j][i];
-          csv[j][i] = eval(eq);
+          csv[j][i] = Function(`return ${eq}`)();
         }
       }
     }
