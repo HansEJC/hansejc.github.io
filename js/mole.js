@@ -92,7 +92,7 @@ function bonk(e) {
 moles.forEach(mole => mole.addEventListener('click', bonk));
 
 //startup
-localStorage.setItem(`game`, `mole`);
+localStorage.setItem("game", "mole");
 document.getElementById("userName").value = getSavedValue("userName");
 try {
   getScores();
