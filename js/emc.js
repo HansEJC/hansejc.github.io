@@ -40,7 +40,6 @@ function checkit() {
   if (document.querySelector('#HF').checked) [x, y] = [y, x];
   x.style.display = "block";
   y.style.display = "none";
-  calculations();
 }
 
 function multipliers() {
@@ -210,16 +209,12 @@ function dygReady() {
 }
 
 //startup
-window.addEventListener("load", function () {
-  funkyRadio();  
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-  document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
+window.addEventListener("load", () => {
+  funkyValues();
+  calculations();
   const radios = document.querySelectorAll("input[name=drive]");
-  const fields = document.querySelectorAll("input[name=field]");
   radios.forEach(rad => rad.addEventListener('change', checkit));
-  fields.forEach(rad => rad.addEventListener('change', calculations));
   checkit();
-  document.onkeyup = function () {
-    calculations();
-  };
+  document.addEventListener('keyup', calculations);
+  document.addEventListener('change', calculations);
 });

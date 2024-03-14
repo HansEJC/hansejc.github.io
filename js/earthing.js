@@ -54,9 +54,8 @@ const texty = (id, num, sym, dec = 2) => {
 
 //startup
 window.addEventListener("load", function () {
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
+  funkyValues();
   earthing();
-  document.onkeyup = function () {
-    earthing();
-  };
+  document.addEventListener('keyup', earthing);
+  document.addEventListener('change', earthing);
 });

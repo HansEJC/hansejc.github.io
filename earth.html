@@ -45,14 +45,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="row 50%">
               <section class="box">
                 <form>
-                  Earth Impedance  (Ω)<input type="number" id="ER" value="2" onkeyup='saveValue(this);' />
-                  Return Impedance (Ω)<input type="number" id="RR" value="0.18" onkeyup='saveValue(this);'/>
+                  Earth Impedance  (Ω)<input type="number" id="ER" value="2" />
+                  Return Impedance (Ω)<input type="number" id="RR" value="0.18"/>
                   Parallel Impedance (Ω)<span id="PR" class="label "></span>
                 </form>
               </section>
               <section class="box">
                 <form>
-                  Fault Current (kA)<input type="number" id="FC" value="8" onkeyup='saveValue(this);'/>
+                  Fault Current (kA)<input type="number" id="FC" value="8"/>
                   Return Current (kA)<span id="IR" class="label "></span>
                   Ground Return Current (kA)<span id="IG" class="label "></span>
                 </form>
@@ -71,16 +71,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="row 50%">
               <section class="box">
                 <form>
-                  Ground Resistivity \(\rho\) (mΩ)<input type="number" id="P" onkeyup='saveValue(this);'/>
-                  \(Area\) (m<sup>2</sup>)<input type="number" id="AREA" onkeyup='saveValue(this);'/>
+                  Ground Resistivity \(\rho\) (mΩ)<input type="number" id="P"/>
+                  \(Area\) (m<sup>2</sup>)<input type="number" id="AREA"/>
                   Radius of Circular Plate<br>  of Same Area as Grid \(r\) (m)<span id="R" class="label "></span>
                   $$ r = \sqrt{Area \over \pi} $$
                 </form>
               </section>
               <section class="box">
                 <form>
-                  Tape Depth \(h\) (m)<input type="number" id="H" onkeyup='saveValue(this);'/>
-                  Total Tape Length \(L\) (m)<input type="number" id="L" onkeyup='saveValue(this);'/>
+                  Tape Depth \(h\) (m)<input type="number" id="H"/>
+                  Total Tape Length \(L\) (m)<input type="number" id="L"/>
                   <!--Simplest Formula for <br>Earth Resistance \(R_e\) (Ω):-->
                   <style>#RE {display: none}</style>
                   <span hidden id="RE" class="label "></span>  <br>
@@ -90,8 +90,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               </section>
               <section class="box">
                 <form>
-                  Rod Number \(n_R\) <input type="number" id="NR" onkeyup='saveValue(this);'/>
-                  Rod Length \(l_R\) (m)<input type="number" id="LR" onkeyup='saveValue(this);'/>
+                  Rod Number \(n_R\) <input type="number" id="NR"/>
+                  Rod Length \(l_R\) (m)<input type="number" id="LR"/>
                   Earth Resistance Calculated <br>with Rods \(R_G\) (Ω):
                   <span id="RG" class="label "></span>
                   <!--$$ R_e = {\rho \over 4r} + {\rho \over {1 + n_R \times l_R}} $$<br>-->
@@ -105,7 +105,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             <div class="row 50%">
               <section class="box">
                 <form>
-                  Earth Resistance \(R\) (Ω)<input type="number" id="ERA" onkeyup='saveValue(this);'/>
+                  Earth Resistance \(R\) (Ω)<input type="number" id="ERA"/>
                 </form>
               </section>
               <section class="box">

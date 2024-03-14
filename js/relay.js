@@ -90,7 +90,7 @@ function javaread() {
 function startup() {
   fireBase();
   getIndex();
-  funkyRadio();
+  funkyValues();
   document.querySelector(`#Import`).addEventListener(`click`, importFault);
   document.querySelector(`#Export`).addEventListener(`click`, exportFault);
   document.querySelector("#VTR").addEventListener(`keyup`, vtRatio);

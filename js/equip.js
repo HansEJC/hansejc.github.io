@@ -1,8 +1,7 @@
 function startup() {
+  funkyValues();
   fireBase();
   getModDates();
-  document.getElementById("SEAR").value = getSavedValue("SEAR");    // set the value to this input
-  document.getElementById("PASS").value = getSavedValue("PASS");    // set the value to this input
   fireAuth();
 }
 
@@ -32,12 +31,8 @@ async function delivery() {
 }
 
 function listeners() {
-  document.onkeyup = function () {
-    ifsy();
-  };
-  document.onchange = function () {
-    ifsy();
-  };
+  document.addEventListener('keyup', ifsy);
+  document.addEventListener('change', ifsy);
 }
 
 function splicer(arr) {

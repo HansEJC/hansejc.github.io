@@ -1,12 +1,9 @@
 function initiate() {
+  document.querySelector('#GodMode').addEventListener('change', mods);
+  document.querySelector('#TripJump').addEventListener('change', cheats);
   localStorage.setItem(`game`, `rex`);
-  document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.addEventListener('change', saveRadio);
-    rad.checked = (getSavedValue(rad.id) === "true");
-  });
   if (!document.querySelector("#Jon").checked && !document.querySelector("#Maple").checked) document.querySelector("#Jon").click(); //if none checked, make Jon default
   gameMode();
-  document.getElementById("userName").value = getSavedValue("userName");
   window.Rexy = new Runner('.interstitial-wrapper');
   try {
     getScores();

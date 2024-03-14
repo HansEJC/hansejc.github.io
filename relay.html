@@ -52,7 +52,7 @@
             <section class="box">
               <form>
                 <label for="Relay">Relay</label>
-                <select id="Relay" onchange='saveValue(this);read();'>
+                <select id="Relay" onchange='read();'>
                   <option value="P44T">P44T</option>
                   <option value="P438">P438</option>
                   <option value="S7ST">7ST</option>
@@ -73,61 +73,58 @@
           <div class="row">
             <section class="box">
               <form>
-                <label for="Alpha">α<input type="number" id="Alpha" min=40 max=90 onkeyup='saveValue(this);' /></label>
+                <label for="Alpha">α<input type="number" id="Alpha" min=40 max=90 /></label>
               </form>
             </section>
             <section class="box">
               <form>
-                <label for="Beta">β<input type="number" id="Beta" min=90 max=135 onkeyup='saveValue(this);' /></label>
+                <label for="Beta">β<input type="number" id="Beta" min=90 max=135 /></label>
               </form>
             </section>
             <section class="box">
               <form>
-                <label for="Gamma">γ<input type="number" id="Gamma" min=-45 max=0 onkeyup='saveValue(this);' /></label>
+                <label for="Gamma">γ<input type="number" id="Gamma" min=-45 max=0 /></label>
               </form>
             </section>
           </div>
           <div class="row">
             <section class="box">
               <form>
-                <label for="Zone1">Zone 1 <input type="number" id="Zone1" onkeyup='saveValue(this);' /> </label>
-                <label for="Zone1RH">Zone 1RH<input type="number" id="Zone1RH" onkeyup='saveValue(this);' /></label>
-                <label for="Zone1LH">Zone 1LH <input type="number" id="Zone1LH" onkeyup='saveValue(this);' /></label>
+                <label for="Zone1">Zone 1 <input type="number" id="Zone1" /> </label>
+                <label for="Zone1RH">Zone 1RH<input type="number" id="Zone1RH" /></label>
+                <label for="Zone1LH">Zone 1LH <input type="number" id="Zone1LH" /></label>
                 <label for="advanced"><input type=checkbox id="advanced" onchange='checkit();'>Advanced</label>
               </form>
             </section>
             <section class="box">
               <form>
-                <label for="Zone2">Zone 2 <input type="number" id="Zone2" onkeyup='saveValue(this);' /> </label>
-                <label for="Zone2RH">Zone 2RH<input type="number" id="Zone2RH" onkeyup='saveValue(this);' /></label>
-                <label for="Zone2LH">Zone 2LH <input type="number" id="Zone2LH" onkeyup='saveValue(this);' /></label>
+                <label for="Zone2">Zone 2 <input type="number" id="Zone2" /> </label>
+                <label for="Zone2RH">Zone 2RH<input type="number" id="Zone2RH" /></label>
+                <label for="Zone2LH">Zone 2LH <input type="number" id="Zone2LH" /></label>
                 <label for="Prim"><input type="radio" name="drive" id="Prim" checked>Primary</label>
                 <label for="Sec"><input type="radio" name="drive" id="Sec" onchange="checkit();">Secondary</label>
               </form>
             </section>
             <section class="box">
               <form>
-                <label for="Zone3">Zone 3 <input type="number" id="Zone3" onkeyup='saveValue(this);' /> </label>
-                <label for="Zone3RH">Zone 3RH<input type="number" id="Zone3RH" onkeyup='saveValue(this);' /></label>
-                <label for="Zone3LH">Zone 3LH <input type="number" id="Zone3LH" onkeyup='saveValue(this);' /></label>
-                <label for="Zone3rev">Zone 3rev <input type="number" id="Zone3rev" onkeyup='saveValue(this);' /></label>
+                <label for="Zone3">Zone 3 <input type="number" id="Zone3" /> </label>
+                <label for="Zone3RH">Zone 3RH<input type="number" id="Zone3RH" /></label>
+                <label for="Zone3LH">Zone 3LH <input type="number" id="Zone3LH" /></label>
+                <label for="Zone3rev">Zone 3rev <input type="number" id="Zone3rev" /></label>
               </form>
             </section>
           </div>
           <div class="row" id="hide" style="display: none;">
             <section class="box">
               <form>
-                <label for="Z2del">Zone 2 delay (ms)<input type="number" id="Z2del"
-                    onkeyup='saveValue(this);' /></label>
-                <label for="Z3del">Zone 3 delay (ms)<input type="number" id="Z3del"
-                    onkeyup='saveValue(this);' /></label>
+                <label for="Z2del">Zone 2 delay (ms)<input type="number" id="Z2del" /></label>
+                <label for="Z3del">Zone 3 delay (ms)<input type="number" id="Z3del" /></label>
               </form>
             </section>
             <section class="box">
               <form>
-                <label for="VTR">VT Ratio (26400/110V)</label><input type="number" id="VTR"
-                  onkeyup='saveValue(this);' />
-                <label for="CTR"> CT Ratio (600/1A)</label><input type="number" id="CTR" onkeyup='saveValue(this);' />
+                <label for="VTR">VT Ratio (26400/110V)</label><input type="number" id="VTR" />
+                <label for="CTR"> CT Ratio (600/1A)</label><input type="number" id="CTR" />
                 <label for="PrimDR"><input type="radio" name="DR" id="PrimDR" checked>Primary DR</label>
                 <label for="SecDR"><input type="radio" name="DR" id="SecDR" onchange="">Secondary DR</label>
               </form>
@@ -135,8 +132,8 @@
             <section class="box">
               <form>
                 Fault in:<span id="FaultLoc" class="label"></span>
-                <label for="PeakLoad">Peak Load (A) <input type="number" id="PeakLoad" placeholder=1000 step=100
-                    onkeyup='saveValue(this);' /></label>
+                <label for="PeakLoad">Peak Load (A) <input type="number" id="PeakLoad" placeholder=1000
+                    step=100 /></label>
               </form>
             </section>
           </div>
@@ -177,7 +174,7 @@
                   <label for="Anal" style="display: inline-block;"><input type="radio" name="MagAnal" id="Anal"
                       onchange="">Analogue</label>
                   <br>
-                  <label for="FullFault"> <input type=checkbox id="FullFault" onchange="saveValue(this);read();">Show
+                  <label for="FullFault"> <input type=checkbox id="FullFault" onchange="read();">Show
                     Full Fault</label>
                   <b>Summary</b>
                 </form>

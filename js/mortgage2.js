@@ -142,8 +142,7 @@ function dygPlot(mortgage) {
 const spanMon = (span, cont) => document.getElementById(span).textContent = `${(cont).toFixed(2).toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/gu, ",")}  £`;
 
 //startup
-document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
+funkyValues();
 calculations();
-document.onkeyup = function () {
-  calculations();
-};
+document.addEventListener('change', calculations);
+document.addEventListener('keyup', calculations);

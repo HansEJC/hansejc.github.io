@@ -50,10 +50,8 @@
           <div class="row">
             <section class="box">
               <form>
-                <label for="LoadCurrent">Load Current \(I\) (A)<input type="number" id="LoadCurrent"
-                    onkeyup='saveValue(this);' /></label>
-                <label for="FaultCurrent">Fault Current \(I\) (A)<input type="number" id="FaultCurrent"
-                    onkeyup='saveValue(this);' /></label>
+                <label for="LoadCurrent">Load Current \(I\) (A)<input type="number" id="LoadCurrent" /></label>
+                <label for="FaultCurrent">Fault Current \(I\) (A)<input type="number" id="FaultCurrent" /></label>
                 Load Induced \(U_i\) (V)<span id="LoadInduced" class="label"></span>
                 Fault Induced \(U_i\) (V)<span id="FaultInduced" class="label"></span>
                 $$ U_i = X_M \times I \times L$$
@@ -62,7 +60,7 @@
             <section class="box">
               <form>
                 <label for="CableWires">Wires in Conductor</label>
-                <select id="CableWires" onchange='saveValue(this);'>
+                <select id="CableWires">
                   <option value=0.05>1 (solid)</option>
                   <option value=0.0778>3</option>
                   <option value=0.0642>7</option>
@@ -70,12 +68,10 @@
                   <option value=0.0528>37</option>
                   <option value=0.0514>61+</option>
                 </select>
-                <label for="CableLength">Cable Length \(L\) (km)<input type="number" id="CableLength"
-                    onkeyup='saveValue(this);' /></label>
-                <label for="AxialSpacing">Axial Spacing \(S\) (mm)<input type="number" id="AxialSpacing"
-                    onkeyup='saveValue(this);' /></label>
-                <label for="SheathDiameter">Sheath Diameter \(d_M\) (mm)<input type="number" id="SheathDiameter"
-                    onkeyup='saveValue(this);' /></label>
+                <label for="CableLength">Cable Length \(L\) (km)<input type="number" id="CableLength" /></label>
+                <label for="AxialSpacing">Axial Spacing \(S\) (mm)<input type="number" id="AxialSpacing" /></label>
+                <label for="SheathDiameter">Sheath Diameter \(d_M\) (mm)<input type="number"
+                    id="SheathDiameter" /></label>
                 \( d_M = 2 \times \sqrt{CSA \over \pi}\)
               </form>
             </section>

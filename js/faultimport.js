@@ -77,4 +77,4 @@ function addsortable() {
   if (document.querySelector(`script[src="js/ext/sorttable.js"]`)) document.querySelector(`script[src="js/ext/sorttable.js"]`).remove();
   document.head.appendChild(imported);
 }
-
+window.addEventListener("load", getFaults);

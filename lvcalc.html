@@ -47,15 +47,13 @@
           <div class="row">
             <section class="box">
               <form>
-                <label for="DesignCurrent">Design Current (A)<input type="number" id="DesignCurrent"
-                    onkeyup='saveValue(this);' /></label>
-                <label for="Zs">Z<sub>s</sub> (Ω)<input type="number" id="Zs" onkeyup='saveValue(this);' /></label>
+                <label for="DesignCurrent">Design Current (A)<input type="number" id="DesignCurrent" /></label>
+                <label for="Zs">Z<sub>s</sub> (Ω)<input type="number" id="Zs" /></label>
               </form>
             </section>
             <section class="box">
               <form>
-                <label for="PhaseVoltage">Phase Voltage (V)<input type="number" id="PhaseVoltage"
-                    onkeyup='saveValue(this);' /></label>
+                <label for="PhaseVoltage">Phase Voltage (V)<input type="number" id="PhaseVoltage" /></label>
                 Max Voltage (V)<span id="MaxVoltage" class="label"></span>
                 Min Voltage (V)<span id="MinVoltage" class="label"></span>
               </form>
@@ -63,13 +61,12 @@
             <section class="box">
               <form>
                 <label for="ReferenceMethod">Reference Method</label>
-                <select id="ReferenceMethod" onchange='saveValue(this);cableDets();'>
+                <select id="ReferenceMethod" onchange='cableDets();'>
                   <option value="c">Clipped direct</option>
                   <option value="e">In free air or on a perforated cable tray</option>
                   <option value="d">Direct in ground or in ducting in ground</option>
                 </select>
-                <label for="CableLength">Cable Length (m)<input type="number" id="CableLength"
-                    onkeyup='saveValue(this);' /></label>
+                <label for="CableLength">Cable Length (m)<input type="number" id="CableLength" /></label>
               </form>
             </section>
           </div>
@@ -81,9 +78,9 @@
             <section class="box">
               <form>
                 <label for="PhaseSize">Phase Size (table 4E4A)</label>
-                <select id="PhaseSize" onchange='saveValue(this);cableDets();'> </select>
+                <select id="PhaseSize" onchange='cableDets();'> </select>
                 <label for="PhaseCores">Phase Cores</label>
-                <select id="PhaseCores" onchange='saveValue(this);cableDets();'>
+                <select id="PhaseCores" onchange='cableDets();'>
                   <option value="two">Two Core</option>
                   <option value="three">Three or Four</option>
                 </select>
@@ -95,9 +92,9 @@
             <section class="box">
               <form>
                 <label for="CPCSize">CPC Size (table 4E4A)</label>
-                <select id="CPCSize" onchange='saveValue(this);cableDets();'> </select>
+                <select id="CPCSize" onchange='cableDets();'> </select>
                 <label for="CPCCores">Phase Cores</label>
-                <select id="CPCCores" onchange='saveValue(this);cableDets();'>
+                <select id="CPCCores" onchange='cableDets();'>
                   <option value="two">Two Core</option>
                   <option value="three">Three or Four</option>
                 </select>
@@ -108,7 +105,7 @@
             <section class="box">
               <form>
                 <label for="ProtectionType">Protection Type</label>
-                <select id="ProtectionType" onchange='saveValue(this);protectionSelect();protectionDets();'>
+                <select id="ProtectionType" onchange='protectionSelect();protectionDets();'>
                   <option value="b">MCB Type B</option>
                   <option value="c">MCB Type C</option>
                   <option value="d">MCB Type D</option>
@@ -116,7 +113,7 @@
                   <option value="Fc">Fuse Type C</option>
                 </select>
                 <label for="Protection">Rating</label>
-                <select id="Protection" onchange='saveValue(this);protectionDets();'> </select>
+                <select id="Protection" onchange='protectionDets();'> </select>
                 Max EF Loop Impedance Z<sub>s</sub> (Ω)<span id="ProtectionZs" class="label"></span>
                 Trip Current (A)<span id="ProtectionTrip" class="label"></span>
                 Trip Time (s)<span id="TripTime" class="label"></span>
@@ -144,7 +141,7 @@
             <section class="box">
               <form>
                 <label for="K">K Factor</label>
-                <select id="K" onchange='saveValue(this)'>
+                <select id="K">
                   <option value="143">143</option>
                   <option value="176">176</option>
                   <option value="100">Add more..</option>

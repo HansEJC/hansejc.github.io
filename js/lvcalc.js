@@ -1,9 +1,9 @@
 function startup() {
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
+  document.addEventListener('keyup', mainCalcs);
+  document.addEventListener('change', mainCalcs);
+  funkyValues();
   cables();
-  document.querySelectorAll('select').forEach(inp => inp.value = getSavedValue(inp.id) || inp.value);
   protection();
-  document.querySelectorAll('select').forEach(inp => inp.value = getSavedValue(inp.id) || inp.value);
   cableDets();
   protectionDets();
 }
@@ -209,7 +209,4 @@ function mainCalcs() {
 //startup
 window.addEventListener("load", function () {
   startup();
-  document.onkeyup = function () {
-    mainCalcs();
-  };
 });

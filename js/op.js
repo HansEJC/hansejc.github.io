@@ -1,13 +1,7 @@
 function startup() {
+  funkyValues();
   fireBase();
   getModDates();
-  document.getElementById("SEAR").value = getSavedValue("SEAR");    // set the value to this input
-  document.getElementById("PASS").value = getSavedValue("PASS");    // set the value to this input
-  document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) === "true");
-  });
-  const radios = document.querySelector('input[name]:checked');
-  if (!radios) document.querySelector(`#Del`).checked = true;
   fireAuth();
 }
 
@@ -42,12 +36,8 @@ async function delivery() {
 }
 
 function listeners() {
-  document.onkeyup = function () {
-    ifsy();
-  };
-  document.onchange = function () {
-    ifsy();
-  };
+  document.addEventListener('keyup', ifsy);
+  document.addEventListener('change', ifsy);
 }
 
 function splicer(arr, file) {

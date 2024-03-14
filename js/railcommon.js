@@ -1,10 +1,4 @@
 function quantities() {
-  document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) === "true");
-  });
-  document.querySelectorAll('input[type="checkbox"]').forEach(box => {
-    box.checked = (getSavedValue(box.id) === "true");
-  });
   const myNode = document.getElementById("Substation");
   myNode.innerHTML = '';
   const myNode2 = document.getElementById("Location");
@@ -19,9 +13,10 @@ function quantities() {
     for (let i = 0; i < NumLocs; i++) {
       cb[i] = document.createElement('input'); cb2[i] = document.createElement('input'); cb3[i] = document.createElement('input');
       cb[i].type = 'text'; cb2[i].type = 'number'; cb3[i].type = 'number';
-      cb[i].onkeyup = function () { saveValue(this); }; cb2[i].onkeyup = function () { saveValue(this); }; cb3[i].onkeyup = function () { saveValue(this); };
+      cb[i].addEventListener('keyup', saveValue); cb2[i].addEventListener('keyup', saveValue); cb3[i].addEventListener('keyup', saveValue);
       myNode.appendChild(cb[i]); myNode2.appendChild(cb2[i]); if (i < NumLocs - 1) myNode3.appendChild(cb3[i]);
       cb[i].id = i + 200; cb2[i].id = i + 100; cb3[i].id = i + 300;
+      cb[i].value = getSavedValue(`${i + 200}`); cb2[i].value = getSavedValue(`${i + 100}`); cb3[i].value = getSavedValue(`${i + 300}`);
       cb2[i].classList.add("loc"); cb3[i].classList.add("trac");
     }
   }
@@ -31,11 +26,6 @@ function quantities() {
     cb[0].value = 'bad human!'; cb2[0].value = 'bad human!';
     myNode.appendChild(cb[0]); myNode2.appendChild(cb2[0]);
   }
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-  document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
-  document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) === "true");
-  });
 }
 
 const lcd = (a, b) => smoothdec(a * Math.round(b / a), 10) || 0; //lowest commom multiplier

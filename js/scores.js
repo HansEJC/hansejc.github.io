@@ -1,4 +1,5 @@
 fireBase();
+funkyValues();
 function saveScores(scr) {
   const game = getSavedValue("game");
   let name = document.querySelector("#userName").value;

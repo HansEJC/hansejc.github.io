@@ -26,7 +26,7 @@
   const darkToggle = document.querySelector("#DarkToggle");
 
   //Toggle to change mode manually
-  darkToggle.addEventListener('change', function () { toggleDarkTheme(darkToggle.checked); saveCheckbox(this); });
+  darkToggle.addEventListener('change', () => toggleDarkTheme(darkToggle.checked));
 
   toggleDarkTheme(prefersDark.matches && (getSavedValue(darkToggle.id) !== "false"));
   if (getSavedValue(darkToggle.id) === "true") toggleDarkTheme(true); //iif statement as it would turn off if false
@@ -40,6 +40,7 @@
     document.body.classList.toggle('dark', shouldAdd);
     darkToggle.checked = shouldAdd;
   }
+  funkyValues();
 }());
 
 function toggleNav(e) {
@@ -156,9 +157,15 @@ if (typeof (navigator.clipboard) === 'undefined') {
 
 
 //Save the value function - save it to localStorage as (ID, VALUE)
-function saveValue(e) {
-  const { id, value } = e;  // get the sender's id to save it .
-  localStorage.setItem(id, value);// Every time user writing something, the localStorage's value will override .
+function saveValue() {
+  document.querySelectorAll('input').forEach((el) => {
+    if (el.type === 'file') return;
+    if (el.type === `checkbox` || el.type === `radio`) {
+      localStorage.setItem(el.id, el.checked);
+    }
+    else localStorage.setItem(el.id, el.value);
+  });
+  document.querySelectorAll('select').forEach(inp => localStorage.setItem(inp.id, inp.value));
   saveParameter();
 }
 
@@ -179,30 +186,26 @@ function saveParameter() {
   window.history.pushState({ path: newurl }, '', newurl);
 }
 
-//Save the value function - save it to localStorage as (ID, VALUE)
-function saveRadio(e) {
-  e.checkbox = true;
-  document.querySelectorAll('input[type="radio"]').forEach(rad => localStorage.setItem(rad.id, rad.checked));
-  document.querySelectorAll('input[type="checkbox"]').forEach(rad => localStorage.setItem(rad.id, rad.checked));
-  saveParameter();
-}
-function saveCheckbox(e) {
-  e.checkbox = true;
-  document.querySelectorAll('input[type="checkbox"]').forEach(rad => localStorage.setItem(rad.id, rad.checked));
-  saveParameter();
-}
-
-function funkyRadio() {
-  document.querySelectorAll('input[type="radio"]').forEach(rad => {
-    rad.checked = (getSavedValue(rad.id) === "true");
-    rad.addEventListener('change', saveRadio);
+function funkyValues() {
+  document.querySelectorAll('input').forEach((el) => {
+    if (el.type === 'file') return;
+    el.value = getSavedValue(el.id);
+    if (el.type === `checkbox` || el.type === `radio`) {
+      el.checked = (getSavedValue(el.id) === "true");
+      el.addEventListener('change', saveValue);
+    }
+    else el.addEventListener('keyup', saveValue);
+  });
+  document.querySelectorAll('select').forEach(inp => {
+    inp.value = getSavedValue(inp.id);
+    inp.addEventListener('change', saveValue);
   });
 }
 
 //get the saved value function - return the value of "v" from localStorage.
 function getSavedValue(v) {
   if (!localStorage.getItem(v)) {
-    return "";// You can change this to your defualt value.
+    return '';// You can change this to your defualt value.
   }
   return localStorage.getItem(v);
 }
@@ -330,6 +333,5 @@ function logError(err) {
 }
 
 const smoothdec = (a, b = 2) => Number(parseFloat(a).toFixed(b)); //fix broken decimals
-//const readCookie = (name) => (document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''); //changed to use localstorage instead
 
 document.documentElement.setAttribute('lang', navigator.language); //add language to html

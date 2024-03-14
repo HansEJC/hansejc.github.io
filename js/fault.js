@@ -172,6 +172,10 @@ function table(rows) {
 }
 
 //startup
+funkyValues();
 quantities();
 calculations();
-document.onkeyup = () => calculations();
+document.addEventListener('keyup', calculations);
+document.addEventListener('change', calculations);
+document.querySelector('#NumLocs').addEventListener('keyup', quantities);
+document.querySelector('#NumLocs').addEventListener('change', quantities);

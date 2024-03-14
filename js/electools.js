@@ -1,18 +1,27 @@
 function startup() {
+  funkyValues();
   createInps();
   loadcalc();
   parallel();
   polrec();
   pnrEquations();
   consum();
-  document.onkeyup = function () {
+  document.addEventListener('keyup', () => {
     parallel();
     pnrEquations();
     consum();
     polrec();
     loadcalc();
-  };
-
+  });
+  document.addEventListener('change', () => {
+    parallel();
+    pnrEquations();
+    consum();
+    polrec();
+    loadcalc();
+  });
+  document.querySelector('#NumPar').addEventListener('change', createInps);
+  document.querySelector('#NumPar').addEventListener('keyup', createInps);
 }
 
 function createInps() {
@@ -27,6 +36,8 @@ function createInps() {
       cb[i].type = 'Number'; cb2[i].type = 'Number'; cb3[i].type = 'Number';
       cbh.appendChild(cb[i]); cbh2.appendChild(cb2[i]); cbh3.appendChild(cb3[i]);
       cb[i].id = `res${i}`; cb2[i].id = `pnum${i}`; cb3[i].id = `pang${i}`;
+      cb[i].value = getSavedValue(`res${i}`); cb2[i].value = getSavedValue(`pnum${i}`); cb3[i].value = getSavedValue(`pang${i}`);
+      cb[i].addEventListener('keyup', saveValue); cb2[i].addEventListener('keyup', saveValue); cb3[i].addEventListener('keyup', saveValue);
     }
   }
   else {
@@ -35,13 +46,6 @@ function createInps() {
     cb[0].value = 'bad human!'; cb2[0].value = 'bad human!'; cb3[0].value = 'bad human!';
     cbh.appendChild(cb[0]); cbh2.appendChild(cb2[0]); cbh3.appendChild(cb3[0]);
   }
-  document.querySelectorAll('input[type=Number]').forEach((inp) => {
-    inp.value = getSavedValue(inp.id);
-    inp.onkeyup = function () { saveValue(this); };
-    if (inp.id === `NumPar`) inp.addEventListener('keyup', createInps);
-  });
-  funkyRadio();
-  document.querySelectorAll('select').forEach(inp => inp.value = getSavedValue(inp.id));
 }
 
 function parallel() {

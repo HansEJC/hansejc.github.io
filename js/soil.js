@@ -1,8 +1,6 @@
 function startup() {
-  (new URL(document.location)).searchParams.forEach((x, y) => { //get parameters from URL
-    localStorage.setItem(y, x);
-  });
   fireBase();
+  funkyValues();
   const measurements = 11;    // set the value to this input
   const cb = [], cb2 = [], cb3 = [];
   const cbh = document.getElementById(`Dist`), cbh2 = document.getElementById(`Stan`), cbh3 = document.getElementById(`Stiv`);
@@ -17,17 +15,21 @@ function startup() {
     cb[i].id = `dis${i}`; cb2[i].id = `stan${i}`; cb3[i].id = `stiv${i}`;
     cb[i].className = `label`; cb3[i].className = `label`;
     cb2[i].value = getSavedValue(cb2[i].id);
-    cb2[i].onkeyup = function () { saveValue(this); };
+    cb2[i].addEventListener('keyup', saveValue);
   }
   def2();
   def();
   soil();
   fop();
   fetchResults();
-  document.onkeyup = function () {
+  document.addEventListener('keyup', () => {
     soil();
     fop();
-  };
+  });
+  document.addEventListener('change', () => {
+    soil();
+    fop();
+  });
 }
 
 function buttonFun(but, str, fun) {
@@ -49,7 +51,7 @@ function def2() {
     cbh.appendChild(cb[i]); cbh2.appendChild(cb2[i]);
     cb[i].id = `fopdis${i}`; cb2[i].id = `fopmeas${i}`;
     cb2[i].value = getSavedValue(cb2[i].id);
-    cb2[i].onkeyup = function () { saveValue(this); };
+    cb2[i].addEventListener('keyup', saveValue);
   }
 }
 
@@ -95,11 +97,12 @@ function fop() {
   }
   const foparr = [];
   for (let i = 0; i < 10; i++) {
-    dis = document.getElementById(`fopdis${i}`).innerText = Number((fopdis * ((i) / 10)).toFixed(1));
+    dis = Number((fopdis * ((i) / 10)).toFixed(1));
     meas = Number(document.getElementById(`fopmeas${i}`).value);
     if (meas !== 0) foparr.push([dis, meas]);
+    document.getElementById(`fopdis${i}`).innerText = `${dis} m`;
   }
-  document.getElementById(`fopdis6`).innerText = `${Number((fopdis * 0.62).toFixed(1))}m`;
+  document.getElementById(`fopdis6`).innerText = `${Number((fopdis * 0.62).toFixed(1))} m`;
 
   const fir = Number(document.getElementById(`fopmeas5`).value),
     sec = Number(document.getElementById(`fopmeas6`).value),

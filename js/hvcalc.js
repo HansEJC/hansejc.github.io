@@ -1,6 +1,7 @@
 function startup() {
-  document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
-  document.querySelectorAll('select').forEach(inp => inp.value = getSavedValue(inp.id));
+  funkyValues();
+  document.addEventListener('keyup', induced);
+  document.addEventListener('change', induced);
   induced();
 }
 
@@ -35,7 +36,4 @@ function induced() {
 //startup
 window.addEventListener("load", function () {
   startup();
-  document.onkeyup = function () {
-    induced();
-  };
 });

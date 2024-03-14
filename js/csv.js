@@ -74,27 +74,20 @@ function inputsNfunc(db) {
   document.getElementById("xaxis").value = getSavedValue("xaxis");    // set the value to this input
   document.getElementById("yaxis").value = getSavedValue("yaxis");   // set the value to this input
   document.getElementById("99").checked = getSavedValue("99") === "true"; //remember if start date is checked
-  document.getElementById("99").onchange = function () { read(db); };
-  document.getElementById("dat").onblur = function () { saveValue(this); read(db); };
-  document.getElementById("datR").onblur = function () { saveValue(this); read(db); };
-  document.getElementById("eqcheck").onchange = function () { read(db); };
+  document.getElementById("99").onchange = () => { read(db); };
+  document.getElementById("dat").onblur = () => { read(db); };
+  document.getElementById("datR").onblur = () => { read(db); };
+  document.getElementById("eqcheck").onchange = () => { read(db); };
   document.getElementById("LabR").value = getSavedValue("Labr");
   document.getElementById("dat").value = getSavedValue("dat");
   document.getElementById("datR").value = getSavedValue("datR");
   localStorage.setItem(document.getElementById("eqcheck").id, false); //uncheck equations with new file
   const radios = document.querySelectorAll("input[name=ArrayOrCSV]");
   radios.forEach(rad => rad.addEventListener('change', checkit));
-  const prup = document.querySelector("#PrUp");
-  prup.checked = getSavedValue("PrUp") === "true" || getSavedValue("PrUp") === "";
-  saveRadio(prup);
 }
 
 function startup(bool) {
-  funkyRadio();
-  document.querySelectorAll('input[type="checkbox"]').forEach(box => {
-    box.checked = (getSavedValue(box.id) === "true");
-    box.addEventListener('change', saveRadio);
-  });
+  funkyValues();
   document.getElementById("69").checked = getSavedValue("69") === "true" || getSavedValue("69") === ""; //checkbox "Show" with new file
   const idbSupported = ("indexedDB" in window);
   let db;
@@ -280,7 +273,7 @@ function equationInputs(len, res) {//add equation inputs
     equ[i].value = reset ? ch : getSavedValue(ch);
     //eqw[i-1] = equ[i].value;
     equ[i].id = ch;
-    equ[i].onkeyup = function () { saveValue(this); };
+    equ[i].addEventListener('keyup', saveValue);
     eqh.appendChild(equ[i]);
   }
 }
@@ -354,7 +347,6 @@ function dygReady() {
   findExtremes();
   const lbs = g3.getLabels();
   const colors = g3.getColors();
-  //lbs.pop();
   lbs.shift();
   const cb = [], cb2 = [], col = [], sty = [];
   const cbh = document.getElementById('MyForm'), colF = document.getElementById('ColorForm');
@@ -364,13 +356,12 @@ function dygReady() {
     cb[i].type = 'checkbox'; cb2[i].type = 'text'; col[i].type = 'color';
     cbh.appendChild(cb[i]); cbh.appendChild(cb2[i]); colF.appendChild(col[i]);
     cb[i].id = `csvcheckbox ${i}`; cb2[i].id = `csvlabel${i}`; col[i].id = `csvcolor${i}`;
-    cb2[i].value = lbs[i];
+    cb2[i].value = getSavedValue(`csvlabel${i}`) === "" ? lbs[i] : getSavedValue(`csvlabel${i}`);
     col[i].value = rgbToHex(colors[i]);
     cb2[i].className = "idents";
     cb[i].checked = getSavedValue(cb[i].id) === "" || getSavedValue(cb[i].id) === "true";
-    saveRadio(cb[i]);
     lineStyles(sty, i);
-    cb[i].onchange = function () { change(this); }; cb2[i].onblur = function () { saveValue(this); idents(lbs.length); };
+    cb[i].onchange = function () { change(this); }; cb2[i].onblur = () => { idents(lbs.length); };
   }
   const colorNode = document.querySelectorAll("input[type=color]");
   colorNode.forEach(col => col.addEventListener('change', colorUpdate));
@@ -394,7 +385,7 @@ function lineStyles(sty, i) {
   sty[i].appendChild(opt1); sty[i].appendChild(opt2); sty[i].appendChild(opt3); sty[i].appendChild(opt4);
   sty[i].id = `csvlines${i}`;
   lineS.appendChild(sty[i]);
-  sty[i].onchange = function () { saveValue(this); styleMe(this, i + 1); };
+  sty[i].onchange = function () { styleMe(this, i + 1); };
 }
 
 function styleMe(e, i) {
@@ -404,14 +395,8 @@ function styleMe(e, i) {
 
 let xaxis = document.getElementById('xaxis');
 let yaxis = document.getElementById('yaxis');
-xaxis.onblur = () => {
-  saveValue(this);
-  g3.updateOptions({ xlabel: xaxis.value });
-};
-yaxis.onblur = () => {
-  saveValue(this);
-  g3.updateOptions({ ylabel: yaxis.value });
-};
+xaxis.onblur = () => g3.updateOptions({ xlabel: xaxis.value });
+yaxis.onblur = () => g3.updateOptions({ ylabel: yaxis.value });
 
 function rgbToHex(rgb) {
   const col = rgb.split(/[,)(]/u);
@@ -448,7 +433,6 @@ function idents(len) {
     const labd = document.getElementById(`csvlabel${i}`);
     const colors = document.getElementById(`csvcolor${i}`);
     const styles = document.getElementById(`csvlines${i}`);
-    labd.value = getSavedValue(`csvlabel${i}`) === "" ? labd.value : getSavedValue(`csvlabel${i}`);
     labl.push(labd.value);
     if (labd.value.length > 0) {
       labd.style.width = `${labd.value.length + 1}ch`;
