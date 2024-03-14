@@ -34,26 +34,26 @@ const plugStand = [
 
 function newRoute(inputs) {
   const { str, name, plugs, strat, typ } = inputs;
-  const straTegy = strat === `cache`
+  const straTegy = strat === "cache"
     ? new CacheFirst({ cacheName: name, plugins: plugs, })
-    : strat === `stale`
+    : strat === "stale"
       ? new StaleWhileRevalidate({ cacheName: name, plugins: plugs, })
       : new NetworkFirst({ networkTimeoutSeconds: 3, cacheName: name, plugins: plugs, });
-  const type = typ === `request`
+  const type = typ === "request"
     ? ({ request }) => request.destination === str
-    : typ === `url`
+    : typ === "url"
       ? ({ url }) => url.pathname.endsWith(str)
       : ({ url }) => url.pathname.includes(str);
   registerRoute(type, straTegy);
 }
 
-newRoute({ str: `image`, name: `images`, plugs: plugExp, strat: `cache`, typ: `request` });
-newRoute({ str: `style`, name: `css`, plugs: plugStand, strat: `net`, typ: `request` });
-newRoute({ str: `document`, name: `html`, plugs: plugStand, strat: `net`, typ: `request` });
-newRoute({ str: `font`, name: `fonts`, plugs: plugExp, strat: `cache`, typ: `request` });
-newRoute({ str: `js/ext/`, name: `exScripts`, plugs: plugExp, strat: `cache`, typ: `urlInc` });
-newRoute({ str: `script`, name: `scripts`, plugs: plugStand, strat: `net`, typ: `request` });
-newRoute({ str: `uploads/`, name: `csv`, plugs: plugExp, strat: `cache`, typ: `urlInc` });
+newRoute({ str: "image", name: "images", plugs: plugExp, strat: "cache", typ: "request" });
+newRoute({ str: "style", name: "css", plugs: plugStand, strat: "net", typ: "request" });
+newRoute({ str: "document", name: "html", plugs: plugStand, strat: "net", typ: "request" });
+newRoute({ str: "font", name: "fonts", plugs: plugExp, strat: "cache", typ: "request" });
+newRoute({ str: "js/ext/", name: "exScripts", plugs: plugExp, strat: "cache", typ: "urlInc" });
+newRoute({ str: "script", name: "scripts", plugs: plugStand, strat: "net", typ: "request" });
+newRoute({ str: "uploads/", name: "csv", plugs: plugExp, strat: "cache", typ: "urlInc" });
 
 // Use the imported Workbox libraries to implement caching,
 // routing, and other logic:
