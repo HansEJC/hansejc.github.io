@@ -129,7 +129,7 @@ function dygPlot(earray, subarray) {
   g3.ready(function () {
     const colors = g3.getColors();
     colors.pop(); colors.pop();
-    colors.push(`orange`, `red`);
+    colors.push("orange", "red");
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'));
     }, 500);
@@ -157,13 +157,13 @@ function findExtremes() {
 }
 
 function table(rows) {
-  const tabdiv = document.querySelector(`#FaultTable`);
-  const myTable = document.createElement(`table`);
-  myTable.classList.add(`scores`);
+  const tabdiv = document.querySelector("#FaultTable");
+  const myTable = document.createElement("table");
+  myTable.classList.add("scores");
   const row = myTable.insertRow(-1);
-  row.insertCell(0).outerHTML = `<th>Series</th>`;
-  row.insertCell(1).outerHTML = `<th>Average</th>`;
-  row.insertCell(2).outerHTML = `<th>Max</th>`;
+  row.insertCell(0).outerHTML = "<th>Series</th>";
+  row.insertCell(1).outerHTML = "<th>Average</th>";
+  row.insertCell(2).outerHTML = "<th>Max</th>";
 
   try {
     rows.forEach(arr => {
@@ -172,7 +172,7 @@ function table(rows) {
     });
   } catch (err) { logError(err); }
 
-  tabdiv.innerHTML = ``;
+  tabdiv.innerHTML = "";
   tabdiv.appendChild(myTable);
 }
 

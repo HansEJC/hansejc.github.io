@@ -6,20 +6,20 @@ function startup() {
 }
 
 function getModDates() {
-  const dbObj = firebase.database().ref(`equip`);
-  dbObj.on(`value`, snap => {
+  const dbObj = firebase.database().ref("equip");
+  dbObj.on("value", snap => {
     const dates = snap.val();
     const { lastmod } = dates;
     document.getElementById("p").textContent = `Last Updated:  ${new Date(lastmod)}`;
-    const refreshOP = new Date(lastmod) > new Date(getSavedValue(`lastmod`));
-    localStorage.setItem(`refreshOP`, refreshOP);
-    localStorage.setItem(`lastmod`, lastmod);
+    const refreshOP = new Date(lastmod) > new Date(getSavedValue("lastmod"));
+    localStorage.setItem("refreshOP", refreshOP);
+    localStorage.setItem("lastmod", lastmod);
     delivery();
   });
 }
 
 function waitForAll() {
-  return Promise.all([fireFetch(`equip/equip-Materials.csv`)]);
+  return Promise.all([fireFetch("equip/equip-Materials.csv")]);
 }
 
 async function delivery() {
@@ -37,7 +37,7 @@ function listeners() {
 
 function splicer(arr) {
   for (let i = 0; i < arr.length; i++) {
-    if (arr[i][5] === `` || /quant|undefined/iu.test(arr[i][5])) {
+    if (arr[i][5] === "" || /quant|undefined/iu.test(arr[i][5])) {
       arr.splice(i, 1);
       i--;
     }
@@ -45,7 +45,7 @@ function splicer(arr) {
 }
 
 function ifsy() {
-  const file = `equip/equip-Materials.csv`;
+  const file = "equip/equip-Materials.csv";
   let data = getSavedValue(file);
   data = Papa.parse(data).data
   splicer(data);
@@ -105,7 +105,7 @@ function searchEquip(sArray) {
 }
 
 async function fireFetch(file) {
-  const refreshOP = getSavedValue(`refreshOP`) === `true`;
+  const refreshOP = getSavedValue("refreshOP") === "true";
   gaOP(file, refreshOP);
   let data = localStorage.getItem(file);
   if (!refreshOP && data !== null) return;
@@ -142,37 +142,37 @@ function enterLogin(e) {
 }
 
 function fireAuth() {
-  document.querySelector(`#Logout`).addEventListener(`click`, () => firebase.auth().signOut());
-  document.querySelector(`#Login`).addEventListener(`click`, doLogin);
-  document.querySelector(`#PASS`).addEventListener(`keydown`, enterLogin);
+  document.querySelector("#Logout").addEventListener("click", () => firebase.auth().signOut());
+  document.querySelector("#Login").addEventListener("click", doLogin);
+  document.querySelector("#PASS").addEventListener("keydown", enterLogin);
   firebase.auth().onAuthStateChanged(loginState);
 }
 
 function loginState(user) {
-  const logout = document.querySelector(`#Logout`);
-  const login = document.querySelector(`#Login`);
-  const pass = document.querySelector(`#PASS`);
+  const logout = document.querySelector("#Logout");
+  const login = document.querySelector("#Login");
+  const pass = document.querySelector("#PASS");
   if (user) {
-    login.style = `display: none`;
-    pass.style = `display: none`;
-    logout.style = `display: block`;
-    document.querySelector(`#logInfo`).innerHTML = ``;
+    login.style = "display: none";
+    pass.style = "display: none";
+    logout.style = "display: block";
+    document.querySelector("#logInfo").innerHTML = "";
     delivery();
   }
   else {
-    login.style = `display: block`;
-    pass.style = `display: block`;
-    logout.style = `display: none`;
+    login.style = "display: block";
+    pass.style = "display: block";
+    logout.style = "display: none";
   }
 }
 
 function doLogin() {
   const auth = firebase.auth();
-  const user = `a@b.com`;
-  const pass = document.querySelector(`input[type=password]`).value;
+  const user = "a@b.com";
+  const pass = document.querySelector("input[type=password]").value;
   const promise = auth.signInWithEmailAndPassword(user, pass);
   promise.catch(e => {
-    document.querySelector(`#logInfo`).innerHTML = e;
+    document.querySelector("#logInfo").innerHTML = e;
   });
 }
 

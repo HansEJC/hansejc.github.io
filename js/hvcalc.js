@@ -12,8 +12,8 @@ function induced() {
   const S = Number(getSavedValue("AxialSpacing")) || 12;
   const dM = Number(getSavedValue("SheathDiameter")) || 10.33;
   const K = Number(getSavedValue("CableWires")) || 0.05;
-  const loadI = document.querySelector(`#LoadInduced`);
-  const faultI = document.querySelector(`#FaultInduced`);
+  const loadI = document.querySelector("#LoadInduced");
+  const faultI = document.querySelector("#FaultInduced");
 
   const LM = K + 0.2 * Math.log(2 * S / dM);
   const Xm = 2 * Math.PI * 50 * LM;
@@ -24,13 +24,13 @@ function induced() {
 
   loadI.textContent = `${smoothdec(UL)} V`;
   faultI.textContent = `${smoothdec(UF)} V`;
-  loadI.className = UL < 60 ? `label safe` : `label danger`;
-  faultI.className = UF < 645 ? `label safe` : `label danger`;
-  document.querySelector(`#InductiveReactance`).textContent = `${smoothdec(Xm)} mΩ/km`;
-  document.querySelector(`#CoreInductance`).textContent = `${smoothdec(LM)} mH/km`;
-  document.querySelector(`#LoadDistance`).textContent = `${smoothdec(LL)} km`;
-  document.querySelector(`#FaultDistance`).textContent = `${smoothdec(LF)} km`;
-  document.querySelector(`#WireFactor`).textContent = K;
+  loadI.className = UL < 60 ? "label safe" : "label danger";
+  faultI.className = UF < 645 ? "label safe" : "label danger";
+  document.querySelector("#InductiveReactance").textContent = `${smoothdec(Xm)} mΩ/km`;
+  document.querySelector("#CoreInductance").textContent = `${smoothdec(LM)} mH/km`;
+  document.querySelector("#LoadDistance").textContent = `${smoothdec(LL)} km`;
+  document.querySelector("#FaultDistance").textContent = `${smoothdec(LF)} km`;
+  document.querySelector("#WireFactor").textContent = K;
 }
 
 //startup

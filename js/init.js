@@ -131,10 +131,10 @@ if ("serviceWorker" in navigator) {
 }
 
 //function to resize plot and copy to clipboard
-function clippy(x, y, div = `#graphdiv3`) {
-  document.querySelector(div).setAttribute(`style`, `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
+function clippy(x, y, div = "#graphdiv3") {
+  document.querySelector(div).setAttribute("style", `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
   window.dispatchEvent(new Event('resize'));
-  const extra = div === `#graphdiv3` ? 10 : 15;
+  const extra = div === "#graphdiv3" ? 10 : 15;
   html2canvas(document.querySelector(div), {
     x: -extra,
     height: y + 10,
@@ -160,7 +160,7 @@ if (typeof (navigator.clipboard) === 'undefined') {
 function saveValue() {
   document.querySelectorAll('input').forEach((el) => {
     if (el.type === 'file') return;
-    if (el.type === `checkbox` || el.type === `radio`) {
+    if (el.type === "checkbox" || el.type === "radio") {
       localStorage.setItem(el.id, el.checked);
     }
     else localStorage.setItem(el.id, el.value);
@@ -174,7 +174,7 @@ function saveParameter() {
   const params = {};
   document.querySelectorAll('input').forEach((el) => {
     if (el.value.length > 0) params[el.id] = el.value;
-    if (el.type === `checkbox` || el.type === `radio`) params[el.id] = el.checked;
+    if (el.type === "checkbox" || el.type === "radio") params[el.id] = el.checked;
   });
   document.querySelectorAll('select').forEach((select) => params[select.id] = select.value);
   const esc = encodeURIComponent;
@@ -190,7 +190,7 @@ function funkyValues() {
   document.querySelectorAll('input').forEach((el) => {
     if (el.type === 'file') return;
     el.value = getSavedValue(el.id);
-    if (el.type === `checkbox` || el.type === `radio`) {
+    if (el.type === "checkbox" || el.type === "radio") {
       el.checked = (getSavedValue(el.id) === "true");
       el.addEventListener('change', saveValue);
     }
@@ -240,7 +240,7 @@ function exportToCsv(filename, rows) {
     navigator.msSaveBlob(blob, filename);
   } else {
     const link = document.createElement("a");
-    if (typeof link.download !== `undefined`) { // feature detection
+    if (typeof link.download !== "undefined") { // feature detection
       // Browsers that support HTML5 download attribute
       const url = URL.createObjectURL(blob);
       link.setAttribute("href", url);

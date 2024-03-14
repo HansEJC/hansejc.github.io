@@ -1,7 +1,7 @@
 function initiate() {
   document.querySelector('#GodMode').addEventListener('change', mods);
   document.querySelector('#TripJump').addEventListener('change', cheats);
-  localStorage.setItem(`game`, `rex`);
+  localStorage.setItem("game", "rex");
   if (!document.querySelector("#Jon").checked && !document.querySelector("#Maple").checked) document.querySelector("#Jon").click(); //if none checked, make Jon default
   gameMode();
   window.Rexy = new Runner('.interstitial-wrapper');
@@ -42,10 +42,10 @@ function keys(e) {
 
 function gameMode() {
   const mode = document.querySelector("#Jon").checked;
-  const folder = mode ? `` : `Backup/`;
+  const folder = mode ? "" : "Backup/";
   document.querySelector("#Desc").innerText = mode ? "Help Jon make it safely through the day. Press spacebar to start." : "Help the noob survive. Press spacebar to start.";
-  document.querySelector(`label[for="0"]`).innerText = mode ? "Ignore Mark" : "God Mode";
-  document.querySelector(`label[for="1"]`).innerText = mode ? "Infinite jump away from work" : "Triple Jump";
+  document.querySelector('label[for="0"]').innerText = mode ? "Ignore Mark" : "God Mode";
+  document.querySelector('label[for="1"]').innerText = mode ? "Infinite jump away from work" : "Triple Jump";
   const imgs1 =
     `<img id='1x-obstacle-large' src='images/${folder}1x-large-obstacle.png' jstcache='0'>
       <img id='1x-obstacle-small' src='images/${folder}1x-small-obstacle.png' jstcache='0'>

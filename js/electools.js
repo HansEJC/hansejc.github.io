@@ -26,7 +26,7 @@ function startup() {
 
 function createInps() {
   remParallel();
-  let npr = Number(getSavedValue(`NumPar`));    // set the value to this input
+  let npr = Number(getSavedValue("NumPar"));    // set the value to this input
   if (npr < 2) npr = 2;
   const cb = [], cb2 = [], cb3 = [];
   const cbh = document.getElementById('Parallel'), cbh2 = document.getElementById('Nums'), cbh3 = document.getElementById('Angs');
@@ -49,7 +49,7 @@ function createInps() {
 }
 
 function parallel() {
-  let npr = Number(document.getElementById(`NumPar`).value);    // set the value to this input
+  let npr = Number(document.getElementById("NumPar").value);    // set the value to this input
   if (npr < 2) npr = 2;
   let pr = 0, res;
   for (let i = 0; i < npr; i++) {
@@ -80,11 +80,11 @@ const rec2pol = (rr, ir) => {
 };
 
 function pnrEquations() {
-  const npr = Math.max(Number(document.getElementById(`NumPar`).value), 2);
-  const ispolar = document.querySelector(`#PLR`).checked;
-  const isadd = document.querySelector(`#EQU`).value === `A`;
-  document.querySelector(`label[for="Nums"]`).textContent = ispolar ? `Numbers` : `Real`;
-  document.querySelector(`label[for="Angs"]`).textContent = ispolar ? `Angles` : `Imaginary`;
+  const npr = Math.max(Number(document.getElementById("NumPar").value), 2);
+  const ispolar = document.querySelector("#PLR").checked;
+  const isadd = document.querySelector("#EQU").value === "A";
+  document.querySelector('label[for="Nums"]').textContent = ispolar ? "Numbers" : "Real";
+  document.querySelector('label[for="Angs"]').textContent = ispolar ? "Angles" : "Imaginary";
 
   const { nums, angs, reals, imags } = isadd ? pnrAdd(npr, ispolar) : pnrParallel(npr, ispolar);
   document.querySelector("#PSUM").textContent = `${Number(nums.toFixed(2))} + ∠${Number(angs.toFixed(2))}°`;
