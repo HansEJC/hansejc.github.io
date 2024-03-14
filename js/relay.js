@@ -799,7 +799,7 @@ function xrio(xml) {
     if (/Z2 Gnd. Delay/i.test(x.Name[`#text`])) document.querySelector(`#Z2del`).value = Number(x.Value[`#text`]) * 1000;
     if (/Z3 Gnd. Delay/i.test(x.Name[`#text`])) document.querySelector(`#Z3del`).value = Number(x.Value[`#text`]) * 1000;
   });
-  let [vtprim, vtsec, ctprim, ctsec] = [26.4, .11, 600, 1];
+  let [vtprim, vtsec, ctprim, ctsec] = [26.4, 0.11, 600, 1];
   ct.Parameter.forEach(x => {
     vtprim = /vt prim/i.test(x.Description[`#text`]) ? x.Value[`#text`] : vtprim;
     vtsec = /vt sec/i.test(x.Description[`#text`]) ? x.Value[`#text`] : vtsec;
