@@ -1,3 +1,6 @@
+/**
+ * Startup function
+ */
 function startup() {
   funkyValues();
   fireBase();
@@ -18,7 +21,7 @@ function getModDates() {
   });
 }
 
-function waitForAll() {
+async function waitForAll() {
   return Promise.all([fireFetch("equip/equip-Materials.csv")]);
 }
 
@@ -59,7 +62,6 @@ function search(arrheh) {
   myArray = myArray.map(e => e.join(','));//remove undefined row
   let sArray = [];
 
-
   //fix the headaches when creating a new RegExp
   RegExp.quote = function (str) {
     return str.replace(/[.*+\-?^${}()[\]\\]/gu, "\\$1");
@@ -77,6 +79,11 @@ function search(arrheh) {
   document.getElementById('tab').innerHTML = myTable;
 }
 
+/**
+ * Create table using searched term
+ * @param sArray Search text
+ * @returns Table
+ */
 function searchEquip(sArray) {
   let myTable = `<table class="orionPark">
     <tr><th>Description</th>
@@ -104,6 +111,11 @@ function searchEquip(sArray) {
   return myTable;
 }
 
+/**
+ * Get file from firebase storage
+ * @param file File to get
+ * @returns file
+ */
 async function fireFetch(file) {
   const refreshOP = getSavedValue("refreshOP") === "true";
   gaOP(file, refreshOP);
@@ -114,7 +126,7 @@ async function fireFetch(file) {
   const pathReference = storage.ref(file);
   data = await pathReference.getDownloadURL()
     .then(async (url) => {
-      return await fetch(url).then(result => result.text());
+      return fetch(url).then(result => result.text());
     });
   localStorage.setItem(file, data);
   return;

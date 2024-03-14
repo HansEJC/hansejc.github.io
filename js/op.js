@@ -1,3 +1,6 @@
+/**
+ * Startup function
+ */
 function startup() {
   funkyValues();
   fireBase();
@@ -19,7 +22,7 @@ function getModDates() {
   });
 }
 
-function waitForAll() {
+async function waitForAll() {
   return Promise.all([
     fireFetch("op/assets-Asset List.csv"),
     fireFetch("op/op-Warehouse Stock .csv"),
@@ -43,7 +46,7 @@ function listeners() {
 function splicer(arr, file) {
   const str = file.includes("set") ? "asset"
     : file.includes("Ware") ? "location" : "date";
-    const col = file.includes("Ware") ? 7 : 0;
+  const col = file.includes("Ware") ? 7 : 0;
   for (let i = 0; i < arr.length; i++) {
     if (arr[i][col] === "" || new RegExp(str, "iu").test(arr[i][col]) || new RegExp("undefined", "iu").test(arr[i][col])) {
       arr.splice(i, 1);
@@ -94,6 +97,11 @@ function search(arrheh) {
   document.getElementById('tab').innerHTML = myTable;
 }
 
+/**
+ * Create table using searched term
+ * @param sArray Search text
+ * @returns Table
+ */
 function searchAsset(sArray) {
   let myTable = `<table class="orionPark">
     <tr><th>Description</th>
@@ -113,6 +121,11 @@ function searchAsset(sArray) {
   return myTable;
 }
 
+/**
+ * Create table using searched term
+ * @param sArray Search text
+ * @returns Table
+ */
 function searchDel(sArray) {
   let myTable = `<table class="orionPark">
     <tr><th>Date</th>
@@ -136,6 +149,11 @@ function searchDel(sArray) {
   return myTable;
 }
 
+/**
+ * Create table using searched term
+ * @param sArray Search text
+ * @returns Table
+ */
 function searchOther(sArray) {
   let myTable = `<table class="orionPark">
     <tr><th>Part #</th>
@@ -155,6 +173,11 @@ function searchOther(sArray) {
   return myTable;
 }
 
+/**
+ * Get file from firebase storage
+ * @param file File to get
+ * @returns file
+ */
 async function fireFetch(file) {
   const refreshOP = getSavedValue("refreshOP") === "true";
   gaOP(file, refreshOP);
@@ -165,7 +188,7 @@ async function fireFetch(file) {
   const pathReference = storage.ref(file);
   data = await pathReference.getDownloadURL()
     .then(async (url) => {
-      return await fetch(url).then(result => result.text());
+      return fetch(url).then(result => result.text());
     });
   localStorage.setItem(file, data);
   return;
