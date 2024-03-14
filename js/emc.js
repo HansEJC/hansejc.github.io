@@ -6,7 +6,7 @@ function killthemeter(num) {
   else if (num > 0.000001) return `${Number((num * 1000000).toFixed(2))} μm`;
   else if (num > 0.000000001) return `${Number((num * 1000000000).toFixed(2))} nm`;
   else if (num > 0) return `${Number((num * 1000000000000).toFixed(2))} pm`;
-  return `-`;
+  return "-";
 }
 
 function kill(num) {

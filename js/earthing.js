@@ -20,11 +20,11 @@ function eprCalc() {
 
   document.getElementById("EPR").textContent = volts(epr);
   document.getElementById("EPR").className = epr > 645 ? 'label danger' : 'label safe';
-  texty(`PR`, pr, `Ω`);
-  texty(`IR`, ir, `kA`);
-  texty(`IG`, ig, `kA`);
-  texty(`IRp`, irp, `%`, 0);
-  texty(`IGp`, igp, `%`, 0);
+  texty("PR", pr, "Ω");
+  texty("IR", ir, "kA");
+  texty("IG", ig, "kA");
+  texty("IRp", irp, "%", 0);
+  texty("IGp", igp, "%", 0);
 }
 
 function earthGrid() {
@@ -41,11 +41,11 @@ function earthGrid() {
   const era = Number(getSavedValue("ERA"));
   const pa = era * p / rg;
 
-  texty(`R`, r, `m`);
-  texty(`KR`, kr, ``);
-  texty(`RE`, re, `Ω`);
-  texty(`RG`, rg, `Ω`);
-  texty(`PA`, pa, `Ωm`);
+  texty("R", r, "m");
+  texty("KR", kr, "");
+  texty("RE", re, "Ω");
+  texty("RG", rg, "Ω");
+  texty("PA", pa, "Ωm");
 }
 
 const texty = (id, num, sym, dec = 2) => {

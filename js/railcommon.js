@@ -61,7 +61,7 @@ function negTrack(subarray) { //this is for locations that don't parallel
       posID--;
       locs = document.getElementById(posID - 199);
     }
-    locs.classList.toggle(`loc`, !(trac.value < 0));
+    locs.classList.toggle("loc", !(trac.value < 0));
     const sub = getSavedValue(posID - 99);
     totlc += Number(locs.value);
     if (trac.value < 0) {
