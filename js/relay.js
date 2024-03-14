@@ -87,6 +87,9 @@ function javaread() {
   }
 }
 
+/**
+ * Startup function
+ */
 function startup() {
   fireBase();
   getIndex();

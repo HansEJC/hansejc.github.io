@@ -6,8 +6,13 @@ function startup() {
   fireBase();
   getModDates();
   fireAuth();
+  document.addEventListener('keyup', ifsy);
+  document.addEventListener('change', ifsy);
 }
 
+/**
+ * See when file was last modified
+ */
 function getModDates() {
   const dbObj = firebase.database().ref("op");
   dbObj.on("value", snap => {
@@ -22,6 +27,9 @@ function getModDates() {
   });
 }
 
+/**
+ * Wait for files from firebase
+ */
 async function waitForAll() {
   return Promise.all([
     fireFetch("op/assets-Asset List.csv"),
@@ -30,19 +38,21 @@ async function waitForAll() {
   ]);
 }
 
+/**
+ * Wait for files from firebase and run code
+ */
 async function delivery() {
   // await code here
-  await waitForAll();
+  await Promise.all([fireFetch("equip/equip-Materials.csv")]);
   // code below here will only execute when await fetch() finished loading
   ifsy();
-  listeners();
 }
 
-function listeners() {
-  document.addEventListener('keyup', ifsy);
-  document.addEventListener('change', ifsy);
-}
-
+/**
+ * Remove bloat
+ * @param arr Input data
+ * @param file Which file
+ */
 function splicer(arr, file) {
   const str = file.includes("set") ? "asset"
     : file.includes("Ware") ? "location" : "date";
@@ -55,6 +65,9 @@ function splicer(arr, file) {
   }
 }
 
+/**
+ * Run splicer and search functions after changing search text
+ */
 function ifsy() {
   const file = document.querySelector('input[name]:checked').className;
   let data = getSavedValue(file);
@@ -63,6 +76,10 @@ function ifsy() {
   search(data);
 }
 
+/**
+ * Creates new array with search text
+ * @param arrheh Input array
+ */
 function search(arrheh) {
   let pn = document.getElementById("SEAR").value;
   pn = pn.toLowerCase().split(" ");
@@ -194,6 +211,11 @@ async function fireFetch(file) {
   return;
 }
 
+/**
+ * Check if file has changed since last fetch
+ * @param file File to check
+ * @param refreshOP boolean
+ */
 function gaOP(file, refreshOP) {
   try {
     dataLayer.push({
@@ -204,6 +226,10 @@ function gaOP(file, refreshOP) {
   } catch (err) { logError(err); }
 }
 
+/**
+ * Sign in if enter is pressed
+ * @param e target
+ */
 function enterLogin(e) {
   const keyCode = e.which || e.keyCode;
   let handled = false;
@@ -215,6 +241,9 @@ function enterLogin(e) {
   return !handled; //return false if the event was handled  
 }
 
+/**
+ * Event listeners for logging in and out
+ */
 function fireAuth() {
   document.querySelector("#Logout").addEventListener("click", () => firebase.auth().signOut());
   document.querySelector("#Login").addEventListener("click", doLogin);
@@ -222,6 +251,10 @@ function fireAuth() {
   firebase.auth().onAuthStateChanged(loginState);
 }
 
+/**
+ * Shown and hide elements if logged in
+ * @param user user logged in
+ */
 function loginState(user) {
   const logout = document.querySelector("#Logout");
   const login = document.querySelector("#Login");
@@ -240,6 +273,9 @@ function loginState(user) {
   }
 }
 
+/**
+ * Firebase login
+ */
 function doLogin() {
   const auth = firebase.auth();
   const user = "a@b.com";

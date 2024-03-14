@@ -1,3 +1,6 @@
+/**
+ * Startup function
+ */
 function startup() {
   document.addEventListener('keyup', mainCalcs);
   document.addEventListener('change', mainCalcs);

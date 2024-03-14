@@ -1,3 +1,6 @@
+/**
+ * Startup function
+ */
 function startup() {
   fireBase();
   funkyValues();

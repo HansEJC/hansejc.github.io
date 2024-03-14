@@ -1,3 +1,9 @@
+/**
+ * Function to add wait loader
+ * @param html Text to display
+ * @param err If it is an error or message
+ * @param val Progress level
+ */
 function addLoader(html, err, val) {
   const div = document.createElement('div');
   const prog = document.createElement("progress");
@@ -191,6 +197,11 @@ function plotcalcs(csv, db) {
   plotexp(csv);
 }
 
+/**
+ * Function to parse CSV
+ * @param csv Original csv file
+ * @returns The csv converted to a 2D array
+ */
 function parseCSV(csv) {
   csv = Papa.parse(csv).data;
   try {

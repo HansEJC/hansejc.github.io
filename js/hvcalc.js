@@ -1,3 +1,6 @@
+/**
+ * Startup function
+ */
 function startup() {
   funkyValues();
   document.addEventListener('keyup', induced);
