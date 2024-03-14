@@ -107,7 +107,7 @@ function calculations() {
   document.getElementById("LTV").textContent = ltv.toFixed(0) + " %";
 
   const oplabel = document.getElementById("MOP");
-  oplabel.className = ((rl / 120) < op) ? `label danger` : `label safe`;
+  oplabel.className = ((rl / 120) < op) ? "label danger" : "label safe";
   document.getElementById("RT").textContent = `${Math.floor((pn) / 12)} y ${(12 * ((pn) / 12 - Math.floor(pn / 12))).toFixed(0)} m`;
   dygPlot(mortgage);
 }

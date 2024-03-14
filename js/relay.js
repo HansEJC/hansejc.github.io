@@ -1,29 +1,29 @@
 function checkit() {
-  const x = document.getElementById(`Sec`).checked || document.querySelector(`#advanced`).checked;
+  const x = document.getElementById("Sec").checked || document.querySelector("#advanced").checked;
   const y = document.getElementById("hide");
-  y.style.display = x ? `block` : `none`;
+  y.style.display = x ? "block" : "none";
   vtRatio();
   ctRatio();
 }
 
 function saveCSV(data) {
-  if (typeof data[1][0] === `string`) {
+  if (typeof data[1][0] === "string") {
     data.pop(); //remove last empty line
     data.forEach(x => {
       x.shift();
-      x[0] = Number(x[0].split(`:`).pop()); //extracts seconds from timestamp
+      x[0] = Number(x[0].split(":").pop()); //extracts seconds from timestamp
     });
   }
   const headers = JSON.stringify(data.shift());
-  localStorage.setItem(`headers`, headers);
-  localStorage.setItem(`isDAT`, false);
+  localStorage.setItem("headers", headers);
+  localStorage.setItem("isDAT", false);
   saveIndexedDB(data);
 }
 
 function saveDAT(data, filecontent) {
   data.pop(); //remove last empty line
-  data = typeof data[0][0] !== `number` ? binary2ASCII(filecontent) : data;
-  localStorage.setItem(`isDAT`, true);
+  data = typeof data[0][0] !== "number" ? binary2ASCII(filecontent) : data;
+  localStorage.setItem("isDAT", true);
   saveIndexedDB(data);
 }
 
@@ -47,7 +47,7 @@ function read() {
 }
 
 function javaread() {
-  document.querySelector(`#rel_upload`).onchange = function (evt) {
+  document.querySelector("#rel_upload").onchange = function (evt) {
     if (!window.FileReader) return; // Browser is not compatible
     Array.from(evt.target.files).forEach(file => {
       const reader = new FileReader();
@@ -61,9 +61,9 @@ function javaread() {
         }
         const filecontent = evt.target.result;
         const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
-        localStorage.setItem(`filename`, file.name.substring(0, file.name.length - 4));
+        localStorage.setItem("filename", file.name.substring(0, file.name.length - 4));
         if (/csv/i.test(file.name)) saveCSV(DR);
-        if (/cfg/i.test(file.name)) localStorage.setItem(`CFGdata`, JSON.stringify(DR));
+        if (/cfg/i.test(file.name)) localStorage.setItem("CFGdata", JSON.stringify(DR));
         if (/dat/i.test(file.name)) saveDAT(DR, filecontent);
         if (/xrio/i.test(file.name)) xrio(filecontent);
         if (/\.rio/i.test(file.name)) rio(filecontent);
@@ -91,18 +91,18 @@ function startup() {
   fireBase();
   getIndex();
   funkyValues();
-  document.querySelector(`#Import`).addEventListener(`click`, importFault);
-  document.querySelector(`#Export`).addEventListener(`click`, exportFault);
-  document.querySelector("#VTR").addEventListener(`keyup`, vtRatio);
-  document.querySelector("#CTR").addEventListener(`keyup`, ctRatio);
+  document.querySelector("#Import").addEventListener("click", importFault);
+  document.querySelector("#Export").addEventListener("click", exportFault);
+  document.querySelector("#VTR").addEventListener("keyup", vtRatio);
+  document.querySelector("#CTR").addEventListener("keyup", ctRatio);
   document.querySelectorAll('input[type="checkbox"]').forEach(box => {
     box.checked = (getSavedValue(box.id) === "true");
   });
   for (let i = 0; i < 6; i++) document.getElementById(i).checked = true;
   document.querySelectorAll('input[type=number]').forEach(inp => inp.value = getSavedValue(inp.id));
   document.querySelectorAll('input[type=text]').forEach(inp => inp.value = getSavedValue(inp.id));
-  const select = document.querySelector(`select`);
-  select.value = getSavedValue(select.id) || `P438`;
+  const select = document.querySelector("select");
+  select.value = getSavedValue(select.id) || "P438";
   javaread();
   // await code here
   const DR = [];
@@ -155,12 +155,12 @@ function peakLoad() {
 }
 
 function plotProtection(csvarr) {
-  const select = document.querySelector(`select`);
+  const select = document.querySelector("select");
   const secdr = document.getElementById("SecDR");
-  const rel = select.value === `P44T`;
+  const rel = select.value === "P44T";
   const begamma = document.querySelectorAll(".box");
-  begamma[3].style.display = rel ? `none` : `block`;
-  begamma[4].style.display = rel ? `none` : `block`;
+  begamma[3].style.display = rel ? "none" : "block";
+  begamma[4].style.display = rel ? "none" : "block";
 
   //Advanced settings variables
   const z2del = Number(document.getElementById("Z2del").value);
@@ -194,7 +194,7 @@ function plotProtection(csvarr) {
   const yaxis = [polmin(-20), polmax(70)];
   const DR = [...csvarr];
   const calcStuff = { DR, trdr, vtrdr };
-  const { faultarray, volarray, Zarray } = localStorage.getItem(`isDAT`) === `true` ? addDATtoArray(DR) : addCSVtoArray(calcStuff);
+  const { faultarray, volarray, Zarray } = localStorage.getItem("isDAT") === "true" ? addDATtoArray(DR) : addCSVtoArray(calcStuff);
   const stuff = { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del };
   FaultZone(stuff);
   if (volarray.length > 1) {
@@ -209,7 +209,7 @@ function addCSVtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
   const [faultarray, volarray, Zarray] = [[], [], []];
   if (DR.length === 0) return { faultarray, volarray, Zarray };
-  const [v, va, c, ca] = JSON.parse(localStorage.getItem(`indices`));
+  const [v, va, c, ca] = JSON.parse(localStorage.getItem("indices"));
   for (let i = 1; i < DR.length; i++) { //add csv to array
     let DRdiv = (DR[i][v] / DR[i][c]) / trdr;
     DRdiv = ca > 7 ? -DRdiv : DRdiv; //siprotec temp fix
@@ -221,7 +221,7 @@ function addCSVtoArray(stuff) {
     const vlog = vmag * Math.cos(DR[i][va] * Math.PI / 180);
     const clog = cmag * Math.cos(DR[i][ca] * Math.PI / 180);
     const isfault = Math.abs(res) < 200 && Math.abs(react) < 1000 && cmag > 100;
-    if (isfault || document.querySelector(`#FullFault`).checked) {
+    if (isfault || document.querySelector("#FullFault").checked) {
       faultarray.push([res, react]);
       volarray.push([DR[i][0], vmag, cmag, vlog, clog]);
     }
@@ -260,7 +260,7 @@ function addDATtoArray(DR) {
     const clog = DR[i][c] * cmul * vtrdr * trdr;
     const isfault = Math.abs(res) < 200 && Math.abs(react) < 1000 && cmag > 100;
     const time = stime + (DR[i][1] / 1_000_000);
-    if (isfault || document.querySelector(`#FullFault`).checked) {
+    if (isfault || document.querySelector("#FullFault").checked) {
       faultarray.push([res, react]);
       volarray.push([time, vmag, cmag, vlog, clog]);
       Zarray.push([time, DR[i][Z1], DR[i][Z2], DR[i][Z3], DR[i][CBo]]);
@@ -271,8 +271,8 @@ function addDATtoArray(DR) {
 }
 
 function getCFG() {
-  const data = JSON.parse(localStorage.getItem(`CFGdata`)) || false;
-  if (!data) return { title: localStorage.getItem(`filename`), sdate: `` };
+  const data = JSON.parse(localStorage.getItem("CFGdata")) || false;
+  if (!data) return { title: localStorage.getItem("filename"), sdate: "" };
   const cfg = { vmul: 1, cmul: 1, stime: 0 };
   const ar = [];
   data.forEach((x, ind) => {
@@ -280,7 +280,7 @@ function getCFG() {
     cfg.Z2 = /Zone 2 Trip|Trip Z2|Trip signal Z2\/t2S/i.test(x[1]) ? ind : cfg.Z2;
     cfg.Z3 = /Zone 3 Trip|Trip Z3|Trip signal Z3\/t3S/i.test(x[1]) ? ind : cfg.Z3;
     cfg.CBo = /CB Closed|Brk Aux NO/i.test(x[1]) ? ind : cfg.CBo;
-    if (typeof x[1] === `string` && x[1].split(`:`).length > 2) ar.push(x);
+    if (typeof x[1] === "string" && x[1].split(":").length > 2) ar.push(x);
   });
   cfg.v = /V/i.test(data[2][4]) ? 2 : 3;
   cfg.c = /A/i.test(data[3][4]) ? 3 : 2;
@@ -288,16 +288,16 @@ function getCFG() {
   cfg.trdr = data[cfg.c][10] / data[cfg.c][11] / cfg.vtrdr;
   cfg.vmul = Number(data[cfg.v][5]);
   cfg.cmul = Number(data[cfg.c][5]);
-  cfg.sdate = ar[0][1] || ``;
-  const circuit = data[0][0] === null ? localStorage.getItem(`filename`) : data[0][0];
-  cfg.title = `${circuit.replace(/\,/g, ` `)},${ar[0]}`;
-  cfg.stime = Number(cfg.sdate.split(`:`).pop()) || 0;
+  cfg.sdate = ar[0][1] || "";
+  const circuit = data[0][0] === null ? localStorage.getItem("filename") : data[0][0];
+  cfg.title = `${circuit.replace(/\,/g, " ")},${ar[0]}`;
+  cfg.stime = Number(cfg.sdate.split(":").pop()) || 0;
   [, cfg.ana, cfg.dig] = data[1];
   return cfg;
 }
 
 function getIndex() {
-  const data = JSON.parse(localStorage.getItem(`headers`)) || [];
+  const data = JSON.parse(localStorage.getItem("headers")) || [];
   let [v, va, c, ca] = [0, 1, 2, 3];
   data.forEach((x, ind) => {
     if (/check|frost|def|max|sitiv|IB|IC |IN|ref|if|ix|uf/i.test(x)) return;
@@ -306,18 +306,18 @@ function getIndex() {
     c = /i.*rms|cur.*rms/i.test(x) ? ind : c;
     ca = /i.*a|cur.*a/i.test(x) ? ind : ca;
   });
-  localStorage.setItem(`indices`, `[${v},${va},${c},${ca}]`);
+  localStorage.setItem("indices", `[${v},${va},${c},${ca}]`);
 }
 
 function FaultZone(stuff) {
   const { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del } = stuff;
   if (DR.length === 0) return;
-  const fst = localStorage.getItem(`isDAT`) === `true` ?
+  const fst = localStorage.getItem("isDAT") === "true" ?
     DR[1][1] > 1 ? DR[1][1] / 1_000 : DR[1][1]
     : smoothdec((DR[1][0] - DR[0][0]) * 1000, 3);
   let Z3time = 0;
   let Z2time = 0;
-  let Z1 = ``;
+  let Z1 = "";
   for (let i = 0; i < faultarray.length; i++) { //check through fault if in zone
     if (inside(faultarray[i], Z3pol)) {
       Z3time = Z3time + Number(fst);
@@ -335,15 +335,15 @@ function FaultZone(stuff) {
     }
     if (inside(faultarray[i], Z1pol)) {
       document.getElementById("FaultLoc").textContent = "Zone 1 trip";
-      Z1 = `Trip`;
+      Z1 = "Trip";
       break;
     }
     else document.getElementById("FaultLoc").textContent = "No trip!";
   }
-  const Z2 = Z2time > z2del ? `Trip` : `${smoothdec(Z2time, 0)} ms`;
-  const Z3 = Z3time > z3del ? `Trip` : `${smoothdec(Z3time, 0)} ms`;
+  const Z2 = Z2time > z2del ? "Trip" : `${smoothdec(Z2time, 0)} ms`;
+  const Z3 = Z3time > z3del ? "Trip" : `${smoothdec(Z3time, 0)} ms`;
   const timers = [Z1, Z2, Z3];
-  localStorage.setItem(`ZoneTimers`, JSON.stringify(timers));
+  localStorage.setItem("ZoneTimers", JSON.stringify(timers));
 }
 
 async function dygPlot(total, xaxis, yaxis) {
@@ -358,13 +358,13 @@ async function dygPlot(total, xaxis, yaxis) {
       dateWindow: xaxis,
       valueRange: yaxis,
       title,
-      labels: ['a', 'Fault', 'Zone 1', 'Zone 2', 'Zone 3', 'Characteristic Angle', `Peak Load`],
+      labels: ['a', 'Fault', 'Zone 1', 'Zone 2', 'Zone 3', 'Characteristic Angle', "Peak Load"],
       xlabel: "Resistance (Ω)",
       ylabel: "Reactance (Ω)",
       legend: 'always',
       drawAxesAtZero: true,
       labelsSeparateLines: true,
-      colors: ["red", "blue", "purple", "green", "#cccc2b", `orange`],
+      colors: ["red", "blue", "purple", "green", "#cccc2b", "orange"],
       //connectSeparatedPoints: true,
       includeZero: true,
       axes: {
@@ -390,13 +390,13 @@ async function dygPlot(total, xaxis, yaxis) {
 }
 
 function legendFormatter(data) {
-  if (!data.series || data.series.length === 0) return ``;
-  let html = ``;
+  if (!data.series || data.series.length === 0) return "";
+  let html = "";
   if (data.x != null) html += `Resistance ${smoothdec(data.xHTML)}Ω<br>`;
 
   data.series.forEach(function (series) {
     if (!series.isVisible) return;
-    const data = series.yHTML === undefined ? `` : `Reactance ${series.yHTML}Ω`;
+    const data = series.yHTML === undefined ? "" : `Reactance ${series.yHTML}Ω`;
     let labeledData = `${series.labelHTML}: ${data}`;
     if (series.isHighlighted) labeledData = `<b>${labeledData}</b>`;
 
@@ -446,7 +446,7 @@ async function dygPlot2(data) {
       },
     }          // options
   );
-  const x = document.querySelector(`#Mag`).checked;
+  const x = document.querySelector("#Mag").checked;
   g2.setVisibility(0, x);
   g2.setVisibility(1, x);
   g2.setVisibility(2, !x);
@@ -464,8 +464,8 @@ function P44T(tr, num, empty) {
   let Z = Number(document.getElementById(`Zone${num}`).value);
   let LH = Number(document.getElementById(`Zone${num}LH`).value);
   const RHbox = document.getElementById(`Zone${num}RH`);
-  let Zr = Number(document.getElementById(`Zone3rev`).value);
-  const LZ = num === `1` ? 22.52 : 25;//Math.max(22.52, 25000 / Number(document.getElementById("PeakLoad").value));
+  let Zr = Number(document.getElementById("Zone3rev").value);
+  const LZ = num === "1" ? 22.52 : 25;//Math.max(22.52, 25000 / Number(document.getElementById("PeakLoad").value));
   const Ztilt = -0 * Math.PI / 180;
   const ftd = 40 * Math.PI / 180;
   const btilt = 3 * Math.PI / 180;
@@ -489,40 +489,40 @@ function P44T(tr, num, empty) {
   const x2 = x1 + RH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt);
   const r3 = RH;
   const x3 = 0;
-  const r4 = num === `3`
+  const r4 = num === "3"
     ? RH - (Zr + RH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.cos(a)
     : Math.max(RH - (RH * Math.sin(btilt) / Math.sin(Math.PI - btilt - a) + 0.25 * Z) * Math.cos(a), RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg));
-  const x4 = num === `3`
+  const x4 = num === "3"
     ? - (Zr + RH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.sin(a)
     : Math.max(- (RH * Math.sin(btilt) / Math.sin(Math.PI - btilt - a) + 0.25 * Z) * Math.sin(a), -RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg));
-  const r5 = num === `3`
+  const r5 = num === "3"
     ? -Zr * Math.cos(a)
     : Math.min(0.25 * Z * Math.sin(a + btilt) / Math.sin(Zdeg - btilt) * Math.cos(Zdeg), RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg));
-  const x5 = num === `3`
+  const x5 = num === "3"
     ? -Zr * Math.sin(a)
     : Math.max(-0.25 * Z * Math.sin(a + btilt) / Math.sin(Zdeg - btilt) * Math.sin(Zdeg), -RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg));
-  const r6 = num === `3`
+  const r6 = num === "3"
     ? -LH - (Zr - LH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.cos(a)
     : Zlef
       ? -LH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg)
       : -Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.cos(Zdeg);
-  const x6 = num === `3`
+  const x6 = num === "3"
     ? - (Zr - LH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.sin(a)
     : Zlef
       ? LH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg)
       : Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.sin(Zdeg);
-  const r7 = num === `3`
+  const r7 = num === "3"
     ? r1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.cos(Ztilt)
     : Zlef
       ? Z * Math.cos(a) - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.cos(Ztilt)
       : -Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.cos(Zdeg);
-  const x7 = num === `3`
+  const x7 = num === "3"
     ? x1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt)
     : Zlef
       ? Z * Math.sin(a) - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt)
       : Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.sin(Zdeg);
 
-  const char = num === `3` ? [[0, , , , , 0], [Z * Math.cos(a), , , , , Z * Math.sin(a)]] : []; //adding char angle
+  const char = num === "3" ? [[0, , , , , 0], [Z * Math.cos(a), , , , , Z * Math.sin(a)]] : []; //adding char angle
   const Zpol = [[r1, x1], [r2, x2], [r3, x3], [r4, x4], [r5, x5], [r6, x6], [r7, x7], [r1, x1]]; //Z polygon
   const Zel = [...char, [r1, ...empty, x1], [r2, ...empty, x2], [r3, ...empty, x3], [r4, ...empty, x4], [r5, ...empty, x5], [r6, ...empty, x6], [r7, ...empty, x7], [r1, ...empty, x1]];
   const stuff = { a, Z, LH };
@@ -530,15 +530,15 @@ function P44T(tr, num, empty) {
 }
 
 function Zone1P44T(tr) {
-  return P44T(tr, `1`, [,]);
+  return P44T(tr, "1", [,]);
 }
 
 function Zone2P44T(tr) {
-  return P44T(tr, `2`, [, ,]);
+  return P44T(tr, "2", [, ,]);
 }
 
 function Zone3P44T(tr) {
-  return P44T(tr, `3`, [, , ,]);
+  return P44T(tr, "3", [, , ,]);
 }
 
 function P438(tr, num, empty) {
@@ -577,17 +577,17 @@ function P438(tr, num, empty) {
 }
 
 function Zone1P438(tr) {
-  return P438(tr, `1`, [,]);
+  return P438(tr, "1", [,]);
 }
 
 function Zone2P438(tr) {
-  return P438(tr, `2`, [, ,]);
+  return P438(tr, "2", [, ,]);
 }
 
 function Zone3P438(tr) {
-  let Zr = Number(document.getElementById(`Zone3rev`).value);
+  let Zr = Number(document.getElementById("Zone3rev").value);
   Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
-  let [Zpol, Zel, stuff] = P438(tr, `3`, [, , ,]);
+  let [Zpol, Zel, stuff] = P438(tr, "3", [, , ,]);
   const { a, b, g, Z, LH } = stuff;
   const m1 = LH * Math.sin(a) / Math.sin(Math.PI - a + g);
   const x1 = -Zr * Math.sin(a);
@@ -634,17 +634,17 @@ function S7ST(tr, num, empty) {
 }
 
 function Zone1S7ST(tr) {
-  return S7ST(tr, `1`, [,]);
+  return S7ST(tr, "1", [,]);
 }
 
 function Zone2S7ST(tr) {
-  return S7ST(tr, `2`, [, ,]);
+  return S7ST(tr, "2", [, ,]);
 }
 
 function Zone3S7ST(tr) {
-  let Zr = Number(document.getElementById(`Zone3rev`).value);
+  let Zr = Number(document.getElementById("Zone3rev").value);
   Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
-  const [Zpol, Zel, stuff] = S7ST(tr, `3`, [, , ,]);
+  const [Zpol, Zel, stuff] = S7ST(tr, "3", [, , ,]);
   const { a, b, g, Z } = stuff;
   for (let i = 0; i <= 100; i++) {
     const rad = i / 100 * (b + Math.PI) + (1 - i / 100) * (g + Math.PI);
@@ -667,8 +667,8 @@ function summaryTable(data, Zarray) {
   let voltage = 0;
   const [Z1times, Z2times, Z3times, CBotimes] = [[], [], [], []];
   const multi = smoothdec((data[1][0] - data[0][0]) * 1000) < 1 ? 1.3 : 2; //bigger multiplier for 1ms interval
-  const column = [`Fault Level`, `Fault Duration`, `Fault Start`, `Fault Finish`, `Zone 1`, `Zone 2`, `Zone 3`];
-  const timers = JSON.parse(localStorage.getItem(`ZoneTimers`)) || [``, ``, ``];
+  const column = ["Fault Level", "Fault Duration", "Fault Start", "Fault Finish", "Zone 1", "Zone 2", "Zone 3"];
+  const timers = JSON.parse(localStorage.getItem("ZoneTimers")) || ["", "", ""];
   let duration = Number(data[0][0]);
   let endflag = true;
   timers.unshift(`${smoothdec(data[0], 3)} s`);
@@ -687,49 +687,49 @@ function summaryTable(data, Zarray) {
     if (x[3] === 1) Z3times.push(` at ${smoothdec(x[0], 3)}s`);
     if (x[4] === 0) CBotimes.push(`${smoothdec(x[0], 3)}s`);
   });
-  timers[2] += Z1times[0] || ``;
-  timers[3] += Z2times[0] || ``;
-  timers[4] += Z3times[0] || ``;
+  timers[2] += Z1times[0] || "";
+  timers[3] += Z2times[0] || "";
+  timers[4] += Z3times[0] || "";
   timers[1] = CBotimes[0] || timers[1];
-  duration = duration === 0 ? `???` : smoothdec(duration * 1000, 0);
-  if (endflag) timers.unshift(`Error`, `Error`);
+  duration = duration === 0 ? "???" : smoothdec(duration * 1000, 0);
+  if (endflag) timers.unshift("Error", "Error");
   const column2 = [`${smoothdec(maxfault / 1000)} kA`, `${duration} ms`, ...timers];
   const summaryArr = column.map((x, i) => [x, column2[i]]);
   table(summaryArr);
 }
 
 function table(rows) {
-  const tabdiv = document.querySelector(`#SummaryTable`);
-  const myTable = document.createElement(`table`);
-  myTable.classList.add(`scores`);
+  const tabdiv = document.querySelector("#SummaryTable");
+  const myTable = document.createElement("table");
+  myTable.classList.add("scores");
   const row = myTable.insertRow(-1);
-  row.insertCell(0).outerHTML = `<th>Item</th>`;
-  row.insertCell(1).outerHTML = `<th>Result</th>`;
+  row.insertCell(0).outerHTML = "<th>Item</th>";
+  row.insertCell(1).outerHTML = "<th>Result</th>";
   insertRow(rows, myTable);
   while (tabdiv.childElementCount > 1) tabdiv.removeChild(tabdiv.lastChild);
   tabdiv.appendChild(myTable);
 }
 
 function vtRatio() {
-  const label = document.querySelector(`label[for=VTR]`);
+  const label = document.querySelector("label[for=VTR]");
   const vtr = document.querySelector("#VTR").value || 240;
   label.innerText = `VT Ratio (26.4/${smoothdec(26.4 / vtr, 2)} kV)`;
 }
 
 function ctRatio() {
-  const label = document.querySelector(`label[for=CTR]`);
+  const label = document.querySelector("label[for=CTR]");
   const ctr = document.querySelector("#CTR").value || 600;
   label.innerText = `CT Ratio (${ctr}/1 A)`;
 }
 
 function importFault() {
-  window.open(`faultimport.html`, `_self`);
+  window.open("faultimport.html", "_self");
 }
 
 function exportFault() {
-  const headers = localStorage.getItem(`headers`);
-  const cfg = localStorage.getItem(`CFGdata`);
-  const isDAT = localStorage.getItem(`isDAT`) === `true`;
+  const headers = localStorage.getItem("headers");
+  const cfg = localStorage.getItem("CFGdata");
+  const isDAT = localStorage.getItem("isDAT") === "true";
   const params = document.location.search;
   const dbObj = firebase.database().ref(`relay/${getCFG().title.replace(/\/|\./g, '-')}`);
   const dbObj2 = firebase.database().ref(`faults/${getCFG().title.replace(/\/|\./g, '-')}`);
@@ -748,9 +748,9 @@ function parseXml(xml) {
     if (!dom.loadXML(xml)) throw `${dom.parseError.reason} ${dom.parseError.srcText}`;
   }
   function parseNode(xmlNode, result) {
-    if (xmlNode.nodeName === `#text`) {
+    if (xmlNode.nodeName === "#text") {
       const v = xmlNode.nodeValue;
-      if (v.trim()) result[`#text`] = v;
+      if (v.trim()) result["#text"] = v;
       return;
     }
     const jsonNode = {},
@@ -770,56 +770,56 @@ function parseXml(xml) {
 
 function xrio(xml) {
   const xrio = parseXml(decodeURIComponent(escape(xml))).XRio.CUSTOM;
-  const IED = xrio.Name[`#text`];
-  document.querySelector(`select`).value = /P44T/i.test(IED) ? `P44T` : /P438/i.test(IED) ? `P438` : `S7ST`;
+  const IED = xrio.Name["#text"];
+  document.querySelector("select").value = /P44T/i.test(IED) ? "P44T" : /P438/i.test(IED) ? "P438" : "S7ST";
   if (!/P44T/i.test(IED)) return;
   let [config, group, ct, groups] = [{}, {}, {}, []];
   xrio.Block.forEach(x => {
-    config = /configuration/i.test(x.Name[`#text`]) ? x : config;
-    ct = /ct and vt/i.test(x.Name[`#text`]) ? x : ct;
-    if (/Group /i.test(x.Name[`#text`])) groups.push(x);
+    config = /configuration/i.test(x.Name["#text"]) ? x : config;
+    ct = /ct and vt/i.test(x.Name["#text"]) ? x : ct;
+    if (/Group /i.test(x.Name["#text"])) groups.push(x);
   });
   config.Parameter.forEach(x => {
-    group = /Active Settings/i.test(x.Description[`#text`]) ? x : group;
+    group = /Active Settings/i.test(x.Description["#text"]) ? x : group;
   });
   group.EnumList.EnumValue.forEach(x => {
-    group.text = group.Value[`#text`] === x.EnumId ? x[`#text`] : group.text;
+    group.text = group.Value["#text"] === x.EnumId ? x["#text"] : group.text;
   });
   groups.forEach(x => {
-    if (x.Name[`#text`] === group.text) {
+    if (x.Name["#text"] === group.text) {
       x.Block.forEach(y => {
-        if (/Dist. Elem/i.test(y.Name[`#text`])) groups.distEl = y;
-        if (/logic/i.test(y.Name[`#text`])) groups.logic = y;
+        if (/Dist. Elem/i.test(y.Name["#text"])) groups.distEl = y;
+        if (/logic/i.test(y.Name["#text"])) groups.logic = y;
       });
     }
   });
   groups.distEl.Parameter.forEach(x => {
     for (let i = 1; i < 4; i++) {
-      if (`Z${i} Gnd. Reach` === x.Name[`#text`]) document.querySelector(`#Zone${i}`).value = x.Value[`#text`];
-      if (`R${i} Gnd RH Res.` === x.Name[`#text`]) document.querySelector(`#Zone${i}RH`).value = x.Value[`#text`];
-      if (`R${i} Gnd LH Res.` === x.Name[`#text`]) document.querySelector(`#Zone${i}LH`).value = x.Value[`#text`];
+      if (`Z${i} Gnd. Reach` === x.Name["#text"]) document.querySelector(`#Zone${i}`).value = x.Value["#text"];
+      if (`R${i} Gnd RH Res.` === x.Name["#text"]) document.querySelector(`#Zone${i}RH`).value = x.Value["#text"];
+      if (`R${i} Gnd LH Res.` === x.Name["#text"]) document.querySelector(`#Zone${i}LH`).value = x.Value["#text"];
     }
-    if (/z3' Gnd rev rch/i.test(x.Name[`#text`])) document.querySelector(`#Zone3rev`).value = x.Value[`#text`];
-    if (/z3 Gnd. angle/i.test(x.Name[`#text`])) document.querySelector(`#Alpha`).value = x.Value[`#text`];
+    if (/z3' Gnd rev rch/i.test(x.Name["#text"])) document.querySelector("#Zone3rev").value = x.Value["#text"];
+    if (/z3 Gnd. angle/i.test(x.Name["#text"])) document.querySelector("#Alpha").value = x.Value["#text"];
   });
   groups.logic.Parameter.forEach(x => {
-    if (/Z2 Gnd. Delay/i.test(x.Name[`#text`])) document.querySelector(`#Z2del`).value = Number(x.Value[`#text`]) * 1000;
-    if (/Z3 Gnd. Delay/i.test(x.Name[`#text`])) document.querySelector(`#Z3del`).value = Number(x.Value[`#text`]) * 1000;
+    if (/Z2 Gnd. Delay/i.test(x.Name["#text"])) document.querySelector("#Z2del").value = Number(x.Value["#text"]) * 1000;
+    if (/Z3 Gnd. Delay/i.test(x.Name["#text"])) document.querySelector("#Z3del").value = Number(x.Value["#text"]) * 1000;
   });
-  let [vtprim, vtsec, ctprim, ctsec] = [26.4, .11, 600, 1];
+  let [vtprim, vtsec, ctprim, ctsec] = [26.4, 0.11, 600, 1];
   ct.Parameter.forEach(x => {
-    vtprim = /vt prim/i.test(x.Description[`#text`]) ? x.Value[`#text`] : vtprim;
-    vtsec = /vt sec/i.test(x.Description[`#text`]) ? x.Value[`#text`] : vtsec;
-    ctprim = /ct prim/i.test(x.Description[`#text`]) ? x.Value[`#text`] : ctprim;
-    ctsec = /ct sec/i.test(x.Description[`#text`]) ? x.Value[`#text`] : ctsec;
+    vtprim = /vt prim/i.test(x.Description["#text"]) ? x.Value["#text"] : vtprim;
+    vtsec = /vt sec/i.test(x.Description["#text"]) ? x.Value["#text"] : vtsec;
+    ctprim = /ct prim/i.test(x.Description["#text"]) ? x.Value["#text"] : ctprim;
+    ctsec = /ct sec/i.test(x.Description["#text"]) ? x.Value["#text"] : ctsec;
   });
-  document.querySelector(`#VTR`).value = vtprim / vtsec;
-  document.querySelector(`#CTR`).value = ctprim / ctsec;
+  document.querySelector("#VTR").value = vtprim / vtsec;
+  document.querySelector("#CTR").value = ctprim / ctsec;
   read();
 }
 
 function rio(data) {
-  document.querySelector(`select`).value = /7ST/i.test(data) ? `S7ST` : `P44T`;
+  document.querySelector("select").value = /7ST/i.test(data) ? "S7ST" : "P44T";
   const { trdr } = getCFG();
   let res = [], levels = [res];
   const zones = {};
@@ -833,20 +833,20 @@ function rio(data) {
     levels[++level] = content;
   }
   res.forEach(x => {
-    if (x.content.length !== 0) zones[x.content[0].root.split(`,`).pop()] = x.content[2].content.map(x => x.root.split(`,`).flatMap(y => y.length === 0 || isNaN(Number(y)) ? [] : Number(y)));
+    if (x.content.length !== 0) zones[x.content[0].root.split(",").pop()] = x.content[2].content.map(x => x.root.split(",").flatMap(y => y.length === 0 || isNaN(Number(y)) ? [] : Number(y)));
   });
   for (const obj in zones) {
     const zone = document.querySelector(`#Zone${obj.slice(-1)}`);
     if (zone) {
       zone.value = smoothdec(zones[obj][1][0] / trdr);
       document.querySelector(`#Zone${obj.slice(-1)}RH`).value = smoothdec(zones[obj][1][0] / trdr);
-      document.querySelector(`#Zone${obj.slice(-1)}LH`).value = ``;
+      document.querySelector(`#Zone${obj.slice(-1)}LH`).value = "";
     }
   }
-  document.querySelector(`#Alpha`).value = zones.Z1[4][1];
-  document.querySelector(`#Beta`).value = zones.Z1[4][2];
-  document.querySelector(`#Zone3`).value = smoothdec(zones.Z3[3][0] / trdr);
-  document.querySelector(`#Zone3rev`).value = smoothdec(zones.Z3[4][0] / trdr);
+  document.querySelector("#Alpha").value = zones.Z1[4][1];
+  document.querySelector("#Beta").value = zones.Z1[4][2];
+  document.querySelector("#Zone3").value = smoothdec(zones.Z3[3][0] / trdr);
+  document.querySelector("#Zone3rev").value = smoothdec(zones.Z3[4][0] / trdr);
   read();
 }
 
@@ -878,14 +878,14 @@ function binary2ASCII(data) {
 }
 
 const hex2dec = (x, fir, sec) => {
-  x = parseInt(x.slice(fir, sec).reverse().join(``), 16);
+  x = parseInt(x.slice(fir, sec).reverse().join(""), 16);
   return sec - fir <= 2 && (x & 0x8000) > 0 ? x - 0x10000 : x;
 }
 
 const hex2bin = (x, fir, sec, diglen) => {
   x = x.slice(fir, sec).reverse();
-  let bin = ``;
-  x.forEach(a => bin = `${bin}${parseInt(a, 16).toString(2).padStart(8, `0`)}`);
+  let bin = "";
+  x.forEach(a => bin = `${bin}${parseInt(a, 16).toString(2).padStart(8, "0")}`);
   return [...bin].reverse().map(x => Number(x));
 }
 

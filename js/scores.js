@@ -3,12 +3,12 @@ funkyValues();
 function saveScores(scr) {
   const game = getSavedValue("game");
   let name = document.querySelector("#userName").value;
-  name = name === `` ? ` ` : name;
+  name = name === "" ? " " : name;
   const scores = JSON.parse(localStorage.getItem(game));
   const date = new Date().toLocaleString("en-GB", { timeZone: "Europe/London" });
   let exists = false;
   try {
-    if (typeof scores[name] !== `undefined`) {
+    if (typeof scores[name] !== "undefined") {
       const { score } = scores[name];
       const oldDate = scores[name].date;
       scores[name].date = scr > score ? date : oldDate;
@@ -28,7 +28,7 @@ function saveScores(scr) {
   }
   sendData(name, scores[name]);
   localStorage.setItem(game, JSON.stringify(scores));
-  sucPost(`Updating scores. Using cheats won't get you a high score!`);
+  sucPost("Updating scores. Using cheats won't get you a high score!");
 }
 
 function sucPost(data) {
@@ -42,7 +42,7 @@ function sucPost(data) {
 function getScores(full) {
   const game = getSavedValue("game");
   const dbObj = firebase.database().ref(game);
-  dbObj.on(`value`, snap => {
+  dbObj.on("value", snap => {
     const scores = snap.val();
     localStorage.setItem(game, JSON.stringify(scores));
     scoreTable(scores, full);

@@ -121,7 +121,7 @@ window.a = AudioContext ? new AudioContext() : null;
 board.classList.add('waiting');
 
 //startup
-localStorage.setItem(`game`, `simon`);
+localStorage.setItem("game", "simon");
 document.getElementById("userName").value = getSavedValue("userName");
 try {
   getScores();

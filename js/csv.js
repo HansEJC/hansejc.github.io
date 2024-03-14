@@ -1,6 +1,6 @@
 function addLoader(html, err, val) {
   const div = document.createElement('div');
-  const prog = document.createElement(`progress`);
+  const prog = document.createElement("progress");
   prog.max = 100; prog.value = val || 50;
   const graphdiv = document.getElementById("graphdiv3");
   const errdiv = document.getElementById("err");
@@ -56,7 +56,7 @@ function chooseOptions() {
 function addOption(opt, desc, bool, plotter) {
   const newopt = document.createElement('input'); newopt.id = opt; newopt.type = 'checkbox';
   if (bool) localStorage.setItem(opt, bool);
-  let checked = (getSavedValue(newopt.id) === `true`); newopt.checked = checked;
+  let checked = (getSavedValue(newopt.id) === "true"); newopt.checked = checked;
   const label = document.createElement("Label"); label.setAttribute("for", opt); label.innerHTML = desc;
   options.appendChild(label); label.appendChild(newopt);
   function updateOps(e) {
@@ -215,7 +215,7 @@ function parseCSV(csv) {
         j--;
       }
     }
-    if (typeof csv[i] === `undefined` || csv[i].length === 0) {
+    if (typeof csv[i] === "undefined" || csv[i].length === 0) {
       csv.splice(i, 1);
       i--;
     }
@@ -383,8 +383,8 @@ function lineStyles(sty, i) {
   const lineS = document.getElementById('LineStyles');
   const opt1 = document.createElement("option"), opt2 = document.createElement("option"), opt3 = document.createElement("option"), opt4 = document.createElement("option");
   sty[i] = document.createElement('select');
-  opt1.text = `Solid`; opt2.text = `Dotted`; opt3.text = `Dashed`; opt4.text = `Dotdash`;
-  opt1.value = `null`; opt2.value = `[2,2]`; opt3.value = JSON.stringify(Dygraph.DASHED_LINE); opt4.value = JSON.stringify(Dygraph.DOT_DASH_LINE);
+  opt1.text = "Solid"; opt2.text = "Dotted"; opt3.text = "Dashed"; opt4.text = "Dotdash";
+  opt1.value = "null"; opt2.value = "[2,2]"; opt3.value = JSON.stringify(Dygraph.DASHED_LINE); opt4.value = JSON.stringify(Dygraph.DOT_DASH_LINE);
   sty[i].appendChild(opt1); sty[i].appendChild(opt2); sty[i].appendChild(opt3); sty[i].appendChild(opt4);
   sty[i].id = `csvlines${i}`;
   lineS.appendChild(sty[i]);
@@ -450,7 +450,7 @@ function idents(len) {
 
 //below code was taken from <script src="https://dygraphs.com/src/extras/smooth-plotter.js"></script>
 function getControlPoints(p0, p1, p2, opt_alpha, opt_allowFalseExtrema) {
-  const alpha = (typeof opt_alpha !== `undefined`) ? opt_alpha : 1 / 3;  // 0=no smoothing, 1=crazy smoothing
+  const alpha = (typeof opt_alpha !== "undefined") ? opt_alpha : 1 / 3;  // 0=no smoothing, 1=crazy smoothing
   const allowFalseExtrema = opt_allowFalseExtrema || false;
 
   if (!p2) {
@@ -559,14 +559,14 @@ function findExtremes() {
 }
 
 function table(rows) {
-  const tabdiv = document.querySelector(`#ExtremesTable`);
-  const myTable = document.createElement(`table`);
-  myTable.classList.add(`scores`);
+  const tabdiv = document.querySelector("#ExtremesTable");
+  const myTable = document.createElement("table");
+  myTable.classList.add("scores");
   const row = myTable.insertRow(-1);
-  row.insertCell(0).outerHTML = `<th>Series</th>`;
-  row.insertCell(1).outerHTML = `<th>Min</th>`;
-  row.insertCell(2).outerHTML = `<th>Average</th>`;
-  row.insertCell(3).outerHTML = `<th>Max</th>`;
+  row.insertCell(0).outerHTML = "<th>Series</th>";
+  row.insertCell(1).outerHTML = "<th>Min</th>";
+  row.insertCell(2).outerHTML = "<th>Average</th>";
+  row.insertCell(3).outerHTML = "<th>Max</th>";
 
   try {
     rows.forEach(arr => {

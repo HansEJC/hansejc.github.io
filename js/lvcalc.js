@@ -25,7 +25,7 @@ function cables() { //cables from table 4E4A page 417
 }
 
 function addCable(cable) {
-  const cables = JSON.parse(localStorage.getItem(`LVCableData`)) || {};
+  const cables = JSON.parse(localStorage.getItem("LVCableData")) || {};
   cables[cable[0]] = {//current carrying capacity below
     c: {
       two: cable[1],
@@ -42,15 +42,15 @@ function addCable(cable) {
     two: cable[7],
     three: cable[8]
   }
-  localStorage.setItem(`LVCableData`, JSON.stringify(cables));
+  localStorage.setItem("LVCableData", JSON.stringify(cables));
 }
 
 function cableSizes() {
-  const cables = JSON.parse(localStorage.getItem(`LVCableData`));
-  const phasesize = document.querySelector(`#PhaseSize`);
-  const cpcsize = document.querySelector(`#CPCSize`);
+  const cables = JSON.parse(localStorage.getItem("LVCableData"));
+  const phasesize = document.querySelector("#PhaseSize");
+  const cpcsize = document.querySelector("#CPCSize");
   for (const size in cables) {
-    const opt = document.createElement(`option`);
+    const opt = document.createElement("option");
     opt.value = size;
     opt.innerHTML = `${size} mm<sup>2</sup>`;
     phasesize.appendChild(opt.cloneNode(true));
@@ -59,16 +59,16 @@ function cableSizes() {
 }
 
 function cableDets() {
-  const ref = document.querySelector(`#ReferenceMethod`).value;
-  const phasesize = document.querySelector(`#PhaseSize`).value;
-  const phasecores = document.querySelector(`#PhaseCores`).value;
-  const phaserating = document.querySelector(`#PhaseRating`);
-  const phasedrop = document.querySelector(`#PhaseDrop`);
-  const cpcsize = document.querySelector(`#CPCSize`).value;
-  const cpccores = document.querySelector(`#CPCCores`).value;
-  const cpcrating = document.querySelector(`#CPCRating`);
-  const cpcdrop = document.querySelector(`#CPCDrop`);
-  const cables = JSON.parse(localStorage.getItem(`LVCableData`));
+  const ref = document.querySelector("#ReferenceMethod").value;
+  const phasesize = document.querySelector("#PhaseSize").value;
+  const phasecores = document.querySelector("#PhaseCores").value;
+  const phaserating = document.querySelector("#PhaseRating");
+  const phasedrop = document.querySelector("#PhaseDrop");
+  const cpcsize = document.querySelector("#CPCSize").value;
+  const cpccores = document.querySelector("#CPCCores").value;
+  const cpcrating = document.querySelector("#CPCRating");
+  const cpcdrop = document.querySelector("#CPCDrop");
+  const cables = JSON.parse(localStorage.getItem("LVCableData"));
 
   phaserating.textContent = `${cables[phasesize][ref][phasecores]} A`;
   phasedrop.textContent = `${cables[phasesize][phasecores]} mV/A/m`;
@@ -99,21 +99,21 @@ function protection() {
 }
 
 function protectionSelect() {
-  const protection = JSON.parse(localStorage.getItem(`LVProtection`));
-  const protectiontype = document.querySelector(`#Protection`);
+  const protection = JSON.parse(localStorage.getItem("LVProtection"));
+  const protectiontype = document.querySelector("#Protection");
   protectiontype.innerHTML = null;
   for (const rating in protection) {
-    const opt = document.createElement(`option`);
+    const opt = document.createElement("option");
     opt.value = rating;
     opt.innerHTML = rating;
-    const fuse = (document.querySelector("#ProtectionType").value.includes(`F`));
+    const fuse = (document.querySelector("#ProtectionType").value.includes("F"));
     if (fuse && protection[rating].Fe) protectiontype.appendChild(opt);
     else if (!fuse && !protection[rating].Fe) protectiontype.appendChild(opt);
   }
 }
 
 function addMCB(rating) {
-  const protection = JSON.parse(localStorage.getItem(`LVProtection`)) || {};
+  const protection = JSON.parse(localStorage.getItem("LVProtection")) || {};
   protection[`${rating}A MCB`] = {
     b: {
       zs: zsCalc(5, rating),
@@ -128,11 +128,11 @@ function addMCB(rating) {
       trip: rating * 20
     }
   }
-  localStorage.setItem(`LVProtection`, JSON.stringify(protection));
+  localStorage.setItem("LVProtection", JSON.stringify(protection));
 }
 
 function addFuse(fuse) {
-  const protection = JSON.parse(localStorage.getItem(`LVProtection`)) || {};
+  const protection = JSON.parse(localStorage.getItem("LVProtection")) || {};
   protection[`${fuse[0]}A Fuse`] = {
     Fe: {
       zs: fuse[1],
@@ -143,17 +143,17 @@ function addFuse(fuse) {
       trip: fuse[4]
     }
   }
-  localStorage.setItem(`LVProtection`, JSON.stringify(protection));
+  localStorage.setItem("LVProtection", JSON.stringify(protection));
 }
 
 const zsCalc = (type, rating) => smoothdec(230 * 0.95 / (type * rating));
 
 function protectionDets() {
-  const protection = document.querySelector(`#Protection`).value;
-  const type = document.querySelector(`#ProtectionType`).value;
-  const Zs = document.querySelector(`#ProtectionZs`);
-  const trip = document.querySelector(`#ProtectionTrip`);
-  const protect = JSON.parse(localStorage.getItem(`LVProtection`));
+  const protection = document.querySelector("#Protection").value;
+  const type = document.querySelector("#ProtectionType").value;
+  const Zs = document.querySelector("#ProtectionZs");
+  const trip = document.querySelector("#ProtectionTrip");
+  const protect = JSON.parse(localStorage.getItem("LVProtection"));
 
   Zs.textContent = `${protect[protection][type].zs} Ω`;
   trip.textContent = `${protect[protection][type].trip} A`;
@@ -161,49 +161,49 @@ function protectionDets() {
 }
 
 function mainCalcs() {
-  const phaserating = document.querySelector(`#PhaseRating`);
-  const trip = document.querySelector(`#ProtectionTrip`);
-  const protectrating = Number(document.querySelector(`#Protection`).value.split(`A`)[0]);
-  const designcurrent = Number(document.querySelector(`#DesignCurrent`).value);
-  const phasevoltage = Number(document.querySelector(`#PhaseVoltage`).value);
-  const len = Number(document.querySelector(`#CableLength`).value);
-  const vdrop = document.querySelector(`#PhaseDrop`);
+  const phaserating = document.querySelector("#PhaseRating");
+  const trip = document.querySelector("#ProtectionTrip");
+  const protectrating = Number(document.querySelector("#Protection").value.split("A")[0]);
+  const designcurrent = Number(document.querySelector("#DesignCurrent").value);
+  const phasevoltage = Number(document.querySelector("#PhaseVoltage").value);
+  const len = Number(document.querySelector("#CableLength").value);
+  const vdrop = document.querySelector("#PhaseDrop");
   const Zs = Number(document.querySelector("#Zs").value);
-  const K = Number(document.querySelector(`#K`).value);
+  const K = Number(document.querySelector("#K").value);
   const proZs = document.querySelector("#ProtectionZs");
-  const earthfault = document.querySelector(`#EarthFault`);
-  const maxfault = document.querySelector(`#MaxFault`);
-  const minc = document.querySelector(`#MinCable`);
-  const triptime = document.querySelector("#ProtectionType").value.includes(`F`) ? 5 : 0.4;
+  const earthfault = document.querySelector("#EarthFault");
+  const maxfault = document.querySelector("#MaxFault");
+  const minc = document.querySelector("#MinCable");
+  const triptime = document.querySelector("#ProtectionType").value.includes("F") ? 5 : 0.4;
 
-  const phasesafe = Number(phaserating.textContent.split(` `)[0]) > protectrating && protectrating > designcurrent;
-  phaserating.className = phasesafe ? `label safe` : `label danger`;
-  trip.className = protectrating > designcurrent ? `label safe` : `label danger`;
-  const vdropped = Number(vdrop.textContent.split(` `)[0]) / 1000 * len * designcurrent;
-  document.querySelector(`#VoltageDrop`).textContent = `${smoothdec(vdropped)} V`;
-  vdrop.className = 100 * vdropped / phasevoltage < 2.5 ? `label safe` : `label danger`;
+  const phasesafe = Number(phaserating.textContent.split(" ")[0]) > protectrating && protectrating > designcurrent;
+  phaserating.className = phasesafe ? "label safe" : "label danger";
+  trip.className = protectrating > designcurrent ? "label safe" : "label danger";
+  const vdropped = Number(vdrop.textContent.split(" ")[0]) / 1000 * len * designcurrent;
+  document.querySelector("#VoltageDrop").textContent = `${smoothdec(vdropped)} V`;
+  vdrop.className = 100 * vdropped / phasevoltage < 2.5 ? "label safe" : "label danger";
 
   const maxv = smoothdec(phasevoltage * 1.1);
   const minv = smoothdec(phasevoltage * 0.9);
-  document.querySelector(`#MaxVoltage`).textContent = `${maxv} V`;
-  document.querySelector(`#MinVoltage`).textContent = `${minv} V`;
+  document.querySelector("#MaxVoltage").textContent = `${maxv} V`;
+  document.querySelector("#MinVoltage").textContent = `${minv} V`;
 
-  const Zc = len * Number(vdrop.textContent.split(` `)[0]) / 2 / 1000;
+  const Zc = len * Number(vdrop.textContent.split(" ")[0]) / 2 / 1000;
   const Zel = smoothdec(Zc * 2 + Zs, 4);
   const Zt = smoothdec(Zc + Zc / 2 + Zs, 4);
   const mincable = smoothdec(Math.sqrt((maxv / Zt) ** 2 * triptime) / K); //0.4s disconnection time. The time should really be cross checked with the trip curves
-  document.querySelector(`#TripTime`).textContent = `${triptime} s`;
+  document.querySelector("#TripTime").textContent = `${triptime} s`;
 
-  document.querySelector(`#CableImpedance`).textContent = `${smoothdec(Zc, 4)} Ω`;
-  document.querySelector(`#ELImpedance`).textContent = `${Zel} Ω`;
-  document.querySelector(`#TotalImpedance`).textContent = `${Zt} Ω`;
-  proZs.className = Zt < proZs.textContent.split(` `)[0] ? `label safe` : `label danger`;
+  document.querySelector("#CableImpedance").textContent = `${smoothdec(Zc, 4)} Ω`;
+  document.querySelector("#ELImpedance").textContent = `${Zel} Ω`;
+  document.querySelector("#TotalImpedance").textContent = `${Zt} Ω`;
+  proZs.className = Zt < proZs.textContent.split(" ")[0] ? "label safe" : "label danger";
   earthfault.textContent = `${smoothdec(minv / Zel)} A`;
   maxfault.textContent = `${smoothdec(maxv / Zt)} A`;
   minc.textContent = `${mincable} mm2`;
-  earthfault.className = smoothdec(minv / Zel) > Number(trip.textContent.split(` `)[0]) ? `label safe` : `label danger`;
-  maxfault.className = smoothdec(maxv / Zt) > Number(trip.textContent.split(` `)[0]) ? `label safe` : `label danger`;
-  minc.className = mincable < Number(document.querySelector("#PhaseSize").value) ? `label safe` : `label danger`;
+  earthfault.className = smoothdec(minv / Zel) > Number(trip.textContent.split(" ")[0]) ? "label safe" : "label danger";
+  maxfault.className = smoothdec(maxv / Zt) > Number(trip.textContent.split(" ")[0]) ? "label safe" : "label danger";
+  minc.className = mincable < Number(document.querySelector("#PhaseSize").value) ? "label safe" : "label danger";
 }
 
 //startup

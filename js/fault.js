@@ -160,14 +160,14 @@ function dygPlot(earray, subarray) {
 }
 
 function table(rows) {
-  const tabdiv = document.querySelector(`#FaultTable`);
-  const myTable = document.createElement(`table`);
-  myTable.classList.add(`scores`);
+  const tabdiv = document.querySelector("#FaultTable");
+  const myTable = document.createElement("table");
+  myTable.classList.add("scores");
   const row = myTable.insertRow(-1);
-  row.insertCell(0).outerHTML = `<th>Location Name</th>`;
-  row.insertCell(1).outerHTML = `<th>Fault Current (kA)</th>`;
+  row.insertCell(0).outerHTML = "<th>Location Name</th>";
+  row.insertCell(1).outerHTML = "<th>Fault Current (kA)</th>";
   insertRow(rows, myTable);
-  tabdiv.innerHTML = ``;
+  tabdiv.innerHTML = "";
   tabdiv.appendChild(myTable);
 }
 
