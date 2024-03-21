@@ -1,3 +1,6 @@
+/**
+ * Shows and hides advanced tab
+ */
 function checkit() {
   const x = document.getElementById("Sec").checked || document.querySelector("#advanced").checked;
   const y = document.getElementById("hide");
@@ -6,6 +9,10 @@ function checkit() {
   ctRatio();
 }
 
+/**
+ * Saves csv file and saves headers
+ * @param data data to be saved
+ */
 function saveCSV(data) {
   if (typeof data[1][0] === "string") {
     data.pop(); //remove last empty line
@@ -20,6 +27,11 @@ function saveCSV(data) {
   saveIndexedDB(data);
 }
 
+/**
+ * Saves dat file and checks if it is binary that needs converting
+ * @param data data to be saved
+ * @param filecontent data before being parsed by papaparse
+ */
 function saveDAT(data, filecontent) {
   data.pop(); //remove last empty line
   data = typeof data[0][0] !== "number" ? binary2ASCII(filecontent) : data;
@@ -27,6 +39,10 @@ function saveDAT(data, filecontent) {
   saveIndexedDB(data);
 }
 
+/**
+ * Saves data in the local object store
+ * @param data data to be saved
+ */
 function saveIndexedDB(data) {
   getIndex();
   const transaction = db.transaction(["plots"], "readwrite");
@@ -35,6 +51,9 @@ function saveIndexedDB(data) {
   plotProtection(data);
 }
 
+/**
+ * Reads fault data from storage and sends for plotting
+ */
 function read() {
   const transaction = db.transaction(["plots"], "readonly");
   const objectStore = transaction.objectStore("plots");
@@ -46,6 +65,9 @@ function read() {
   }
 }
 
+/**
+ * Reads the input file(s) and sends them for processing and storage
+ */
 function javaread() {
   document.querySelector("#rel_upload").onchange = function (evt) {
     if (!window.FileReader) return; // Browser is not compatible
@@ -115,13 +137,28 @@ function startup() {
   checkit();
 }
 
+/**
+ * Toggles visibility of data in first plot
+ */
 function change(el) {
   g3.setVisibility(el.id, el.checked);
+  if (Number(el.id) > 2) return;
+  const zoomer = Math.round(document.querySelector('#Zone2RH').value);
+  g3.updateOptions({
+    dateWindow: [-zoomer, zoomer],
+    valueRange: [-zoomer * 470 / 850, zoomer * 470 / 850]
+  });
 }
 
-function inside(point, vs) {
-  // ray-casting algorithm based on
+/**
+ * // ray-casting algorithm based on
   // http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+ * @param point point to check
+ * @param vs polygon to check
+ * @returns boolean if inside
+ */
+function inside(point, vs) {
+
   const [x, y] = point;
   let inside = false;
   for (let i = 0, j = vs.length - 1; i < vs.length; j = i++) {
@@ -135,6 +172,10 @@ function inside(point, vs) {
   return inside;
 }
 
+/**
+ * Creates the load characteristic array
+ * @returns load array
+ */
 function peakLoad() {
   const load = Number(document.querySelector("#PeakLoad").value) || 1000;
   const Z = 25000 / load;
@@ -152,6 +193,10 @@ function peakLoad() {
   return loadarray;
 }
 
+/**
+ * Plots the protection to the dygraphs and checks what protection is selected
+ * @param csvarr distrubance record, though name is misleading as it's not only csv 
+ */
 function plotProtection(csvarr) {
   const select = document.querySelector("select");
   const secdr = document.getElementById("SecDR");
@@ -185,10 +230,10 @@ function plotProtection(csvarr) {
 
   const elements2 = [...peakLoad(), ...Z3el, ...Z2el, ...Z1el]; //All Zone polygons and the char angle
   let polnums = [...Z1pol.flat(), ...Z2pol.flat(), ...Z3pol.flat()];
-  polnums = { max: Math.max(...polnums) * 1.2, min: Math.min(...polnums) * 1.2 };
+  polnums = { max: Math.max(...polnums) + 2, min: Math.min(...polnums) - 2 };
   const polmax = (num) => Math.max(polnums.max, num);
   const polmin = (num) => Math.min(polnums.min, num);
-  const xaxis = [polmin(-40), polmax(50)];
+  const xaxis = [polmin(-20) * 850 / 470, polmax(70) * 850 / 470];
   const yaxis = [polmin(-20), polmax(70)];
   const DR = [...csvarr];
   const calcStuff = { DR, trdr, vtrdr };
@@ -203,6 +248,11 @@ function plotProtection(csvarr) {
   dygPlot(total, xaxis, yaxis);
 }
 
+/**
+ * Process csv file to array
+ * @param stuff disturbance record and ratios
+ * @returns returns fault array in impedance and voltages, currents, and and zone trip, CB open array
+ */
 function addCSVtoArray(stuff) {
   const { DR, trdr, vtrdr } = stuff;
   const [faultarray, volarray, Zarray] = [[], [], []];
@@ -228,6 +278,11 @@ function addCSVtoArray(stuff) {
   return { faultarray, volarray, Zarray };
 }
 
+/**
+ * Process dat file to array
+ * @param DR disturbance record
+ * @returns returns fault array in impedance and voltages, currents, and and zone trip, CB open array
+ */
 function addDATtoArray(DR) {
   const { vmul, cmul, stime, Z1, Z2, Z3, CBo, trdr, vtrdr, v, c } = getCFG();
   const [faultarray, volarray, Zarray] = [[], [], []];
@@ -268,6 +323,10 @@ function addDATtoArray(DR) {
   return { faultarray, volarray, Zarray };
 }
 
+/**
+ * Process the cfg file to get all necessary info and column numbers
+ * @returns cfg object with all the saved parameters
+ */
 function getCFG() {
   const data = JSON.parse(localStorage.getItem("CFGdata")) || false;
   if (!data) return { title: localStorage.getItem("filename"), sdate: "" };
@@ -294,6 +353,9 @@ function getCFG() {
   return cfg;
 }
 
+/**
+ * Save indices to localstorage. This is only needed for csv inputs
+ */
 function getIndex() {
   const data = JSON.parse(localStorage.getItem("headers")) || [];
   let [v, va, c, ca] = [0, 1, 2, 3];
@@ -307,6 +369,10 @@ function getIndex() {
   localStorage.setItem("indices", `[${v},${va},${c},${ca}]`);
 }
 
+/**
+ * Check if there was a fault in one of the zones
+ * @param stuff all the input info
+ */
 function FaultZone(stuff) {
   const { DR, faultarray, Z1pol, Z2pol, Z3pol, z2del, z3del } = stuff;
   if (DR.length === 0) return;
@@ -344,6 +410,12 @@ function FaultZone(stuff) {
   localStorage.setItem("ZoneTimers", JSON.stringify(timers));
 }
 
+/**
+ * Plot protection zones and fault
+ * @param total protection zones and fault array
+ * @param xaxis size xaxis
+ * @param yaxis size yaxis
+ */
 async function dygPlot(total, xaxis, yaxis) {
   try {
     if (typeof g3 !== 'undefined') g3.destroy();
@@ -387,6 +459,10 @@ async function dygPlot(total, xaxis, yaxis) {
   });
 }
 
+/**
+ * Format impedance plot legend
+ * @param data dygraph data
+ */
 function legendFormatter(data) {
   if (!data.series || data.series.length === 0) return "";
   let html = "";
@@ -403,6 +479,10 @@ function legendFormatter(data) {
   return html;
 }
 
+/**
+ * Plot analog voltages and currents
+ * @param data voltages and currents
+ */
 async function dygPlot2(data) {
   try {
     if (typeof g2 !== 'undefined') g2.destroy();
@@ -456,6 +536,13 @@ async function dygPlot2(data) {
   });
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @param num protection zone
+ * @param empty empty array spaces to not clash with previous zones
+ * @returns Zone quadrilateral
+ */
 function P44T(tr, num, empty) {
   //%Zone setting
   let a = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
@@ -527,18 +614,40 @@ function P44T(tr, num, empty) {
   return [Zpol, Zel, stuff];
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @returns Zone quadrilateral
+ */
 function Zone1P44T(tr) {
   return P44T(tr, "1", [,]);
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @returns Zone quadrilateral
+ */
 function Zone2P44T(tr) {
   return P44T(tr, "2", [, ,]);
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @returns Zone quadrilateral
+ */
 function Zone3P44T(tr) {
   return P44T(tr, "3", [, , ,]);
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @param num protection zone
+ * @param empty empty array spaces to not clash with previous zones
+ * @returns Zone quadrilateral
+ */
 function P438(tr, num, empty) {
   //%Zone 1 setting
   const a = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
@@ -574,14 +683,29 @@ function P438(tr, num, empty) {
   return [Zpol, Zel, stuff];
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @returns Zone quadrilateral
+ */
 function Zone1P438(tr) {
   return P438(tr, "1", [,]);
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @returns Zone quadrilateral
+ */
 function Zone2P438(tr) {
   return P438(tr, "2", [, ,]);
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @returns Zone quadrilateral
+ */
 function Zone3P438(tr) {
   let Zr = Number(document.getElementById("Zone3rev").value);
   Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
@@ -599,6 +723,13 @@ function Zone3P438(tr) {
   return [Zpol, Zel];
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @param num protection zone
+ * @param empty empty array spaces to not clash with previous zones
+ * @returns Zone quadrilateral
+ */
 function S7ST(tr, num, empty) {
   //%Zone 1 setting
   const a = (Number(document.getElementById("Alpha").value) * Math.PI / 180);
@@ -631,14 +762,29 @@ function S7ST(tr, num, empty) {
   return [Zpol, Zel, stuff];
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @returns Zone quadrilateral
+ */
 function Zone1S7ST(tr) {
   return S7ST(tr, "1", [,]);
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @returns Zone quadrilateral
+ */
 function Zone2S7ST(tr) {
   return S7ST(tr, "2", [, ,]);
 }
 
+/**
+ * Build Relay quadrilateral array
+ * @param tr vt and ct ratio
+ * @returns Zone quadrilateral
+ */
 function Zone3S7ST(tr) {
   let Zr = Number(document.getElementById("Zone3rev").value);
   Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
@@ -755,7 +901,7 @@ function exportFault() {
   db.transaction(["plots"]).objectStore("plots").openCursor(null, "prev").onsuccess = async (e) => {
     const data = e.target.result.value.data;
     dbObj.update({ data, headers, cfg, isDAT, params });
-    dbObj2.update({ isDAT });
+    dbObj2.update({ isDAT }); //doesn't really need to send anything, just create the DB entry
   }
 }
 
@@ -909,7 +1055,7 @@ function binary2ASCII(data) {
     for (let i = 0; i < ana; i++) {
       x[2 + i] = hex2dec(x, 8 + i * 2, 10 + i * 2);
     }
-    x.splice(ana + 2, bytes - ana - 2, ...hex2bin(x, ana * 2 + 8, bytes, diglen));
+    x.splice(ana + 2, bytes - ana - 2, ...hex2bin(x, ana * 2 + 8, bytes));
   });
   return ASCII;
 }
