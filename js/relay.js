@@ -95,14 +95,14 @@ function javaread() {
   if (idbSupported) {
     const openRequest = indexedDB.open("graph", 1);
     openRequest.onupgradeneeded = dbUpgrade(db);
-    openRequest.onsuccess = function (e) {
+    openRequest.onsuccess = (e) => {
       db = e.target.result;
       const transaction = db.transaction(["plots"]);
       const objectStore = transaction.objectStore("plots");
       const request = objectStore.get("2");
-      request.onerror = function (event) {
+      request.onerror = (event) => {
       };
-      request.onsuccess = function (event) {
+      request.onsuccess = (event) => {
         try { read(); } catch (e) { logError(e); }
       };
     }
@@ -145,8 +145,8 @@ function change(el) {
   if (Number(el.id) > 2) return;
   const zoomer = Math.round(document.querySelector('#Zone2RH').value);
   g3.updateOptions({
-    dateWindow: [-zoomer, zoomer],
-    valueRange: [-zoomer * 470 / 850, zoomer * 470 / 850]
+    dateWindow: [-zoomer * 850 / 470, zoomer * 850 / 470],
+    valueRange: [-zoomer, zoomer]
   });
 }
 
