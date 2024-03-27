@@ -100,9 +100,7 @@ function javaread() {
       const transaction = db.transaction(["plots"]);
       const objectStore = transaction.objectStore("plots");
       const request = objectStore.get("2");
-      request.onerror = (event) => {
-      };
-      request.onsuccess = (event) => {
+      request.onsuccess = () => {
         try { read(); } catch (e) { logError(e); }
       };
     }
@@ -120,9 +118,7 @@ function startup() {
   document.querySelector("#Export").addEventListener("click", exportFault);
   document.querySelector("#VTR").addEventListener("keyup", vtRatio);
   document.querySelector("#CTR").addEventListener("keyup", ctRatio);
-  document.querySelectorAll('input[type="checkbox"]').forEach(box => {
-    box.checked = (getSavedValue(box.id) === "true");
-  });
+  for (let i = 0; i <= 5; i++) document.querySelector(`#\\3${i}`).addEventListener("change", change);
   javaread();
   // await code here
   const DR = [];
@@ -130,9 +126,8 @@ function startup() {
   document.onkeyup = () => {
     try { read(); } catch (e) { logError(e); }
   };
-  document.querySelectorAll('input[type=radio]').forEach(inp => {
-    inp.onchange = function () { read(); checkit(); };
-    inp.checked = getSavedValue(inp.id) === "true" || getSavedValue(inp.id) === "";
+  document.querySelectorAll('input').forEach(inp => {
+    if (inp.type === "checkbox" || inp.type === "radio") inp.onchange = function () { read(); checkit(); };
   });
   checkit();
 }
@@ -141,7 +136,7 @@ function startup() {
  * Toggles visibility of data in first plot
  */
 function change(el) {
-  g3.setVisibility(el.id, el.checked);
+  g3.setVisibility(el.target.id, el.target.checked);
   if (Number(el.id) > 2) return;
   const zoomer = Math.round(document.querySelector('#Zone2RH').value);
   g3.updateOptions({
@@ -549,7 +544,6 @@ function P44T(tr, num, empty) {
   let Z = Number(document.getElementById(`Zone${num}`).value);
   let LH = Number(document.getElementById(`Zone${num}LH`).value);
   const RHbox = document.getElementById(`Zone${num}RH`);
-  let Zr = Number(document.getElementById("Zone3rev").value);
   const LZ = num === "1" ? 22.52 : 25;//Math.max(22.52, 25000 / Number(document.getElementById("PeakLoad").value));
   const Ztilt = -0 * Math.PI / 180;
   const ftd = 40 * Math.PI / 180;
@@ -564,7 +558,7 @@ function P44T(tr, num, empty) {
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
-    Z /= tr; RH /= tr; LH /= tr; Zr /= tr;
+    Z /= tr; RH /= tr; LH /= tr;
   }
   //%Zone plot
   const Zlef = Z > LH * Math.sin(a) * Math.sin(Zdeg + Ztilt) / Math.sin(Math.PI - Zdeg - a) / Math.sin(a - Ztilt);

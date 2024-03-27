@@ -52,7 +52,7 @@
             <section class="box">
               <form>
                 <label for="Relay">Relay</label>
-                <select id="Relay" onchange='read();'>
+                <select id="Relay">
                   <option value="P44T">P44T</option>
                   <option value="P438">P438</option>
                   <option value="S7ST">7ST</option>
@@ -93,7 +93,7 @@
                 <label for="Zone1">Zone 1 <input type="number" id="Zone1" /> </label>
                 <label for="Zone1RH">Zone 1RH<input type="number" id="Zone1RH" /></label>
                 <label for="Zone1LH">Zone 1LH <input type="number" id="Zone1LH" /></label>
-                <label for="advanced"><input type=checkbox id="advanced" onchange='checkit();'>Advanced</label>
+                <label for="advanced"><input type=checkbox id="advanced">Advanced</label>
               </form>
             </section>
             <section class="box">
@@ -102,7 +102,7 @@
                 <label for="Zone2RH">Zone 2RH<input type="number" id="Zone2RH" /></label>
                 <label for="Zone2LH">Zone 2LH <input type="number" id="Zone2LH" /></label>
                 <label for="Prim"><input type="radio" name="drive" id="Prim" checked>Primary</label>
-                <label for="Sec"><input type="radio" name="drive" id="Sec" onchange="checkit();">Secondary</label>
+                <label for="Sec"><input type="radio" name="drive" id="Sec">Secondary</label>
               </form>
             </section>
             <section class="box">
@@ -126,7 +126,7 @@
                 <label for="VTR">VT Ratio (26400/110V)</label><input type="number" id="VTR" />
                 <label for="CTR"> CT Ratio (600/1A)</label><input type="number" id="CTR" />
                 <label for="PrimDR"><input type="radio" name="DR" id="PrimDR" checked>Primary DR</label>
-                <label for="SecDR"><input type="radio" name="DR" id="SecDR" onchange="">Secondary DR</label>
+                <label for="SecDR"><input type="radio" name="DR" id="SecDR">Secondary DR</label>
               </form>
             </section>
             <section class="box">
@@ -140,17 +140,17 @@
           <div class="row">
             <article class="post">
               <p><b>Show: </b>
-                <input type=checkbox id=0 onchange="change(this)" checked>
+                <input type=checkbox id=0 checked>
                 <label for="0"> Fault</label>
-                <input type=checkbox id=1 onchange="change(this)" checked>
+                <input type=checkbox id=1 checked>
                 <label for="1"> Zone1</label>
-                <input type=checkbox id=2 onchange="change(this)" checked>
+                <input type=checkbox id=2 checked>
                 <label for="2"> Zone2</label>
-                <input type=checkbox id=3 onchange="change(this)" checked>
+                <input type=checkbox id=3 checked>
                 <label for="3"> Zone3</label>
-                <input type=checkbox id=4 onchange="change(this)" checked>
+                <input type=checkbox id=4 checked>
                 <label for="4"> Char Angle</label>
-                <input type=checkbox id=5 onchange="change(this)" checked>
+                <input type=checkbox id=5 checked>
                 <label for="5"> Peak Load</label>
               </p>
               <div id="graphdiv3"></div>
@@ -171,10 +171,10 @@
                 <form>
                   <label for="Mag" style="display: inline-block;"><input type="radio" name="MagAnal" id="Mag"
                       checked>Magnitudes</label>
-                  <label for="Anal" style="display: inline-block;"><input type="radio" name="MagAnal" id="Anal"
-                      onchange="">Analogue</label>
+                  <label for="Anal" style="display: inline-block;"><input type="radio" name="MagAnal"
+                      id="Anal">Analogue</label>
                   <br>
-                  <label for="FullFault"> <input type=checkbox id="FullFault" onchange="read();">Show
+                  <label for="FullFault"> <input type=checkbox id="FullFault">Show
                     Full Fault</label>
                   <b>Summary</b>
                 </form>
