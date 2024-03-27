@@ -1,5 +1,8 @@
 fireBase();
 
+/**
+ * Retrieves fault headers from firebase database to create table and creates indexedDB
+ */
 function getFaults() {
   const dbObj = firebase.database().ref("faults");
   dbObj.on("value", snap => {
@@ -7,11 +10,16 @@ function getFaults() {
     faultTable(faults);
   });
   const openRequest = indexedDB.open("graph", 1);
-  openRequest.onsuccess = function (e) {
+  openRequest.onupgradeneeded = dbUpgrade(db); //this is needed to create the db!
+  openRequest.onsuccess = (e) => {
     db = e.target.result;
   }
 }
 
+/**
+ * Imports full fault from firebase database and saves it to the indexedDB, then opens the relay page
+ * @param fault fault to be imported
+ */
 function importFault(fault) {
   const dbObj = firebase.database().ref(`relay/${fault.target.innerHTML},${fault.target.parentElement.children[1].innerHTML.replace(/\//g, "-")},${fault.target.parentElement.children[2].innerHTML.replace(/\./g, "-")}`);
   dbObj.once("value", snap => {
@@ -27,6 +35,10 @@ function importFault(fault) {
   });
 }
 
+/**
+ * Fills table with fault headers from database
+ * @param faults fault headers from firebase database
+ */
 function faultTable(faults) {
   if (document.querySelector("table")) document.querySelector("table").remove();
   const table = document.createElement("table");
@@ -59,6 +71,10 @@ function faultTable(faults) {
   addsortable();
 }
 
+/**
+ * Updates the notes and saves them to the firebase database. Also deletes the fault if the note says "delete"
+ * @param content Table cell containing notes to be added to fault
+ */
 function updateNotes(content) {
   const faultname = `${content.target.parentElement.firstChild.innerHTML},${content.target.parentElement.children[1].innerHTML.replace(/\//g, "-")},${content.target.parentElement.children[2].innerHTML.replace(/\./g, "-")}`;
   const dbObj = firebase.database().ref(`relay/${faultname}`);
@@ -71,6 +87,9 @@ function updateNotes(content) {
   else dbObj2.update({ notes });
 }
 
+/**
+ * Makes the table sortable
+ */
 function addsortable() {
   let imported = document.createElement('script');
   imported.src = 'js/ext/sorttable.js';
@@ -78,3 +97,4 @@ function addsortable() {
   document.head.appendChild(imported);
 }
 window.addEventListener("load", getFaults);
+let db;
