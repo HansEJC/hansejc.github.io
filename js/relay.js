@@ -564,53 +564,34 @@ function P44T(tr, num, empty) {
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
-    Z = Z / tr; RH = RH / tr; LH = LH / tr; Zr = Zr / tr;
+    Z /= tr; RH /= tr; LH /= tr; Zr /= tr;
   }
   //%Zone plot
   const Zlef = Z > LH * Math.sin(a) * Math.sin(Zdeg + Ztilt) / Math.sin(Math.PI - Zdeg - a) / Math.sin(a - Ztilt);
   const r1 = Z * Math.cos(a);
   const x1 = Z * Math.sin(a);
   const r2 = r1 + RH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.cos(Ztilt);
-  const x2 = x1 + RH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt);
-  const r3 = RH;
-  const x3 = 0;
-  const r4 = num === "3"
-    ? RH - (Zr + RH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.cos(a)
-    : Math.max(RH - (RH * Math.sin(btilt) / Math.sin(Math.PI - btilt - a) + 0.25 * Z) * Math.cos(a), RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg));
-  const x4 = num === "3"
-    ? - (Zr + RH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.sin(a)
-    : Math.max(- (RH * Math.sin(btilt) / Math.sin(Math.PI - btilt - a) + 0.25 * Z) * Math.sin(a), -RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg));
-  const r5 = num === "3"
-    ? -Zr * Math.cos(a)
-    : Math.min(0.25 * Z * Math.sin(a + btilt) / Math.sin(Zdeg - btilt) * Math.cos(Zdeg), RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg));
-  const x5 = num === "3"
-    ? -Zr * Math.sin(a)
-    : Math.max(-0.25 * Z * Math.sin(a + btilt) / Math.sin(Zdeg - btilt) * Math.sin(Zdeg), -RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg));
-  const r6 = num === "3"
-    ? -LH - (Zr - LH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.cos(a)
-    : Zlef
-      ? -LH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg)
-      : -Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.cos(Zdeg);
-  const x6 = num === "3"
-    ? - (Zr - LH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.sin(a)
-    : Zlef
-      ? LH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg)
-      : Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.sin(Zdeg);
-  const r7 = num === "3"
+  const x2 = x1 + RH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt); //r3 was RH and and x3 was 0 
+  const r4 = Math.max(RH - (RH * Math.sin(btilt) / Math.sin(Math.PI - btilt - a) + 0.25 * Z) * Math.cos(a), RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg));
+  const x4 = Math.max(- (RH * Math.sin(btilt) / Math.sin(Math.PI - btilt - a) + 0.25 * Z) * Math.sin(a), -RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg));
+  const r5 = Math.min(0.25 * Z * Math.sin(a + btilt) / Math.sin(Zdeg - btilt) * Math.cos(Zdeg), RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg));
+  const x5 = Math.max(-0.25 * Z * Math.sin(a + btilt) / Math.sin(Zdeg - btilt) * Math.sin(Zdeg), -RH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg));
+  const r6 = Zlef
+    ? -LH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.cos(Zdeg)
+    : -Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.cos(Zdeg);
+  const x6 = Zlef
+    ? LH * Math.sin(a) / Math.sin(Math.PI - Zdeg - a) * Math.sin(Zdeg)
+    : Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.sin(Zdeg);
+  const r7 = Zlef
     ? r1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.cos(Ztilt)
-    : Zlef
-      ? Z * Math.cos(a) - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.cos(Ztilt)
-      : -Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.cos(Zdeg);
-  const x7 = num === "3"
-    ? x1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt)
-    : Zlef
-      ? Z * Math.sin(a) - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt)
-      : Z * Math.sin(a - Ztilt) / Math.sin(Zdeg + Ztilt) * Math.sin(Zdeg);
+    : r6;
+  const x7 = Zlef
+    ? r1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt)
+    : x6;
 
-  const char = num === "3" ? [[0, , , , , 0], [Z * Math.cos(a), , , , , Z * Math.sin(a)]] : []; //adding char angle
-  const Zpol = [[r1, x1], [r2, x2], [r3, x3], [r4, x4], [r5, x5], [r6, x6], [r7, x7], [r1, x1]]; //Z polygon
-  const Zel = [...char, [r1, ...empty, x1], [r2, ...empty, x2], [r3, ...empty, x3], [r4, ...empty, x4], [r5, ...empty, x5], [r6, ...empty, x6], [r7, ...empty, x7], [r1, ...empty, x1]];
-  const stuff = { a, Z, LH };
+  const Zpol = [[r1, x1], [r2, x2], [RH, 0], [r4, x4], [r5, x5], [r6, x6], [r7, x7], [r1, x1]]; //Z polygon
+  const Zel = [[r1, ...empty, x1], [r2, ...empty, x2], [RH, ...empty, 0], [r4, ...empty, x4], [r5, ...empty, x5], [r6, ...empty, x6], [r7, ...empty, x7], [r1, ...empty, x1]];
+  const stuff = { a, Z, RH, LH, btilt, r1, x1, Ztilt };
   return [Zpol, Zel, stuff];
 }
 
@@ -638,7 +619,22 @@ function Zone2P44T(tr) {
  * @returns Zone quadrilateral
  */
 function Zone3P44T(tr) {
-  return P44T(tr, "3", [, , ,]);
+  let Zr = Number(document.getElementById("Zone3rev").value);
+  Zr = document.getElementById("Sec").checked ? Zr / tr : Zr;
+  let [Zpol, Zel, stuff] = P44T(tr, "3", [, , ,]);
+  const { a, btilt, Z, RH, LH, r1, x1, Ztilt } = stuff;
+  const r4 = RH - (Zr + RH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.cos(a);
+  const x4 = - (Zr + RH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.sin(a);
+  const r5 = -Zr * Math.cos(a);
+  const x5 = -Zr * Math.sin(a);
+  const r6 = -LH - (Zr - LH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.cos(a);
+  const x6 = - (Zr - LH * Math.sin(btilt) / Math.sin(a + btilt)) * Math.sin(a);
+  const r7 = r1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.cos(Ztilt);
+  const x7 = x1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt);
+  const char = [[0, , , , , 0], [Z * Math.cos(a), , , , , Z * Math.sin(a)]]; //adding char angle
+  Zel = [...char, ...Zel.splice(0, 3), [r4, , , , x4], [r5, , , , x5], [r6, , , , x6], [r7, , , , x7], [r1, , , , x1]];
+  Zpol = [...Zpol.splice(0, 3), [r4, x4], [r5, x5], [r6, x6], [r7, x7], [r1, x1]];
+  return [Zpol, Zel];
 }
 
 /**
@@ -662,7 +658,7 @@ function P438(tr, num, empty) {
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
-    Z = Z / tr; RH = RH / tr; LH = LH / tr;
+    Z /= tr; RH /= tr; LH /= tr;
   }
   //%Zone plot
   const m1 = RH * Math.sin(a) / Math.sin(Math.PI - a + g);
@@ -740,7 +736,7 @@ function S7ST(tr, num, empty) {
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
-    Z = Z / tr;
+    Z /= tr;
   }
   const Zpol = [[0, 0]];
   const Zel = [[0, ...empty, 0]];
