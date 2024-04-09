@@ -87,6 +87,7 @@ function navBar() {
         <a href='#' class="dropbtn heh">Railway</a>
         <div class="dropdown-content">
           <a href='relay.html'>Distance Protection Fault Plotter</a>
+          <a href='dtf.html'>Distance to Fault Plotter</a>
           <a href='fault.html'>Railway Faults</a>
           <a href='railvolts.html'>Railway Voltages</a>
         </div>
