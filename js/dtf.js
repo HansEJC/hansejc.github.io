@@ -8,8 +8,6 @@ function startup() {
   document.querySelector("#Clear").addEventListener("click", clearFaults);
   javaread();
   // await code here
-  const DR = [];
-  plotProtection(DR);
   document.onkeyup = () => {
     try { read(); } catch (e) { logError(e); }
   };
@@ -38,7 +36,7 @@ function saveIndexedDB(data) {
   const transaction = db.transaction(["plots"], "readwrite");
   const objectStore = transaction.objectStore("plots");
   objectStore.put({ data });
-  plotProtection(data);
+  read();
 }
 
 /**
@@ -47,12 +45,9 @@ function saveIndexedDB(data) {
 function read() {
   const transaction = db.transaction(["plots"], "readonly");
   const objectStore = transaction.objectStore("plots");
-  objectStore.openCursor(null, "prev").onsuccess = async (event) => {
+  objectStore.getAll().onsuccess = (event) => {
     const cursor = event.target.result;
-    try {
-      plotProtection(cursor.value.data);
-      cursor.continue();
-    } catch (err) { }
+    plotProtection(cursor);
   }
 }
 
@@ -74,8 +69,9 @@ function javaread() {
         }
         const filecontent = evt.target.result;
         const DR = Papa.parse(filecontent, { dynamicTyping: true }).data;
+        const cfgdata = JSON.parse(localStorage.getItem("CFGdatas")) || [];
         localStorage.setItem("filename", file.name.substring(0, file.name.length - 4));
-        if (/cfg/i.test(file.name)) localStorage.setItem("CFGdata", JSON.stringify(DR));
+        if (/cfg/i.test(file.name)) localStorage.setItem("CFGdatas", JSON.stringify([...cfgdata, DR]));
         if (/dat/i.test(file.name)) saveDAT(DR, filecontent);
       };
     });
@@ -97,15 +93,20 @@ function javaread() {
 
 /**
  * Plots the protection to the dygraphs and checks what protection is selected
- * @param csvarr distrubance record, though name is misleading as it's not only csv 
+ * @param records distrubance records
  */
-function plotProtection(csvarr) {
-  const DR = [...csvarr];
-  const { volarray, Zarray } = addDATtoArray(DR);
-  if (volarray.length > 1) {
-    summaryTable(volarray, Zarray);
-    dygPlot2(volarray, 'graphdiv2');
-    dygPlot2(volarray, 'graphdiv3');
+function plotProtection(records) {
+  let [totvolarray, totZarray] = [[], []];
+  records.forEach((rec, ind) => {
+    const { volarray, Zarray } = addDATtoArray(rec.data, ind);
+    const shifted = synchronizeSineWaves(totvolarray, volarray);
+    totvolarray = [...totvolarray, [volarray[0][0], , , , ,], ...shifted];
+    totZarray = [...totZarray, ...Zarray];
+  });
+  if (totvolarray.length > 1) {
+    summaryTable(totvolarray, totZarray);
+    dygPlot2(totvolarray, 'graphdiv2');
+    dygPlot2(totvolarray, 'graphdiv3');
     Dygraph.synchronize(graphdiv2, graphdiv3, {
       range: false //syncs only x axis
     });
@@ -115,10 +116,11 @@ function plotProtection(csvarr) {
 /**
  * Process dat file to array
  * @param DR disturbance record
+ * @param ind index to get correct config
  * @returns returns fault array in impedance and voltages, currents, and and zone trip, CB open array
  */
-function addDATtoArray(DR) {
-  const { vmul, cmul, stime, Z1, Z2, Z3, CBo, trdr, vtrdr, v, c } = getCFG();
+function addDATtoArray(DR, ind) {
+  const { vmul, cmul, stime, Z1, Z2, Z3, CBo, trdr, vtrdr, v, c } = getCFG(ind);
   const [volarray, Zarray] = [[], []];
   if (DR.length === 0) return { volarray, Zarray };
   const freq = 50;
@@ -142,7 +144,7 @@ function addDATtoArray(DR) {
     const vlog = DR[i][v] * vmul * vtrdr;
     const clog = DR[i][c] * cmul * vtrdr * trdr;
     const time = stime + (DR[i][1] / 1_000_000);
-    
+
     volarray.push([time, vmag, cmag, vlog, clog]);
     Zarray.push([time, DR[i][Z1], DR[i][Z2], DR[i][Z3], DR[i][CBo]]);
   }
@@ -152,10 +154,11 @@ function addDATtoArray(DR) {
 
 /**
  * Process the cfg file to get all necessary info and column numbers
+ * @param ind index to get correct config
  * @returns cfg object with all the saved parameters
  */
-function getCFG() {
-  const data = JSON.parse(localStorage.getItem("CFGdata")) || false;
+function getCFG(ind = 0) {
+  const data = JSON.parse(localStorage.getItem("CFGdatas"))[ind] || false;
   if (!data) return { title: localStorage.getItem("filename"), sdate: "" };
   const cfg = { vmul: 1, cmul: 1, stime: 0 };
   const ar = [];
@@ -305,19 +308,7 @@ function importFault() {
  * Export fault to csv
  */
 function exportFault() {
-  /*
-  const headers = localStorage.getItem("headers");
-  const cfg = localStorage.getItem("CFGdata");
-  const isDAT = localStorage.getItem("isDAT") === "true";
-  const params = document.location.search;
-  const dbObj = firebase.database().ref(`relay/${getCFG().title.replace(/\/|\./g, '-')}`);
-  const dbObj2 = firebase.database().ref(`faults/${getCFG().title.replace(/\/|\./g, '-')}`);
-  db.transaction(["plots"]).objectStore("plots").openCursor(null, "prev").onsuccess = async (e) => {
-    const data = e.target.result.value.data;
-    dbObj.update({ data, headers, cfg, isDAT, params });
-    dbObj2.update({ isDAT }); //doesn't really need to send anything, just create the DB entry
-  }
- */
+
 }
 
 /**
@@ -329,6 +320,7 @@ function clearFaults() {
   objectStore.clear();
   window.graphdiv2.destroy();
   window.graphdiv3.destroy();
+  localStorage.removeItem("CFGdatas");
   table();
 }
 
@@ -394,33 +386,44 @@ const hex2bin = (x, fir, sec) => {
  * Adjust phase of wave2 to synchronize with wave1
  * @param wave1 first wave
  * @param wave2 second wave
- * @param sampleRate sampe rate
  * @returns synced wave
 */
-function synchronizeSineWaves(wave1, wave2, sampleRate) {
+function synchronizeSineWaves(wave1, wave2) {
+  wave1.shift(); //remove empty 
+  if (wave1.length === 0) return wave2;
   // Find the best phase difference that minimizes error across the entire waves
   let minError = Number.MAX_SAFE_INTEGER;
   let bestPhaseDifference = 0;
+  const sampleRate = wave2[2][0] - wave2[1][0];
+  const sampleRate1 = wave1[2][0] - wave1[1][0];
+  const timeTooBig = Math.abs(wave1[1][0] - wave2[1][0]) > 1;
+  const sampleDiff = Math.round(Math.max(sampleRate, sampleRate1) / Math.min(sampleRate, sampleRate1));
+  const wavemul1 = sampleRate > sampleRate1 ? sampleDiff : 1;
+  const wavemul2 = sampleRate < sampleRate1 ? sampleDiff : 1;
 
-  for (let phaseDiff = -Math.PI; phaseDiff <= Math.PI; phaseDiff += 0.01) {
-    let error = 0;
-    for (let i = 0; i < wave1.length; i++) {
-      const diff = wave1[i] - wave2[(i + Math.round(phaseDiff * sampleRate)) % wave2.length];
+  while (wave1[1][0] < (wave2[1][0] - sampleRate1 / 2) && !timeTooBig) wave1.shift();
+  while (wave2[1][0] < (wave1[1][0] - sampleRate / 2) && !timeTooBig) wave2.shift();
+
+  const fullcycle = 1 / 50 / Math.max(sampleRate, sampleRate1); //samples for full cycle
+  for (let phaseDiff = 0; phaseDiff < fullcycle * 2; phaseDiff++) {
+    let error = 0; let error2 = 0;
+    for (let i = 0; i < fullcycle * 2; i++) {
+      const diff = wave1[i * wavemul1][3] - wave2[i * wavemul2 + phaseDiff][3];
+      const diff2 = wave2[i * wavemul2][3] - wave1[i * wavemul1 + phaseDiff][3];
       error += Math.abs(diff);
+      error2 += Math.abs(diff2);
     }
     if (error < minError) {
       minError = error;
+      bestPhaseDifference = -phaseDiff;
+    }
+    if (error2 < minError) {
+      minError = error2;
       bestPhaseDifference = phaseDiff;
     }
   }
-
-  // Apply the best phase difference to synchronize wave2 with wave1
-  const synchronizedWave2 = wave2.map((sample, index) => {
-    const phaseIndex = (index + Math.round(bestPhaseDifference * sampleRate)) % wave2.length;
-    return sample * Math.cos(bestPhaseDifference);
-  });
-
-  return synchronizedWave2;
+  wave2.forEach(wav => wav[0] = wav[0] + bestPhaseDifference * sampleRate);
+  return wave2;
 }
 
 let idbSupported = "indexedDB" in window ? true : false;
