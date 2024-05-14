@@ -554,7 +554,8 @@ function P44T(tr, num, empty) {
   let RH = a === Math.PI / 2
     ? LZ * Math.cos(RHNaN)
     : LZ * Math.cos(ftd) - LZ * Math.sin(ftd) / Math.tan(a);
-  RHbox.value = smoothdec(RH);
+  RH = Math.min(RHbox.value, smoothdec(RH));
+  RHbox.value = RH;
   //Primary or Secondary Inputs
   const sec = document.getElementById("Sec");
   if (sec.checked) {
@@ -580,7 +581,7 @@ function P44T(tr, num, empty) {
     ? r1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.cos(Ztilt)
     : r6;
   const x7 = Zlef
-    ? r1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt)
+    ? x1 - LH * Math.sin(Math.PI - a) / Math.sin(a - Ztilt) * Math.sin(Ztilt)
     : x6;
 
   const Zpol = [[r1, x1], [r2, x2], [RH, 0], [r4, x4], [r5, x5], [r6, x6], [r7, x7], [r1, x1]]; //Z polygon
