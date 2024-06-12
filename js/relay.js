@@ -333,9 +333,14 @@ function getCFG() {
     cfg.Z3 = /Zone 3 Trip|Trip Z3|Trip signal Z3\/t3S/i.test(x[1]) ? ind : cfg.Z3;
     cfg.CBo = /CB Closed|Brk Aux NO/i.test(x[1]) ? ind : cfg.CBo;
     if (typeof x[1] === "string" && x[1].split(":").length > 2) ar.push(x);
-  });
-  cfg.v = /V/i.test(data[2][4]) ? 2 : 3;
-  cfg.c = /A/i.test(data[3][4]) ? 3 : 2;
+  });  
+  [, cfg.ana, cfg.dig] = data[1];
+  cfg.ana = Number(cfg.ana.replace(/\D/g, ''));
+  cfg.dig = Number(cfg.dig.replace(/\D/g, ''));
+  for (let i = cfg.ana + 2; i >= 2; i--) {
+    cfg.v = /V/i.test(data[i][4]) ? i : cfg.v;
+    cfg.c = /A/i.test(data[i][4]) ? i : cfg.c;
+  }
   cfg.vtrdr = data[cfg.v][10] / data[cfg.v][11];
   cfg.trdr = data[cfg.c][10] / data[cfg.c][11] / cfg.vtrdr;
   cfg.vmul = Number(data[cfg.v][5]);
@@ -344,7 +349,6 @@ function getCFG() {
   const circuit = data[0][0] === null ? localStorage.getItem("filename") : data[0][0];
   cfg.title = `${circuit.replace(/\,/g, " ")},${ar[0]}`;
   cfg.stime = Number(cfg.sdate.split(":").pop()) || 0;
-  [, cfg.ana, cfg.dig] = data[1];
   return cfg;
 }
 
@@ -1027,8 +1031,6 @@ function rio(data) {
 function binary2ASCII(data) {
   const bin = [...data].map(c => c.charCodeAt(0).toString(16));
   let { ana, dig } = getCFG();
-  ana = Number(ana.replace(/\D/g, ''));
-  dig = Number(dig.replace(/\D/g, ''));
   const diglen = 2 * Math.ceil(dig / 16);
   const bytes = ana * 2 + diglen + 8;
   const ASCII = [];
