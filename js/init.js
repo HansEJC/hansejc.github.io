@@ -93,6 +93,13 @@ function navBar() {
         </div>
       </div>
       <a href='equip.html'>Equipment</a>
+      <div class="dropdown">
+        <a href='#' class="dropbtn heh">Misc</a>
+        <div class="dropdown-content">
+          <a href='intervals.html'>Intervals</a>
+          <a href='workout.html'>Workout</a>
+        </div>
+      </div>
       <a href='javascript:helpPage()'>Help</a>
     `;
   document.querySelectorAll('.heh').forEach(function (item) { return item.addEventListener('click', randomPage) });
@@ -106,7 +113,7 @@ function helpPage() {
 
 navBar();
 let test;
-const navs = ['Games', 'Tools', 'Railway'];
+const navs = ['Games', 'Tools', 'Railway', 'Misc'];
 const randomChild = function (len) { return Math.floor(Math.random() * len) };
 function randomPage(e) {
   test = e;
