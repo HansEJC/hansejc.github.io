@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-5QF2LGP');</script>
+<!-- End Google Tag Manager -->
+<html>
+
+<head>
+  <title>Workout</title>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="description" content="Simple Workout App." />
+  <meta name="keywords" content="Workout" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="css/main-style.css" />
+  <script defer src="js/init.js"></script>
+  <script defer src="js/workout.js"></script>
+</head>
+
+<body class="left-sidebar">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- Header -->
+  <div id="header">
+    <div class="topnav" id="myTopnav"></div>
+    <!-- Logo -->
+    <div id="logo">
+      <h1><a href="#">Workout</a></h1><br>
+    </div>
+  </div>
+  <!-- Main -->
+  <div id="main" class="container">
+    <div class="row">
+      <div>
+        <!-- Content -->
+        <div id="content">
+          <div id="InputSelection">
+            <div class="row">
+              <section>
+                <form onsubmit="return false;">
+                  <label for="NumIntervals">Number of Intervals:<input type="number" id="NumIntervals" min=1
+                      max=10></label>
+                </form>
+              </section>
+            </div>
+            <div class="row">
+              <section>
+                <label>Interval Times:</label>
+                <form id="IntervalTimers" onsubmit="return false;">
+                </form>
+              </section>
+              <section>
+                <label>Interval Labels:</label>
+                <form id="IntervalLabels" onsubmit="return false;">
+                </form>
+              </section>
+            </div>
+            <div class="timerlabel">
+              <section>
+                <form onsubmit="return false;">
+                  <button id="Save" class="button">Save</button>
+                </form>
+              </section>
+            </div>
+            <div class="timerlabel">
+              <section>
+                <form onsubmit="return false;">
+                  <button id="Share" class="button">Share</button>
+                </form>
+              </section>
+            </div>
+          </div>
+          <div id="Intervals" style="display: none;">
+            <div class="timerlabel">
+              <section>
+                <form onsubmit="return false;">
+                  <button id="Start" class="button">Start</button>
+                  <button id="Pause" class="button" style="display: none;">Pause</button>
+                </form>
+              </section>
+              <section>
+                <form">
+                  <button id="Reset" class="button">Reset</button>
+                  </form>
+              </section>
+            </div>
+            <div class="timerlabel">
+              <section>
+                <form>
+                  <label id="IntervalLabel">Press Start</label>
+                </form>
+              </section>
+            </div>
+            <div class="timerlabel">
+              <section>
+                <form onsubmit="return false;">
+                  <span id="Timer" class="interval">0</span>
+                </form>
+              </section>
+            </div>
+            <div class="timerlabel">
+              <progress class="prog"></progress>
+            </div>
+            <div class="timerlabel">
+              <section>
+                <form onsubmit="return false;">
+                  <button id="Edit" class="button">Edit</button>
+                </form>
+              </section>
+            </div>
+            <div class="row">
+              <article class="post">
+                <section id="SummaryTable" class="box">
+                </section>
+              </article>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="copyright">
+    <ul>
+      <li>&copy; Hans Juneby</li>
+    </ul>
+  </div>
+</body>
+
+</html>
