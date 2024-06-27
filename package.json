@@ -13,6 +13,7 @@
     "papaparse": "^5.4.0",
     "workbox-sw": "^7.0.0",
     "firebase": "^10.8.1",
+    "firebaseui-web": "6.1.0",
     "sorttable": "1.0.2"
   },
   "repository": {

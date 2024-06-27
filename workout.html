@@ -18,7 +18,12 @@
   <meta name="keywords" content="Workout" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="stylesheet" href="css/main-style.css" />
+  <link rel="stylesheet" href="css/ext/firebase-ui-auth.css" />
   <script defer src="js/init.js"></script>
+  <script defer src="js/ext/firebase-app-compat.js"></script>
+  <script defer src="js/ext/firebase-database-compat.js"></script>
+  <script defer src="js/ext/firebase-auth-compat.js"></script>
+  <script defer src="js/ext/firebase-ui-auth.js"></script>
   <script defer src="js/workout.js"></script>
 </head>
 
@@ -69,14 +74,29 @@
                 </form>
               </section>
             </div>
-            <div class="timerlabel">
+            <div class="row" id="CloudForm">
+              <section>
+                <form>
+                  <label for="email">For cloud backup</label>
+                  <input type="text" name="email" autocomplete="email" id="email" onkeyup='saveValue(this);'
+                    placeholder="email" />
+                  <input type="password" autocomplete="current-password" placeholder="password">
+                  <a href="javascript:resetPass();">Reset Password</a>
+                </form>
+                <span id="logInfo"></span>
+              </section>
+            </div>
+            <div class="row">
               <section>
                 <form onsubmit="return false;">
-                  <button id="Share" class="button">Share</button>
+                  <button id="Login" class="button">Login/Signup</button>
+                  <div id="firebaseui-auth-container"></div>
+                  <button id="Logout" class="button" style="display: none;">Logout</button>
                 </form>
               </section>
             </div>
           </div>
+
           <div id="Intervals" style="display: none;">
             <div class="timerlabel">
               <section>

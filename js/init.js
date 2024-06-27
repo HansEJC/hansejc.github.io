@@ -80,7 +80,6 @@ function navBar() {
           <a href='emc.html'>EMC Calculations</a>
           <a href='hvcalc.html'>HV Cable Calculations</a>
           <a href='lvcalc.html'>LV Cable Calculations</a>
-          <a href='mortgage.html'>Loan Calculator</a>
         </div>
       </div>
       <div class="dropdown">
@@ -97,6 +96,7 @@ function navBar() {
         <a href='#' class="dropbtn heh">Misc</a>
         <div class="dropdown-content">
           <a href='intervals.html'>Intervals</a>
+          <a href='mortgage.html'>Loan Calculator</a>
           <a href='workout.html'>Workout</a>
         </div>
       </div>

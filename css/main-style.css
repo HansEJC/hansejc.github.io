@@ -514,7 +514,8 @@ ol ol>li:before {
 }
 
 .selected,
-.dark .selected {
+.dark .selected,
+.selected td {
   background-color: #800080;
   color: #fff;
 }

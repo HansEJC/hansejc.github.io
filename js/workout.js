@@ -6,13 +6,20 @@ function startup() {
   document.querySelector(`#Start`).addEventListener(`click`, start);
   document.querySelector(`#Pause`).addEventListener(`click`, pause);
   document.querySelector(`#Reset`).addEventListener(`click`, reset);
-  document.querySelector(`#Share`).addEventListener(`click`, share);
+  document.querySelector(`#CloudForm`).addEventListener(`keydown`, enterLogin);
   const num = document.querySelector(`#NumIntervals`);
   num.addEventListener(`keyup`, () => addInputs(num));
   addInputs(num);
   getSavedValue(`savedInterval`) === `true` ? save() : edit();
   table();
   window['workcounter'] = 0;
+  const user = document.querySelector(`#email`);
+  fireBase();
+  if (user.value.length > 25 && !user.value.includes(`@`)) {
+    getData(user.value);
+  }
+  fireAuth();
+  fireUI();
 }
 
 function addInputs(e) {
@@ -106,20 +113,6 @@ function reset() {
   clearInterval(x);
 }
 
-async function share() {
-  let link = window.location.href;
-  const shareData = {
-    title: `Intervals`,
-    text: `Simple Intervals App`,
-    url: link
-  };
-  try {
-    await navigator.share(shareData);
-  } catch (err) {
-    console.log(`Error: ${err}`);
-  }
-}
-
 function initAudio() {
   const AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
@@ -194,6 +187,153 @@ function table() {
   insertRow(rows, myTable);
   while (tabdiv.childElementCount > 1) tabdiv.removeChild(tabdiv.lastChild);
   tabdiv.appendChild(myTable);
+}
+
+//Firebase
+function fireBase() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyDCkBJF86uahqeTdIiy_zotYBD5-1aJ1TE",
+    authDomain: "hansejc-fff7f.firebaseapp.com",
+    databaseURL: "https://hansejc-fff7f-default-rtdb.firebaseio.com",
+    projectId: "hansejc-fff7f",
+    storageBucket: "hansejc-fff7f.appspot.com",
+    messagingSenderId: "204800601174",
+    appId: "1:204800601174:web:1b9f5d4804a94171471ff7",
+    measurementId: "G-7DCTFGC4YP"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+};
+
+function getData(dbName) {
+  let dbObj = firebase.database().ref(`workout/${dbName}`);
+  dbObj.on(`value`, snap => {
+    let data = JSON.stringify(snap.val());
+    localStorage.setItem(`workout`, data);
+  });
+}
+
+function sendData() {
+  dbName = firebase.auth().currentUser.uid;
+  let dbObj = firebase.database().ref(`workout/${dbName}`);
+  dbObj.set(getKicks());
+}
+
+function fireAuth() {
+  document.querySelector(`#Logout`).addEventListener(`click`, () => firebase.auth().signOut());
+  document.querySelector(`#Login`).addEventListener(`click`, doLogin);
+  firebase.auth().onAuthStateChanged(loginState);
+}
+
+function resetPass() {
+  const auth = firebase.auth();
+  const user = document.querySelector(`#email`).value;
+  auth.sendPasswordResetEmail(user).then(() => {
+    document.querySelector(`#logInfo`).innerHTML = `Email sent`;
+    fader();
+  }).catch(e => {
+    document.querySelector(`#logInfo`).innerHTML = e;
+    fader();
+  });
+}
+
+function loginState(user) {
+  const logout = document.querySelector(`#Logout`);
+  const login = document.querySelector(`#Login`);
+  const form = document.querySelector(`#CloudForm`);
+  if (user) {
+    login.style = `display: none`;
+    logout.style = `display: block`;
+    form.style = `visibility: hidden`;
+    getData(firebase.auth().currentUser.uid);
+  }
+  else {
+    login.style = `display: block`;
+    logout.style = `display: none`;
+    form.style = `visibility: visible`;
+  }
+}
+
+function doLogin() {
+  const auth = firebase.auth();
+  const user = document.querySelector(`#email`).value;
+  const pass = document.querySelector(`input[type=password]`).value;
+  const promise = auth.signInWithEmailAndPassword(user, pass);
+  promise.catch(e => {
+    document.querySelector(`#logInfo`).innerHTML = e;
+    fader();
+    auth.createUserWithEmailAndPassword(user, pass);
+  });
+}
+
+function enterLogin(e) {
+  var keyCode = e.which || e.keyCode;
+  var handled = false;
+  if (keyCode === 13) { //enter
+    e.preventDefault();
+    handled = true;
+    doLogin();
+  }
+  return !handled; //return false if the event was handled  
+}
+
+function fireUI() {
+  const uiConfig = {
+    signInSuccessUrl: '<url-to-redirect-to-on-success>',
+    signInOptions: [
+      // Leave the lines as is for the providers you want to offer your users.
+      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+      firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+      firebase.auth.GithubAuthProvider.PROVIDER_ID,
+      firebase.auth.EmailAuthProvider.PROVIDER_ID,
+      firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+      firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
+    ],
+    // tosUrl and privacyPolicyUrl accept either url string or a callback
+    // function.
+    // Terms of service url/callback.
+    tosUrl: '<your-tos-url>',
+    // Privacy policy url/callback.
+    privacyPolicyUrl: function () {
+      window.location.assign('<your-privacy-policy-url>');
+    }
+  };
+
+  // Initialize the FirebaseUI Widget using Firebase.
+  var ui = new firebaseui.auth.AuthUI(firebase.auth());
+  // The start method will wait until the DOM is loaded.
+  ui.start('#firebaseui-auth-container', uiConfig);
+}
+
+function onClickHandler() {
+
+  console.log("Sign in with Google button clicked...");
+  const provider = new firebase.auth.GoogleAuthProvider();
+
+  firebase.auth()
+    .signInWithPopup(provider)
+    .then((result) => {
+      /** @type {firebase.auth.OAuthCredential} */
+      var credential = result.credential;
+
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      // IdP data available in result.additionalUserInfo.profile.
+      // ...
+    }).catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+    });
+
 }
 
 startup();
