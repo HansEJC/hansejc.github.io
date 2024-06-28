@@ -6,20 +6,14 @@ function startup() {
   document.querySelector(`#Start`).addEventListener(`click`, start);
   document.querySelector(`#Pause`).addEventListener(`click`, pause);
   document.querySelector(`#Reset`).addEventListener(`click`, reset);
-  document.querySelector(`#CloudForm`).addEventListener(`keydown`, enterLogin);
   const num = document.querySelector(`#NumIntervals`);
   num.addEventListener(`keyup`, () => addInputs(num));
   addInputs(num);
   getSavedValue(`savedInterval`) === `true` ? save() : edit();
   table();
   window['workcounter'] = 0;
-  const user = document.querySelector(`#email`);
   fireBase();
-  if (user.value.length > 25 && !user.value.includes(`@`)) {
-    getData(user.value);
-  }
   fireAuth();
-  fireUI();
 }
 
 function addInputs(e) {
@@ -221,7 +215,6 @@ function sendData() {
 
 function fireAuth() {
   document.querySelector(`#Logout`).addEventListener(`click`, () => firebase.auth().signOut());
-  document.querySelector(`#Login`).addEventListener(`click`, doLogin);
   firebase.auth().onAuthStateChanged(loginState);
 }
 
@@ -239,101 +232,80 @@ function resetPass() {
 
 function loginState(user) {
   const logout = document.querySelector(`#Logout`);
-  const login = document.querySelector(`#Login`);
-  const form = document.querySelector(`#CloudForm`);
   if (user) {
-    login.style = `display: none`;
     logout.style = `display: block`;
-    form.style = `visibility: hidden`;
-    getData(firebase.auth().currentUser.uid);
+    getData(user.uid);
   }
   else {
-    login.style = `display: block`;
+    fireUI();
     logout.style = `display: none`;
-    form.style = `visibility: visible`;
   }
-}
-
-function doLogin() {
-  const auth = firebase.auth();
-  const user = document.querySelector(`#email`).value;
-  const pass = document.querySelector(`input[type=password]`).value;
-  const promise = auth.signInWithEmailAndPassword(user, pass);
-  promise.catch(e => {
-    document.querySelector(`#logInfo`).innerHTML = e;
-    fader();
-    auth.createUserWithEmailAndPassword(user, pass);
-  });
-}
-
-function enterLogin(e) {
-  var keyCode = e.which || e.keyCode;
-  var handled = false;
-  if (keyCode === 13) { //enter
-    e.preventDefault();
-    handled = true;
-    doLogin();
-  }
-  return !handled; //return false if the event was handled  
+  /*
+    if (user) {
+      // User is signed in.
+      const displayName = user.displayName;
+      const email = user.email;
+      const emailVerified = user.emailVerified;
+      const photoURL = user.photoURL;
+      const uid = user.uid;
+      const phoneNumber = user.phoneNumber;
+      const providerData = user.providerData;
+      user.getIdToken().then(function (accessToken) {
+        document.getElementById('sign-in-status').textContent = 'Signed in';
+        document.getElementById('sign-in').textContent = 'Sign out';
+        document.getElementById('account-details').textContent = JSON.stringify({
+          displayName: displayName,
+          email: email,
+          emailVerified: emailVerified,
+          phoneNumber: phoneNumber,
+          photoURL: photoURL,
+          uid: uid,
+          accessToken: accessToken,
+          providerData: providerData
+        }, null, '  ');
+      });
+    } else {
+      // User is signed out.
+      document.getElementById('sign-in-status').textContent = 'Signed out';
+      document.getElementById('sign-in').textContent = 'Sign in';
+      document.getElementById('account-details').textContent = 'null';
+    }
+  */
 }
 
 function fireUI() {
   const uiConfig = {
-    signInSuccessUrl: '<url-to-redirect-to-on-success>',
+    signInSuccessUrl: '/workout.html',
     signInOptions: [
       // Leave the lines as is for the providers you want to offer your users.
-      firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-      firebase.auth.FacebookAuthProvider.PROVIDER_ID,
-      firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-      firebase.auth.GithubAuthProvider.PROVIDER_ID,
+      {
+        // Google provider must be enabled in Firebase Console to support one-tap
+        // sign-up.
+        provider: firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        // Required to enable ID token credentials for this provider.
+        // This can be obtained from the Credentials page of the Google APIs
+        // console. Use the same OAuth client ID used for the Google provider
+        // configured with GCIP or Firebase Auth.
+        clientId: '204800601174-rnoh9kea6im1jd1gi8s2ti6kifht1470.apps.googleusercontent.com'
+      },
       firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      firebase.auth.PhoneAuthProvider.PROVIDER_ID,
-      firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
     ],
+    // Required to enable one-tap sign-up credential helper.
+    credentialHelper: firebaseui.auth.CredentialHelper.GOOGLE_YOLO,
     // tosUrl and privacyPolicyUrl accept either url string or a callback
     // function.
     // Terms of service url/callback.
-    tosUrl: '<your-tos-url>',
+    tosUrl: '',
     // Privacy policy url/callback.
     privacyPolicyUrl: function () {
-      window.location.assign('<your-privacy-policy-url>');
+      window.location.assign('');
     }
   };
 
   // Initialize the FirebaseUI Widget using Firebase.
-  var ui = new firebaseui.auth.AuthUI(firebase.auth());
+  const ui = new firebaseui.auth.AuthUI(firebase.auth());
   // The start method will wait until the DOM is loaded.
   ui.start('#firebaseui-auth-container', uiConfig);
-}
-
-function onClickHandler() {
-
-  console.log("Sign in with Google button clicked...");
-  const provider = new firebase.auth.GoogleAuthProvider();
-
-  firebase.auth()
-    .signInWithPopup(provider)
-    .then((result) => {
-      /** @type {firebase.auth.OAuthCredential} */
-      var credential = result.credential;
-
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = credential.accessToken;
-      // The signed-in user info.
-      var user = result.user;
-      // IdP data available in result.additionalUserInfo.profile.
-      // ...
-    }).catch((error) => {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
-      // ...
-    });
-
 }
 
 startup();
