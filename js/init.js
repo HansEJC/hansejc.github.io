@@ -195,6 +195,7 @@ function saveParameter() {
 }
 
 function funkyValues() {
+  let pwurl = '';
   document.querySelectorAll('input').forEach((el) => {
     if (el.type === 'file') return;
     el.value = getSavedValue(el.id);
@@ -202,12 +203,16 @@ function funkyValues() {
       el.checked = (getSavedValue(el.id) === "true");
       el.addEventListener('change', saveValue);
     }
-    else el.addEventListener('keyup', saveValue);
+    else {
+      el.addEventListener('keyup', saveValue);
+      pwurl = /pw:/.test(el.value) ? el.value : pwurl;
+    }
   });
   document.querySelectorAll('select').forEach(inp => {
     inp.value = getSavedValue(inp.id);
     inp.addEventListener('change', saveValue);
   });
+  if (pwurl.length > 5) open(pwurl); //opens pw links if there are any in the text boxes
 }
 
 //get the saved value function - return the value of "v" from localStorage.
