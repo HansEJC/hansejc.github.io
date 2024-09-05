@@ -55,7 +55,7 @@ function thirdMortgage(info) {
 
 function fourthMortgage(info) {
   const today = new Date();
-  const monthd = Math.floor((today - new Date(2024, 2, 1)) / 1000 / 60 / 60 / 24 / 365.25 * 12); //difference in month
+  const monthd = Math.floor((today - new Date(2024, 8, 1)) / 1000 / 60 / 60 / 24 / 365.25 * 12); //difference in month
   const ir = 3.35 / 12 / 100; //remortgage rate
   let { rl, tpa } = info;
   const fees = -3600.22 + 995 + 713.12; //shortfall, fees, 713.12 seems to be a random amount that was added?
@@ -68,7 +68,10 @@ function fourthMortgage(info) {
   loopInfo = { num: 1, pay: 1000, year: 2024, month: 1, ir, ...info }; // changed overpayment to £1000
   info = mortgageLoop(loopInfo);
 
-  loopInfo = { num: monthd, pay: 1100, year: 2024, month: 2, ir, ...info }; // changed overpayment to £1100
+  loopInfo = { num: 6, pay: 1100, year: 2024, month: 2, ir, ...info }; // changed overpayment to £1100
+  info = mortgageLoop(loopInfo);
+
+  loopInfo = { num: monthd, pay: 1500, year: 2024, month: 8, ir, ...info }; // changed overpayment to £1500
   return { monthd, ...mortgageLoop(loopInfo) };
 }
 
@@ -80,7 +83,7 @@ function futureMortgage(info) {
   for (let i = 0; rl > 0; i++) {
     const intr = rl * ir;
     const eqp = tp - intr;
-    mortgage.push([new Date(2024, 2 + i + monthd, 1), intr, eqp, intr + eqp]);
+    mortgage.push([new Date(2024, 8 + i + monthd, 1), intr, eqp, intr + eqp]);
     rl = rl - eqp;
     pn++;
   }
