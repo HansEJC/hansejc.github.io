@@ -2,7 +2,15 @@
  Dygraphs                                                                     
 /*********************************************************************************/
 
-#graphdiv3, #graphdiv2 {
+.graphy {
+  width: 90vw;
+  height: 50vw;
+  max-width: 850px;
+  max-height: 470px;
+}
+
+#graphdiv3,
+#graphdiv2 {
   width: 90vw;
   height: 50vw;
   max-width: 850px;

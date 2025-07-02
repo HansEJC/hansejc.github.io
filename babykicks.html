@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<!-- Google Tag Manager -->
+<script>(function (w, d, s, l, i) {
+    w[l] = w[l] || []; w[l].push({
+      'gtm.start':
+        new Date().getTime(), event: 'gtm.js'
+    }); var f = d.getElementsByTagName(s)[0],
+      j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+        'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+  })(window, document, 'script', 'dataLayer', 'GTM-5QF2LGP');</script>
+<!-- End Google Tag Manager -->
+<html>
+
+<head>
+  <title>Baby Kicks</title>
+  <meta property="og:title" content="Baby Kicks" />
+  <meta property="og:type" content="video.movie" />
+  <meta property="og:url" content="https://hansejc.github.io/BabyKicks/" />
+  <meta property="og:image" content="https://hansejc.github.io/BabyKicks/images/manifest-icon-512.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_GB" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="description" content="Track the patterns of your baby's movements." />
+  <meta name="keywords" content="Baby Kicks" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="css/main-style.css" />
+  <script defer src="js/init.js"></script>
+  <link rel="stylesheet" href="css/dygraph.css" />
+  <script defer src="js/ext/dygraph.min.js"></script>
+  <script defer src="js/ext/firebase-app-compat.js"></script>
+  <script defer src="js/ext/firebase-database-compat.js"></script>
+  <script defer src="js/ext/firebase-auth-compat.js"></script>
+  <script defer src="js/baby.js"></script>
+</head>
+
+<body class="left-sidebar">
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5QF2LGP" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+  <!-- Header -->
+  <div id="header">
+    <div class="topnav" id="myTopnav"></div>
+    <!-- Logo -->
+    <div id="logo">
+      <h1><a href="#">Baby Kicks</a></h1><br>
+    </div>
+  </div>
+  <!-- Main -->
+  <div id="main" class="container">
+    <div class="row">
+      <div>
+        <!-- Content -->
+        <div id="content">
+          <div class="row">
+            <form onsubmit="return false;">
+              <button id="addKick" class="button">Add Kick</button>
+              <label for="pastkick">Add past kick</label>
+              <input type="datetime-local" id="pastkick">
+            </form>
+            <form onsubmit="return false;">
+              <button id="undo" class="button">Undo</button>
+            </form>
+          </div>
+          <header id="daily">
+            <hr>
+            <h1>Daily Kicks</h1><br>
+          </header>
+          <div class="row">
+            <article class="post">
+              <div id="graphdiv1" class="graphy"></div>
+            </article>
+          </div>
+          <header id="pattern">
+            <hr>
+            <h1>Daily Pattern</h1><br>
+          </header>
+          <div class="row">
+            <article class="post">
+              <div id="graphdiv2" class="graphy"></div>
+              <b>Zoom:</b>
+              <a href="javascript:zoom(86400);" id="day">day</a>
+              <a href="javascript:zoom(604800);" id="week">week</a>
+              <a href="javascript:zoom(30 * 86400);" id="month">month</a>
+              <a href="javascript:reset();" id="full">full</a>
+              <b>Pan:</b>
+              <a href="javascript:pan(-1);" id="left">left</a>
+              <a href="javascript:pan(+1);" id="right">right</a>
+            </article>
+          </div>
+          <header id="Live">
+            <hr>
+            <h1>Average Pattern</h1><br>
+          </header>
+          <div class="row">
+            <article class="post">
+              <div id="graphdiv3" class="graphy"></div>
+            </article>
+            <section class="box">
+              <form>
+                <table>
+                  <tr>
+                    <th rowspan="2">Average kicks <br> per day</th>
+                    <th colspan="2">Average time between kicks</th>
+                  </tr>
+                  <tr>
+                    <th>Total average</th>
+                    <th>4 h average</th>
+                  </tr>
+                </table>
+              </form>
+            </section>
+          </div>
+          <div class="row" id="CloudForm">
+            <section>
+              <form>
+                <label for="email">For cloud backup</label>
+                <input type="text" name="email" autocomplete="email" id="email" onkeyup='saveValue(this);'
+                  placeholder="email" />
+                <input type="password" autocomplete="current-password" placeholder="password">
+                <a href="javascript:resetPass();">Reset Password</a>
+              </form>
+              <span id="logInfo"></span>
+            </section>
+          </div>
+          <div class="row">
+            <section>
+              <form onsubmit="return false;">
+                <button id="Login" class="button">Login/Signup</button>
+                <button id="Logout" class="button" style="display: none;">Logout</button>
+              </form>
+            </section>
+          </div>
+          <div class="row">
+            <section>
+              <form onsubmit="return false;">
+                <button id="Share" class="button">Share</button>
+              </form>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="copyright">
+    <ul>
+      <li>&copy; Hans Juneby</li>
+    </ul>
+  </div>
+</body>
+
+</html>
