@@ -96,7 +96,7 @@ function navBar() {
         <a href='#' class="dropbtn heh">Misc</a>
         <div class="dropdown-content">
           <a href='intervals.html'>Intervals</a>
-          <a href='BabyKicks.html'>Baby Kick Counters</a>
+          <a href='babykicks.html'>Baby Kick Counters</a>
           <a href='mortgage.html'>Loan Calculator</a>
           <a href='Swedish-Reference-Creation-Tools.html'>Swedish Reference Creation Tools</a>
           <a href='workout.html'>Workout</a>
