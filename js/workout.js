@@ -14,6 +14,7 @@ function startup() {
   window['workcounter'] = 0;
   fireBase();
   fireAuth();
+  funkyValues();
 }
 
 function addInputs(e) {
@@ -153,31 +154,75 @@ function nextRow() {
  * @param rows array with summary info
  */
 function table() {
-  const rows = [
-    [45, 70, 7, 63],
-    [55, 85, 10, 76],
-    [35, 52, 7, 47],
-    [30, 45, 7, 40],
-    [60, 90, 10, 80],
-    ['-', '-', '-', '-'],
-    [26, 40, 5, 35],
-    [26, 40, 5, 35],
-    [33, 60, 6, 45],
-    [33, 60, 6, 45],
-    [26, 40, 5, 35],
-    [26, 40, 5, 35],
-    [22, 33, 4, 30],
-    [22, 33, 4, 30],
-    [60, 105, 10, 100],
-  ]
+  const rows = /jorge/iu.test(getSavedValue('intervalLab0')) && new Date().getDay() === 2 ?
+    [
+      ['Pushups', 17, 40, 2],
+      ['Situps', 17, 40, 2],
+      ['Burpees', 15, 15, 2],
+      ['Squats', 20, 20, 2],
+      ['Wall Walk', 3, 3, 3],
+      ['Triceps', 8, 10, 2],
+      ['Parachutes', 15, 15, 2],
+      ['Gymball back', 20, 20, 2],
+      ['Airsquad press', 10, 10, 2],
+      ['Lunges', 15, 15, 2],
+      ['Run', 30, 30, 2],
+      ['Stretch Needle', 10, 10, 2],
+      ['JW Stretch', 1, 1, 2],
+    ]
+    : /jorge/iu.test(getSavedValue('intervalLab0')) ?
+      [
+        ['Pushups', 17, 40, 2],
+        ['Situps', 17, 40, 2],
+        ['Burpees', 15, 15, 2],
+        ['Squats', 20, 20, 2],
+        ['Pullups', 5, 15, 3],
+        ['Neck', 20, 20, 2],
+        ['Bridge', 15, 15, 2],
+        ['Barbell back', 15, 10, 2],
+        ['Hang', 20, 40, 2],
+        ['Knee Straight', 25, 25, 2],
+        ['Hopping', 60, 60, 2],
+        ['Jumping', 8, 8, 2],
+        ['Banded Ankle', 10, 10, 2],
+        ['Run', 30, 30, 2],
+        ['Stretch Needle', 10, 10, 2],
+      ]
+      :
+      [
+        [45, 70, 7, 63],
+        [55, 85, 10, 76],
+        [35, 52, 7, 47],
+        [30, 45, 7, 40],
+        [60, 90, 10, 80],
+        ['-', '-', '-', '-'],
+        [26, 40, 5, 35],
+        [26, 40, 5, 35],
+        [33, 60, 6, 45],
+        [33, 60, 6, 45],
+        [26, 40, 5, 35],
+        [26, 40, 5, 35],
+        [22, 33, 4, 30],
+        [22, 33, 4, 30],
+        [60, 105, 10, 100],
+      ]
+    ;
   const tabdiv = document.querySelector("#SummaryTable");
   const myTable = document.createElement("table");
   myTable.classList.add("scores");
   const row = myTable.insertRow(-1);
-  row.insertCell(0).outerHTML = "<th>Pushups</th>";
-  row.insertCell(1).outerHTML = "<th>Situps</th>";
-  row.insertCell(2).outerHTML = "<th>Pullups</th>";
-  row.insertCell(3).outerHTML = "<th>Squats</th>";
+  if (/jorge/iu.test(getSavedValue('intervalLab0'))) {
+    row.insertCell(0).outerHTML = "<th>Excercise</th>";
+    row.insertCell(1).outerHTML = "<th>Jorge</th>";
+    row.insertCell(2).outerHTML = "<th>Hans</th>";
+    row.insertCell(3).outerHTML = "<th>Sets</th>";
+  }
+  else {
+    row.insertCell(0).outerHTML = "<th>Pushups</th>";
+    row.insertCell(1).outerHTML = "<th>Situps</th>";
+    row.insertCell(2).outerHTML = "<th>Pullups</th>";
+    row.insertCell(3).outerHTML = "<th>Squats</th>";
+  }
   insertRow(rows, myTable);
   while (tabdiv.childElementCount > 1) tabdiv.removeChild(tabdiv.lastChild);
   tabdiv.appendChild(myTable);
