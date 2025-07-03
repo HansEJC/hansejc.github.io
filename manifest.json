@@ -1,7 +1,7 @@
 {
   "name": "HansFree",
   "short_name": "HansFree",
-  "start_url": ".",
+  "start_url": "/workout.html",
   "display": "standalone",
   "background_color": "black",
   "theme_color": "#800080",
