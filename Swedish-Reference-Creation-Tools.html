@@ -18,7 +18,6 @@
   <meta name="keywords" content="Swedish Reference Tools" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <!-- Include main WikiTree.com CSS -->
-  <link rel="stylesheet" href="https://www.wikitree.com/css/main-new.css?2" type="text/css" />
   <link rel="stylesheet" href="css/main-style.css" />
   <script defer src="js/init.js"></script>
   <script defer src="js/swedish.js"></script>
@@ -44,35 +43,38 @@
         <!-- Content -->
         <div id="content">
           <div class="row 50%">
-            <section class="box">
+            <section class="box" style="max-width:40%;">
               <form>
-                <textarea id="reftext" rows="10" cols="50%"></textarea>
+                <textarea id="reftext" rows="10" cols="120"></textarea>
                 <button type="button" class="button">Copy</button>
               </form>
             </section>
-            <section class="box">
-              <form>
-                <h3>Usage</h3>
-                <ol>
-                  <li>Look up profile in Riksarkivet / Arkiv Digital web app / Sveriges D&ouml;dbok.</li>
-                  <li>Copy reference</li>
+            <section class="box" style="max-width:60%;">
+              <ol>
+                <li>Look up profile in Riksarkivet / Arkiv Digital web app / Sveriges D&ouml;dbok.</li>
+                <li>Copy reference
                   <ul> For Riksarkivet, copy reference under "K&auml;llh&auml;nvisning". (See image below
                     textarea.) </ul>
                   <ul> For Arkiv Digital, copy reference using option "Kopiera -> Kopiera HTML-länk". </ul>
                   <ul>För Sveriges D&ouml;dbok, copy profile data using copy button.</ul>
-                  <li>Paste that reference to the top text area.</li>
-                  <li>Press Copy-button.</li>
-                  <li>Paste the marked text into Biography section of a wikitree profile where you want an <a
-                      href="https://www.wikitree.com/wiki/Help:Sources#Embed_them_as_references_.28footnotes.29">inline
-                      reference</a>.</li>
-                </ol>
-              </form>
+                </li>
+                <li>Paste that reference to the top text area.</li>
+                <li>Press Copy-button.</li>
+                <li>Paste the marked text into Biography section of a wikitree profile where you want an <a
+                    href="https://www.wikitree.com/wiki/Help:Sources#Embed_them_as_references_.28footnotes.29">inline
+                    reference</a>.</li>
+              </ol>
             </section>
             <section class="box">
               <form>
                 <textarea id="output" rows="10" cols="120"></textarea>
-                <br />
-                <img src="images/riksarkivet-what-ref.jpg" />
+              </form>
+            </section>
+          </div>
+          <div class="row">
+            <section>
+              <form>
+                <img style="max-width:100%;" src="images/riksarkivet-what-ref.jpg" />
               </form>
             </section>
           </div>
