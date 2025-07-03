@@ -43,6 +43,10 @@
   funkyValues();
 }());
 
+/**
+ * Toggles the nav (can't remember what for)
+ * @param e click event
+ */
 function toggleNav(e) {
   const x = document.getElementById("myTopnav");
   try {
@@ -55,6 +59,9 @@ function toggleNav(e) {
 }
 document.addEventListener('click', toggleNav);
 
+/**
+ * Crates the nav bar
+ */
 function navBar() {
   const navbar = document.querySelector('#myTopnav');
   navbar.innerHTML = `
@@ -107,6 +114,9 @@ function navBar() {
   document.querySelectorAll('.heh').forEach(function (item) { return item.addEventListener('click', randomPage) });
 }
 
+/**
+ * Navigates to correct place in help page
+ */
 function helpPage() {
   let hashy = location.pathname.split(".")[0].split("/");
   hashy = hashy[hashy.length - 1];
@@ -117,6 +127,11 @@ navBar();
 let test;
 const navs = ['Games', 'Tools', 'Railway', 'Misc'];
 const randomChild = function (len) { return Math.floor(Math.random() * len) };
+
+/**
+ * Gives a random submenu page
+ * @param e captures clicked menur
+ */
 function randomPage(e) {
   test = e;
   if (navs.some(function (nav) { return e.target.innerHTML.includes(nav) })) {
@@ -140,7 +155,12 @@ if ("serviceWorker" in navigator) {
   });
 }
 
-//function to resize plot and copy to clipboard
+/**
+ * Function to resize plot and copy to clipboard
+ * @param x width
+ * @param y height
+ * @param div div name
+ */
 function clippy(x, y, div = "#graphdiv3") {
   document.querySelector(div).setAttribute("style", `height:${y}px !important; width:${x}px !important; max-height:${y}px; max-width:${x}px;`);
   window.dispatchEvent(new Event('resize'));
@@ -165,8 +185,9 @@ if (typeof (navigator.clipboard) === 'undefined') {
   if (article.lastChild.nodeName !== "A") article.innerHTML += htmltext;
 }
 
-
-//Save the value function - save it to localStorage as (ID, VALUE)
+/**
+ * Save the value function - save it to localStorage as (ID, VALUE)
+ */
 function saveValue() {
   document.querySelectorAll('input').forEach((el) => {
     if (el.type === 'file') return;
@@ -179,6 +200,9 @@ function saveValue() {
   saveParameter();
 }
 
+/**
+ * Save the parameters
+ */
 function saveParameter() {
   let url = '';
   const params = {};
@@ -196,6 +220,9 @@ function saveParameter() {
   window.history.pushState({ path: newurl }, '', newurl);
 }
 
+/**
+ * Save the last form values
+ */
 function funkyValues() {
   let pwurl = '';
   document.querySelectorAll('input').forEach((el) => {
@@ -217,7 +244,10 @@ function funkyValues() {
   if (pwurl.length > 5) open(pwurl); //opens pw links if there are any in the text boxes
 }
 
-//get the saved value function - return the value of "v" from localStorage.
+/**
+ * get the saved value function - return the value of "v" from localStorage.
+ * @param v value to retrieve
+ */
 function getSavedValue(v) {
   if (!localStorage.getItem(v)) {
     return '';// You can change this to your defualt value.
@@ -225,10 +255,19 @@ function getSavedValue(v) {
   return localStorage.getItem(v);
 }
 
+/**
+ * Change dygraph visibilities
+ * @param el graph item to hide/show
+ */
 function change(el) {
   g3.setVisibility(el.id, el.checked);
 }
 
+/**
+ * Export to csv
+ * @param filename file to write
+ * @param rows rows
+ */
 function exportToCsv(filename, rows) {
   const processRow = function (row) {
     let finalVal = '';
@@ -268,6 +307,10 @@ function exportToCsv(filename, rows) {
   }
 }
 
+/**
+ * Update indexdb
+ * @param db database
+ */
 function dbUpgrade(db) {
   const onupgradeneeded = function (e) {
     db = e.target.result;
@@ -334,6 +377,10 @@ function fireBase() {
   firebase.initializeApp(firebaseConfig);
 };
 
+/**
+ * Flash error message
+ * @param err message to show
+ */
 function logError(err) {
   const div = document.createElement('div');
   const errdiv = document.getElementById("copyright");
@@ -350,3 +397,17 @@ function logError(err) {
 const smoothdec = (a, b = 2) => Number(parseFloat(a).toFixed(b)); //fix broken decimals
 
 document.documentElement.setAttribute('lang', navigator.language); //add language to html
+
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('last-visited-url', `${window.location.pathname}${window.location.search}`);
+});
+
+window.addEventListener('load', () => {
+  const lastUrl = localStorage.getItem('last-visited-url');
+  const currentUrl = `${window.location.pathname}${window.location.search}`;
+
+  // If we're on the root page (or wherever your app starts) and have a saved URL
+  if ((currentUrl === '/' || currentUrl === '/index.html') && lastUrl && lastUrl !== '/') {
+    window.location.replace(lastUrl);
+  }
+});
