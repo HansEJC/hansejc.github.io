@@ -398,6 +398,14 @@ const smoothdec = (a, b = 2) => Number(parseFloat(a).toFixed(b)); //fix broken d
 
 document.documentElement.setAttribute('lang', navigator.language); //add language to html
 
+/**
+ * Check if app was launched as PWA
+ */
+function isRunningStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+}
+
 window.addEventListener('beforeunload', () => {
   localStorage.setItem('last-visited-url', `${window.location.pathname}${window.location.search}`);
 });
@@ -407,7 +415,7 @@ window.addEventListener('load', () => {
   const currentUrl = `${window.location.pathname}${window.location.search}`;
 
   // If we're on the root page (or wherever your app starts) and have a saved URL
-  if ((currentUrl === '/' || currentUrl === '/index.html') && lastUrl && lastUrl !== '/') {
+  if (isRunningStandalone() && (currentUrl === '/' || currentUrl === '/index.html') && lastUrl && lastUrl !== '/') {
     window.location.replace(lastUrl);
   }
 });
