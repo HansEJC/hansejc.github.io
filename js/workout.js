@@ -1,4 +1,7 @@
 "use strict";
+/**
+ * Startup function
+ */
 function startup() {
   document.querySelectorAll('input').forEach(inp => inp.value = getSavedValue(inp.id));
   document.querySelector(`#Save`).addEventListener(`click`, save);
@@ -17,13 +20,17 @@ function startup() {
   funkyValues();
 }
 
-function addInputs(e) {
-  saveValue(e);
+/**
+ * Adds intervals
+ * @param numInput input with number of intervals to add
+ */
+function addInputs(numInput) {
+  saveValue(numInput);
   const intForm = document.querySelector(`#IntervalTimers`);
   const labForm = document.querySelector(`#IntervalLabels`);
   intForm.innerHTML = ``;
   labForm.innerHTML = ``;
-  const num = Number(e.value) || 1;
+  const num = Number(numInput.value) || 1;
   for (let i = 0; i < num; i++) {
     let inp = document.createElement(`input`);
     let lab = document.createElement(`input`);
@@ -36,8 +43,13 @@ function addInputs(e) {
     intForm.appendChild(inp);
     labForm.appendChild(lab);
   }
+  funkyValues();
+  document.querySelectorAll('input').forEach(inp => inp.addEventListener(`keyup`, () => table()));
 }
 
+/**
+ * Saves the intervals and takes to workout page
+ */
 function save() {
   document.querySelectorAll('input').forEach(inp => saveValue(inp));
   document.querySelector(`#InputSelection`).style = `display:none`;
@@ -45,6 +57,9 @@ function save() {
   localStorage.setItem(`savedInterval`, true);
 }
 
+/**
+ * Goes to edit page
+ */
 function edit() {
   document.querySelector(`#InputSelection`).style = `display:block`;
   document.querySelector(`#Intervals`).style = `display:none`;
@@ -59,6 +74,9 @@ const toSecs = (text) => {
 const secs2Text = (time) => time >= 60 ? `${Math.floor(time / 60)}:${secDec(time)}` : `${secDec(time)}`;
 const secDec = (time) => time % 60 < 10 && time > 0 ? `0${time % 60}` : time % 60;
 
+/**
+ * Starts the timer
+ */
 function start() {
   initAudio();
   document.querySelector(`#Start`).style = `display:none`;
@@ -89,6 +107,9 @@ function start() {
 
 const progress = (percent) => document.querySelector(`progress`).value = 1 - percent;
 
+/**
+ * Pauses the timer
+ */
 function pause() {
   let pause = document.querySelector(`#Pause`);
   paused = paused ? false : true;
@@ -97,6 +118,9 @@ function pause() {
   if (!paused) interArr.forEach(t => t.time += pauseTime); //Add the paused time to the timestamps
 }
 
+/**
+ * Resets the timer and goes to next table entry
+ */
 function reset() {
   document.querySelector(`#Start`).style = `display:block`;
   document.querySelector(`#Pause`).style = `display:none`;
@@ -108,34 +132,50 @@ function reset() {
   clearInterval(x);
 }
 
+/**
+ * Timer audio
+ */
 function initAudio() {
   const AudioContext = window.AudioContext // Default
     || window.webkitAudioContext // Safari and old versions of Chrome
     || false;
-  window[`a`] = AudioContext ? new AudioContext() : null;
+  window[`audio`] = AudioContext ? new AudioContext() : null;
 }
 
-// gain, frequency, duration
-function k(w, x, y) {
+/**
+ * Adds intervals
+ * @param gain gain
+ * @param freq frequency
+ * @param dur duration
+ */
+function k(gain, freq, dur) {
   try {
-    let v = a.createOscillator();
-    let u = a.createGain();
-    v.connect(u);
-    v.frequency.value = x;
-    v.type = "square";
-    u.connect(a.destination);
-    u.gain.value = w * 0.01;
-    v.start(a.currentTime);
-    v.stop(a.currentTime + y * 0.001);
+    let osc = audio.createOscillator();
+    let newGain = audio.createGain();
+    osc.connect(newGain);
+    osc.frequency.value = freq;
+    osc.type = "square";
+    newGain.connect(audio.destination);
+    newGain.gain.value = gain * 0.01;
+    osc.start(audio.currentTime);
+    osc.stop(audio.currentTime + dur * 0.001);
   } catch (err) { console.log(`${err} not supported`); }
 }
 
+/**
+ * Play intervals
+ */
 function intervalSounds() {
   k(10, 3000, 100);
   setTimeout(() => { k(10, 2900, 100) }, 100);
   setTimeout(() => { k(10, 3000, 100) }, 200);
 }
 
+/**
+ * Inserts rows
+ * @param rows array with summary info
+ * @param myTable Table 
+ */
 function insertRow(rows, myTable) {
   try {
     rows.forEach(arr => {
@@ -145,13 +185,15 @@ function insertRow(rows, myTable) {
   } catch (err) { logError(err); }
 }
 
+/**
+ * Adds selected class to next table row
+ */
 function nextRow() {
   document.querySelector('table').rows[workcounter].className += 'selected';
 }
 
 /**
  * Inserts summary table
- * @param rows array with summary info
  */
 function table() {
   const rows = /jorge/iu.test(getSavedValue('intervalLab0')) && new Date().getDay() === 2 ?
@@ -224,7 +266,7 @@ function table() {
     row.insertCell(3).outerHTML = "<th>Squats</th>";
   }
   insertRow(rows, myTable);
-  while (tabdiv.childElementCount > 1) tabdiv.removeChild(tabdiv.lastChild);
+  tabdiv.innerHTML = '';
   tabdiv.appendChild(myTable);
 }
 
@@ -244,6 +286,10 @@ function fireBase() {
   firebase.initializeApp(firebaseConfig);
 };
 
+/**
+ * Gets data from database
+ * @param dbName db name
+ */
 function getData(dbName) {
   let dbObj = firebase.database().ref(`workout/${dbName}`);
   dbObj.on(`value`, snap => {
@@ -252,17 +298,26 @@ function getData(dbName) {
   });
 }
 
+/**
+ * Sends to db
+ */
 function sendData() {
   dbName = firebase.auth().currentUser.uid;
   let dbObj = firebase.database().ref(`workout/${dbName}`);
   dbObj.set(getKicks());
 }
 
+/**
+ * Firebase auth
+ */
 function fireAuth() {
   document.querySelector(`#Logout`).addEventListener(`click`, () => firebase.auth().signOut());
   firebase.auth().onAuthStateChanged(loginState);
 }
 
+/**
+ * Reset password
+ */
 function resetPass() {
   const auth = firebase.auth();
   const user = document.querySelector(`#email`).value;
@@ -275,6 +330,10 @@ function resetPass() {
   });
 }
 
+/**
+ * Checks login state
+ * @param user user
+ */
 function loginState(user) {
   const logout = document.querySelector(`#Logout`);
   if (user) {
@@ -318,6 +377,9 @@ function loginState(user) {
   */
 }
 
+/**
+ * Starts fireUI 
+ */
 function fireUI() {
   const uiConfig = {
     signInSuccessUrl: '/workout.html',
