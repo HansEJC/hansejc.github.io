@@ -121,6 +121,7 @@ function getRef() {
             errtext;
 }
 
-document.querySelector(`button`).addEventListener(`click`, copy);
-reftext.addEventListener(`keyup`, getRef);
+document.querySelector('button').addEventListener('click', copy);
+reftext.addEventListener('keyup', getRef);
+document.querySelector('#wikiright').textContent += `© 2008 - ${new Date().getFullYear()} Interesting.com, Inc. Content may be copyrighted by WikiTree community members.`;
 
