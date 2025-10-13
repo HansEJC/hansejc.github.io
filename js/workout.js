@@ -180,7 +180,12 @@ function insertRow(rows, myTable) {
   try {
     rows.forEach(arr => {
       const row = myTable.insertRow(-1);
-      [row.insertCell(0).innerHTML, row.insertCell(1).innerHTML, row.insertCell(2).innerHTML, row.insertCell(3).innerHTML] = arr;
+      if (/cal/iu.test(getSavedValue('intervalLab0'))) {
+        [row.insertCell(0).innerHTML, row.insertCell(1).innerHTML, row.insertCell(2).innerHTML] = arr;
+      }
+      else {
+        [row.insertCell(0).innerHTML, row.insertCell(1).innerHTML, row.insertCell(2).innerHTML, row.insertCell(3).innerHTML] = arr;
+      }
     });
   } catch (err) { logError(err); }
 }
@@ -196,59 +201,164 @@ function nextRow() {
  * Inserts summary table
  */
 function table() {
-  const rows = /jorge/iu.test(getSavedValue('intervalLab0')) && new Date().getDay() === 2 ?
-    [
-      ['Pushups', 17, 40, 2],
-      ['Situps', 17, 40, 2],
-      ['Burpees', 15, 15, 2],
-      ['Squats', 20, 20, 2],
-      ['Wall Walk', 3, 3, 3],
-      ['Triceps', 8, 10, 2],
-      ['Parachutes', 15, 15, 2],
-      ['Gymball back', 20, 20, 2],
-      ['Airsquad press', 10, 10, 2],
-      ['Lunges', 15, 15, 2],
-      ['Run', 30, 30, 2],
-      ['Stretch Needle', 10, 10, 2],
-      ['JW Stretch', 1, 1, 2],
-    ]
-    : /jorge/iu.test(getSavedValue('intervalLab0')) ?
-      [
-        ['Pushups', 17, 40, 2],
-        ['Situps', 17, 40, 2],
-        ['Burpees', 15, 15, 2],
-        ['Squats', 20, 20, 2],
-        ['Pullups', 5, 15, 3],
-        ['Neck', 20, 20, 2],
-        ['Bridge', 15, 15, 2],
-        ['Barbell back', 15, 10, 2],
-        ['Hang', 20, 40, 2],
-        ['Knee Straight', 25, 25, 2],
-        ['Hopping', 60, 60, 2],
-        ['Jumping', 8, 8, 2],
-        ['Banded Ankle', 10, 10, 2],
-        ['Run', 30, 30, 2],
-        ['Stretch Needle', 10, 10, 2],
-      ]
-      :
-      [
-        [45, 70, 7, 63],
-        [55, 85, 10, 76],
-        [35, 52, 7, 47],
-        [30, 45, 7, 40],
-        [60, 90, 10, 80],
-        ['-', '-', '-', '-'],
-        [26, 40, 5, 35],
-        [26, 40, 5, 35],
-        [33, 60, 6, 45],
-        [33, 60, 6, 45],
-        [26, 40, 5, 35],
-        [26, 40, 5, 35],
-        [22, 33, 4, 30],
-        [22, 33, 4, 30],
-        [60, 105, 10, 100],
-      ]
-    ;
+  let excercise = getSavedValue('intervalLab0');
+  let rows = [];
+  let date = new Date().getDay();
+  if (/jorge/iu.test(excercise)) {
+    switch (date) {
+      case 2:
+        rows = [
+          ['Pushups', 17, 40, 2],
+          ['Situps', 17, 40, 2],
+          ['Burpees', 15, 15, 2],
+          ['Squats', 20, 20, 2],
+          ['Wall Walk', 3, 3, 3],
+          ['Triceps', 8, 10, 2],
+          ['Parachutes', 15, 15, 2],
+          ['Gymball back', 20, 20, 2],
+          ['Airsquad press', 10, 10, 2],
+          ['Lunges', 15, 15, 2],
+          ['Run', 30, 30, 2],
+          ['Stretch Needle', 10, 10, 2],
+          ['JW Stretch', 1, 1, 2],
+        ];
+        break;
+      default:
+        rows = [
+          ['Pushups', 17, 40, 2],
+          ['Situps', 17, 40, 2],
+          ['Burpees', 15, 15, 2],
+          ['Squats', 20, 20, 2],
+          ['Pullups', 5, 15, 3],
+          ['Neck', 20, 20, 2],
+          ['Bridge', 15, 15, 2],
+          ['Barbell back', 15, 10, 2],
+          ['Hang', 20, 40, 2],
+          ['Knee Straight', 25, 25, 2],
+          ['Hopping', 60, 60, 2],
+          ['Jumping', 8, 8, 2],
+          ['Banded Ankle', 10, 10, 2],
+          ['Run', 30, 30, 2],
+          ['Stretch Needle', 10, 10, 2],
+        ];
+    }
+  }
+  else if (/cali/iu.test(excercise)) {
+    switch (date) {
+      case 1:
+        rows = [
+          ['Planche Lean', 'Failure', 3],
+          ['Tuck Planche', 'Failure', 3],
+          ['Ring Dips', '5-12', 3],
+          ['Pike Pushups', '5-12', 3],
+          ['Diamond Pushups', '5-12', 3],
+          ['Skull Crushers', '5-12', 3],
+        ];
+        break;
+      case 2:
+        rows = [
+          ['Tuck FL', 'Failure', 3],
+          ['Skin the Cat', 'Failure', 3],
+          ['Chin Ups', '5-12', 3],
+          ['Horizontal Row', '5-12', 3],
+          ['Hammer Pullups', '5-12', 3],
+          ['Tucked Rows', '5-12', 3],
+        ];
+        break;
+      case 4:
+        rows = [
+          ['Planche Lean', 'Failure', 3],
+          ['Tuck Planche', 'Failure', 3],
+          ['Incline Pushups', '5-12', 3],
+          ['Archer Pushups', '5-12', 3],
+          ['Ring Flys', '5-12', 3],
+          ['Ring Pushups', '5-12', 3],
+        ];
+        break;
+      case 5:
+        rows = [
+          ['Tuck FL', 'Failure', 3],
+          ['Skin the Cat', 'Failure', 3],
+          ['Pullups', '5-12', 3],
+          ['OA Chin Ups', '5-12', 3],
+          ['BW Ring Curls', '5-12', 3],
+          ['Reverse Curls', '5-12', 3],
+        ];
+        break;
+      case 6:
+        rows = [
+          ['Squat Jumps', '5-12', 3],
+          ['Bulgarian Split Squats', '5-12', 3],
+          ['Nordic Ham Curls', '5-12', 3],
+          ['Sprinter Lunges', '5-12', 3],
+          ['Hallow Rocks', '5-12', 3],
+          ['2-Point Plank', 'Failure', 3],
+          ['Straddle Leg Lifts', '5-12', 3],
+          ['Banded Crunches', '5-12', 3],
+        ];
+    }
+  }
+  else if (/calall/iu.test(excercise)) {
+    rows = [
+      ['Monday', '-', '-'],
+      ['Planche Lean', 'Failure', 3],
+      ['Tuck Planche', 'Failure', 3],
+      ['Ring Dips', '5-12', 3],
+      ['Pike Pushups', '5-12', 3],
+      ['Diamond Pushups', '5-12', 3],
+      ['Skull Crushers', '5-12', 3],
+      ['Tuesday', '-', '-'],
+      ['Tuck FL', 'Failure', 3],
+      ['Skin the Cat', 'Failure', 3],
+      ['Chin Ups', '5-12', 3],
+      ['Horizontal Row', '5-12', 3],
+      ['Hammer Pullups', '5-12', 3],
+      ['Tucked Rows', '5-12', 3],
+      ['Thursday', '-', '-'],
+      ['Planche Lean', 'Failure', 3],
+      ['Tuck Planche', 'Failure', 3],
+      ['Incline Pushups', '5-12', 3],
+      ['Archer Pushups', '5-12', 3],
+      ['Ring Flys', '5-12', 3],
+      ['Ring Pushups', '5-12', 3],
+      ['Friday', '-', '-'],
+      ['Tuck FL', 'Failure', 3],
+      ['Skin the Cat', 'Failure', 3],
+      ['Pullups', '5-12', 3],
+      ['OA Chin Ups', '5-12', 3],
+      ['BW Ring Curls', '5-12', 3],
+      ['Reverse Curls', '5-12', 3],
+      ['Saturday', '-', '-'],
+      ['Squat Jumps', '5-12', 3],
+      ['Bulgarian Split Squats', '5-12', 3],
+      ['Nordic Ham Curls', '5-12', 3],
+      ['Sprinter Lunges', '5-12', 3],
+      ['Hallow Rocks', '5-12', 3],
+      ['2-Point Plank', 'Failure', 3],
+      ['Straddle Leg Lifts', '5-12', 3],
+      ['Banded Crunches', '5-12', 3],
+    ];
+  }
+  else {
+    rows = [
+      [45, 70, 7, 63],
+      [55, 85, 10, 76],
+      [35, 52, 7, 47],
+      [30, 45, 7, 40],
+      [60, 90, 10, 80],
+      ['-', '-', '-', '-'],
+      [26, 40, 5, 35],
+      [26, 40, 5, 35],
+      [33, 60, 6, 45],
+      [33, 60, 6, 45],
+      [26, 40, 5, 35],
+      [26, 40, 5, 35],
+      [22, 33, 4, 30],
+      [22, 33, 4, 30],
+      [60, 105, 10, 100],
+    ];
+  }
+
   const tabdiv = document.querySelector("#SummaryTable");
   const myTable = document.createElement("table");
   myTable.classList.add("scores");
@@ -258,6 +368,11 @@ function table() {
     row.insertCell(1).outerHTML = "<th>Jorge</th>";
     row.insertCell(2).outerHTML = "<th>Hans</th>";
     row.insertCell(3).outerHTML = "<th>Sets</th>";
+  }
+  else if (/cal/iu.test(getSavedValue('intervalLab0'))) {
+    row.insertCell(0).outerHTML = "<th>Excercise</th>";
+    row.insertCell(1).outerHTML = "<th>Reps</th>";
+    row.insertCell(2).outerHTML = "<th>Sets</th>";
   }
   else {
     row.insertCell(0).outerHTML = "<th>Pushups</th>";
