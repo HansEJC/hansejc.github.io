@@ -406,16 +406,21 @@ function isRunningStandalone() {
     window.navigator.standalone === true;
 }
 
-window.addEventListener('beforeunload', () => {
-  localStorage.setItem('last-visited-url', `${window.location.pathname}${window.location.search}`);
-});
-
 window.addEventListener('load', () => {
-  const lastUrl = localStorage.getItem('last-visited-url');
   const currentUrl = `${window.location.pathname}${window.location.search}`;
+  const isHome = currentUrl === '/' || currentUrl === '/index.html';
 
-  // If we're on the root page (or wherever your app starts) and have a saved URL
-  if (isRunningStandalone() && (currentUrl === '/' || currentUrl === '/index.html') && lastUrl && lastUrl !== '/') {
-    window.location.replace(lastUrl);
+  // Save current page on every load (except homepage), so it's always up to date
+  // Done on load rather than beforeunload as Android doesn't reliably fire beforeunload
+  if (!isHome) {
+    localStorage.setItem('last-visited-url', currentUrl);
+  }
+
+  // If launching as PWA from home screen and we're on the homepage, redirect to last page
+  if (isRunningStandalone() && isHome) {
+    const lastUrl = localStorage.getItem('last-visited-url');
+    if (lastUrl && lastUrl !== '/') {
+      window.location.replace(lastUrl);
+    }
   }
 });
