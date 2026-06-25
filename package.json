@@ -9,7 +9,7 @@
   "dependencies": {
     "dygraphs": "^2.2.1",
     "html2canvas": "^1.4.1",
-    "katex": "^0.16.9",
+    "katex": "^0.17.0",
     "papaparse": "^5.4.0",
     "workbox-sw": "^7.0.0",
     "firebase": "^10.8.1",
