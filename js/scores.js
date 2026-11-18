@@ -1,5 +1,22 @@
 fireBase();
 funkyValues();
+
+function ensureGameAuth() {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      unsubscribe();
+
+      if (user) {
+        resolve(user);
+      } else {
+        firebase.auth().signInAnonymously()
+          .then(result => resolve(result.user))
+          .catch(reject);
+      }
+    });
+  });
+}
+
 function saveScores(scr) {
   const game = getSavedValue("game");
   let name = document.querySelector("#userName").value;
@@ -39,14 +56,22 @@ function sucPost(data) {
   }, 1000);
 }
 
-function getScores(full) {
+async function getScores(full) {
   const game = getSavedValue("game");
-  const dbObj = firebase.database().ref(game);
-  dbObj.on("value", snap => {
-    const scores = snap.val();
-    localStorage.setItem(game, JSON.stringify(scores));
-    scoreTable(scores, full);
-  });
+
+  try {
+    await ensureGameAuth();
+
+    const dbObj = firebase.database().ref(game);
+
+    dbObj.on("value", snap => {
+      const scores = snap.val() || {};
+      localStorage.setItem(game, JSON.stringify(scores));
+      scoreTable(scores, full);
+    });
+  } catch (err) {
+    logError(err);
+  }
 }
 
 function scoreTable(scores, full) {
@@ -73,18 +98,29 @@ function scoreTable(scores, full) {
   }
 }
 
-function sendData(name, data) {
+async function sendData(name, data) {
   const game = getSavedValue("game");
-  const dbObj = firebase.database().ref(`${game}/${name}`);
-  dbObj.update(data);
+
   try {
-    dataLayer.push({
-      'event': 'post_score',
-      level: game,
-      character: name,
-      score: data.score
-    });
-  } catch (err) { logError(err); }
+    await ensureGameAuth();
+
+    const dbObj = firebase.database().ref(`${game}/${name}`);
+    await dbObj.update(data);
+
+    try {
+      dataLayer.push({
+        'event': 'post_score',
+        level: game,
+        character: name,
+        score: data.score
+      });
+    } catch (err) {
+      logError(err);
+    }
+
+  } catch (err) {
+    logError(`Unable to save score: ${err.message}`);
+  }
 }
 
 // gain, frequency, duration
